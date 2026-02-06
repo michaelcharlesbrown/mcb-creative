@@ -288,7 +288,7 @@ export default function ProjectNavRail() {
         >
           <div className="relative w-full h-full">
             <Image
-              src={`/images/work/${project.slug}/thumb-${project.slug}.jpg`}
+              src={`/images/projects/${project.slug}/thumb-${project.slug}.jpg`}
               alt={project.title}
               fill
               sizes="(max-width: 768px) calc(80vh * 5 / 7), calc(80vh * 5 / 7)"

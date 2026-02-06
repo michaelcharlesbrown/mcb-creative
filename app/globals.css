@@ -39,7 +39,8 @@ body {
   display: none;
 }
 
-/* All images get 8px border radius */
+/* Remove all rounded corners from images */
 img {
-  border-radius: 8px;
+  border-radius: 0 !important;
 }
+
