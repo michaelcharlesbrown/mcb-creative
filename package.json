@@ -6,7 +6,11 @@
     "dev": "next dev -p 3002",
     "build": "next build",
     "start": "next start -p 3002",
-    "lint": "eslint"
+    "lint": "eslint",
+    "verify:carousel": "node scripts/verify-carousel.mjs",
+    "verify:carousel:visible": "node scripts/verify-carousel-visible.mjs",
+    "verify:carousel:motion": "node scripts/verify-carousel-motion.mjs",
+    "debug:carousel": "node scripts/debug-carousel-visual.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.30.0",
@@ -15,12 +19,14 @@
     "react-dom": "19.2.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.48.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.5",
+    "playwright": "^1.48.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

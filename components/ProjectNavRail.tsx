@@ -3,22 +3,48 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { projects } from "@/data/projects";
 
-export default function ProjectNavRail() {
-  const carouselRef = useRef<HTMLDivElement>(null);
+interface ProjectNavRailProps {
+  currentSlug?: string;
+}
+
+export default function ProjectNavRail({ currentSlug }: ProjectNavRailProps) {
+  const pathname = usePathname();
+  const trackRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | null>(null);
+  const translateX = useRef<number>(0);
+  const velocity = useRef<number>(0);
+  const singleSetWidth = useRef<number>(0);
   const scrollDirection = useRef<number>(1); // 1 for forward (right), -1 for backward (left)
-  const lastScrollLeft = useRef<number>(0);
-  const isJumping = useRef<boolean>(false); // Prevent infinite loop during jump
-  const [isDragging, setIsDragging] = useState(false);
-  const dragStartX = useRef(0);
-  const dragScrollLeft = useRef(0);
   const [isHovered, setIsHovered] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const lastWheelTime = useRef<number>(0);
+  
+  // Kinetic scrolling constants
+  const maxVelocity = 2.0; // Maximum pixels per frame
+  
+  // Filter out current project to make carousel contextual
+  const filteredProjects = projects.filter(p => p.slug !== currentSlug);
+  
+  // Duplicate filtered projects twice for seamless loop
+  const duplicatedProjects = [...filteredProjects, ...filteredProjects];
 
+  // Debug beacon (dev only)
   useEffect(() => {
-    // Check for prefers-reduced-motion (client-side only)
+    if (process.env.NODE_ENV === 'development') {
+      console.log("[carousel] mounted", { 
+        count: filteredProjects.length, 
+        path: pathname,
+        currentSlug,
+        filteredSlugs: filteredProjects.map(p => p.slug)
+      });
+    }
+  }, [filteredProjects.length, pathname, currentSlug]);
+
+  // Check for prefers-reduced-motion
+  useEffect(() => {
     if (typeof window === "undefined") return;
     
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -32,74 +58,73 @@ export default function ProjectNavRail() {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
-  // Initialize scroll position to middle set for seamless looping
+  // Measure single set width and initialize
   useEffect(() => {
-    if (typeof window === "undefined" || !carouselRef.current) return;
-    const carousel = carouselRef.current;
-    const scrollWidth = carousel.scrollWidth;
-    const singleSetWidth = scrollWidth / 3;
-    // Start at the beginning of the middle set
-    carousel.scrollLeft = singleSetWidth;
-    lastScrollLeft.current = singleSetWidth;
-  }, []);
-
-  // Infinite loop handler - seamlessly jump to equivalent position when near boundaries
-  useEffect(() => {
-    if (!carouselRef.current) return;
-
-    const carousel = carouselRef.current;
-
-    const handleScroll = () => {
-      if (isJumping.current) {
-        isJumping.current = false;
-        return;
+    if (typeof window === "undefined" || !trackRef.current) return;
+    
+    const measureWidth = () => {
+      if (!trackRef.current) return;
+      
+      // Measure width of one copy (half the track's scrollWidth since we duplicate twice)
+      const trackWidth = trackRef.current.scrollWidth;
+      
+      if (trackWidth > 0) {
+        singleSetWidth.current = trackWidth / 2;
+        translateX.current = 0;
+        if (trackRef.current) {
+          trackRef.current.style.transform = `translateX(${0}px)`;
+        }
       }
-
-      const currentScrollLeft = carousel.scrollLeft;
-      const scrollWidth = carousel.scrollWidth;
-      const singleSetWidth = scrollWidth / 3;
-      const startBoundary = singleSetWidth;
-      const endBoundary = singleSetWidth * 2;
-
-      // Detect direction
-      if (currentScrollLeft > lastScrollLeft.current) {
-        scrollDirection.current = 1; // Forward (right)
-      } else if (currentScrollLeft < lastScrollLeft.current) {
-        scrollDirection.current = -1; // Backward (left)
-      }
-
-      // Seamlessly loop: if we've scrolled past the end of the middle set, jump to start of middle set
-      if (currentScrollLeft >= endBoundary) {
-        isJumping.current = true;
-        carousel.scrollLeft = startBoundary + (currentScrollLeft - endBoundary);
-      }
-      // If we've scrolled before the start of the middle set, jump to end of middle set
-      else if (currentScrollLeft <= startBoundary - 1) {
-        isJumping.current = true;
-        carousel.scrollLeft = endBoundary - (startBoundary - currentScrollLeft);
-      }
-
-      lastScrollLeft.current = carousel.scrollLeft;
     };
-
-    carousel.addEventListener("scroll", handleScroll);
-
+    
+    measureWidth();
+    
+    // Retry after delays to ensure images are loaded
+    const timeoutId1 = setTimeout(measureWidth, 100);
+    const timeoutId2 = setTimeout(measureWidth, 500);
+    const timeoutId3 = setTimeout(measureWidth, 1000);
+    
+    const images = trackRef.current.querySelectorAll('img');
+    let loadedCount = 0;
+    const totalImages = images.length;
+    
+    const checkAllLoaded = () => {
+      loadedCount++;
+      if (loadedCount === totalImages) {
+        measureWidth();
+      }
+    };
+    
+    if (totalImages > 0) {
+      images.forEach((img) => {
+        if (img.complete) {
+          checkAllLoaded();
+        } else {
+          img.addEventListener('load', checkAllLoaded, { once: true });
+          img.addEventListener('error', checkAllLoaded, { once: true });
+        }
+      });
+    }
+    
     return () => {
-      carousel.removeEventListener("scroll", handleScroll);
+      clearTimeout(timeoutId1);
+      clearTimeout(timeoutId2);
+      clearTimeout(timeoutId3);
+      images.forEach((img) => {
+        img.removeEventListener('load', checkAllLoaded);
+        img.removeEventListener('error', checkAllLoaded);
+      });
     };
-  }, []);
+  }, [filteredProjects]);
 
-  // Auto-scroll animation with slow, continuous scrolling
+  // Kinetic auto-scroll animation
   useEffect(() => {
-    // Don't start animation if conditions aren't met
     if (
       typeof window === "undefined" ||
-      !carouselRef.current ||
+      !trackRef.current ||
       prefersReducedMotion ||
-      isHovered ||
-      isDragging
+      singleSetWidth.current === 0
     ) {
-      // Cancel any existing animation
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
         animationRef.current = null;
@@ -107,16 +132,20 @@ export default function ProjectNavRail() {
       return;
     }
 
-    const carousel = carouselRef.current;
-    const scrollSpeed = 0.3; // Slow auto-scroll speed
+    const idleSpeed = 0.3;
+    const friction = 0.96; // Softer, more buttery decay
+    const minVelocity = 0.1;
+
+    // Initialize velocity to idle speed in current scroll direction
+    if (Math.abs(velocity.current) < minVelocity) {
+      velocity.current = idleSpeed * scrollDirection.current;
+    }
 
     const animate = () => {
-      // Check conditions again in case they changed during animation
       if (
-        !carousel ||
+        !trackRef.current ||
         prefersReducedMotion ||
-        isHovered ||
-        isDragging
+        singleSetWidth.current === 0
       ) {
         if (animationRef.current) {
           cancelAnimationFrame(animationRef.current);
@@ -125,178 +154,135 @@ export default function ProjectNavRail() {
         return;
       }
 
-      const scrollWidth = carousel.scrollWidth;
-      const singleSetWidth = scrollWidth / 3;
-      const startBoundary = singleSetWidth;
-      const endBoundary = singleSetWidth * 2;
-
-      // Continuously scroll in current direction
-      carousel.scrollLeft += scrollSpeed * scrollDirection.current;
-
-      // Handle seamless looping in animation loop for smoother transitions
-      const currentScroll = carousel.scrollLeft;
-      if (currentScroll >= endBoundary) {
-        // Seamlessly jump to equivalent position in start of middle set
-        isJumping.current = true;
-        carousel.scrollLeft = startBoundary + (currentScroll - endBoundary);
-      } else if (currentScroll <= startBoundary - 1) {
-        // Seamlessly jump to equivalent position in end of middle set
-        isJumping.current = true;
-        carousel.scrollLeft = endBoundary - (startBoundary - currentScroll);
+      // Apply elastic easing friction when user is not interacting
+      if (!isHovered) {
+        // Elastic easing function (ease-out-exponential) for buttery smooth decay
+        const easeOutExpo = (t: number) => {
+          return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+        };
+        
+        // Apply elastic easing based on velocity magnitude
+        const velocityMagnitude = Math.abs(velocity.current);
+        const normalizedVel = Math.min(velocityMagnitude / maxVelocity, 1);
+        const easedFriction = 1 - (1 - friction) * easeOutExpo(normalizedVel);
+        velocity.current *= easedFriction;
+        
+        // Return to idle drift if velocity is very low, maintaining scroll direction
+        if (Math.abs(velocity.current) < minVelocity) {
+          velocity.current = idleSpeed * scrollDirection.current;
+        }
       }
 
-      lastScrollLeft.current = carousel.scrollLeft;
+      // Update translateX with velocity
+      translateX.current += velocity.current;
 
-      // Continue animation loop
+      // Wrap translateX using modulo for seamless infinite loop
+      const wrappedX = translateX.current % singleSetWidth.current;
+      translateX.current = wrappedX < 0 ? wrappedX + singleSetWidth.current : wrappedX;
+
+      // Apply transform to track
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translateX(${-translateX.current}px)`;
+      }
+
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    // Start the animation loop
     animationRef.current = requestAnimationFrame(animate);
 
-    // Cleanup: cancel animation on unmount or when dependencies change
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
         animationRef.current = null;
       }
     };
-  }, [prefersReducedMotion, isHovered, isDragging]);
+  }, [prefersReducedMotion, isHovered, filteredProjects]);
 
-  // Mouse drag handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!carouselRef.current) return;
-    e.preventDefault();
-    setIsDragging(true);
-    const rect = carouselRef.current.getBoundingClientRect();
-    dragStartX.current = e.pageX - rect.left;
-    dragScrollLeft.current = carouselRef.current.scrollLeft;
-  };
-
-  // Global mouse move handler for dragging
-  useEffect(() => {
-    if (!isDragging) return;
-
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      if (!carouselRef.current) return;
-      e.preventDefault();
-      const rect = carouselRef.current.getBoundingClientRect();
-      const x = e.pageX - rect.left;
-      const walk = (x - dragStartX.current) * 2; // Scroll speed multiplier
-      const newScrollLeft = dragScrollLeft.current - walk;
-      carouselRef.current.scrollLeft = newScrollLeft;
-      
-      // Update direction based on drag movement
-      // If dragging right (walk > 0), content scrolls left (backward), so direction = -1
-      // If dragging left (walk < 0), content scrolls right (forward), so direction = 1
-      if (walk > 0) {
-        scrollDirection.current = -1; // Backward (left)
-      } else if (walk < 0) {
-        scrollDirection.current = 1; // Forward (right)
-      }
-    };
-
-    const handleGlobalMouseUp = () => {
-      setIsDragging(false);
-    };
-
-    document.addEventListener("mousemove", handleGlobalMouseMove);
-    document.addEventListener("mouseup", handleGlobalMouseUp);
-
-    return () => {
-      document.removeEventListener("mousemove", handleGlobalMouseMove);
-      document.removeEventListener("mouseup", handleGlobalMouseUp);
-    };
-  }, [isDragging]);
-
-  // Touch handlers for mobile
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (!carouselRef.current) return;
-    setIsDragging(true);
-    const rect = carouselRef.current.getBoundingClientRect();
-    dragStartX.current = e.touches[0].pageX - rect.left;
-    dragScrollLeft.current = carouselRef.current.scrollLeft;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || !carouselRef.current) return;
-    e.preventDefault(); // Prevent page scroll
-    const rect = carouselRef.current.getBoundingClientRect();
-    const x = e.touches[0].pageX - rect.left;
-    const walk = (x - dragStartX.current) * 2;
-    const newScrollLeft = dragScrollLeft.current - walk;
-    carouselRef.current.scrollLeft = newScrollLeft;
+  // Wheel handler for kinetic scrolling
+  const handleWheel = (e: React.WheelEvent) => {
+    if (!trackRef.current) return;
     
-    // Update direction based on touch movement
-    // If swiping right (walk > 0), content scrolls left (backward), so direction = -1
-    // If swiping left (walk < 0), content scrolls right (forward), so direction = 1
-    if (walk > 0) {
-      scrollDirection.current = -1; // Backward (left)
-    } else if (walk < 0) {
+    e.preventDefault();
+    
+    const delta = e.deltaX || e.deltaY;
+    const now = Date.now();
+    const timeDelta = Math.max(1, now - lastWheelTime.current);
+    
+    // Update scroll direction based on scroll input
+    if (delta > 0) {
       scrollDirection.current = 1; // Forward (right)
+    } else if (delta < 0) {
+      scrollDirection.current = -1; // Backward (left)
     }
+    
+    // Add velocity based on scroll delta (gentle but responsive acceleration)
+    const velocityBoost = (delta / timeDelta) * 0.06;
+    velocity.current += velocityBoost;
+    
+    // Clamp velocity to prevent excessive speeds
+    velocity.current = Math.max(-maxVelocity, Math.min(maxVelocity, velocity.current));
+    
+    lastWheelTime.current = now;
   };
 
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-  };
-
-  // Duplicate projects for seamless loop
-  const duplicatedProjects = [...projects, ...projects, ...projects];
+  // Early return if no projects
+  if (filteredProjects.length === 0) {
+    return (
+      <div data-testid="projects-carousel">
+        <span className="sr-only">Projects carousel mounted (empty)</span>
+      </div>
+    );
+  }
 
   return (
     <div
-      ref={carouselRef}
-      data-carousel="true"
-      className="flex gap-4 md:gap-6 overflow-x-auto overflow-y-hidden scrollbar-hide h-full"
+      data-testid="projects-carousel"
+      className="overflow-x-hidden overflow-y-hidden"
       style={{
-        alignItems: "stretch",
-        cursor: isDragging ? "grabbing" : "grab",
-        userSelect: "none",
         width: "100%",
-        scrollbarWidth: "none",
-        msOverflowStyle: "none",
-        overflowX: "auto",
-        overflowY: "hidden",
-        display: "flex",
+        height: "100%",
+        minHeight: "400px",
       }}
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      onWheel={(e) => {
-        // Update direction based on wheel scroll
-        if (e.deltaX > 0) {
-          scrollDirection.current = 1; // Forward (right)
-        } else if (e.deltaX < 0) {
-          scrollDirection.current = -1; // Backward (left)
-        }
-      }}
+      onWheel={handleWheel}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {duplicatedProjects.map((project, index) => (
-        <Link
-          key={`${project.slug}-${index}`}
-          href={`/work/${project.slug}`}
-          className="flex-shrink-0 block"
-          style={{ 
-            flex: "0 0 auto",
-            height: "100%",
-            aspectRatio: "5/7"
-          }}
-        >
-          <div className="relative w-full h-full">
-            <Image
-              src={`/images/projects/${project.slug}/thumb-${project.slug}.jpg`}
-              alt={project.title}
-              fill
-              sizes="(max-width: 768px) calc(80vh * 5 / 7), calc(80vh * 5 / 7)"
-              className="object-cover"
-            />
-          </div>
-        </Link>
-      ))}
+      <span className="sr-only">Projects carousel mounted</span>
+      <div
+        ref={trackRef}
+        data-testid="projects-carousel-track"
+        className="flex gap-4 md:gap-6"
+        style={{
+          alignItems: "stretch",
+          display: "flex",
+          height: "100%",
+          minHeight: "400px",
+          willChange: "transform",
+        }}
+      >
+        {duplicatedProjects.map((project, index) => (
+          <Link
+            key={`${project.slug}-${index}`}
+            href={`/projects/${project.slug}`}
+            className="flex-shrink-0 block"
+            style={{ 
+              flex: "0 0 auto",
+              width: "200px",
+              height: "280px",
+            }}
+          >
+            <div className="relative w-full h-full">
+              <Image
+                src={project.thumbnail}
+                alt={project.title}
+                fill
+                sizes="(max-width: 768px) calc(80vh * 5 / 7), calc(80vh * 5 / 7)"
+                className="object-cover"
+              />
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

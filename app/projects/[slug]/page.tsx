@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { projects, getAdjacentProjects } from "@/data/projects";
-import ProjectCarousel from "@/components/ProjectCarousel";
+import ProjectNavRail from "@/components/ProjectNavRail";
 
 export async function generateStaticParams() {
   try {
@@ -199,9 +199,11 @@ export default async function Project({
           </div>
         </section>
 
-        {/* Project Carousel */}
+        {/* Project Nav Rail */}
         <section className="mb-8">
-          <ProjectCarousel projects={projects} currentSlug={slug} />
+          <div style={{ height: '80vh' }}>
+            <ProjectNavRail currentSlug={slug} />
+          </div>
         </section>
       </main>
     </div>
