@@ -3,18 +3,21 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  font-size: 12px;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-mono: var(--font-ibm-plex-mono);
-  --font-display: var(--font-clash-display);
+  --font-display: var(--font-bebas-neue);
 }
 
+/* All headlines use Bebas Neue */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-clash-display), sans-serif;
-  font-weight: 700;
+  font-family: var(--font-bebas-neue), sans-serif !important;
+  font-weight: 400;
+  letter-spacing: 0.02em;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,6 +31,11 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-ibm-plex-mono), monospace;
+}
+
+/* Ensure all body copy (paragraphs) default to 12px */
+p {
+  font-size: 12px;
 }
 
 .scrollbar-hide {

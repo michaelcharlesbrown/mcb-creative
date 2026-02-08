@@ -16,7 +16,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       href={`/projects/${project.slug}`}
       className="group block w-full"
     >
-      <div className="relative w-full aspect-[5/7] overflow-hidden mb-3 md:mb-4">
+      <div className="relative w-full aspect-[5/7] overflow-hidden rounded-[4px] mb-3 md:mb-4">
         {/* Image Container */}
         <div className="relative w-full h-full">
           <Image
@@ -24,7 +24,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             alt={project.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+            className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
           />
           {/* Dark Overlay on Hover */}
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />

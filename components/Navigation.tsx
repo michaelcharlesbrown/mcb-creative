@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Navigation() {
   return (
-    <nav className="bg-white text-black border-b border-black">
+    <nav className="bg-white text-black">
       <div className="max-w-[2400px] mx-auto px-8 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <Image

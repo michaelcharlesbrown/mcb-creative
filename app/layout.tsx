@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono } from "next/font/google";
-import localFont from "next/font/local";
+import { IBM_Plex_Mono, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -13,11 +12,10 @@ const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-ibm-plex-mono",
 });
 
-const clashDisplay = localFont({
-  src: "./fonts/ClashDisplay-Variable.woff2",
-  variable: "--font-clash-display",
-  weight: "100 900",
-  display: "swap",
+const bebasNeue = Bebas_Neue({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-bebas-neue",
 });
 
 export const metadata: Metadata = {
@@ -33,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${ibmPlexMono.variable} ${clashDisplay.variable} antialiased bg-white text-black`}
+        className={`${ibmPlexMono.variable} ${bebasNeue.variable} antialiased bg-white text-black`}
       >
         <TransitionProvider>
           <Navigation />

@@ -62,13 +62,13 @@ export default async function Project({
               <p className="text-gray-500 text-lg">Project content coming soon</p>
             </div>
           ) : (
-            <div className="flex flex-col gap-4 md:gap-6">
+            <div className="flex flex-col gap-[8px]">
               {imageRows.map((row, rowIndex) => {
                 if (row.layout === 'full') {
                   const item = row.items[0];
                   return (
                     <div key={rowIndex} className="w-full">
-                      <div className="relative w-full" style={{ aspectRatio: '1400/787.5' }}>
+                      <div className="relative w-full overflow-hidden rounded-[4px]" style={{ aspectRatio: '1400/787.5' }}>
                         {item.type === 'image' ? (
                           <Image
                             src={item.src}
@@ -92,9 +92,9 @@ export default async function Project({
                   );
                 } else {
                   return (
-                    <div key={rowIndex} className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full">
+                    <div key={rowIndex} className="grid grid-cols-1 md:grid-cols-2 gap-[8px] w-full">
                       {row.items.map((item, itemIndex) => (
-                        <div key={itemIndex} className="relative w-full aspect-square">
+                        <div key={itemIndex} className="relative w-full aspect-square overflow-hidden rounded-[4px]">
                           {item.type === 'image' ? (
                             <Image
                               src={item.src}
