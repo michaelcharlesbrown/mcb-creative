@@ -28,7 +28,7 @@ export const projects: Project[] = [
     year: '2024',
     client: 'BitTorrent Inc.',
     services: ['Brand Identity', 'Web Design', 'Art Direction'],
-    thumbnail: '/images/projects/bittorrent/thumb-bittorrent.jpg',
+    thumbnail: '/images/projects/bittorrent/thumb.jpg',
     media: [
       {
         layout: 'full',
@@ -83,7 +83,7 @@ export const projects: Project[] = [
     year: '2024',
     client: 'ShiftDrink',
     services: ['Brand Identity', 'UI/UX Design', 'Art Direction'],
-    thumbnail: '/images/projects/shiftdrink/thumb-shiftdrink.jpg',
+    thumbnail: '/images/projects/shiftdrink/thumb.jpg',
     media: [
       {
         layout: 'full',
@@ -156,7 +156,7 @@ export const projects: Project[] = [
     year: '2024',
     client: 'Alluvial',
     services: ['Brand Identity', 'Web Design', 'Motion Graphics'],
-    thumbnail: '/images/projects/alluvial/thumb-alluvial.jpg',
+    thumbnail: '/images/projects/alluvial/thumb.jpg',
     media: [],
   },
   {
@@ -166,7 +166,7 @@ export const projects: Project[] = [
     year: '2024',
     client: 'Avid Technology',
     services: ['Creative Direction', 'Visual Design', 'Brand Identity'],
-    thumbnail: '/images/projects/avid/thumb-avid.jpg',
+    thumbnail: '/images/projects/avid/thumb.jpg',
     media: [],
   },
   {
@@ -176,7 +176,7 @@ export const projects: Project[] = [
     year: '2024',
     client: 'Mad Denizen',
     services: ['Brand Identity', 'Visual Design', 'Art Direction'],
-    thumbnail: '/images/projects/mad-denizen/thumb-mad-denizen.jpg',
+    thumbnail: '/images/projects/mad-denizen/thumb.jpg',
     media: [],
   },
   {
@@ -186,7 +186,7 @@ export const projects: Project[] = [
     year: '2024',
     client: 'Rainberry',
     services: ['Brand Identity', 'Web Design', 'UI/UX Design'],
-    thumbnail: '/images/projects/rainberry/thumb-rainberry.jpg',
+    thumbnail: '/images/projects/rainberry/thumb.png',
     media: [],
   },
   {
@@ -196,7 +196,17 @@ export const projects: Project[] = [
     year: '2024',
     client: 'uTorrent',
     services: ['Brand Identity', 'UI/UX Design', 'Web Design'],
-    thumbnail: '/images/projects/utorrent/thumb-utorrent.jpg',
+    thumbnail: '/images/projects/utorrent/thumb.jpg',
+    media: [],
+  },
+  {
+    slug: 'red-moon-apostles',
+    title: 'Red Moon Apostles',
+    tagline: 'Brand identity and visual design.',
+    year: '2024',
+    client: 'Red Moon Apostles',
+    services: ['Brand Identity', 'Visual Design', 'Art Direction'],
+    thumbnail: '/images/projects/red-moon-apostles/thumb.jpg',
     media: [],
   },
 ];

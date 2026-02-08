@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { projects, getAdjacentProjects } from "@/data/projects";
 import ProjectNavRail from "@/components/ProjectNavRail";
+import { getProjectImages, groupProjectImages } from "@/lib/projectImages";
 
 export async function generateStaticParams() {
   try {
@@ -28,6 +29,12 @@ export default async function Project({
 
   const { previous, next } = getAdjacentProjects(slug);
 
+  // Get images using the naming convention (XX-full, XX-a, XX-b)
+  const projectImages = getProjectImages(slug);
+  const imageRows = projectImages.length > 0 
+    ? groupProjectImages(projectImages)
+    : project.media;
+
   return (
     <div className="min-h-screen bg-white text-black">
       <main className="max-w-[2400px] mx-auto px-8 py-16">
@@ -50,68 +57,18 @@ export default async function Project({
 
         {/* Project Media */}
         <section className="mb-16 md:mb-24">
-          {project.slug === 'bittorrent' ? (
-            <div className="flex flex-col gap-4 md:gap-6">
-              {/* First Full-Width Image */}
-              <div className="w-full">
-                <div className="relative w-full" style={{ aspectRatio: '1400/787.5' }}>
-                  <Image
-                    src="/images/projects/bittorrent/01-full.jpg"
-                    alt={`${project.title} - Hero`}
-                    fill
-                    sizes="100vw"
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Second Full-Width Image */}
-              <div className="w-full">
-                <div className="relative w-full" style={{ aspectRatio: '1400/787.5' }}>
-                  <Image
-                    src="/images/projects/bittorrent/02-full.png"
-                    alt={`${project.title} - Content`}
-                    fill
-                    sizes="100vw"
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Two Square Images Side-by-Side */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full">
-                <div className="relative w-full aspect-square">
-                  <Image
-                    src="/images/projects/bittorrent/03-two-a.png"
-                    alt={`${project.title} - Left`}
-                    fill
-                    sizes="50vw"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="relative w-full aspect-square">
-                  <Image
-                    src="/images/projects/bittorrent/04-two-b.png"
-                    alt={`${project.title} - Right`}
-                    fill
-                    sizes="50vw"
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-            </div>
-          ) : project.media.length === 0 ? (
+          {imageRows.length === 0 ? (
             <div className="w-full h-96 bg-gray-100 flex items-center justify-center rounded-lg">
               <p className="text-gray-500 text-lg">Project content coming soon</p>
             </div>
           ) : (
             <div className="flex flex-col gap-4 md:gap-6">
-              {project.media.map((row, rowIndex) => {
+              {imageRows.map((row, rowIndex) => {
                 if (row.layout === 'full') {
                   const item = row.items[0];
                   return (
                     <div key={rowIndex} className="w-full">
-                      <div className="relative w-full aspect-video">
+                      <div className="relative w-full" style={{ aspectRatio: '1400/787.5' }}>
                         {item.type === 'image' ? (
                           <Image
                             src={item.src}
