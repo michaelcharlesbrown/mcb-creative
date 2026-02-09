@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -20,16 +20,17 @@ interface ProjectsScrollProps {
 
 export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
   const isScrollingRef = useRef(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   // Duplicate projects 3 times for seamless infinite loop
   // [original] [duplicate] [duplicate] - we'll scroll in the middle section
-  const duplicatedProjects = [
-    ...projects,
-    ...projects,
-    ...projects,
-  ];
+  const duplicatedProjects = useMemo(
+    () => [...projects, ...projects, ...projects],
+    [projects]
+  );
 
   useEffect(() => {
     setIsMounted(true);
@@ -128,6 +129,40 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
     };
   }, [isMounted, projects.length]);
 
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const sections = sectionRefs.current.filter(Boolean) as HTMLElement[];
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let nextActive: number | null = null;
+        let highestRatio = 0;
+
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > highestRatio) {
+            highestRatio = entry.intersectionRatio;
+            const indexAttr = entry.target.getAttribute("data-index");
+            nextActive = indexAttr ? Number(indexAttr) : null;
+          }
+        });
+
+        if (nextActive !== null) {
+          setActiveIndex(nextActive);
+        }
+      },
+      {
+        root: containerRef.current,
+        threshold: [0.5, 0.65, 0.8],
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, [isMounted, duplicatedProjects.length]);
+
   return (
     <div
       ref={containerRef}
@@ -137,6 +172,10 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
         <section
           key={`${project.slug}-${index}`}
           className="h-screen w-full snap-start snap-always relative"
+          ref={(element) => {
+            sectionRefs.current[index] = element;
+          }}
+          data-index={index}
         >
           <Link
             href={`/projects/${project.slug}`}
@@ -157,7 +196,13 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
             </div>
 
             {/* Project Info Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 lg:p-16 text-white">
+            <div
+              className={`absolute bottom-0 left-0 right-0 p-8 md:p-12 lg:p-16 text-white transition-all duration-700 delay-150 ease-out ${
+                activeIndex === index
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-6 opacity-0"
+              }`}
+            >
               <div className="max-w-[2400px] mx-auto">
                 <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-2 md:mb-4">
                   {project.title}
@@ -175,14 +220,6 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
               </div>
             </div>
 
-            {/* Hover Indicator */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded border border-white/20">
-                <span className="text-white text-sm md:text-base font-medium uppercase tracking-wider">
-                  View Project
-                </span>
-              </div>
-            </div>
           </Link>
         </section>
       ))}
