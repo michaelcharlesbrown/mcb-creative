@@ -1,9 +1,16 @@
+import { projects } from "@/data/projects";
+import { getProjectHeroImage } from "@/lib/projectImages";
+import ProjectsScroll from "@/components/ProjectsScroll";
+
 export default function Projects() {
-  return (
-    <div className="min-h-screen bg-white text-black">
-      <main className="max-w-[2400px] mx-auto p-8">
-        <h1>Projects</h1>
-      </main>
-    </div>
-  );
+  // Get hero images for each project (server-side)
+  const projectsWithHeroes = projects.map((project) => {
+    const heroImage = getProjectHeroImage(project.slug);
+    return {
+      ...project,
+      heroImage: heroImage || project.thumbnail,
+    };
+  });
+
+  return <ProjectsScroll projects={projectsWithHeroes} />;
 }

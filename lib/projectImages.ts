@@ -185,3 +185,24 @@ export function groupProjectImages(images: ImageItem[]): Array<{
 
   return rows;
 }
+
+/**
+ * Gets the first hero image (01-full) for a project
+ * Falls back to thumbnail if no 01-full image exists
+ */
+export function getProjectHeroImage(slug: string): string | null {
+  const projectImages = getProjectImages(slug);
+  const firstImage = projectImages.find(img => img.number === 1 && img.type === 'full');
+  
+  if (firstImage) {
+    return firstImage.src;
+  }
+  
+  // Fallback: try to find any first full image
+  const anyFirstFull = projectImages.find(img => img.type === 'full');
+  if (anyFirstFull) {
+    return anyFirstFull.src;
+  }
+  
+  return null;
+}
