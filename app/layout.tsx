@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Bebas_Neue } from "next/font/google";
+import { IBM_Plex_Mono, Bebas_Neue, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { TransitionProvider } from "@/components/TransitionContext";
-import TransitionOverlay from "@/components/TransitionOverlay";
 
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600", "700"],
@@ -16,6 +14,12 @@ const bebasNeue = Bebas_Neue({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-bebas-neue",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
 });
 
 export const metadata: Metadata = {
@@ -31,14 +35,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${ibmPlexMono.variable} ${bebasNeue.variable} antialiased bg-white text-black`}
+        className={`${ibmPlexMono.variable} ${bebasNeue.variable} ${spaceGrotesk.variable} antialiased bg-white text-black`}
       >
-        <TransitionProvider>
-          <Navigation />
-          {children}
-          <Footer />
-          <TransitionOverlay />
-        </TransitionProvider>
+        <Navigation />
+        {children}
+        <Footer />
       </body>
     </html>
   );

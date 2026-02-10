@@ -16,7 +16,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       href={`/projects/${project.slug}`}
       className="group block w-full"
     >
-      <div className="relative w-full aspect-[5/7] overflow-hidden rounded-[4px] mb-3 md:mb-4">
+      <div className="relative w-full aspect-[5/7] overflow-hidden rounded-[10px] mb-3 md:mb-4">
         {/* Image Container */}
         <div className="relative w-full h-full">
           <Image
