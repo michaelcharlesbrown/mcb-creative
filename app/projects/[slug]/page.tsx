@@ -37,7 +37,7 @@ export default async function Project({
 
   return (
     <div className="min-h-screen bg-white text-black">
-      <main className="max-w-[var(--content-max-width)] mx-auto content-inset py-16">
+      <main className="max-w-[var(--content-max-width)] mx-auto content-inset pt-[var(--nav-height)] pb-16">
         {/* Project Header Section */}
         <section className="mb-12 md:mb-16">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">

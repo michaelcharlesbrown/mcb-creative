@@ -18,7 +18,7 @@ export default function Navigation() {
     <nav
       className={`nav fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${transparentBg} ${textColor}`}
     >
-      <div className="nav__inner max-w-[var(--content-max-width)] mx-auto content-inset py-4 flex justify-between items-center">
+      <div className="nav__inner max-w-[var(--content-max-width)] mx-auto content-inset pt-8 pb-4 flex justify-between items-center">
         <Link href="/" className="nav__logo flex items-center gap-4">
           <Image
             src="/images/mcb-creative-logo.svg"

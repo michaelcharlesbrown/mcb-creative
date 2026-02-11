@@ -6,7 +6,7 @@ export default function Info() {
 
   return (
     <div className="min-h-screen bg-white text-black">
-      <main className="max-w-[var(--content-max-width)] mx-auto content-inset py-16 md:py-24">
+      <main className="max-w-[var(--content-max-width)] mx-auto content-inset pt-[var(--nav-height)] pb-16 md:pb-24">
         {/* Page Title */}
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-12 md:mb-16">
           About

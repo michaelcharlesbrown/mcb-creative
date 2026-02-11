@@ -13,8 +13,8 @@ export default function Home() {
 
       <main className="max-w-[var(--content-max-width)] mx-auto">
         {/* Project grid */}
-        <section className="content-inset py-16 md:py-24">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <section className="content-inset pt-[max(var(--nav-height),4rem)] pb-16 md:pt-[max(var(--nav-height),6rem)] md:pb-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[8px]">
             {projects.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}

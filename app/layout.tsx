@@ -3,6 +3,7 @@ import { IBM_Plex_Mono, Bebas_Neue, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import CustomCursor from "@/components/CustomCursor";
 
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600", "700"],
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body
         className={`${ibmPlexMono.variable} ${bebasNeue.variable} ${spaceGrotesk.variable} antialiased bg-white text-black`}
       >
+        <CustomCursor />
         <Navigation />
         {children}
         <Footer />
