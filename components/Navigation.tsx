@@ -9,9 +9,9 @@ export default function Navigation() {
   const isProjectsPage = pathname === "/projects";
   const isHomePage = pathname === "/";
 
-  /* Match hero panel on home; transparent on projects */
-  const transparentBg = isProjectsPage ? "bg-transparent" : "bg-[#F8F8F8]";
-  const textColor = isProjectsPage ? "text-white" : "text-black";
+  /* Transparent on home (over hero) and projects (over dark); dark text on home, white on projects */
+  const transparentBg = isHomePage || isProjectsPage ? "bg-transparent" : "bg-white";
+  const textColor = isProjectsPage ? "text-white" : "text-[#1A1A1A]";
   const logoInvert = isProjectsPage ? "brightness-0 invert" : "";
 
   return (

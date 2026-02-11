@@ -8,7 +8,7 @@ export default function Info() {
     <div className="min-h-screen bg-white text-black">
       <main className="max-w-[var(--content-max-width)] mx-auto content-inset py-16 md:py-24">
         {/* Page Title */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-12 md:mb-16">
+        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-12 md:mb-16">
           About
         </h1>
 
@@ -20,10 +20,10 @@ export default function Info() {
           {/* Right Column - Name, Bio, Services */}
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 Michael Charles Brown
               </h2>
-              <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+              <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
                 Independent Creative specializing in visual design, motion graphics, and brand identity. 
                 With a focus on creating meaningful connections between brands and their audiences, 
                 I bring a unique perspective to every project.
@@ -31,8 +31,8 @@ export default function Info() {
             </div>
 
             <div>
-              <h3 className="text-lg md:text-xl font-bold mb-3">Services</h3>
-              <ul className="space-y-2 text-base md:text-lg text-gray-700">
+              <h3 className="text-xl md:text-2xl font-bold mb-3">Services</h3>
+              <ul className="space-y-2 text-lg md:text-xl text-gray-700">
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
                   <span>Brand Identity</span>
@@ -64,10 +64,10 @@ export default function Info() {
 
         {/* Contact Section */}
         <section className="mb-16 md:mb-24">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8">
             Say Hello
           </h2>
-          <div className="space-y-4 text-base md:text-lg">
+          <div className="space-y-4 text-lg md:text-xl">
             <div>
               <span className="text-gray-600">Location:</span>{" "}
               <span className="text-gray-900">San Francisco / Los Angeles</span>
@@ -106,14 +106,14 @@ export default function Info() {
 
         {/* Select Clients Section */}
         <section>
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8">
             Select Clients
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {clients.map((client) => (
               <div
                 key={client}
-                className="text-base md:text-lg text-gray-700"
+                className="text-lg md:text-xl text-gray-700"
               >
                 {client}
               </div>

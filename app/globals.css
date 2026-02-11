@@ -76,25 +76,27 @@ img {
 /* ========== Navigation (header) - fade + slide up on load ========== */
 .nav__logo {
   opacity: 0;
-  animation: hero-text-enter 0.6s ease-out 0.1s both;
+  animation: hero-text-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
   will-change: opacity, transform;
 }
 
 .nav__links {
   opacity: 0;
-  animation: hero-text-enter 0.6s ease-out 0.25s both;
+  animation: hero-text-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
   will-change: opacity, transform;
 }
 
 /* ========== Info section (below hero) - Figma spec ========== */
+/* Pull up to close gap from parallax offset */
 .about-blurb {
   position: relative;
   display: flex;
   align-items: flex-start;
-  min-height: 100vh;
+  min-height: 75vh;
+  margin-top: -150px;
   background: #131212;
   color: #fff;
-  padding: clamp(5rem, 10vh, 7rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+  padding: clamp(3.5rem, 6vh, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
   overflow: hidden;
 }
 
@@ -123,7 +125,7 @@ img {
   margin: 0;
   padding: 0;
   font-family: var(--font-space-grotesk), sans-serif;
-  font-size: clamp(2.5rem, 4.2vw, 5rem);
+  font-size: clamp(2.8rem, 4.8vw, 5.75rem);
   line-height: 1.21;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -161,9 +163,19 @@ img {
 }
 
 /* ========== Hero section ========== */
+/* Dark charcoal base; lighter gray then white slide down. Emulates MCB Creative reveal. */
 .hero {
-  --panel-height: 75.5vh;
-  --panel-duration: 1s;
+  --panel-duration: 0.8s;
+  --panel-ease: cubic-bezier(0.22, 1, 0.36, 1); /* ease-out-expo - polished studio feel */
+  --hero-charcoal: #252525;
+  --hero-gray: #454545;
+}
+
+.hero__overlay-block {
+  position: relative;
+  min-height: 66vh;
+  overflow: hidden;
+  background: var(--hero-charcoal);
 }
 
 .hero__panel {
@@ -171,12 +183,21 @@ img {
   top: 0;
   left: 0;
   right: 0;
-  height: var(--panel-height);
-  min-height: 280px;
-  background: #F8F8F8;
-  z-index: 1;
+  bottom: 0;
   transform: translateY(-120%);
-  animation: hero-panel-enter var(--panel-duration) ease-out forwards;
+  animation: hero-panel-enter var(--panel-duration) var(--panel-ease) forwards;
+}
+
+.hero__panel--gray {
+  background: var(--hero-gray);
+  z-index: 1;
+  animation-delay: 0s;
+}
+
+.hero__panel--white {
+  background: #F8F8F8;
+  z-index: 2;
+  animation-delay: 0.35s;
 }
 
 .hero__content {
@@ -184,9 +205,39 @@ img {
   top: 0;
   left: 0;
   right: 0;
-  height: var(--panel-height);
-  z-index: 2;
-  padding: clamp(1.5rem, 4vw, 3.5rem) 0;
+  bottom: 0;
+  z-index: 3;
+  padding: clamp(3rem, 8vh, 6rem) 0 clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.hero__video-block {
+  position: relative;
+  min-height: 88vh;
+  overflow: hidden;
+  background: var(--hero-charcoal);
+}
+
+.hero__video-wrap {
+  position: absolute;
+  inset: 0;
+  transform: translateY(100%);
+  opacity: 0;
+  transition:
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.6s ease-out 0.15s;
+}
+
+.hero__video-block--in-view .hero__video-wrap {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .hero__content-inner {
@@ -204,7 +255,7 @@ img {
   grid-column: 4 / 10;
   grid-row: 1;
   align-self: start;
-  padding-top: clamp(2rem, 8vh, 6rem);
+  padding-top: clamp(1.5rem, 6vh, 4.5rem);
   justify-self: start;
   max-width: 340px;
   margin: 0;
@@ -215,7 +266,7 @@ img {
   text-transform: uppercase;
   color: #000;
   opacity: 0;
-  animation: hero-text-enter 0.6s ease-out 0.2s both;
+  animation: hero-text-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.65s both;
   will-change: opacity, transform;
 }
 
@@ -226,7 +277,7 @@ img {
   justify-self: start;
   text-align: left;
   opacity: 0;
-  animation: hero-text-enter 0.6s ease-out 0.45s both;
+  animation: hero-text-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both;
   will-change: opacity, transform;
 }
 
@@ -259,12 +310,19 @@ img {
 @media (prefers-reduced-motion: reduce) {
   .nav__logo,
   .nav__links,
+  .hero__panel,
   .hero__tagline,
   .hero__headline-wrap {
     animation: none;
     opacity: 1;
     transform: none;
     will-change: auto;
+  }
+
+  .hero__video-wrap {
+    transform: translateY(0);
+    opacity: 1;
+    transition: none;
   }
 }
 
@@ -280,7 +338,7 @@ img {
 @keyframes hero-text-enter {
   from {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(32px);
   }
   to {
     opacity: 1;
