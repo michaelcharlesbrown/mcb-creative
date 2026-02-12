@@ -7,7 +7,7 @@ import AboutBlurb from "@/components/AboutBlurb";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="home min-h-screen bg-white text-black">
       <HeroSection />
       <AboutBlurb />
 

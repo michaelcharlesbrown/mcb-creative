@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 const CURSOR_SIZE = 14;
 const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const CURSOR_SCALE_HOVER = 2.5;
-const POSITION_SMOOTHING = 0.15; // Lower = smoother, higher = snappier
 const INTERACTIVE_SELECTORS =
   'a, button, input, select, textarea, [role="button"], [href], [onclick]';
 
@@ -24,9 +23,6 @@ export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const rafRef = useRef<number | null>(null);
-  const targetRef = useRef({ x: -100, y: -100 });
-
   useEffect(() => {
     if (prefersReducedMotion()) {
       setDisabled(true);
@@ -36,7 +32,7 @@ export default function CustomCursor() {
     document.body.style.cursor = "none";
 
     const handleMouseMove = (e: MouseEvent) => {
-      targetRef.current = { x: e.clientX, y: e.clientY };
+      setPosition({ x: e.clientX, y: e.clientY });
       if (!isVisible) setIsVisible(true);
 
       const elementUnder = document.elementFromPoint(e.clientX, e.clientY);
@@ -52,16 +48,6 @@ export default function CustomCursor() {
       setIsVisible(true);
     };
 
-    const animate = () => {
-      const { x: tx, y: ty } = targetRef.current;
-      setPosition((prev) => ({
-        x: prev.x + (tx - prev.x) * POSITION_SMOOTHING,
-        y: prev.y + (ty - prev.y) * POSITION_SMOOTHING,
-      }));
-      rafRef.current = requestAnimationFrame(animate);
-    };
-
-    rafRef.current = requestAnimationFrame(animate);
     window.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseleave", handleMouseLeave);
     document.documentElement.addEventListener("mouseenter", handleMouseEnter);
@@ -74,7 +60,6 @@ export default function CustomCursor() {
         "mouseenter",
         handleMouseEnter
       );
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [isVisible]);
 

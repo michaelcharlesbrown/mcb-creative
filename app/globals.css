@@ -15,6 +15,7 @@
   --content-inset: clamp(1.5rem, 2.7vw, 52px);
   --content-max-width: 2400px;
   --nav-height: 92px;
+  --hero-charcoal: #252525;
 }
 
 @theme inline {
@@ -25,7 +26,7 @@
   --font-clash: var(--font-clash-display);
 }
 
-/* All headlines use Bebas Neue; hero headline uses Clash Display */
+/* All headlines use Bebas Neue */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-bebas-neue), sans-serif !important;
   font-weight: 400;
@@ -33,7 +34,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-headline {
-  font-family: var(--font-clash-display) !important;
+  font-family: var(--font-bebas-neue), sans-serif !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -74,21 +75,19 @@ img {
   padding-right: var(--content-inset);
 }
 
-/* ========== Navigation (header) - fade + slide up on load ========== */
-.nav__logo {
+/* ========== Navigation (header) - slide down into place on load ========== */
+.nav {
   opacity: 0;
-  animation: hero-text-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
-  will-change: opacity, transform;
-}
-
-.nav__links {
-  opacity: 0;
-  animation: hero-text-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+  animation: nav-slide-down 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
   will-change: opacity, transform;
 }
 
 /* ========== Info section (below hero) - Figma spec ========== */
-/* Pull up to close gap from parallax offset */
+/* Pull up to close gap from parallax offset (legacy hero with video) */
+.home .about-blurb {
+  margin-top: 0;
+}
+
 .about-blurb {
   position: relative;
   display: flex;
@@ -125,10 +124,10 @@ img {
   grid-column: 1 / -1;
   margin: 0;
   padding: 0;
-  font-family: var(--font-space-grotesk), sans-serif;
+  font-family: var(--font-bebas-neue), sans-serif;
   font-size: clamp(2.8rem, 4.8vw, 5.75rem);
   line-height: 1.21;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: -0.01em;
   color: #C0C0C0;
   text-align: left;
@@ -164,7 +163,38 @@ img {
 }
 
 /* ========== Hero section ========== */
-/* Dark charcoal base; lighter gray then white slide down. Emulates MCB Creative reveal. */
+/* Minimal hero (homepage mockup): fills viewport, headline fills width edge-to-edge, anchored to bottom */
+.hero--minimal {
+  position: relative;
+  min-height: 100vh;
+  background: #ffffff;
+  padding: max(var(--nav-height), clamp(3rem, 8vh, 6rem)) 0 0;
+}
+
+.hero__minimal-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0 var(--content-inset);
+  text-align: left;
+  opacity: 0;
+  animation: hero-headline-slide-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+  will-change: opacity, transform;
+}
+
+.hero--minimal .hero__headline--minimal {
+  font-family: var(--font-bebas-neue), sans-serif !important;
+  font-size: max(3rem, calc(100vw / 5.5));
+  font-weight: 400;
+  line-height: 1.23;
+  letter-spacing: 0.02em;
+  color: #000;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Legacy hero (gray/white panels + video) - kept for reference */
 .hero {
   --panel-duration: 0.8s;
   --panel-ease: cubic-bezier(0.22, 1, 0.36, 1); /* ease-out-expo - polished studio feel */
@@ -283,7 +313,7 @@ img {
 }
 
 .hero__headline {
-  font-family: var(--font-clash-display) !important;
+  font-family: var(--font-bebas-neue), sans-serif !important;
   font-size: clamp(3rem, 10vw, 171px);
   font-weight: 700;
   line-height: 1.23;
@@ -309,8 +339,8 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nav__logo,
-  .nav__links,
+  .nav,
+  .hero__minimal-content,
   .hero__panel,
   .hero__tagline,
   .hero__headline-wrap {
@@ -340,6 +370,28 @@ img {
   from {
     opacity: 0;
     transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nav-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-headline-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
   }
   to {
     opacity: 1;
