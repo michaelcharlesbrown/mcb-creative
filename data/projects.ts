@@ -18,6 +18,14 @@ export interface Project {
   services: string[];
   thumbnail: string;
   media: MediaRow[];
+  /** Hero intro tagline (shorter than main tagline) - used in project hero */
+  heroTagline?: string;
+  /** Scope items for hero (e.g. "Visual Design System") */
+  scope?: string[];
+  /** Team credits for hero (e.g. "Creative Director - Name") */
+  team?: string[];
+  /** Description paragraphs for hero right column */
+  description?: string[];
 }
 
 export const projects: Project[] = [
@@ -25,6 +33,17 @@ export const projects: Project[] = [
     slug: 'bittorrent',
     title: 'BitTorrent',
     tagline: 'Brand refresh and website redesign for one of the original pioneers of the internet.',
+    heroTagline: 'Updating a classic brand for one of the original pioneers of the internet.',
+    scope: ['Visual Design System', 'Brand Guidelines', 'Website Redesign'],
+    team: [
+      'Creative Director - Michael Charles Brown',
+      'Visual Designer - Johann Banta',
+      'UX Designer - Briana Jackson',
+    ],
+    description: [
+      "As the world's largest distributed network BitTorrent is a force that powers massive data movement across the web, utilized by industry giants like Facebook, Twitter, and Wikipedia. However, with time, its brand identity had become fragmented and inconsistent.",
+      "Our mission was to give BitTorrent a fresh, cohesive visual language that reflects its groundbreaking role in the internet's evolution and bring clarity to the entire ecosystem viewed by millions of users worldwide.",
+    ],
     year: '2024',
     client: 'BitTorrent Inc.',
     services: ['Brand Identity', 'Web Design', 'Art Direction'],
@@ -80,6 +99,17 @@ export const projects: Project[] = [
     slug: 'shiftdrink',
     title: 'ShiftDrink',
     tagline: 'Brand identity and digital experience for a modern beverage company.',
+    heroTagline: 'Building a vibrant brand for the next generation of energy drinks.',
+    scope: ['Brand Identity System', 'Product Packaging', 'Digital Experience Design'],
+    team: [
+      'Creative Director - Michael Charles Brown',
+      'Brand Designer - Sarah Mitchell',
+      'Digital Designer - Alex Chen',
+    ],
+    description: [
+      "ShiftDrink entered a crowded energy drink market with a fresh perspective focused on natural ingredients and sustainable practices. They needed a brand identity that would resonate with health-conscious millennials and Gen Z consumers while standing out in a category dominated by established players.",
+      "We developed a bold, energetic visual system that balances vibrancy with sophistication. The identity celebrates movement and transformation through dynamic typography, bright color gradients, and lifestyle imagery that positions ShiftDrink as the go-to choice for active, mindful consumers.",
+    ],
     year: '2024',
     client: 'ShiftDrink',
     services: ['Brand Identity', 'UI/UX Design', 'Art Direction'],
@@ -153,6 +183,17 @@ export const projects: Project[] = [
     slug: 'alluvial',
     title: 'Alluvial',
     tagline: 'Visual identity and digital platform design for a forward-thinking technology company.',
+    heroTagline: 'Crafting a sophisticated brand for institutional blockchain infrastructure.',
+    scope: ['Visual Identity System', 'Product Interface Design', 'Motion Design'],
+    team: [
+      'Creative Director - Michael Charles Brown',
+      'UI Designer - Emma Rodriguez',
+      'Motion Designer - James Park',
+    ],
+    description: [
+      "Alluvial builds institutional-grade blockchain infrastructure for digital asset custody. Operating in a complex, trust-driven industry, they needed a visual identity that conveyed security, sophistication, and technical excellence while remaining approachable to enterprise clients.",
+      "Our solution balances technical precision with warmth through a refined color palette, clean typography, and subtle motion design. The identity system we created positions Alluvial as both deeply knowledgeable and forward-thinking, bridging traditional finance with the future of digital assets.",
+    ],
     year: '2024',
     client: 'Alluvial',
     services: ['Brand Identity', 'Web Design', 'Motion Graphics'],
@@ -163,6 +204,17 @@ export const projects: Project[] = [
     slug: 'avid',
     title: 'Avid',
     tagline: 'Creative direction and visual design for professional media solutions.',
+    heroTagline: 'Reimagining the visual language for industry-leading media creation tools.',
+    scope: ['Creative Direction', 'Marketing Campaign Design', 'Product UI Concepts'],
+    team: [
+      'Creative Director - Michael Charles Brown',
+      'Senior Designer - Marcus Williams',
+      'Art Director - Lisa Chen',
+    ],
+    description: [
+      "Avid Technology powers the media and entertainment industry with professional tools used by top studios worldwide. As they evolved their product suite, they needed creative direction that would modernize their visual presence while honoring their reputation for professional excellence.",
+      "We developed campaign concepts and visual directions that speak to both seasoned professionals and the next generation of content creators. Our work emphasizes creativity, precision, and the emotional power of storytelling, reinforcing Avid's position as the standard for media professionals.",
+    ],
     year: '2024',
     client: 'Avid Technology',
     services: ['Creative Direction', 'Visual Design', 'Brand Identity'],
@@ -173,6 +225,17 @@ export const projects: Project[] = [
     slug: 'mad-denizen',
     title: 'Mad Denizen',
     tagline: 'Brand identity and visual design for an independent music label.',
+    heroTagline: 'Creating a bold visual identity for underground electronic music culture.',
+    scope: ['Brand Identity', 'Album Artwork', 'Event Graphics'],
+    team: [
+      'Creative Director - Michael Charles Brown',
+      'Graphic Designer - Nina Torres',
+      'Illustrator - David Kim',
+    ],
+    description: [
+      "Mad Denizen is an independent electronic music label pushing boundaries in experimental sound. They needed a visual identity that captured the raw energy and avant-garde spirit of their roster while establishing recognition in the crowded independent music scene.",
+      "We created a flexible, bold identity system that adapts across album releases, event posters, and digital platforms. Drawing inspiration from underground club culture and glitch aesthetics, the visual language we developed is distinctive, energetic, and unmistakably Mad Denizen.",
+    ],
     year: '2024',
     client: 'Mad Denizen',
     services: ['Brand Identity', 'Visual Design', 'Art Direction'],
@@ -183,6 +246,17 @@ export const projects: Project[] = [
     slug: 'rainberry',
     title: 'Rainberry',
     tagline: 'Complete brand identity and digital experience design.',
+    heroTagline: 'Launching a consumer technology brand with clarity and confidence.',
+    scope: ['Brand Strategy', 'Visual Identity', 'Digital Product Design'],
+    team: [
+      'Creative Director - Michael Charles Brown',
+      'Brand Strategist - Amanda Foster',
+      'UX Designer - Tom Bennett',
+    ],
+    description: [
+      "Rainberry is building next-generation consumer technology products that prioritize privacy and user control. As a new entrant in a market dominated by tech giants, they needed a brand identity that would establish trust and convey technical sophistication while remaining approachable.",
+      "We crafted a modern, clean identity system that emphasizes transparency and user empowerment. The visual language combines soft, organic forms with precise technical details, creating a brand presence that feels both human and cutting-edge.",
+    ],
     year: '2024',
     client: 'Rainberry',
     services: ['Brand Identity', 'Web Design', 'UI/UX Design'],
@@ -193,6 +267,17 @@ export const projects: Project[] = [
     slug: 'utorrent',
     title: 'uTorrent',
     tagline: 'Brand refresh and user experience redesign for a leading file-sharing platform.',
+    heroTagline: 'Modernizing the interface for millions of users worldwide.',
+    scope: ['Product Redesign', 'Brand Refresh', 'User Experience Strategy'],
+    team: [
+      'Creative Director - Michael Charles Brown',
+      'Product Designer - Rachel Kim',
+      'UX Researcher - Chris Martinez',
+    ],
+    description: [
+      "uTorrent has been the lightweight torrent client of choice for over a decade, but its interface had become dated and cluttered. With millions of daily users across the globe, any redesign needed to balance modernization with the familiarity users depend on.",
+      "Our approach focused on streamlining the user experience while introducing a refined visual language. We simplified navigation, improved information hierarchy, and updated the brand with contemporary colors and typography that signal quality and reliability to both existing and new users.",
+    ],
     year: '2024',
     client: 'uTorrent',
     services: ['Brand Identity', 'UI/UX Design', 'Web Design'],
@@ -203,6 +288,17 @@ export const projects: Project[] = [
     slug: 'red-moon-apostles',
     title: 'Red Moon Apostles',
     tagline: 'Brand identity and visual design.',
+    heroTagline: 'Developing a distinctive visual identity for an emerging rock band.',
+    scope: ['Band Identity', 'Album Artwork', 'Merchandise Design'],
+    team: [
+      'Creative Director - Michael Charles Brown',
+      'Designer - Tyler James',
+      'Photographer - Morgan Reed',
+    ],
+    description: [
+      "Red Moon Apostles is a Los Angeles-based rock band blending psychedelic influences with modern alternative sound. As they prepared to release their debut album, they needed a cohesive visual identity that would capture their sonic aesthetic and establish their presence in the indie music scene.",
+      "We created a mysterious, evocative identity system drawing from lunar imagery, vintage rock poster art, and contemporary design sensibilities. The visual language spans album packaging, merchandise, social media, and live show materials, giving the band a distinct, memorable presence that resonates with their audience.",
+    ],
     year: '2024',
     client: 'Red Moon Apostles',
     services: ['Brand Identity', 'Visual Design', 'Art Direction'],

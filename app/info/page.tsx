@@ -23,7 +23,7 @@ export default function Info() {
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
                 Michael Charles Brown
               </h2>
-              <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
+              <p className="text-gray-700 leading-relaxed">
                 Independent Creative specializing in visual design, motion graphics, and brand identity. 
                 With a focus on creating meaningful connections between brands and their audiences, 
                 I bring a unique perspective to every project.
@@ -32,7 +32,7 @@ export default function Info() {
 
             <div>
               <h3 className="text-xl md:text-2xl font-bold mb-3">Services</h3>
-              <ul className="space-y-2 text-lg md:text-xl text-gray-700">
+              <ul className="space-y-2 text-gray-700">
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
                   <span>Brand Identity</span>
@@ -67,7 +67,7 @@ export default function Info() {
           <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8">
             Say Hello
           </h2>
-          <div className="space-y-4 text-lg md:text-xl">
+          <div className="space-y-4">
             <div>
               <span className="text-gray-600">Location:</span>{" "}
               <span className="text-gray-900">San Francisco / Los Angeles</span>
@@ -113,7 +113,7 @@ export default function Info() {
             {clients.map((client) => (
               <div
                 key={client}
-                className="text-lg md:text-xl text-gray-700"
+                className="text-gray-700"
               >
                 {client}
               </div>

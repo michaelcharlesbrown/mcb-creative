@@ -207,10 +207,10 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
                 <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-2 md:mb-4">
                   {project.title}
                 </h2>
-                <p className="text-base md:text-lg lg:text-xl xl:text-2xl mb-4 md:mb-6 text-white/90 max-w-2xl">
+                <p className="mb-4 md:mb-6 text-white/90 max-w-2xl">
                   {project.tagline}
                 </p>
-                <div className="flex flex-wrap gap-3 md:gap-4 text-sm md:text-base lg:text-lg text-white/80">
+                <div className="flex flex-wrap gap-3 md:gap-4 text-white/80">
                   <span>{project.client}</span>
                   <span>•</span>
                   <span>{project.year}</span>

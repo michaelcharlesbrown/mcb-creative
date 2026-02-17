@@ -128,7 +128,7 @@ export default function ProjectCarousel({ projects, currentSlug }: ProjectCarous
                 />
                 {isCurrent && (
                   <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                    <span className="text-white font-bold text-sm uppercase tracking-wider">
+                    <span className="text-white font-bold uppercase tracking-wider">
                       Current Project
                     </span>
                   </div>
@@ -136,7 +136,7 @@ export default function ProjectCarousel({ projects, currentSlug }: ProjectCarous
               </div>
               <div className="space-y-1">
                 <h3 className="text-lg font-bold">{project.title}</h3>
-                <p className="text-sm text-gray-600 line-clamp-2">{project.tagline}</p>
+                <p className="text-gray-600 line-clamp-2">{project.tagline}</p>
               </div>
             </Link>
           );

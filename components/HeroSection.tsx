@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import GrainCanvas from "@/components/GrainCanvas";
 
 const HERO_VIDEO_SRC = "/video/hero-placeholder-test.mp4";
 
@@ -22,12 +23,24 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <>
-      <section className="hero hero--minimal">
-        <div className="hero__minimal-content">
-          <h1 className="hero__headline hero__headline--minimal">MCB CREATIVE</h1>
+    <section className="hero relative">
+      {/* Block 1: Overlay over gray - no video */}
+      <div className="hero__overlay-block">
+        {/* Lighter gray layer animates down first, then white on top */}
+        <div className="hero__panel hero__panel--gray" />
+        <div className="hero__panel hero__panel--white" />
+        {/* Content layer - tagline + headline */}
+        <div className="hero__content">
+          <div className="hero__content-inner">
+            <p className="hero__tagline">
+              Independent design studio of Michael Charles Brown
+            </p>
+            <div className="hero__headline-wrap">
+              <h1 className="hero__headline hero-headline">MCB Creative</h1>
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
       <div
         ref={videoBlockRef}
         className={`hero__video-block ${videoInView ? "hero__video-block--in-view" : ""}`}
@@ -43,6 +56,7 @@ export default function HeroSection() {
           />
         </div>
       </div>
-    </>
+      <GrainCanvas opacity={0.08} blendMode="overlay" zIndex={10} />
+    </section>
   );
 }

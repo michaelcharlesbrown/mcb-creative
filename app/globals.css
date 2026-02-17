@@ -11,7 +11,7 @@
   --background: #ffffff;
   --foreground: #171717;
   --font-clash-display: "Clash Display", var(--font-bebas-neue), sans-serif;
-  font-size: 12px;
+  font-size: 12.5px;
   --content-inset: clamp(1.5rem, 2.7vw, 52px);
   --content-max-width: 2400px;
   --nav-height: 92px;
@@ -26,15 +26,44 @@
   --font-clash: var(--font-clash-display);
 }
 
-/* All headlines use Bebas Neue */
+/* All headlines use Inter Bold */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-bebas-neue), sans-serif !important;
-  font-weight: 400;
-  letter-spacing: 0.02em;
+  font-family: var(--font-inter), sans-serif !important;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
+/* Project hero body: IBM Plex Mono 12.5px, consistent line-height 1.3 */
+.project-hero__body {
+  font-family: var(--font-ibm-plex-mono), monospace !important;
+  font-size: 12.5px !important;
+  font-weight: 400;
+  line-height: 1.3 !important;
+  letter-spacing: -0.04em;
+}
+
+/* SCOPE/TEAM labels: same size as body, just bold and uppercase */
+.project-hero__label {
+  font-family: var(--font-ibm-plex-mono), monospace !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+/* Homepage hero headline: Inter Bold */
 .hero-headline {
-  font-family: var(--font-bebas-neue), sans-serif !important;
+  font-family: var(--font-inter), sans-serif !important;
+  font-weight: 700;
+}
+
+/* Project hero title: Inter Bold, large size */
+.project-hero h1 {
+  font-size: clamp(4rem, 10vw, 160px);
+  line-height: 1.21;
+  text-align: left;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -48,11 +77,31 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 12.5px;
 }
 
-/* Ensure all body copy (paragraphs) default to 12px */
-p {
-  font-size: 12px;
+/* INTRO SECTION - SPECIAL EXCEPTION - OVERRIDE EVERYTHING */
+.intro.intro.intro {
+  font-family: var(--font-inter), sans-serif !important;
+  font-size: clamp(3rem, 7.5vw, 17.5rem) !important;
+  line-height: 0.9 !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.04em !important;
+  color: #C0C0C0 !important;
+}
+
+/* All body copy: IBM Plex Mono 12.5px, line-height 1.3 (excludes h1–h6 and display headlines) */
+p, li, a, .nav__links, .nav__links a, .footer p {
+  font-family: var(--font-ibm-plex-mono), monospace !important;
+  font-size: 12.5px !important;
+  line-height: 1.3 !important;
+}
+
+/* Intro section exception */
+p.intro, .intro {
+  font-family: var(--font-inter), sans-serif !important;
+  font-size: clamp(3rem, 7.5vw, 17.5rem) !important;
+  line-height: 0.9 !important;
 }
 
 .scrollbar-hide {
@@ -91,8 +140,8 @@ img {
 .about-blurb {
   position: relative;
   display: flex;
-  align-items: flex-start;
-  min-height: 75vh;
+  align-items: center;
+  min-height: 100vh;
   margin-top: -150px;
   background: #131212;
   color: #fff;
@@ -124,11 +173,11 @@ img {
   grid-column: 1 / -1;
   margin: 0;
   padding: 0;
-  font-family: var(--font-bebas-neue), sans-serif;
-  font-size: clamp(2.8rem, 4.8vw, 5.75rem);
-  line-height: 1.21;
-  font-weight: 400;
-  letter-spacing: -0.01em;
+  font-family: var(--font-inter), sans-serif !important;
+  font-size: clamp(6rem, 15vw, 35rem) !important;
+  line-height: 0.95 !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.04em;
   color: #C0C0C0;
   text-align: left;
   width: 100%;
@@ -290,8 +339,8 @@ img {
   justify-self: start;
   max-width: 340px;
   margin: 0;
-  font-family: var(--font-mono), monospace;
-  font-size: 20px;
+  font-family: var(--font-ibm-plex-mono), monospace !important;
+  font-size: 12.5px !important;
   font-weight: 400;
   line-height: 1.3;
   text-transform: uppercase;
@@ -313,7 +362,7 @@ img {
 }
 
 .hero__headline {
-  font-family: var(--font-bebas-neue), sans-serif !important;
+  font-family: var(--font-inter), sans-serif !important;
   font-size: clamp(3rem, 10vw, 171px);
   font-weight: 700;
   line-height: 1.23;

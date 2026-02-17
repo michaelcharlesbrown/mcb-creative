@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Bebas_Neue, Space_Grotesk } from "next/font/google";
+import { IBM_Plex_Mono, Bebas_Neue, Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -23,6 +23,12 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
 });
 
+const inter = Inter({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
 export const metadata: Metadata = {
   title: "MCB Creative",
   description: "MCB Creative",
@@ -36,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${ibmPlexMono.variable} ${bebasNeue.variable} ${spaceGrotesk.variable} antialiased bg-white text-black`}
+        className={`${ibmPlexMono.variable} ${bebasNeue.variable} ${spaceGrotesk.variable} ${inter.variable} antialiased bg-white text-black`}
       >
         <CustomCursor />
         <Navigation />

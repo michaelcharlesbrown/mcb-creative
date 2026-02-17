@@ -39,12 +39,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </h3>
 
         {/* Tagline */}
-        <p className="text-sm md:text-base lg:text-lg text-gray-600 line-clamp-2">
+        <p className="text-gray-600 line-clamp-2">
           {project.tagline}
         </p>
 
         {/* Year and Service */}
-        <div className="flex items-center gap-2 text-xs md:text-sm text-gray-500">
+        <div className="flex items-center gap-2 text-gray-500">
           <span>{project.year}</span>
           <span>•</span>
           <span>{firstService}</span>

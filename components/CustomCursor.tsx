@@ -23,6 +23,7 @@ export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [disabled, setDisabled] = useState(false);
+
   useEffect(() => {
     if (prefersReducedMotion()) {
       setDisabled(true);
@@ -32,6 +33,7 @@ export default function CustomCursor() {
     document.body.style.cursor = "none";
 
     const handleMouseMove = (e: MouseEvent) => {
+      // Update position instantly - no smoothing/lag
       setPosition({ x: e.clientX, y: e.clientY });
       if (!isVisible) setIsVisible(true);
 
