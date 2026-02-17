@@ -5,15 +5,20 @@ import { projects, getAdjacentProjects } from "@/data/projects";
 import ProjectHero from "@/components/ProjectHero";
 import ProjectNavRail from "@/components/ProjectNavRail";
 import { getProjectImages, groupProjectImages } from "@/lib/projectImages";
+import { sanityClient } from "@/lib/sanity.client";
+import { projectBySlugQuery, projectSlugsQuery } from "@/lib/sanity.queries";
 
 export async function generateStaticParams() {
+  const localSlugs = projects.map((p) => p.slug);
+  let sanitySlugs: string[] = [];
   try {
-    return projects.map((project) => ({
-      slug: project.slug,
-    }));
-  } catch (error) {
-    return [];
+    const result = await sanityClient.fetch<{ slug: string }[]>(projectSlugsQuery);
+    sanitySlugs = (result ?? []).map((r) => r.slug).filter(Boolean);
+  } catch {
+    /* fallback to local only */
   }
+  const allSlugs = [...new Set([...localSlugs, ...sanitySlugs])];
+  return allSlugs.map((slug) => ({ slug }));
 }
 
 export default async function Project({
@@ -22,6 +27,44 @@ export default async function Project({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+
+  const sanityProject = await sanityClient
+    .fetch<{
+      title: string;
+      slug: string;
+      intro?: string;
+      coverImage?: { alt?: string; asset?: { url: string } };
+    }>(projectBySlugQuery, { slug })
+    .catch(() => null);
+
+  if (sanityProject) {
+    return (
+      <div className="min-h-screen bg-white text-black">
+        <main className="max-w-[var(--content-max-width)] mx-auto content-inset pt-[var(--nav-height)] pb-16">
+          <section className="mb-12 md:mb-16">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+              {sanityProject.title}
+            </h1>
+            {sanityProject.intro && (
+              <p className="mb-6 text-gray-700">{sanityProject.intro}</p>
+            )}
+            {sanityProject.coverImage?.asset?.url && (
+              <div className="relative w-full overflow-hidden rounded-[4px] mt-6 aspect-[1400/787.5]">
+                <Image
+                  src={sanityProject.coverImage.asset.url}
+                  alt={sanityProject.coverImage.alt ?? sanityProject.title}
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                />
+              </div>
+            )}
+          </section>
+        </main>
+      </div>
+    );
+  }
+
   const project = projects.find((p) => p.slug === slug);
 
   if (!project) {
@@ -32,7 +75,7 @@ export default async function Project({
 
   // Get images using the naming convention (XX-full, XX-a, XX-b)
   const projectImages = getProjectImages(slug);
-  const imageRows = projectImages.length > 0 
+  const imageRows = projectImages.length > 0
     ? groupProjectImages(projectImages)
     : project.media;
 

@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Bebas_Neue, Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import CustomCursor from "@/components/CustomCursor";
+import LayoutShell from "@/components/LayoutShell";
 
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600", "700"],
@@ -44,10 +42,7 @@ export default function RootLayout({
       <body
         className={`${ibmPlexMono.variable} ${bebasNeue.variable} ${spaceGrotesk.variable} ${inter.variable} antialiased bg-white text-black`}
       >
-        <CustomCursor />
-        <Navigation />
-        {children}
-        <Footer />
+        <LayoutShell>{children}</LayoutShell>
       </body>
     </html>
   );
