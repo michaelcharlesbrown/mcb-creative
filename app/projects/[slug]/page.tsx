@@ -7,6 +7,8 @@ import ProjectNavRail from "@/components/ProjectNavRail";
 import { getProjectImages, groupProjectImages } from "@/lib/projectImages";
 import { sanityClient } from "@/lib/sanity.client";
 import { projectBySlugQuery, projectSlugsQuery } from "@/lib/sanity.queries";
+import BlockRenderer, { type PageContentBlock } from "@/components/blocks/BlockRenderer";
+import MediaBlock from "@/components/blocks/MediaBlock";
 
 export async function generateStaticParams() {
   const localSlugs = projects.map((p) => p.slug);
@@ -21,6 +23,13 @@ export async function generateStaticParams() {
   return allSlugs.map((slug) => ({ slug }));
 }
 
+export type SanityProject = {
+  title: string;
+  slug: string;
+  coverImage?: { alt?: string; asset?: { url: string } };
+  pageContent?: PageContentBlock[];
+};
+
 export default async function Project({
   params,
 }: {
@@ -29,37 +38,47 @@ export default async function Project({
   const { slug } = await params;
 
   const sanityProject = await sanityClient
-    .fetch<{
-      title: string;
-      slug: string;
-      intro?: string;
-      coverImage?: { alt?: string; asset?: { url: string } };
-    }>(projectBySlugQuery, { slug })
+    .fetch<SanityProject>(projectBySlugQuery, { slug })
     .catch(() => null);
 
   if (sanityProject) {
+    const pageContent = sanityProject.pageContent ?? [];
+    const hasBlocks = pageContent.length > 0;
+
     return (
       <div className="min-h-screen bg-white text-black">
         <main className="max-w-[var(--content-max-width)] mx-auto content-inset pt-[var(--nav-height)] pb-16">
-          <section className="mb-12 md:mb-16">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-              {sanityProject.title}
-            </h1>
-            {sanityProject.intro && (
-              <p className="mb-6 text-gray-700">{sanityProject.intro}</p>
-            )}
-            {sanityProject.coverImage?.asset?.url && (
-              <div className="relative w-full overflow-hidden rounded-[4px] mt-6 aspect-[1400/787.5]">
-                <Image
-                  src={sanityProject.coverImage.asset.url}
-                  alt={sanityProject.coverImage.alt ?? sanityProject.title}
-                  fill
-                  sizes="100vw"
-                  className="object-cover"
-                />
-              </div>
-            )}
-          </section>
+          {!hasBlocks && (
+            <section className="mb-12 md:mb-16">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+                {sanityProject.title}
+              </h1>
+            </section>
+          )}
+          {sanityProject.coverImage?.asset?.url && !hasBlocks && (
+            <div className="mb-16 md:mb-24">
+              <MediaBlock
+                image={sanityProject.coverImage}
+                altFallback={sanityProject.title}
+              />
+            </div>
+          )}
+          {sanityProject.coverImage?.asset?.url && hasBlocks && (
+            <section className="mb-16 md:mb-24">
+              <MediaBlock
+                image={sanityProject.coverImage}
+                altFallback={sanityProject.title}
+              />
+            </section>
+          )}
+          {pageContent.map((block, index) => (
+            <BlockRenderer
+              key={index}
+              block={block}
+              index={index}
+              titleFallback={sanityProject.title}
+            />
+          ))}
         </main>
       </div>
     );

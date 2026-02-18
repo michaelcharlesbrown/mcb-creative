@@ -1,0 +1,41 @@
+import { defineType, defineField } from 'sanity'
+
+export default defineType({
+  name: 'introBlock',
+  title: 'Intro Block',
+  type: 'object',
+  fields: [
+    defineField({ name: 'headline', title: 'Headline', type: 'string' }),
+    defineField({ name: 'subheadline', title: 'Subheadline', type: 'string' }),
+    defineField({
+      name: 'scope',
+      title: 'Scope',
+      type: 'array',
+      of: [{ type: 'string' }],
+    }),
+    defineField({
+      name: 'team',
+      title: 'Team',
+      type: 'array',
+      of: [{ type: 'string' }],
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'array',
+      of: [{ type: 'block' }],
+    }),
+    defineField({
+      name: 'heroImage',
+      title: 'Hero Image',
+      type: 'image',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'heroVideoFile',
+      title: 'Hero Video',
+      type: 'file',
+      options: { accept: 'video/*' },
+    }),
+  ],
+})

@@ -19,12 +19,6 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'intro',
-      title: 'Intro',
-      type: 'text',
-      description: '~1-2 sentences',
-    }),
-    defineField({
       name: 'coverImage',
       title: 'Cover Image',
       type: 'image',
@@ -34,18 +28,14 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'gallery',
-      title: 'Gallery',
+      name: 'pageContent',
+      title: 'Page Content',
       type: 'array',
       of: [
-        defineArrayMember({
-          type: 'image',
-          options: { hotspot: true },
-          fields: [
-            defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
-            defineField({ name: 'caption', title: 'Caption', type: 'string' }),
-          ],
-        }),
+        defineArrayMember({ type: 'introBlock' }),
+        defineArrayMember({ type: 'fullWidthBlock' }),
+        defineArrayMember({ type: 'twoColumnBlock' }),
+        defineArrayMember({ type: 'textMediaBlock' }),
       ],
     }),
   ],
