@@ -38,4 +38,11 @@ export default defineType({
       options: { accept: 'video/*' },
     }),
   ],
+  preview: {
+    select: { headline: 'headline' },
+    prepare: ({ headline }) => ({
+      title: 'Intro',
+      subtitle: headline,
+    }),
+  },
 })

@@ -16,6 +16,20 @@ export default defineType({
         ],
       },
     }),
+    defineField({
+      name: 'textAlignment',
+      title: 'Text Alignment',
+      type: 'string',
+      initialValue: 'top',
+      options: {
+        layout: 'radio',
+        list: [
+          { title: 'Top', value: 'top' },
+          { title: 'Middle', value: 'middle' },
+          { title: 'Bottom', value: 'bottom' },
+        ],
+      },
+    }),
     defineField({ name: 'heading', title: 'Heading', type: 'string' }),
     defineField({
       name: 'body',
@@ -36,4 +50,12 @@ export default defineType({
       options: { accept: 'video/*' },
     }),
   ],
+  preview: {
+    select: { media: 'image', heading: 'heading' },
+    prepare: ({ media, heading }) => ({
+      title: 'Text + Media',
+      subtitle: heading,
+      media,
+    }),
+  },
 })

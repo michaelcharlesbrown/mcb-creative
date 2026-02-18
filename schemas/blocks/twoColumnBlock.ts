@@ -30,4 +30,8 @@ export default defineType({
       options: { accept: 'video/*' },
     }),
   ],
+  preview: {
+    select: { media: 'imageLeft' },
+    prepare: ({ media }) => ({ title: 'Two Column', media }),
+  },
 })

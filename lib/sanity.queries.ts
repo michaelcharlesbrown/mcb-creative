@@ -16,7 +16,7 @@ export const projectBySlugQuery = `*[_type=="project" && slug.current==$slug][0]
     "videoFileLeftUrl": videoFileLeft.asset->url,
     imageRight{ alt, asset->{url} },
     "videoFileRightUrl": videoFileRight.asset->url,
-    layout, heading, body
+    layout, textAlignment, heading, body
   }
 }`;
 

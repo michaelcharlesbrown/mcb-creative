@@ -3,6 +3,7 @@ import MediaBlock from "./MediaBlock";
 
 interface TextMediaBlockProps {
   layout?: "left" | "right";
+  textAlignment?: "top" | "middle" | "bottom";
   heading?: string;
   body?: unknown;
   image?: { alt?: string; asset?: { url: string } };
@@ -12,6 +13,7 @@ interface TextMediaBlockProps {
 
 export default function TextMediaBlock({
   layout = "left",
+  textAlignment = "top",
   heading,
   body,
   image,
@@ -22,13 +24,22 @@ export default function TextMediaBlock({
   const hasMedia = image?.asset?.url || videoFileUrl;
   if (!hasText && !hasMedia) return null;
 
+  const justifyClass =
+    textAlignment === "middle"
+      ? "justify-center"
+      : textAlignment === "bottom"
+        ? "justify-end"
+        : "justify-start";
+
   const textContent = (
-    <div className="space-y-4">
+    <div
+      className={`flex flex-col ${justifyClass} gap-6 py-20 max-w-[83.33%] text-left h-full min-h-0`}
+    >
       {heading && (
-        <h2 className="text-2xl md:text-3xl font-bold mb-4">{heading}</h2>
+        <h2 className="text-4xl font-bold">{heading}</h2>
       )}
       {Array.isArray(body) && body.length > 0 ? (
-        <div className="project-hero__body">
+        <div className="project-hero__body flex flex-col gap-4">
           <PortableText value={body} />
         </div>
       ) : null}
@@ -48,8 +59,7 @@ export default function TextMediaBlock({
   const isTextLeft = layout === "left";
 
   return (
-    <section className="mb-16 md:mb-24">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-[8px] items-stretch">
         {isTextLeft ? (
           <>
             <div>{textContent}</div>
@@ -62,6 +72,5 @@ export default function TextMediaBlock({
           </>
         )}
       </div>
-    </section>
   );
 }

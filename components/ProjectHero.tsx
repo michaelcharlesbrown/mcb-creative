@@ -21,7 +21,7 @@ export default function ProjectHero({ project }: ProjectHeroProps) {
     <section className="project-hero pt-24 md:pt-32 lg:pt-40 mb-16 md:mb-24">
       {/* Title: full width, above the two-column section */}
       <div className="mb-20 md:mb-24">
-        <h1>{project.title}</h1>
+        <h1 className="text-5xl font-bold">{project.title}</h1>
       </div>
 
       {/* Two-column grid: SCOPE/TEAM left (cols 1-6) | Description right (cols 7-12) */}

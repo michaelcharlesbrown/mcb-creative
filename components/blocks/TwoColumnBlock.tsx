@@ -20,8 +20,7 @@ export default function TwoColumnBlock({
   if (!hasLeft && !hasRight) return null;
 
   return (
-    <section className="mb-16 md:mb-24">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-[8px] w-full">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-[8px] w-full">
         {(imageLeft?.asset?.url || videoFileLeftUrl) && (
           <MediaBlock
             image={imageLeft}
@@ -41,6 +40,5 @@ export default function TwoColumnBlock({
           />
         )}
       </div>
-    </section>
   );
 }

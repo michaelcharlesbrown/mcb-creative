@@ -26,27 +26,24 @@ export default function IntroBlock({
   const hasDescription = Array.isArray(description) && description.length > 0;
   const hasMedia = heroImage?.asset?.url || heroVideoFileUrl;
 
-  return (
-    <section className="project-hero pt-24 md:pt-32 lg:pt-40 mb-16 md:mb-24">
-      <div className="mb-20 md:mb-24">
-        {headline && (
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-            {headline}
-          </h1>
-        )}
-        {subheadline && (
-          <p className="text-xl text-gray-700 mb-6">{subheadline}</p>
-        )}
-      </div>
+  const hasTwoColumn = hasScopeOrTeam || hasDescription || subheadline;
 
-      {(hasScopeOrTeam || hasDescription) && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-x-24 gap-y-10 items-start">
+  return (
+    <div className="project-hero flex flex-col">
+      {headline && (
+        <h1 className="pt-[240px] text-7xl font-bold text-left">
+          {headline}
+        </h1>
+      )}
+
+      {hasTwoColumn && (
+        <div className="mt-20 max-w-[83.33%] self-start grid grid-cols-1 lg:grid-cols-2 gap-x-12 lg:gap-x-16 items-start justify-items-start text-left">
           {hasScopeOrTeam && (
-            <div className="lg:col-span-6">
+            <div className="w-full flex flex-col gap-4 justify-self-start">
               {scope && scope.length > 0 && (
-                <div className="mb-10">
-                  <h3 className="project-hero__label mb-4">SCOPE</h3>
-                  <ul className="space-y-2 list-none pl-0 m-0">
+                <div className="flex flex-col gap-2">
+                  <h3 className="project-hero__label">SCOPE</h3>
+                  <ul className="flex flex-col gap-2 list-none pl-0 m-0">
                     {scope.map((item, i) => (
                       <li key={i} className="project-hero__body">
                         {item}
@@ -56,9 +53,9 @@ export default function IntroBlock({
                 </div>
               )}
               {team && team.length > 0 && (
-                <div>
-                  <h3 className="project-hero__label mb-4">TEAM</h3>
-                  <ul className="space-y-2 list-none pl-0 m-0">
+                <div className="flex flex-col gap-2">
+                  <h3 className="project-hero__label">TEAM</h3>
+                  <ul className="flex flex-col gap-2 list-none pl-0 m-0">
                     {team.map((item, i) => (
                       <li key={i} className="project-hero__body">
                         {item}
@@ -70,25 +67,32 @@ export default function IntroBlock({
             </div>
           )}
 
-          {hasDescription && description && (
-            <div className="lg:col-span-6 lg:col-start-7">
-              <div className="project-hero__body space-y-4">
-                <PortableText value={Array.isArray(description) ? description : []} />
-              </div>
+          {(subheadline || hasDescription) && (
+            <div
+              className={`w-full flex flex-col gap-4 justify-self-start ${!hasScopeOrTeam ? "lg:col-span-2" : ""}`}
+            >
+              {subheadline && (
+                <p className="text-lg text-gray-700 uppercase">{subheadline}</p>
+              )}
+              {hasDescription && description && (
+                <div className="project-hero__body flex flex-col gap-4">
+                  <PortableText value={Array.isArray(description) ? description : []} />
+                </div>
+              )}
             </div>
           )}
         </div>
       )}
 
+      {hasTwoColumn && <div className="pb-[180px]" />}
+
       {hasMedia && (
-        <div className="mt-12">
-          <MediaBlock
-            image={heroImage}
-            videoUrl={heroVideoFileUrl}
-            altFallback={headline ?? titleFallback}
-          />
-        </div>
+        <MediaBlock
+          image={heroImage}
+          videoUrl={heroVideoFileUrl}
+          altFallback={headline ?? titleFallback}
+        />
       )}
-    </section>
+    </div>
   );
 }

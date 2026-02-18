@@ -15,14 +15,10 @@ export default function FullWidthBlock({
   if (!hasMedia) return null;
 
   return (
-    <section className="mb-16 md:mb-24">
-      <div className="flex flex-col gap-[8px]">
-        <MediaBlock
-          image={image}
-          videoUrl={videoFileUrl}
-          altFallback={titleFallback}
-        />
-      </div>
-    </section>
+    <MediaBlock
+      image={image}
+      videoUrl={videoFileUrl}
+      altFallback={titleFallback}
+    />
   );
 }

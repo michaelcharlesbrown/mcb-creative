@@ -48,37 +48,29 @@ export default async function Project({
     return (
       <div className="min-h-screen bg-white text-black">
         <main className="max-w-[var(--content-max-width)] mx-auto content-inset pt-[var(--nav-height)] pb-16">
-          {!hasBlocks && (
-            <section className="mb-12 md:mb-16">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-                {sanityProject.title}
-              </h1>
-            </section>
-          )}
-          {sanityProject.coverImage?.asset?.url && !hasBlocks && (
-            <div className="mb-16 md:mb-24">
+          <div className="flex flex-col gap-[8px]">
+            {!hasBlocks && (
+              <section>
+                <h1 className="text-5xl font-bold">
+                  {sanityProject.title}
+                </h1>
+              </section>
+            )}
+            {sanityProject.coverImage?.asset?.url && (
               <MediaBlock
                 image={sanityProject.coverImage}
                 altFallback={sanityProject.title}
               />
-            </div>
-          )}
-          {sanityProject.coverImage?.asset?.url && hasBlocks && (
-            <section className="mb-16 md:mb-24">
-              <MediaBlock
-                image={sanityProject.coverImage}
-                altFallback={sanityProject.title}
+            )}
+            {pageContent.map((block, index) => (
+              <BlockRenderer
+                key={index}
+                block={block}
+                index={index}
+                titleFallback={sanityProject.title}
               />
-            </section>
-          )}
-          {pageContent.map((block, index) => (
-            <BlockRenderer
-              key={index}
-              block={block}
-              index={index}
-              titleFallback={sanityProject.title}
-            />
-          ))}
+            ))}
+          </div>
         </main>
       </div>
     );
@@ -111,7 +103,7 @@ export default async function Project({
           <ProjectHero project={project} />
         ) : (
           <section className="mb-12 md:mb-16">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+            <h1 className="text-5xl font-bold mb-4">
               {project.title}
             </h1>
             <p className="mb-6 text-gray-700">

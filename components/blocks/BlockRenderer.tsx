@@ -19,6 +19,7 @@ export interface PageContentBlock {
   imageRight?: { alt?: string; asset?: { url: string } };
   videoFileRightUrl?: string;
   layout?: "left" | "right";
+  textAlignment?: "top" | "middle" | "bottom";
   heading?: string;
   body?: unknown;
 }
@@ -74,6 +75,7 @@ export default function BlockRenderer({
         <TextMediaBlock
           key={index}
           layout={block.layout}
+          textAlignment={block.textAlignment}
           heading={block.heading}
           body={block.body}
           image={block.image}

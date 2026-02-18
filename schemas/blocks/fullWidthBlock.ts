@@ -18,4 +18,8 @@ export default defineType({
       options: { accept: 'video/*' },
     }),
   ],
+  preview: {
+    select: { media: 'image' },
+    prepare: ({ media }) => ({ title: 'Full Width', media }),
+  },
 })
