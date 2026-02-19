@@ -43,7 +43,7 @@ export default function ProjectHero({ project }: ProjectHeroProps) {
                 </div>
               )}
               {project.team && project.team.length > 0 && (
-                <div>
+                <div className="mt-12">
                   <h3 className="project-hero__label mb-4">TEAM</h3>
                   <ul className="space-y-2 list-none pl-0 m-0">
                     {project.team.map((item, i) => (

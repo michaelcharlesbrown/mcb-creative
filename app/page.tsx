@@ -15,7 +15,7 @@ export default function Home() {
         {/* Project grid */}
         <section className="content-inset pt-[max(var(--nav-height),4rem)] pb-16 md:pt-[max(var(--nav-height),6rem)] md:pb-24">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[8px]">
-            {projects.map((project) => (
+            {projects.slice(0, 6).map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}
           </div>

@@ -1,16 +1,8 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "Clash Display";
-  src: url("/fonts/ClashDisplay-Variable.woff2") format("woff2");
-  font-weight: 200 700;
-  font-display: swap;
-}
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-clash-display: "Clash Display", var(--font-bebas-neue), sans-serif;
   font-size: 12.5px;
   --content-inset: clamp(1.5rem, 2.7vw, 52px);
   --content-max-width: 2400px;
@@ -23,19 +15,19 @@
   --color-foreground: var(--foreground);
   --font-mono: var(--font-ibm-plex-mono);
   --font-display: var(--font-bebas-neue);
-  --font-clash: var(--font-clash-display);
 }
 
-/* All headlines use Inter Bold */
+/* Global typography: two fonts only */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-inter), sans-serif !important;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: var(--font-bebas-neue);
+}
+
+body, p, a, span, li, input, button {
+  font-family: var(--font-ibm-plex-mono);
 }
 
 /* Project hero body */
 .project-hero__body {
-  font-family: var(--font-ibm-plex-mono), monospace !important;
   font-size: 12.5px;
   font-weight: 400;
   line-height: 1.3 !important;
@@ -44,19 +36,12 @@ h1, h2, h3, h4, h5, h6 {
 
 /* SCOPE/TEAM labels: same size as body, bold and uppercase */
 .project-hero__label {
-  font-family: var(--font-ibm-plex-mono), monospace !important;
   font-size: 12.5px;
   font-weight: 700 !important;
   line-height: 1.3 !important;
   letter-spacing: -0.04em;
   text-transform: uppercase;
   text-align: left;
-}
-
-/* Homepage hero headline: Inter Bold */
-.hero-headline {
-  font-family: var(--font-inter), sans-serif !important;
-  font-weight: 700;
 }
 
 /* Project hero / intro headline */
@@ -80,24 +65,23 @@ body {
 
 /* INTRO SECTION - SPECIAL EXCEPTION - OVERRIDE EVERYTHING */
 .intro.intro.intro {
-  font-family: var(--font-inter), sans-serif !important;
+  font-family: var(--font-bebas-neue) !important;
   font-size: clamp(3rem, 7.5vw, 17.5rem) !important;
   line-height: 0.9 !important;
-  font-weight: 700 !important;
+  font-weight: 400 !important;
   letter-spacing: -0.04em !important;
   color: #C0C0C0 !important;
 }
 
-/* All body copy: IBM Plex Mono 12.5px, line-height 1.3 (excludes h1–h6 and display headlines) */
+/* Body copy sizing */
 p, li, a, .nav__links, .nav__links a, .footer p {
-  font-family: var(--font-ibm-plex-mono), monospace !important;
   font-size: 12.5px !important;
   line-height: 1.3 !important;
 }
 
 /* Intro section exception */
 p.intro, .intro {
-  font-family: var(--font-inter), sans-serif !important;
+  font-family: var(--font-bebas-neue) !important;
   font-size: clamp(3rem, 7.5vw, 17.5rem) !important;
   line-height: 0.9 !important;
 }
@@ -125,7 +109,7 @@ img {
 /* ========== Navigation (header) - slide down into place on load ========== */
 .nav {
   opacity: 0;
-  animation: nav-slide-down 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+  animation: nav-slide-down 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
   will-change: opacity, transform;
 }
 
@@ -171,10 +155,10 @@ img {
   grid-column: 1 / -1;
   margin: 0;
   padding: 0;
-  font-family: var(--font-inter), sans-serif !important;
-  font-size: clamp(6rem, 15vw, 35rem) !important;
+  font-family: var(--font-bebas-neue) !important;
+  font-size: var(--about-blurb-font-size, clamp(6rem, 15vw, 35rem)) !important;
   line-height: 0.95 !important;
-  font-weight: 700 !important;
+  font-weight: 400 !important;
   letter-spacing: -0.04em;
   color: #C0C0C0;
   text-align: left;
@@ -231,7 +215,7 @@ img {
 }
 
 .hero--minimal .hero__headline--minimal {
-  font-family: var(--font-bebas-neue), sans-serif !important;
+  font-family: var(--font-bebas-neue) !important;
   font-size: max(3rem, calc(100vw / 5.5));
   font-weight: 400;
   line-height: 0.95;
@@ -241,19 +225,14 @@ img {
   white-space: nowrap;
 }
 
-/* Legacy hero (gray/white panels + video) - kept for reference */
+/* Hero: pinned 100vh + peel-away overlay (GSAP ScrollTrigger) */
 .hero {
-  --panel-duration: 0.8s;
-  --panel-ease: cubic-bezier(0.22, 1, 0.36, 1); /* ease-out-expo - polished studio feel */
   --hero-charcoal: #252525;
   --hero-gray: #454545;
 }
 
-.hero__overlay-block {
-  position: relative;
-  min-height: 66vh;
-  overflow: hidden;
-  background: var(--hero-charcoal);
+.hero__overlay {
+  /* Full viewport overlay - peels via GSAP yPercent */
 }
 
 .hero__panel {
@@ -262,20 +241,16 @@ img {
   left: 0;
   right: 0;
   bottom: 0;
-  transform: translateY(-120%);
-  animation: hero-panel-enter var(--panel-duration) var(--panel-ease) forwards;
 }
 
 .hero__panel--gray {
   background: var(--hero-gray);
   z-index: 1;
-  animation-delay: 0s;
 }
 
 .hero__panel--white {
   background: #F8F8F8;
   z-index: 2;
-  animation-delay: 0.35s;
 }
 
 .hero__content {
@@ -286,28 +261,6 @@ img {
   bottom: 0;
   z-index: 3;
   padding: max(var(--nav-height), clamp(3rem, 8vh, 6rem)) 0 clamp(1.5rem, 4vw, 3.5rem);
-}
-
-.hero__video-block {
-  position: relative;
-  min-height: 88vh;
-  overflow: hidden;
-  background: var(--hero-charcoal);
-}
-
-.hero__video-wrap {
-  position: absolute;
-  inset: 0;
-  transform: translateY(100%);
-  opacity: 0;
-  transition:
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.6s ease-out 0.15s;
-}
-
-.hero__video-block--in-view .hero__video-wrap {
-  transform: translateY(0);
-  opacity: 1;
 }
 
 .hero__video {
@@ -337,14 +290,13 @@ img {
   justify-self: start;
   max-width: 340px;
   margin: 0;
-  font-family: var(--font-ibm-plex-mono), monospace !important;
   font-size: 12.5px !important;
   font-weight: 400;
   line-height: 1.3;
   text-transform: uppercase;
   color: #000;
   opacity: 0;
-  animation: hero-text-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.65s both;
+  animation: hero-text-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
   will-change: opacity, transform;
 }
 
@@ -355,14 +307,14 @@ img {
   justify-self: start;
   text-align: left;
   opacity: 0;
-  animation: hero-text-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both;
+  animation: hero-text-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
   will-change: opacity, transform;
 }
 
 .hero__headline {
-  font-family: var(--font-inter), sans-serif !important;
+  font-family: var(--font-bebas-neue) !important;
   font-size: clamp(3rem, 10vw, 171px);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 0.95;
   color: #000;
   margin: 0;
@@ -390,7 +342,11 @@ img {
   .hero__minimal-content,
   .hero__panel,
   .hero__tagline,
-  .hero__headline-wrap {
+  .hero__headline-wrap,
+  .hero__video-block,
+  .hero__overlay-block,
+  .hero__video-spacer,
+  .hero__overlay {
     animation: none;
     opacity: 1;
     transform: none;
@@ -401,6 +357,24 @@ img {
     transform: translateY(0);
     opacity: 1;
     transition: none;
+  }
+}
+
+@keyframes hero-video-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-overlay-slide-down {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
   }
 }
 

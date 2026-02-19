@@ -53,7 +53,7 @@ export default function IntroBlock({
                 </div>
               )}
               {team && team.length > 0 && (
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 mt-8">
                   <h3 className="project-hero__label">TEAM</h3>
                   <ul className="flex flex-col gap-2 list-none pl-0 m-0">
                     {team.map((item, i) => (
@@ -72,7 +72,7 @@ export default function IntroBlock({
               className={`w-full flex flex-col gap-4 justify-self-start ${!hasScopeOrTeam ? "lg:col-span-2" : ""}`}
             >
               {subheadline && (
-                <p className="text-lg text-gray-700 uppercase">{subheadline}</p>
+                <p className="text-lg font-bold text-gray-700 uppercase">{subheadline}</p>
               )}
               {hasDescription && description && (
                 <div className="project-hero__body flex flex-col gap-4">
