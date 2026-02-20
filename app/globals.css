@@ -157,11 +157,11 @@ img {
 }
 
 .about-blurb__text {
-  grid-column: 5 / 12;
+  grid-column: 5 / 11;
   margin: 0;
   padding: 0;
   font-family: var(--font-bebas-neue) !important;
-  font-size: var(--about-blurb-font-size, clamp(6rem, 15vw, 35rem)) !important;
+  font-size: var(--about-blurb-font-size) !important;
   line-height: 0.95 !important;
   font-weight: 400 !important;
   letter-spacing: -0.04em;

@@ -36,7 +36,7 @@ export default function AboutBlurb() {
       <div className="about-blurb__inner">
         <p
           className="about-blurb__text"
-          style={{ '--about-blurb-font-size': 'clamp(2.25rem, 3.125vw, 3.75rem)' } as React.CSSProperties}
+          style={{ '--about-blurb-font-size': 'clamp(2.25rem, 3.125vw, 5.5rem)' } as React.CSSProperties}
         >
           {LINES.map((lineWords, lineIndex) => (
             <span key={lineIndex} className={lineIndex === 1 ? "about-blurb__location" : undefined}>

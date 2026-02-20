@@ -16,6 +16,7 @@ export default function FitText({ text, className = '', style = {}, fontFamily =
   const containerRef = useRef<HTMLDivElement>(null)
   const measureRef = useRef<HTMLSpanElement>(null)
   const [fontSize, setFontSize] = useState(1)
+  const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
     const container = containerRef.current
@@ -31,6 +32,7 @@ export default function FitText({ text, className = '', style = {}, fontFamily =
 
       const computed = (MEASURE_FONT_SIZE * containerWidth) / measureWidth
       setFontSize(Math.round(computed * sizeScale))
+      setIsReady(true)
     }
 
     calculate()
@@ -61,6 +63,8 @@ export default function FitText({ text, className = '', style = {}, fontFamily =
       <h2
         className="select-none whitespace-nowrap w-full"
         style={{
+          opacity: isReady ? 1 : 0,
+          transition: 'opacity 0.2s ease',
           fontFamily,
           fontSize: `${fontSize}px`,
           lineHeight: 0.82,
