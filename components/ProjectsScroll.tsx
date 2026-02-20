@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -24,6 +25,7 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
   const isScrollingRef = useRef(false);
   const [isMounted, setIsMounted] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [skipTransition, setSkipTransition] = useState(false);
 
   // Duplicate projects 3 times for seamless infinite loop
   // [original] [duplicate] [duplicate] - we'll scroll in the middle section
@@ -61,28 +63,35 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
       // If scrolled to or past the end of middle set (into third set), jump to equivalent position in middle set
       if (scrollTop >= middleSetEnd) {
         isScrollingRef.current = true;
-        // Calculate how far into the third set we've scrolled
         const overflow = scrollTop - middleSetEnd;
-        // Jump to equivalent position in the middle set
-        container.scrollTop = middleSetStart + overflow;
-        // Re-enable after a frame to allow scroll to settle
+        const newScrollTop = middleSetStart + overflow;
+        const targetIndex = Math.floor(newScrollTop / viewportHeight);
+        container.scrollTop = newScrollTop;
+        flushSync(() => {
+          setSkipTransition(true); // Prevent copy flash - show instantly during jump
+          setActiveIndex(targetIndex);
+        });
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             isScrollingRef.current = false;
+            setSkipTransition(false);
           });
         });
       }
       // If scrolled before the start of middle set (into first set), jump to equivalent position in middle set
       else if (scrollTop < middleSetStart) {
         isScrollingRef.current = true;
-        // Calculate how far into the first set we've scrolled
-        // Position 0 in first set = position middleSetStart in middle set
-        // So: equivalent position = middleSetStart + scrollTop
-        container.scrollTop = middleSetStart + scrollTop;
-        // Re-enable after a frame to allow scroll to settle
+        const newScrollTop = middleSetStart + scrollTop;
+        const targetIndex = Math.floor(newScrollTop / viewportHeight);
+        container.scrollTop = newScrollTop;
+        flushSync(() => {
+          setSkipTransition(true); // Prevent copy flash - show instantly during jump
+          setActiveIndex(targetIndex);
+        });
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             isScrollingRef.current = false;
+            setSkipTransition(false);
           });
         });
       }
@@ -137,6 +146,9 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
 
     const observer = new IntersectionObserver(
       (entries) => {
+        // Don't update during scroll jump - we set activeIndex manually to prevent flash
+        if (isScrollingRef.current) return;
+
         let nextActive: number | null = null;
         let highestRatio = 0;
 
@@ -197,7 +209,9 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
 
             {/* Project Info Overlay */}
             <div
-              className={`absolute bottom-0 left-0 right-0 p-8 md:p-12 lg:p-16 text-white transition-all duration-700 delay-150 ease-out ${
+              className={`absolute bottom-0 left-0 right-0 p-8 md:p-12 lg:p-16 text-white ${
+                skipTransition ? "transition-none" : "transition-all duration-700 delay-[450ms] ease-out"
+              } ${
                 activeIndex === index
                   ? "translate-y-0 opacity-100"
                   : "translate-y-6 opacity-0"

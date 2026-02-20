@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const WORDS =
-  "Michael Charles Brown is an independent graphic designer based in Los Angeles, focused on brand identity design, motion and creative development.".split(
-    " "
-  );
+/* Non-breaking spaces (\u00a0) keep "Web Design." and "San Francisco /// Los Angeles" on one line each */
+const LINES = [
+  "Senior visual designer and creative director focused on brand identity, motion and web\u00a0design.".split(" "),
+  "San\u00a0Francisco\u00a0///\u00a0Los\u00a0Angeles".split(" "),
+];
 
 const INFO_SECTION_FONT_SIZE = 60;
 
@@ -39,13 +40,23 @@ export default function AboutBlurb() {
           className="about-blurb__text"
           style={{ '--about-blurb-font-size': `${INFO_SECTION_FONT_SIZE}px` } as React.CSSProperties}
         >
-          {WORDS.map((word, i) => (
-            <span
-              key={i}
-              className="about-blurb__word"
-              style={{ animationDelay: `${i * 0.05}s` }}
-            >
-              {word}{" "}
+          {LINES.map((lineWords, lineIndex) => (
+            <span key={lineIndex} className={lineIndex === 1 ? "about-blurb__location" : undefined}>
+              {lineWords.map((word, i) => {
+                const wordIndex = LINES.slice(0, lineIndex).flat().length + i;
+                return (
+                  <span
+                    key={i}
+                    className="about-blurb__word"
+                    style={{ animationDelay: `${wordIndex * 0.05}s` }}
+                  >
+                    {word}{" "}
+                  </span>
+                );
+              })}
+              {lineIndex < LINES.length - 1 && (
+                lineIndex === LINES.length - 2 ? <><br /><br /></> : <br />
+              )}
             </span>
           ))}
         </p>

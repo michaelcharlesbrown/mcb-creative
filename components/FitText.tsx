@@ -6,11 +6,13 @@ interface FitTextProps {
   text: string
   className?: string
   style?: React.CSSProperties
+  fontFamily?: string
+  sizeScale?: number
 }
 
 const MEASURE_FONT_SIZE = 100
 
-export default function FitText({ text, className = '', style = {} }: FitTextProps) {
+export default function FitText({ text, className = '', style = {}, fontFamily = 'var(--font-bebas-neue)', sizeScale = 1 }: FitTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const measureRef = useRef<HTMLSpanElement>(null)
   const [fontSize, setFontSize] = useState(1)
@@ -28,7 +30,7 @@ export default function FitText({ text, className = '', style = {} }: FitTextPro
       if (measureWidth <= 0) return
 
       const computed = (MEASURE_FONT_SIZE * containerWidth) / measureWidth
-      setFontSize(computed)
+      setFontSize(Math.round(computed * sizeScale))
     }
 
     calculate()
@@ -37,7 +39,7 @@ export default function FitText({ text, className = '', style = {} }: FitTextPro
     resizeObserver.observe(container)
 
     return () => resizeObserver.disconnect()
-  }, [text])
+  }, [text, sizeScale])
 
   return (
     <div ref={containerRef} className={`relative overflow-hidden w-full ${className}`.trim()}>
@@ -47,8 +49,9 @@ export default function FitText({ text, className = '', style = {} }: FitTextPro
         aria-hidden
         className="absolute opacity-0 pointer-events-none whitespace-nowrap"
         style={{
-          fontFamily: 'var(--font-bebas-neue)',
+          fontFamily,
           fontSize: MEASURE_FONT_SIZE,
+          fontWeight: style.fontWeight,
           lineHeight: 0.82,
           letterSpacing: '-0.02em',
         }}
@@ -58,7 +61,7 @@ export default function FitText({ text, className = '', style = {} }: FitTextPro
       <h2
         className="select-none whitespace-nowrap w-full"
         style={{
-          fontFamily: 'var(--font-bebas-neue)',
+          fontFamily,
           fontSize: `${fontSize}px`,
           lineHeight: 0.82,
           letterSpacing: '-0.02em',

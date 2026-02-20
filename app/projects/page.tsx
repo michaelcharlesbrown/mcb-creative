@@ -5,10 +5,10 @@ import ProjectsScroll from "@/components/ProjectsScroll";
 export default function Projects() {
   // Get hero images for each project (server-side)
   const projectsWithHeroes = projects.map((project) => {
-    const heroImage = getProjectHeroImage(project.slug);
+    const heroImage = project.heroImage ?? getProjectHeroImage(project.slug) ?? project.thumbnail;
     return {
       ...project,
-      heroImage: heroImage || project.thumbnail,
+      heroImage,
     };
   });
 

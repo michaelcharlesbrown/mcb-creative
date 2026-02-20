@@ -79,6 +79,11 @@ p, li, a, .nav__links, .nav__links a, .footer p {
   line-height: 1.3 !important;
 }
 
+/* No underline on link hover globally */
+a:hover {
+  text-decoration: none !important;
+}
+
 /* Intro section exception */
 p.intro, .intro {
   font-family: var(--font-bebas-neue) !important;
@@ -152,7 +157,7 @@ img {
 }
 
 .about-blurb__text {
-  grid-column: 1 / -1;
+  grid-column: 5 / 12;
   margin: 0;
   padding: 0;
   font-family: var(--font-bebas-neue) !important;
@@ -160,8 +165,9 @@ img {
   line-height: 0.95 !important;
   font-weight: 400 !important;
   letter-spacing: -0.04em;
-  color: #C0C0C0;
+  color: #ffffff !important;
   text-align: left;
+  text-transform: uppercase;
   width: 100%;
 }
 
@@ -173,6 +179,16 @@ img {
 
 .about-blurb--in-view .about-blurb__word {
   animation: about-blurb-word 0.6s ease-out forwards;
+}
+
+.about-blurb__location .about-blurb__word {
+  font-size: 0.72em;
+}
+
+@media (max-width: 768px) {
+  .about-blurb__text {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -312,12 +328,13 @@ img {
 }
 
 .hero__headline {
-  font-family: var(--font-bebas-neue) !important;
+  font-family: 'Clash Display', var(--font-bebas-neue) !important;
   font-size: clamp(3rem, 10vw, 171px);
-  font-weight: 400;
+  font-weight: 600;
   line-height: 0.95;
   color: #000;
   margin: 0;
+  margin-left: -5px;
   white-space: nowrap;
 }
 

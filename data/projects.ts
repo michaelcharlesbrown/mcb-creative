@@ -26,6 +26,8 @@ export interface Project {
   team?: string[];
   /** Description paragraphs for hero right column */
   description?: string[];
+  /** Override hero image for work page slide (default: 01-full or first full image) */
+  heroImage?: string;
 }
 
 export const projects: Project[] = [
@@ -99,6 +101,7 @@ export const projects: Project[] = [
     slug: 'shiftdrink',
     title: 'ShiftDrink',
     tagline: 'Brand identity and digital experience for a modern beverage company.',
+    heroImage: '/images/projects/shiftdrink/08-full.jpg',
     heroTagline: 'Building a vibrant brand for the next generation of energy drinks.',
     scope: ['Brand Identity System', 'Product Packaging', 'Digital Experience Design'],
     team: [

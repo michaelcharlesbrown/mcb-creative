@@ -69,6 +69,9 @@ export default function HeroSection() {
           <div className="hero__content-inner">
             <div className="hero__headline-wrap">
               <h1 className="hero__headline hero-headline">MCB Creative</h1>
+              <p className="hero__subtitle mt-3 text-[12px] uppercase tracking-wide font-[var(--font-mono)] leading-relaxed text-black">
+                Independent design studio of Michael Charles Brown
+              </p>
             </div>
           </div>
         </div>

@@ -24,9 +24,9 @@ export default function Info() {
                 Michael Charles Brown
               </h2>
               <p className="text-gray-700 leading-relaxed">
-                Independent Creative specializing in visual design, motion graphics, and brand identity. 
-                With a focus on creating meaningful connections between brands and their audiences, 
-                I bring a unique perspective to every project.
+                Senior visual designer and creative director focused on brand identity,<br />
+                motion and web design.<br /><br />
+                San Francisco///Los Angeles
               </p>
             </div>
 
@@ -76,7 +76,7 @@ export default function Info() {
               <span className="text-gray-600">Email:</span>{" "}
               <a
                 href="mailto:hello@mcb-creative.design"
-                className="text-gray-900 hover:underline"
+                className="text-gray-900"
               >
                 hello@mcb-creative.design
               </a>
@@ -85,7 +85,7 @@ export default function Info() {
               <span className="text-gray-600">Phone:</span>{" "}
               <a
                 href="tel:+14158281416"
-                className="text-gray-900 hover:underline"
+                className="text-gray-900"
               >
                 +1 415 828 1416
               </a>
@@ -96,7 +96,7 @@ export default function Info() {
                 href="https://www.linkedin.com/in/michaelcharlesbrown"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-900 hover:underline"
+                className="text-gray-900"
               >
                 linkedin.com/in/michaelcharlesbrown
               </a>
