@@ -21,7 +21,7 @@ export default function TextMediaBlock({
   titleFallback = "",
 }: TextMediaBlockProps) {
   const hasText = heading || (Array.isArray(body) && body.length > 0);
-  const hasMedia = image?.asset?.url || videoFileUrl;
+  const hasMedia = image || videoFileUrl;
   if (!hasText && !hasMedia) return null;
 
   const justifyClass =
@@ -36,7 +36,7 @@ export default function TextMediaBlock({
       className={`flex flex-col ${justifyClass} gap-6 py-20 max-w-[83.33%] text-left h-full min-h-0`}
     >
       {heading && (
-        <h2 className="text-4xl font-bold">{heading}</h2>
+        <h2 className="font-bold" style={{ fontSize: 'clamp(1.75rem, 2.4vw, 3rem)', lineHeight: 1.2 }}>{heading}</h2>
       )}
       {Array.isArray(body) && body.length > 0 ? (
         <div className="project-hero__body flex flex-col gap-4">
@@ -53,6 +53,7 @@ export default function TextMediaBlock({
       aspectRatio="1"
       sizes="50vw"
       altFallback={heading ?? titleFallback}
+      imagePreset="twoColumn"
     />
   ) : null;
 

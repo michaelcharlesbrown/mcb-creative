@@ -24,14 +24,14 @@ export default function IntroBlock({
 }: IntroBlockProps) {
   const hasScopeOrTeam = (scope?.length ?? 0) > 0 || (team?.length ?? 0) > 0;
   const hasDescription = Array.isArray(description) && description.length > 0;
-  const hasMedia = heroImage?.asset?.url || heroVideoFileUrl;
+  const hasMedia = heroImage || heroVideoFileUrl;
 
   const hasTwoColumn = hasScopeOrTeam || hasDescription || subheadline;
 
   return (
     <div className="project-hero flex flex-col">
       {headline && (
-        <h1 className="pt-[240px] text-7xl font-bold text-left">
+        <h1 className="pt-[240px] font-bold text-left" style={{ fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>
           {headline}
         </h1>
       )}
@@ -91,6 +91,7 @@ export default function IntroBlock({
           image={heroImage}
           videoUrl={heroVideoFileUrl}
           altFallback={headline ?? titleFallback}
+          imagePreset="cover"
         />
       )}
     </div>

@@ -11,7 +11,7 @@ export default function FullWidthBlock({
   videoFileUrl,
   titleFallback = "",
 }: FullWidthBlockProps) {
-  const hasMedia = image?.asset?.url || videoFileUrl;
+  const hasMedia = image || videoFileUrl;
   if (!hasMedia) return null;
 
   return (

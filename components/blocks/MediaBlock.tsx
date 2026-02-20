@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { getSanityImageUrl, type SanityImagePreset } from "@/lib/sanityImage";
+import FadeIn from "@/components/FadeIn";
 
 interface MediaBlockProps {
   image?: { asset?: { url: string }; alt?: string };
@@ -10,6 +12,8 @@ interface MediaBlockProps {
   className?: string;
   sizes?: string;
   altFallback?: string;
+  /** Image preset for CDN optimization (default: fullWidth) */
+  imagePreset?: SanityImagePreset;
 }
 
 export default function MediaBlock({
@@ -19,6 +23,7 @@ export default function MediaBlock({
   className = "",
   sizes = "100vw",
   altFallback = "",
+  imagePreset = "fullWidth",
 }: MediaBlockProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,7 +43,7 @@ export default function MediaBlock({
     return () => observer.disconnect();
   }, [videoUrl]);
 
-  const imageUrl = image?.asset?.url;
+  const imageUrl = getSanityImageUrl(image, imagePreset);
   const hasImage = Boolean(imageUrl);
   const hasVideo = Boolean(videoUrl);
   const showVideo = hasVideo && isInView;
@@ -46,33 +51,35 @@ export default function MediaBlock({
   if (!hasImage && !hasVideo) return null;
 
   return (
-    <div
-      ref={containerRef}
-      className={`relative w-full overflow-hidden rounded-[4px] ${className}`}
-      style={{ aspectRatio }}
-    >
-      {hasImage ? (
-        <Image
-          src={imageUrl!}
-          alt={image?.alt ?? altFallback}
-          fill
-          sizes={sizes}
-          className="object-cover"
-          loading="lazy"
-        />
-      ) : showVideo ? (
-        <video
-          ref={videoRef}
-          src={videoUrl}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="object-cover w-full h-full"
-        />
-      ) : (
-        <div className="absolute inset-0 bg-gray-100 animate-pulse" />
-      )}
-    </div>
+    <FadeIn>
+      <div
+        ref={containerRef}
+        className={`relative w-full overflow-hidden rounded-[4px] ${className}`}
+        style={{ aspectRatio }}
+      >
+        {hasImage ? (
+          <Image
+            src={imageUrl!}
+            alt={image?.alt ?? altFallback}
+            fill
+            sizes={sizes}
+            className="object-cover"
+            loading="lazy"
+          />
+        ) : showVideo ? (
+          <video
+            ref={videoRef}
+            src={videoUrl}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="object-cover w-full h-full"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gray-100 animate-pulse" />
+        )}
+      </div>
+    </FadeIn>
   );
 }

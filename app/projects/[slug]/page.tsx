@@ -67,10 +67,11 @@ export default async function Project({
                 <h1 className="text-5xl font-bold">{sanityProject.title}</h1>
               </section>
             )}
-            {sanityProject.coverImage?.asset?.url && (
+            {sanityProject.coverImage && (
               <MediaBlock
                 image={sanityProject.coverImage}
                 altFallback={sanityProject.title}
+                imagePreset="cover"
               />
             )}
             {pageContent.map((block, index) => (

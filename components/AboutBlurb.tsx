@@ -8,8 +8,6 @@ const LINES = [
   "San\u00a0Francisco\u00a0///\u00a0Los\u00a0Angeles".split(" "),
 ];
 
-const INFO_SECTION_FONT_SIZE = 60;
-
 export default function AboutBlurb() {
   const sectionRef = useRef<HTMLElement>(null);
   const [isInView, setIsInView] = useState(false);
@@ -38,7 +36,7 @@ export default function AboutBlurb() {
       <div className="about-blurb__inner">
         <p
           className="about-blurb__text"
-          style={{ '--about-blurb-font-size': `${INFO_SECTION_FONT_SIZE}px` } as React.CSSProperties}
+          style={{ '--about-blurb-font-size': 'clamp(2.25rem, 3.125vw, 3.75rem)' } as React.CSSProperties}
         >
           {LINES.map((lineWords, lineIndex) => (
             <span key={lineIndex} className={lineIndex === 1 ? "about-blurb__location" : undefined}>
