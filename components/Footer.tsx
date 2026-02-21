@@ -9,17 +9,17 @@ interface FooterProps {
   accentColor?: string
 }
 
-export default function Footer({ accentColor = '#ffffff' }: FooterProps) {
+export default function Footer({ accentColor = '#fcfcfc' }: FooterProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-10% 0px' })
 
   return (
-    <footer ref={ref} style={{ backgroundColor: '#131212' }} className="w-full">
+    <footer ref={ref} style={{ backgroundColor: 'var(--dark-background)' }} className="w-full">
       {/* Frame wrapper */}
       <div className="max-w-[2400px] mx-auto p-5">
         <motion.div
           className="relative w-full min-h-screen overflow-hidden grid grid-rows-[auto_1fr]"
-          style={{ backgroundColor: '#131212' }}
+          style={{ backgroundColor: 'var(--dark-background)' }}
           initial={{ y: -20, opacity: 0 }}
           animate={isInView ? { y: 0, opacity: 1 } : {}}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}

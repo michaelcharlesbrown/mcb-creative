@@ -34,7 +34,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       {/* Content */}
       <div className="space-y-1 md:space-y-2">
         {/* Title */}
-        <h3 className="text-lg md:text-xl lg:text-2xl font-bold">
+        <h3 className="text-xl md:text-2xl lg:text-3xl font-bold">
           {project.title}
         </h3>
 

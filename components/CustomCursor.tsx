@@ -81,7 +81,7 @@ export default function CustomCursor() {
         marginLeft: -size / 2,
         marginTop: -size / 2,
         borderRadius: "50%",
-        backgroundColor: "white",
+        backgroundColor: "#fcfcfc",
         mixBlendMode: "difference",
         pointerEvents: "none",
         zIndex: 9999,

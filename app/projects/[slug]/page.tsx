@@ -58,7 +58,7 @@ export default async function Project({
   const hasBlocks = pageContent.length > 0;
 
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-background text-black">
       <main className="pt-[var(--nav-height)] pb-16">
         <div className="max-w-[var(--content-max-width)] mx-auto content-inset">
           <div className="flex flex-col gap-[8px]">

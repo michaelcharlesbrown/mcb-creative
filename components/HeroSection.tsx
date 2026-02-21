@@ -61,7 +61,7 @@ export default function HeroSection() {
       {/* OVERLAY PANEL: peels off on scroll */}
       <div
         ref={overlayRef}
-        className="hero__overlay absolute inset-0 z-10 bg-white"
+        className="hero__overlay absolute inset-0 z-10 bg-background"
       >
         <div className="hero__panel hero__panel--gray" />
         <div className="hero__panel hero__panel--white" />

@@ -37,7 +37,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${ibmPlexMono.variable} ${bebasNeue.variable} antialiased bg-white text-black`}
+        className={`${ibmPlexMono.variable} ${bebasNeue.variable} antialiased bg-background text-black`}
       >
         <LayoutShell>{children}</LayoutShell>
       </body>
