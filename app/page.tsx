@@ -1,14 +1,24 @@
 "use client";
 
+import { useState } from "react";
 import { projects } from "@/data/projects";
 import ProjectCard from "@/components/ProjectCard";
 import HeroSection from "@/components/HeroSection";
 import AboutBlurb from "@/components/AboutBlurb";
+import PageIntro from "@/components/PageIntro";
 
 export default function Home() {
+  const [introComplete, setIntroComplete] = useState(false);
+
   return (
     <div className="home min-h-screen bg-background text-black">
-      <HeroSection />
+
+      {/* Logo intro screen — unmounts itself via opacity after firing onComplete */}
+      {!introComplete && (
+        <PageIntro onComplete={() => setIntroComplete(true)} />
+      )}
+
+      <HeroSection introReady={introComplete} />
       <AboutBlurb />
 
       <main className="max-w-[var(--content-max-width)] mx-auto">
@@ -22,6 +32,7 @@ export default function Home() {
           </div>
         </section>
       </main>
+
     </div>
   );
 }

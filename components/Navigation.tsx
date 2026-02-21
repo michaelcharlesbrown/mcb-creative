@@ -23,7 +23,7 @@ export default function Navigation() {
             className="h-11 w-auto brightness-0 invert"
           />
         </Link>
-        <div className="nav__links flex items-center gap-1 leading-[1.3] tracking-[-0.06em] uppercase font-[var(--font-mono)] text-white">
+        <div className="nav__links flex items-center gap-1 text-[11px] uppercase tracking-widest leading-relaxed text-white">
           <Link
             href="/projects"
             className={pathname === "/projects" ? "underline" : ""}

@@ -77,7 +77,7 @@ body {
 }
 
 /* Body copy sizing */
-p, li, a, .nav__links, .nav__links a, .footer p {
+p, li, a, .footer p {
   font-size: 12.5px !important;
   line-height: 1.3 !important;
 }
