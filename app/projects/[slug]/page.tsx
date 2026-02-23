@@ -1,12 +1,38 @@
 import Link from "next/link";
-import Image from "next/image";
-import { notFound } from "next/navigation";
-import { projects, getAdjacentProjects } from "@/data/projects";
+import { sanityFetch } from "@/lib/sanity.fetch";
+import { projectBySlugQuery } from "@/lib/sanity.queries";
+import BlockRenderer, { type PageContentBlock } from "@/components/blocks/BlockRenderer";
+import MediaBlock from "@/components/blocks/MediaBlock";
 import ProjectNavRail from "@/components/ProjectNavRail";
-import ProjectHero from "@/components/ProjectHero";
 
-export async function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }));
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
+export type SanityProject = {
+  title: string;
+  slug: string;
+  coverImage?: { alt?: string; asset?: { url: string } };
+  pageContent?: PageContentBlock[];
+};
+
+async function getAdjacentProjectsFromSanity(slug: string) {
+  const projectList = await sanityFetch<{ slug: string; title: string }[]>(
+    `*[_type=="project" && defined(slug.current)]|order(_createdAt asc){ "slug": slug.current, title }`
+  );
+  const currentIndex = projectList.findIndex((p) => p.slug === slug);
+
+  if (currentIndex === -1) {
+    return { previous: null, next: null };
+  }
+
+  const len = projectList.length;
+  const previousIndex = currentIndex === 0 ? len - 1 : currentIndex - 1;
+  const nextIndex = currentIndex === len - 1 ? 0 : currentIndex + 1;
+
+  return {
+    previous: projectList[previousIndex] ?? null,
+    next: projectList[nextIndex] ?? null,
+  };
 }
 
 export default async function Project({
@@ -15,93 +41,56 @@ export default async function Project({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = projects.find((p) => p.slug === slug);
 
-  if (!project) {
-    notFound();
+  const sanityProject = await sanityFetch<SanityProject | null>(
+    projectBySlugQuery,
+    { slug }
+  ).catch(() => null);
+
+  if (!sanityProject) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-400">Project coming soon.</p>
+      </div>
+    );
   }
 
-  const { previous, next } = getAdjacentProjects(slug);
+  const { previous, next } = await getAdjacentProjectsFromSanity(slug);
+  const pageContent = sanityProject.pageContent ?? [];
+  const hasBlocks = pageContent.length > 0;
 
   return (
     <div className="min-h-screen bg-background text-black">
-      <main className="pt-[var(--nav-height)] pb-16">
-        <div className="max-w-[var(--content-max-width)] mx-auto content-inset">
-          <ProjectHero project={project} />
+      <main>
+        {/* Cover image: full screen, full bleed */}
+        {sanityProject.coverImage && (
+          <div className="relative w-full h-screen overflow-hidden [&>*]:size-full">
+            <MediaBlock
+              image={sanityProject.coverImage}
+              altFallback={sanityProject.title}
+              imagePreset="cover"
+              fill
+              sizes="100vw"
+            />
+          </div>
+        )}
 
-          {/* Project Media */}
-          {project.media.length > 0 && (
-            <div className="flex flex-col gap-[8px]">
-              {project.media.map((row, rowIndex) => {
-                if (row.layout === "full") {
-                  const item = row.items[0];
-                  return (
-                    <div key={rowIndex} className="w-full">
-                      <div
-                        className="relative w-full overflow-hidden rounded-[4px]"
-                        style={{ aspectRatio: "1400/787.5" }}
-                      >
-                        {item.type === "image" ? (
-                          <Image
-                            src={item.src}
-                            alt={item.alt || `${project.title} - ${rowIndex + 1}`}
-                            fill
-                            sizes="100vw"
-                            className="object-cover"
-                          />
-                        ) : (
-                          <video
-                            src={item.src}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            className="object-cover w-full h-full"
-                          />
-                        )}
-                      </div>
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div
-                      key={rowIndex}
-                      className="grid grid-cols-1 md:grid-cols-2 gap-[8px] w-full"
-                    >
-                      {row.items.map((item, itemIndex) => (
-                        <div
-                          key={itemIndex}
-                          className="relative w-full aspect-square overflow-hidden rounded-[4px]"
-                        >
-                          {item.type === "image" ? (
-                            <Image
-                              src={item.src}
-                              alt={
-                                item.alt ||
-                                `${project.title} - ${rowIndex + 1}-${itemIndex + 1}`
-                              }
-                              fill
-                              sizes="50vw"
-                              className="object-cover"
-                            />
-                          ) : (
-                            <video
-                              src={item.src}
-                              autoPlay
-                              loop
-                              muted
-                              playsInline
-                              className="object-cover w-full h-full"
-                            />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  );
-                }
-              })}
-            </div>
-          )}
+        <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-16 pb-16">
+          <div className="flex flex-col gap-[8px]">
+            {!hasBlocks && !sanityProject.coverImage && (
+              <section>
+                <h1 className="text-5xl font-bold">{sanityProject.title}</h1>
+              </section>
+            )}
+            {pageContent.map((block, index) => (
+              <BlockRenderer
+                key={index}
+                block={block}
+                index={index}
+                titleFallback={sanityProject.title}
+              />
+            ))}
+          </div>
 
           {/* Next/Previous Navigation */}
           <section className="mt-16 mb-16 md:mb-24">
@@ -119,7 +108,6 @@ export default async function Project({
               ) : (
                 <div className="flex-1" />
               )}
-
               {next ? (
                 <Link
                   href={`/projects/${next.slug}`}

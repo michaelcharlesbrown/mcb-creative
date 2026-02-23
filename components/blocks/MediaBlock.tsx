@@ -14,6 +14,8 @@ interface MediaBlockProps {
   altFallback?: string;
   /** Image preset for CDN optimization (default: fullWidth) */
   imagePreset?: SanityImagePreset;
+  /** When true, fills parent container (e.g. for full-screen cover) */
+  fill?: boolean;
 }
 
 export default function MediaBlock({
@@ -24,6 +26,7 @@ export default function MediaBlock({
   sizes = "100vw",
   altFallback = "",
   imagePreset = "fullWidth",
+  fill = false,
 }: MediaBlockProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -54,8 +57,8 @@ export default function MediaBlock({
     <FadeIn>
       <div
         ref={containerRef}
-        className={`relative w-full overflow-hidden rounded-[4px] ${className}`}
-        style={{ aspectRatio }}
+        className={`relative overflow-hidden ${fill ? "size-full" : "w-full rounded-[4px]"} ${className}`}
+        style={fill ? undefined : { aspectRatio }}
       >
         {hasImage ? (
           <Image
