@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
+import TransitionWrapper from "@/components/TransitionWrapper";
 
 export default function LayoutShell({
   children,
@@ -19,8 +20,10 @@ export default function LayoutShell({
   return (
     <>
       <CustomCursor />
-      <Navigation />
-      {children}
+      <TransitionWrapper>
+        <Navigation />
+        {children}
+      </TransitionWrapper>
       <Footer />
     </>
   );

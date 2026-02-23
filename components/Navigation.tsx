@@ -1,12 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useNavigateWithTransition } from "@/components/transitions/useNavigateWithTransition";
 
 export default function Navigation() {
   const pathname = usePathname();
   const isProjectsPage = pathname === "/projects";
+  const { navigateWithTransition } = useNavigateWithTransition();
 
   return (
     <nav
@@ -14,7 +15,14 @@ export default function Navigation() {
       style={{ mixBlendMode: "difference" }}
     >
       <div className="nav__inner max-w-[var(--content-max-width)] mx-auto content-inset pt-8 pb-4 flex justify-between items-center">
-        <Link href="/" className="nav__logo flex items-center text-white">
+        <a
+          href="/"
+          className="nav__logo flex items-center text-white"
+          onClick={(e) => {
+            e.preventDefault();
+            navigateWithTransition("/");
+          }}
+        >
           <Image
             src="/images/mcb-creative-logo.svg"
             alt="MCB Creative"
@@ -22,21 +30,29 @@ export default function Navigation() {
             height={55}
             className="h-11 w-auto brightness-0 invert"
           />
-        </Link>
+        </a>
         <div className="nav__links flex items-center gap-0 text-[12px] uppercase tracking-widest leading-relaxed text-white">
-          <Link
+          <a
             href="/projects"
             className={pathname === "/projects" ? "underline" : ""}
+            onClick={(e) => {
+              e.preventDefault();
+              navigateWithTransition("/projects");
+            }}
           >
             WORK
-          </Link>
+          </a>
           <span className={isProjectsPage ? "opacity-80" : "opacity-80"}>///</span>
-          <Link
+          <a
             href="/info"
             className={pathname === "/info" ? "underline" : ""}
+            onClick={(e) => {
+              e.preventDefault();
+              navigateWithTransition("/info");
+            }}
           >
             INFO
-          </Link>
+          </a>
         </div>
       </div>
     </nav>

@@ -6,18 +6,16 @@ import styles from "./RapidLayersTransition.module.css";
 
 export interface RapidLayersTransitionHandle {
   play: () => Promise<void>;
+  reveal: () => Promise<void>;
 }
 
-const LAYER_IMAGES = [
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80",
-  "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=1920&q=80",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&q=80",
-  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1920&q=80",
-  "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1920&q=80",
-  "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=1920&q=80",
-  "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920&q=80",
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&q=80",
-];
+const ALL_IMAGES = Array.from({ length: 6 }, (_, i) =>
+  `/images/transitions/${String(i + 1).padStart(2, "0")}.jpg`
+);
+
+function getRandomLayers() {
+  return [...ALL_IMAGES].sort(() => Math.random() - 0.5).slice(0, 6);
+}
 
 export const RapidLayersTransition = forwardRef<
   RapidLayersTransitionHandle,
@@ -56,14 +54,17 @@ export const RapidLayersTransition = forwardRef<
         gsap.set(wrapEls, { yPercent: 101 });
         gsap.set(imgEls, { yPercent: -101 });
 
+        const randomImages = getRandomLayers();
+        imgEls.forEach((el, i) => {
+          el.style.backgroundImage = `url(${randomImages[i]})`;
+        });
+
         const ctx = gsap.context(() => {
           const duration = 1;
           const panelDelay = 0.15;
           const tl = gsap.timeline({
             onComplete: () => {
               container.style.pointerEvents = "none";
-              container.style.visibility = "hidden";
-              onComplete?.();
               resolve();
             },
           });
@@ -79,6 +80,47 @@ export const RapidLayersTransition = forwardRef<
               panelDelay * i
             );
           }
+        }, container);
+
+        return () => ctx.revert();
+      });
+    },
+    reveal: () => {
+      return new Promise<void>((resolve) => {
+        const container = containerRef.current;
+        if (!container) {
+          resolve();
+          return;
+        }
+
+        const wrapEls = container.querySelectorAll<HTMLElement>(`.${styles.layerWrap}`);
+        const imgEls = container.querySelectorAll<HTMLElement>(`.${styles.layerImg}`);
+
+        if (prefersReducedMotion) {
+          container.style.visibility = "hidden";
+          onComplete?.();
+          resolve();
+          return;
+        }
+
+        const ctx = gsap.context(() => {
+          const tl = gsap.timeline({
+            onComplete: () => {
+              container.style.pointerEvents = "none";
+              container.style.visibility = "hidden";
+              onComplete?.();
+              resolve();
+            },
+          });
+
+          tl.to(
+            [...wrapEls, ...imgEls],
+            {
+              yPercent: -101,
+              duration: 0.6,
+              ease: "power2.inOut",
+            }
+          );
         }, container);
 
         return () => ctx.revert();
@@ -111,7 +153,7 @@ export const RapidLayersTransition = forwardRef<
       style={{ pointerEvents: "none", visibility: "hidden" }}
       aria-hidden
     >
-      {LAYER_IMAGES.map((url, i) => (
+      {ALL_IMAGES.map((url, i) => (
         <div key={i} className={styles.layerWrap}>
           <div
             className={styles.layerImg}
