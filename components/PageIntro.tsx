@@ -68,7 +68,7 @@ export default function PageIntro({ onComplete }: PageIntroProps) {
         position: "fixed",
         inset: 0,
         zIndex: 200,
-        background: "#000000",
+        background: "var(--dark-background)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

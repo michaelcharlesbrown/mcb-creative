@@ -9,7 +9,7 @@ interface FooterProps {
   accentColor?: string
 }
 
-export default function Footer({ accentColor = '#fcfcfc' }: FooterProps) {
+export default function Footer({ accentColor = 'var(--color-white)' }: FooterProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-10% 0px' })
 

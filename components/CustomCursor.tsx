@@ -81,13 +81,14 @@ export default function CustomCursor() {
         marginLeft: -size / 2,
         marginTop: -size / 2,
         borderRadius: "50%",
-        backgroundColor: "#fcfcfc",
+        backgroundColor: "var(--color-white)",
         mixBlendMode: "difference",
         pointerEvents: "none",
         zIndex: 9999,
         opacity: isVisible ? 1 : 0,
-        transition:
-          "width 0.2s ease-out, height 0.2s ease-out, opacity 0.15s ease-out",
+        transition: isHovering
+          ? "width 0.5s cubic-bezier(0.32, 0, 0.67, 0), height 0.5s cubic-bezier(0.32, 0, 0.67, 0), opacity 0.15s ease-out"
+          : "width 2s cubic-bezier(0.32, 0, 0.67, 0), height 2s cubic-bezier(0.32, 0, 0.67, 0), opacity 0.15s ease-out",
       }}
     />
   );

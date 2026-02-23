@@ -2,19 +2,21 @@
 
 :root {
   --background: #fcfcfc;
-  --dark-background: #202020;
-  --foreground: #202020;
+  --foreground: #0a0a0a;
+  --dark-background: #0a0a0a;
+  --color-black: #0a0a0a;
+  --color-white: #fcfcfc;
   font-size: 12.5px;
   --content-inset: clamp(1.5rem, 2.7vw, 52px);
   --content-max-width: 2400px;
   --nav-height: 92px;
-  --hero-charcoal: #202020;
+  --hero-charcoal: #0a0a0a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-black: #202020;
+  --color-black: #0a0a0a;
   --color-white: #fcfcfc;
   --font-mono: var(--font-ibm-plex-mono);
   --font-display: var(--font-bebas-neue);
@@ -29,7 +31,7 @@ body, p, a, span, li, input, button {
   font-family: var(--font-ibm-plex-mono);
 }
 
-/* Project hero body */
+/* Project hero body - remains 12.5px */
 .project-hero__body {
   font-size: 12.5px;
   font-weight: 400;
@@ -37,9 +39,9 @@ body, p, a, span, li, input, button {
   letter-spacing: -0.04em;
 }
 
-/* SCOPE/TEAM labels: same size as body, bold and uppercase */
+/* SCOPE/TEAM labels: much larger, bold and uppercase */
 .project-hero__label {
-  font-size: 12.5px;
+  font-size: 2.5rem;
   font-weight: 700 !important;
   line-height: 1.3 !important;
   letter-spacing: -0.04em;
@@ -55,7 +57,7 @@ body, p, a, span, li, input, button {
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #fcfcfc;
   }
 }
 
@@ -80,6 +82,16 @@ body {
 p, li, a, .footer p {
   font-size: 12.5px !important;
   line-height: 1.3 !important;
+}
+
+.nav__links,
+.nav__links a {
+  font-size: 12px !important;
+}
+
+/* Project hero: SCOPE/TEAM headlines only - much larger */
+.project-hero .project-hero__label {
+  font-size: 2.5rem !important;
 }
 
 /* No underline on link hover globally */
@@ -134,7 +146,7 @@ img {
   min-height: 100vh;
   margin-top: -150px;
   background: var(--dark-background);
-  color: #fcfcfc;
+  color: var(--color-white);
   padding: clamp(3.5rem, 6vh, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
   overflow: hidden;
 }
@@ -168,10 +180,11 @@ img {
   line-height: 0.95 !important;
   font-weight: 400 !important;
   letter-spacing: -0.04em;
-  color: #fcfcfc !important;
+  color: var(--color-white) !important;
   text-align: left;
   text-transform: uppercase;
   width: 100%;
+  max-width: calc(100% - 35px);
 }
 
 .about-blurb__word {
@@ -239,14 +252,14 @@ img {
   font-weight: 400;
   line-height: 0.95;
   letter-spacing: 0.02em;
-  color: #202020;
+  color: var(--color-black);
   margin: 0;
   white-space: nowrap;
 }
 
 /* Hero: pinned 100vh + peel-away overlay (GSAP ScrollTrigger) */
 .hero {
-  --hero-charcoal: #202020;
+  --hero-charcoal: var(--color-black);
   --hero-gray: #454545;
 }
 
@@ -313,7 +326,7 @@ img {
   font-weight: 400;
   line-height: 1.3;
   text-transform: uppercase;
-  color: #202020;
+  color: var(--color-black);
   opacity: 0;
   animation: hero-text-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
   will-change: opacity, transform;
@@ -335,7 +348,7 @@ img {
   font-size: clamp(3rem, 10vw, 171px);
   font-weight: 600;
   line-height: 0.95;
-  color: #202020;
+  color: var(--color-black);
   margin: 0;
   margin-left: -5px;
   white-space: nowrap;

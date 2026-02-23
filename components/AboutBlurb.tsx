@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/* Non-breaking spaces (\u00a0) keep "Web Design." and "San Francisco /// Los Angeles" on one line each */
+/* Non-breaking spaces (\u00a0) keep "web design" and "San Francisco /// Los Angeles" on one line each */
 const LINES = [
   "Senior visual designer and creative director focused on brand identity, motion and web\u00a0design.".split(" "),
-  "San\u00a0Francisco\u00a0///\u00a0Los\u00a0Angeles".split(" "),
+  "San\u00a0Francisco///Los\u00a0Angeles".split(" "),
 ];
 
 export default function AboutBlurb() {

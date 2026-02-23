@@ -9,32 +9,28 @@ gsap.registerPlugin(ScrollTrigger);
 
 const HERO_VIDEO_SRC = "/video/hero-placeholder-test.mp4";
 
-interface HeroSectionProps {
-  introReady?: boolean;
-}
-
-export default function HeroSection({ introReady = false }: HeroSectionProps) {
+export default function HeroSection() {
   const heroRef     = useRef<HTMLElement>(null);
   const grayRef     = useRef<HTMLDivElement>(null);
   const overlayRef  = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const taglineRef  = useRef<HTMLParagraphElement>(null);
+  const videoRef    = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // Don't fire until the intro screen is done
-    if (!introReady) return;
-
     const hero     = heroRef.current;
     const gray     = grayRef.current;
     const overlay  = overlayRef.current;
     const headline = headlineRef.current;
     const tagline  = taglineRef.current;
+    const video    = videoRef.current;
 
-    if (!hero || !gray || !overlay || !headline || !tagline) return;
+    if (!hero || !gray || !overlay || !headline || !tagline || !video) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion) {
       gsap.set([overlay, gray], { yPercent: -100 });
+      gsap.set(video, { yPercent: 0 });
       gsap.set([headline, tagline], { opacity: 1, y: 0 });
       return;
     }
@@ -44,6 +40,7 @@ export default function HeroSection({ introReady = false }: HeroSectionProps) {
       // ── Initial states ───────────────────────────────────────────────
       gsap.set(gray,     { yPercent: -100 });
       gsap.set(overlay,  { yPercent: -100 });
+      gsap.set(video,    { yPercent: 100 });
       gsap.set(headline, { opacity: 0, y: 40 });
       gsap.set(tagline,  { opacity: 0, y: 30 });
 
@@ -76,6 +73,7 @@ export default function HeroSection({ introReady = false }: HeroSectionProps) {
       tl
         // Gray drops first — the accent swoosh
         .to(gray,    { yPercent: -25, duration: 1.0 }, 0)
+        .to(video,   { yPercent: 0, duration: 1.2, ease: "power3.out" }, 0)
         // White follows — covers gray, clean edge
         .to(overlay, { yPercent: -25, duration: 1.0 }, 0.18)
         // Headline rises as white panel settles
@@ -96,7 +94,7 @@ export default function HeroSection({ introReady = false }: HeroSectionProps) {
     }, hero);
 
     return () => ctx.revert();
-  }, [introReady]);
+  }, []);
 
   return (
     <section
@@ -105,6 +103,7 @@ export default function HeroSection({ introReady = false }: HeroSectionProps) {
     >
       {/* VIDEO — already present, revealed as panels scroll away */}
       <video
+        ref={videoRef}
         className="hero__video absolute inset-0 h-full w-full object-cover"
         src={HERO_VIDEO_SRC}
         autoPlay
@@ -122,7 +121,7 @@ export default function HeroSection({ introReady = false }: HeroSectionProps) {
       <div
         ref={grayRef}
         className="absolute inset-0 z-10"
-        style={{ background: "var(--hero-charcoal)" }}
+        style={{ background: "var(--dark-background)" }}
       />
 
       {/* WHITE OVERLAY — drops behind gray, covers it, peels off on scroll */}

@@ -209,7 +209,7 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
 
             {/* Project Info Overlay */}
             <div
-              className={`absolute bottom-0 left-0 right-0 p-8 md:p-12 lg:p-16 text-white ${
+              className={`absolute top-[80%] left-0 right-0 text-white ${
                 skipTransition ? "transition-none" : "transition-all duration-700 delay-[450ms] ease-out"
               } ${
                 activeIndex === index
@@ -217,20 +217,13 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
                   : "translate-y-6 opacity-0"
               }`}
             >
-              <div className="max-w-[2400px] mx-auto">
-                <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-2 md:mb-4">
+              <div className="max-w-[var(--content-max-width)] mx-auto content-inset py-8 md:py-12 lg:py-16 flex justify-between items-center gap-8">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-left shrink-0" style={{ fontFamily: "var(--font-bebas-neue)" }}>
                   {project.title}
                 </h2>
-                <p className="mb-4 md:mb-6 text-white/90 max-w-2xl">
-                  {project.tagline}
-                </p>
-                <div className="flex flex-wrap gap-3 md:gap-4 text-white/80">
-                  <span>{project.client}</span>
-                  <span>•</span>
-                  <span>{project.year}</span>
-                  <span>•</span>
-                  <span>{project.services.join(", ")}</span>
-                </div>
+                <span className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-right shrink-0 block" style={{ fontFamily: "var(--font-bebas-neue)" }}>
+                  {project.services[0] ?? ""}
+                </span>
               </div>
             </div>
 
