@@ -1,7 +1,7 @@
 "use client";
 
 import gsap from "gsap";
-import { forwardRef, useImperativeHandle, useRef, useEffect, useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useEffect } from "react";
 
 export interface PinkWipeHandle {
   playCover: () => Promise<void>;
@@ -15,14 +15,15 @@ const STAGGER = 0.08;
 
 export const PinkWipeTransition = forwardRef<PinkWipeHandle>(
   function PinkWipeTransition(_, ref) {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const accentRef = useRef<HTMLDivElement>(null);
-    const [accentColor, setAccentColorState] = useState(DEFAULT_ACCENT);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const accentRef = useRef<HTMLDivElement>(null);
 
-    useImperativeHandle(ref, () => ({
-      setAccentColor: (color: string) => {
-        setAccentColorState(color);
-      },
+  useImperativeHandle(ref, () => ({
+    setAccentColor: (color: string) => {
+      if (accentRef.current) {
+        accentRef.current.style.backgroundColor = color;
+      }
+    },
       playCover: () => {
         return new Promise<void>((resolve) => {
           const container = containerRef.current;
@@ -81,12 +82,10 @@ export const PinkWipeTransition = forwardRef<PinkWipeHandle>(
         className="fixed inset-0 z-[9999]"
         aria-hidden
       >
-        <div className="absolute inset-0 bg-[#111111]" />
-        <div className="absolute inset-0 bg-white" />
         <div
           ref={accentRef}
           className="absolute inset-0"
-          style={{ backgroundColor: accentColor }}
+          style={{ backgroundColor: DEFAULT_ACCENT }}
         />
       </div>
     );

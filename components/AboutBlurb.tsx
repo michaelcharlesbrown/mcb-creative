@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/* Non-breaking spaces (\u00a0) keep "web design" and "San Francisco /// Los Angeles" on one line each */
+/* \u00a0 keeps "San Francisco///Los Angeles" as one word-span so it animates as a unit */
 const LINES = [
-  "Senior visual designer and creative director focused on brand identity, motion and web\u00a0design.".split(" "),
+  "Senior visual designer and creative director focused on brand identity, web design, and motion.".split(" "),
   "San\u00a0Francisco///Los\u00a0Angeles".split(" "),
 ];
 

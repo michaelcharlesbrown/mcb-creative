@@ -14,23 +14,6 @@ export default function Info() {
         playsInline
         aria-hidden
       />
-      {/* Colour-cycling overlay with blend mode */}
-      <style>{`
-        @keyframes color-cycle {
-          0%   { background-color: #ff2020; }
-          33%  { background-color: #2050ff; }
-          66%  { background-color: #00c853; }
-          100% { background-color: #ff2020; }
-        }
-        .color-cycle-overlay {
-          animation: color-cycle 45s ease-in-out infinite;
-        }
-      `}</style>
-      <div
-        className="color-cycle-overlay fixed inset-0 -z-10"
-        style={{ mixBlendMode: "overlay" }}
-        aria-hidden
-      />
 
       {/* Section 1 — opaque, covers the video */}
       <section className="min-h-screen bg-[#fcfcfc] text-black flex items-center relative z-10">

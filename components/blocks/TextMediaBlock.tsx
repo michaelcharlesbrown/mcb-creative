@@ -33,10 +33,19 @@ export default function TextMediaBlock({
 
   const textContent = (
     <div
-      className={`flex flex-col ${justifyClass} gap-6 py-20 max-w-[83.33%] text-left h-full min-h-0`}
+      className={`flex flex-col ${justifyClass} gap-6 py-20 px-12 max-w-[83.33%] text-left h-full min-h-0`}
     >
       {heading && (
-        <h2 className="font-bold" style={{ fontSize: 'clamp(1.75rem, 2.4vw, 3rem)', lineHeight: 1.2 }}>{heading}</h2>
+        <h2
+          className="font-normal"
+          style={{
+            fontFamily: 'var(--font-ibm-plex-mono)',
+            fontSize: 'clamp(1.75rem, 2.4vw, 3rem)',
+            lineHeight: 1.2,
+          }}
+        >
+          {heading}
+        </h2>
       )}
       {Array.isArray(body) && body.length > 0 ? (
         <div className="project-hero__body flex flex-col gap-4">

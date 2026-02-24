@@ -5,12 +5,12 @@ import { Project } from "@/data/projects";
 import { useNavigateWithTransition } from "@/components/transitions/useNavigateWithTransition";
 
 interface ProjectCardProps {
-  project: Project;
+  project: Project & { subheadline?: string; scope?: string[] };
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   const { navigateWithTransition } = useNavigateWithTransition();
-  const firstService = project.services[0] || "";
+  const scopeItems = project.scope ?? project.services;
 
   return (
     <a
@@ -32,17 +32,24 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       </div>
 
       <div className="space-y-1 md:space-y-2">
-        <h3 className="text-xl md:text-2xl lg:text-3xl font-bold">
+        <h3 className="font-bold" style={{ fontSize: '14px' }}>
           {project.title}
         </h3>
-        <p className="text-gray-600 line-clamp-2">
-          {project.tagline}
-        </p>
-        <div className="flex items-center gap-2 text-gray-500">
-          <span>{project.year}</span>
-          <span>•</span>
-          <span>{firstService}</span>
-        </div>
+        {project.subheadline && (
+          <p className="text-gray-600 line-clamp-2">
+            {project.subheadline}
+          </p>
+        )}
+        {scopeItems.length > 0 && (
+          <div className="flex items-center gap-2 text-gray-500">
+            {scopeItems.map((item, i) => (
+              <span key={i} className="flex items-center gap-2">
+                {i > 0 && <span>•</span>}
+                {item}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </a>
   );

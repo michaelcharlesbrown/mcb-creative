@@ -14,6 +14,7 @@ interface ProjectWithHero {
   services: string[];
   heroImage: string;
   accentColor: string;
+  firstScope?: string;
 }
 
 interface ProjectsScrollProps {
@@ -220,12 +221,12 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
                   : "translate-y-6 opacity-0"
               }`}
             >
-              <div className="max-w-[var(--content-max-width)] mx-auto content-inset py-8 md:py-12 lg:py-16 flex justify-between items-center gap-8">
-                <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-left shrink-0" style={{ fontFamily: "var(--font-bebas-neue)" }}>
+              <div className="max-w-[var(--content-max-width)] mx-auto content-inset py-8 md:py-12 lg:py-16 flex flex-col items-start gap-1">
+                <h2 className="font-bold text-left" style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: '20px', textTransform: 'none' }}>
                   {project.title}
                 </h2>
-                <span className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-right shrink-0 block" style={{ fontFamily: "var(--font-bebas-neue)" }}>
-                  {project.services[0] ?? ""}
+                <span className="font-normal text-left block" style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: '12px' }}>
+                  {project.firstScope ?? project.services[0] ?? ""}
                 </span>
               </div>
             </div>

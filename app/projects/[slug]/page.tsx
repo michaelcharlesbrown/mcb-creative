@@ -98,7 +98,7 @@ export default async function Project({
         </div>
 
         {/* Project Nav Rail */}
-        <div className="max-w-[var(--content-max-width)] mx-auto content-inset mt-8">
+        <div className="max-w-[var(--content-max-width)] mx-auto content-inset mt-8 pb-48">
           <ProjectNavRail currentSlug={slug} />
         </div>
       </main>

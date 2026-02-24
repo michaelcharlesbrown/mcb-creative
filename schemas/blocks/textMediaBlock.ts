@@ -9,7 +9,9 @@ export default defineType({
       name: 'layout',
       title: 'Layout',
       type: 'string',
+      initialValue: 'left',
       options: {
+        layout: 'radio',
         list: [
           { title: 'Text left, media right', value: 'left' },
           { title: 'Text right, media left', value: 'right' },

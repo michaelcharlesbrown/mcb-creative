@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { ImageIcon, PlayIcon } from '@sanity/icons'
 
 export default defineType({
   name: 'fullWidthBlock',
@@ -19,7 +20,14 @@ export default defineType({
     }),
   ],
   preview: {
-    select: { media: 'image' },
-    prepare: ({ media }) => ({ title: 'Full Width', media }),
+    select: { image: 'image', videoFile: 'videoFile' },
+    prepare: ({ image, videoFile }) => {
+      const hasVideo = !!videoFile?.asset
+      return {
+        title: 'Full Width',
+        subtitle: hasVideo ? 'Video' : 'Image',
+        media: hasVideo ? PlayIcon : (image ?? ImageIcon),
+      }
+    },
   },
 })

@@ -209,11 +209,11 @@ export const projects: Project[] = [
     media: [],
   },
   {
-    slug: 'avid',
+    slug: 'protools',
     accentColor: '#cc0000',
-    title: 'Avid',
-    tagline: 'Creative direction and visual design for professional media solutions.',
-    heroTagline: 'Reimagining the visual language for industry-leading media creation tools.',
+    title: 'ProTools',
+    tagline: 'Creative direction and visual design for the industry-standard digital audio workstation.',
+    heroTagline: 'Reimagining the visual language for the world\'s leading professional audio platform.',
     scope: ['Creative Direction', 'Marketing Campaign Design', 'Product UI Concepts'],
     team: [
       'Creative Director - Michael Charles Brown',
@@ -221,13 +221,13 @@ export const projects: Project[] = [
       'Art Director - Lisa Chen',
     ],
     description: [
-      "Avid Technology powers the media and entertainment industry with professional tools used by top studios worldwide. As they evolved their product suite, they needed creative direction that would modernize their visual presence while honoring their reputation for professional excellence.",
-      "We developed campaign concepts and visual directions that speak to both seasoned professionals and the next generation of content creators. Our work emphasizes creativity, precision, and the emotional power of storytelling, reinforcing Avid's position as the standard for media professionals.",
+      "Pro Tools by Avid is the industry-standard digital audio workstation used by top recording studios, mixing engineers, and post-production houses worldwide. As the platform evolved, it needed creative direction that would modernize its visual presence while honoring its legacy of professional excellence.",
+      "We developed campaign concepts and visual directions that speak to both seasoned audio professionals and the next generation of music creators. Our work emphasizes precision, creativity, and the emotional power of sound, reinforcing Pro Tools' position as the definitive standard for professional audio.",
     ],
     year: '2024',
     client: 'Avid Technology',
     services: ['Creative Direction', 'Visual Design', 'Brand Identity'],
-    thumbnail: '/images/projects/avid/thumb.jpg',
+    thumbnail: '/images/projects/protools/thumb.jpg',
     media: [],
   },
   {

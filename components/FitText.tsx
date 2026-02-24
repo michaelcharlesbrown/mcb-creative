@@ -69,6 +69,7 @@ export default function FitText({ text, className = '', style = {}, fontFamily =
           fontSize: `${fontSize}px`,
           lineHeight: 0.82,
           letterSpacing: '-0.02em',
+          textTransform: 'none',
           ...style,
         }}
       >
