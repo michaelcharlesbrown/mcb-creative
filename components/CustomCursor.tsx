@@ -6,6 +6,11 @@ const CURSOR_SIZE = 14;
 const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const isMobileOrTouch = () =>
+  typeof window !== "undefined" &&
+  (window.matchMedia("(pointer: coarse)").matches ||
+    window.matchMedia("(hover: none)").matches);
 const CURSOR_SCALE_HOVER = 2.5;
 const INTERACTIVE_SELECTORS =
   'a, button, input, select, textarea, [role="button"], [href], [onclick]';
@@ -25,7 +30,7 @@ export default function CustomCursor() {
   const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
+    if (prefersReducedMotion() || isMobileOrTouch()) {
       setDisabled(true);
       return;
     }
@@ -87,8 +92,8 @@ export default function CustomCursor() {
         zIndex: 9999,
         opacity: isVisible ? 1 : 0,
         transition: isHovering
-          ? "width 0.5s cubic-bezier(0.32, 0, 0.67, 0), height 0.5s cubic-bezier(0.32, 0, 0.67, 0), opacity 0.15s ease-out"
-          : "width 2s cubic-bezier(0.32, 0, 0.67, 0), height 2s cubic-bezier(0.32, 0, 0.67, 0), opacity 0.15s ease-out",
+          ? "width 0.2s ease-out, height 0.2s ease-out, opacity 0.15s ease-out"
+          : "width 0.25s ease-out, height 0.25s ease-out, opacity 0.15s ease-out",
       }}
     />
   );

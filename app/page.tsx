@@ -15,7 +15,7 @@ export default function Home() {
       <main className="max-w-[var(--content-max-width)] mx-auto">
         {/* Project grid */}
         <section className="content-inset pt-[max(var(--nav-height),4rem)] pb-16 md:pt-[max(var(--nav-height),6rem)] md:pb-24">
-          <h2 className="text-left text-3xl md:text-4xl font-bold mb-8 md:mb-12">Featured Work</h2>
+          <h2 className="text-left text-6xl md:text-7xl font-bold mb-8 md:mb-12">Featured Work</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[8px] gap-y-16 md:gap-y-20">
             {projects.slice(0, 6).map((project) => (
               <ProjectCard key={project.slug} project={project} />
