@@ -25,6 +25,16 @@ export default defineType({
       type: 'color',
     }),
     defineField({
+      name: 'thumbnail',
+      title: 'Portfolio Grid Thumbnail',
+      description: 'Used for the project card in the home page portfolio grid (5:7 aspect ratio recommended).',
+      type: 'image',
+      options: { hotspot: true },
+      fields: [
+        defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
+      ],
+    }),
+    defineField({
       name: 'coverImage',
       title: 'Cover Image',
       type: 'image',

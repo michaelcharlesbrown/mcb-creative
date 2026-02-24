@@ -30,5 +30,7 @@ export const projectsGridQuery = `*[_type=="project" && defined(slug.current)] |
   "slug": slug.current,
   "accentColor": accentColor.hex,
   "subheadline": pageContent[_type=="introBlock"][0].subheadline,
-  "scope": pageContent[_type=="introBlock"][0].scope
+  "scope": pageContent[_type=="introBlock"][0].scope,
+  "thumbnail": thumbnail.asset->url,
+  "thumbnailAlt": thumbnail.alt
 }`;

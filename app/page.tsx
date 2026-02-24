@@ -11,6 +11,8 @@ type SanityGridProject = {
   accentColor?: string;
   subheadline?: string;
   scope?: string[];
+  thumbnail?: string;
+  thumbnailAlt?: string;
 };
 
 export default async function Home() {
@@ -25,6 +27,8 @@ export default async function Home() {
       accentColor: sanity?.accentColor ?? project.accentColor,
       subheadline: sanity?.subheadline,
       scope: sanity?.scope ?? project.services,
+      thumbnail: sanity?.thumbnail ?? project.thumbnail,
+      thumbnailAlt: sanity?.thumbnailAlt,
     };
   });
 

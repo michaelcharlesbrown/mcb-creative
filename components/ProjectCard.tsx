@@ -5,7 +5,7 @@ import { Project } from "@/data/projects";
 import { useNavigateWithTransition } from "@/components/transitions/useNavigateWithTransition";
 
 interface ProjectCardProps {
-  project: Project & { subheadline?: string; scope?: string[] };
+  project: Project & { subheadline?: string; scope?: string[]; thumbnailAlt?: string };
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
@@ -22,7 +22,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         <div className="relative w-full h-full">
           <Image
             src={project.thumbnail}
-            alt={project.title}
+            alt={project.thumbnailAlt ?? project.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
