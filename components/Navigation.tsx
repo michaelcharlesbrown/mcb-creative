@@ -18,10 +18,7 @@ export default function Navigation() {
         <a
           href="/"
           className="nav__logo flex items-center text-white"
-          onClick={(e) => {
-            e.preventDefault();
-            navigateWithTransition("/");
-          }}
+          onClick={(e) => { e.preventDefault(); navigateWithTransition("/"); }}
         >
           <Image
             src="/images/mcb-creative-logo.svg"
@@ -35,10 +32,7 @@ export default function Navigation() {
           <a
             href="/projects"
             className={pathname === "/projects" ? "underline" : ""}
-            onClick={(e) => {
-              e.preventDefault();
-              navigateWithTransition("/projects");
-            }}
+            onClick={(e) => { e.preventDefault(); navigateWithTransition("/projects"); }}
           >
             WORK
           </a>
@@ -46,10 +40,7 @@ export default function Navigation() {
           <a
             href="/info"
             className={pathname === "/info" ? "underline" : ""}
-            onClick={(e) => {
-              e.preventDefault();
-              navigateWithTransition("/info");
-            }}
+            onClick={(e) => { e.preventDefault(); navigateWithTransition("/info"); }}
           >
             INFO
           </a>

@@ -19,6 +19,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'accentColor',
+      title: 'Accent Color',
+      description: 'Used for the page transition wipe when navigating to this project.',
+      type: 'color',
+    }),
+    defineField({
       name: 'coverImage',
       title: 'Cover Image',
       type: 'image',

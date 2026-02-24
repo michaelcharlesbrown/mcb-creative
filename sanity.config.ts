@@ -1,6 +1,7 @@
 import { defineConfig } from 'sanity'
 import { deskTool } from 'sanity/desk'
 import { media } from 'sanity-plugin-media'
+import { colorInput } from '@sanity/color-input'
 import project from './schemas/project'
 import introBlock from './schemas/blocks/introBlock'
 import fullWidthBlock from './schemas/blocks/fullWidthBlock'
@@ -27,5 +28,5 @@ export default defineConfig({
   schema: {
     types: [project, introBlock, fullWidthBlock, twoColumnBlock, textMediaBlock],
   },
-  plugins: [deskTool(), media()],
+  plugins: [deskTool(), media(), colorInput()],
 })

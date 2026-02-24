@@ -18,6 +18,8 @@ export interface Project {
   services: string[];
   thumbnail: string;
   media: MediaRow[];
+  /** Accent color used for page transition wipe */
+  accentColor: string;
   /** Hero intro tagline (shorter than main tagline) - used in project hero */
   heroTagline?: string;
   /** Scope items for hero (e.g. "Visual Design System") */
@@ -33,6 +35,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     slug: 'bittorrent',
+    accentColor: '#00c853',
     title: 'BitTorrent',
     tagline: 'Brand refresh and website redesign for one of the original pioneers of the internet.',
     heroTagline: 'Updating a classic brand for one of the original pioneers of the internet.',
@@ -99,6 +102,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'shiftdrink',
+    accentColor: '#ff6b00',
     title: 'ShiftDrink',
     tagline: 'Brand identity and digital experience for a modern beverage company.',
     heroImage: '/images/projects/shiftdrink/08-full.jpg',
@@ -184,6 +188,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'alluvial',
+    accentColor: '#1a73e8',
     title: 'Alluvial',
     tagline: 'Visual identity and digital platform design for a forward-thinking technology company.',
     heroTagline: 'Crafting a sophisticated brand for institutional blockchain infrastructure.',
@@ -205,6 +210,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'avid',
+    accentColor: '#cc0000',
     title: 'Avid',
     tagline: 'Creative direction and visual design for professional media solutions.',
     heroTagline: 'Reimagining the visual language for industry-leading media creation tools.',
@@ -226,6 +232,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'mad-denizen',
+    accentColor: '#7c3aed',
     title: 'Mad Denizen',
     tagline: 'Brand identity and visual design for an independent music label.',
     heroTagline: 'Creating a bold visual identity for underground electronic music culture.',
@@ -247,6 +254,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'rainberry',
+    accentColor: '#00bcd4',
     title: 'Rainberry',
     tagline: 'Complete brand identity and digital experience design.',
     heroTagline: 'Launching a consumer technology brand with clarity and confidence.',
@@ -268,6 +276,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'utorrent',
+    accentColor: '#26a69a',
     title: 'uTorrent',
     tagline: 'Brand refresh and user experience redesign for a leading file-sharing platform.',
     heroTagline: 'Modernizing the interface for millions of users worldwide.',
@@ -289,6 +298,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'red-moon-apostles',
+    accentColor: '#b71c1c',
     title: 'Red Moon Apostles',
     tagline: 'Brand identity and visual design.',
     heroTagline: 'Developing a distinctive visual identity for an emerging rock band.',

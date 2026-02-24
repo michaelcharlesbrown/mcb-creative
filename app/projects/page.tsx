@@ -9,6 +9,7 @@ export default function Projects() {
     return {
       ...project,
       heroImage,
+      accentColor: project.accentColor,
     };
   });
 

@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { sanityFetch } from "@/lib/sanity.fetch";
 import { projectBySlugQuery } from "@/lib/sanity.queries";
 import BlockRenderer, { type PageContentBlock } from "@/components/blocks/BlockRenderer";
 import MediaBlock from "@/components/blocks/MediaBlock";
 import ProjectNavRail from "@/components/ProjectNavRail";
+import ProjectNavLinks from "@/components/ProjectNavLinks";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
@@ -11,13 +11,14 @@ export const dynamic = "force-dynamic";
 export type SanityProject = {
   title: string;
   slug: string;
+  accentColor?: string;
   coverImage?: { alt?: string; asset?: { url: string } };
   pageContent?: PageContentBlock[];
 };
 
 async function getAdjacentProjectsFromSanity(slug: string) {
-  const projectList = await sanityFetch<{ slug: string; title: string }[]>(
-    `*[_type=="project" && defined(slug.current)]|order(_createdAt asc){ "slug": slug.current, title }`
+  const projectList = await sanityFetch<{ slug: string; title: string; accentColor?: string }[]>(
+    `*[_type=="project" && defined(slug.current)]|order(_createdAt asc){ "slug": slug.current, title, "accentColor": accentColor.hex }`
   );
   const currentIndex = projectList.findIndex((p) => p.slug === slug);
 
@@ -93,36 +94,7 @@ export default async function Project({
           </div>
 
           {/* Next/Previous Navigation */}
-          <section className="mt-16 mb-16 md:mb-24">
-            <div className="flex justify-between items-center gap-8">
-              {previous ? (
-                <Link
-                  href={`/projects/${previous.slug}`}
-                  className="flex-1 group"
-                >
-                  <div className="text-gray-500 mb-2">Previous Project</div>
-                  <div className="font-bold font-display text-5xl md:text-6xl group-hover:underline">
-                    {previous.title}
-                  </div>
-                </Link>
-              ) : (
-                <div className="flex-1" />
-              )}
-              {next ? (
-                <Link
-                  href={`/projects/${next.slug}`}
-                  className="flex-1 text-right group"
-                >
-                  <div className="text-gray-500 mb-2">Next Project</div>
-                  <div className="font-bold font-display text-5xl md:text-6xl group-hover:underline">
-                    {next.title}
-                  </div>
-                </Link>
-              ) : (
-                <div className="flex-1" />
-              )}
-            </div>
-          </section>
+          <ProjectNavLinks previous={previous} next={next} />
         </div>
 
         {/* Project Nav Rail */}

@@ -2,18 +2,16 @@
 
 import { createContext, useContext, useState, useCallback } from "react";
 
-export type TransitionVariant = "triple" | "simple" | "duo" | "content";
-
 interface TransitionController {
   playCover: () => Promise<void>;
   playReveal: () => Promise<void>;
-  setVariant: (v: TransitionVariant) => void;
+  setAccentColor: (color: string) => void;
 }
 
 const defaultController: TransitionController = {
   playCover: () => Promise.resolve(),
   playReveal: () => Promise.resolve(),
-  setVariant: () => {},
+  setAccentColor: () => {},
 };
 
 const TransitionContext = createContext<{

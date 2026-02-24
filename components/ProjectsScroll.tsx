@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
-import Link from "next/link";
 import Image from "next/image";
+import { useNavigateWithTransition } from "@/components/transitions/useNavigateWithTransition";
 
 interface ProjectWithHero {
   slug: string;
@@ -13,6 +13,7 @@ interface ProjectWithHero {
   year: string;
   services: string[];
   heroImage: string;
+  accentColor: string;
 }
 
 interface ProjectsScrollProps {
@@ -20,6 +21,7 @@ interface ProjectsScrollProps {
 }
 
 export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
+  const { navigateWithTransition } = useNavigateWithTransition();
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
   const isScrollingRef = useRef(false);
@@ -189,9 +191,10 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
           }}
           data-index={index}
         >
-          <Link
+          <a
             href={`/projects/${project.slug}`}
             className="block w-full h-full relative group"
+            onClick={(e) => { e.preventDefault(); navigateWithTransition(`/projects/${project.slug}`, project.accentColor); }}
           >
             {/* Hero Image */}
             <div className="absolute inset-0">
@@ -227,7 +230,7 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
               </div>
             </div>
 
-          </Link>
+          </a>
         </section>
       ))}
     </div>

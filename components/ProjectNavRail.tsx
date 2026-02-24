@@ -3,14 +3,15 @@
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
-import Link from "next/link";
 import { projects } from "@/data/projects";
+import { useNavigateWithTransition } from "@/components/transitions/useNavigateWithTransition";
 
 interface ProjectNavRailProps {
   currentSlug?: string;
 }
 
 export default function ProjectNavRail({ currentSlug }: ProjectNavRailProps) {
+  const { navigateWithTransition } = useNavigateWithTransition();
   const cards = projects.filter((p) => p.slug !== currentSlug);
 
   const [emblaRef] = useEmblaCarousel(
@@ -27,11 +28,12 @@ export default function ProjectNavRail({ currentSlug }: ProjectNavRailProps) {
             className="carousel-slide"
             style={{ flex: "0 0 25%", minWidth: 0, paddingLeft: 4, paddingRight: 4 }}
           >
-            <Link
+            <a
               href={`/projects/${project.slug}`}
               className="block group"
               draggable={false}
               onDragStart={(e) => e.preventDefault()}
+              onClick={(e) => { e.preventDefault(); navigateWithTransition(`/projects/${project.slug}`, project.accentColor); }}
             >
               <div
                 className="relative w-full overflow-hidden rounded-sm"
@@ -49,7 +51,7 @@ export default function ProjectNavRail({ currentSlug }: ProjectNavRailProps) {
               <div className="pt-2">
                 <h3 className="font-bold truncate text-3xl">{project.title}</h3>
               </div>
-            </Link>
+            </a>
           </div>
         ))}
       </div>
