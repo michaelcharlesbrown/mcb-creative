@@ -40,16 +40,6 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             {project.subheadline}
           </p>
         )}
-        {scopeItems.length > 0 && (
-          <div className="flex items-center gap-2 text-gray-500">
-            {scopeItems.map((item, i) => (
-              <span key={i} className="flex items-center gap-2">
-                {i > 0 && <span>•</span>}
-                {item}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
     </a>
   );

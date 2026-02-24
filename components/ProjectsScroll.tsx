@@ -13,6 +13,7 @@ interface ProjectWithHero {
   year: string;
   services: string[];
   heroImage: string;
+  thumbnail: string;
   accentColor: string;
   firstScope?: string;
 }
@@ -197,8 +198,8 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
             className="block w-full h-full relative group"
             onClick={(e) => { e.preventDefault(); navigateWithTransition(`/projects/${project.slug}`, project.accentColor); }}
           >
-            {/* Hero Image */}
-            <div className="absolute inset-0">
+            {/* Hero Image - desktop: full bleed landscape */}
+            <div className="absolute inset-0 hidden md:block">
               <Image
                 src={project.heroImage}
                 alt={project.title}
@@ -207,7 +208,18 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
                 className="object-cover"
                 priority={index >= projects.length && index < projects.length + 3}
               />
-              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+            </div>
+            {/* Thumbnail - mobile: portrait format fills screen, centered and cropped */}
+            <div className="absolute inset-0 md:hidden">
+              <Image
+                src={project.thumbnail}
+                alt={project.title}
+                fill
+                sizes="100vw"
+                className="object-cover"
+                priority={index >= projects.length && index < projects.length + 3}
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
             </div>
 

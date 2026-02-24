@@ -186,15 +186,12 @@ img {
   margin: 0;
   padding: 0;
   font-family: var(--font-ibm-plex-mono) !important;
-  font-size: var(--about-blurb-font-size) !important;
-  line-height: 0.95 !important;
   font-weight: 400 !important;
-  letter-spacing: -0.04em;
   color: var(--color-white) !important;
   text-align: left;
   text-transform: uppercase;
   width: 100%;
-  max-width: calc(100% - 80px);
+  max-width: calc(100% - 35px);
 }
 
 .about-blurb__word {
@@ -212,6 +209,10 @@ img {
 }
 
 @media (max-width: 768px) {
+  .about-blurb {
+    min-height: unset;
+    padding: clamp(3rem, 8vh, 5rem) 0;
+  }
   .about-blurb__text {
     grid-column: 1 / -1;
     max-width: 100%;
