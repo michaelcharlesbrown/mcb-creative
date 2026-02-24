@@ -3,14 +3,22 @@
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
-import { projects } from "@/data/projects";
 import { useNavigateWithTransition } from "@/components/transitions/useNavigateWithTransition";
+
+export interface NavRailProject {
+  slug: string;
+  title: string;
+  accentColor?: string;
+  thumbnail: string;
+  thumbnailAlt?: string;
+}
 
 interface ProjectNavRailProps {
   currentSlug?: string;
+  projects: NavRailProject[];
 }
 
-export default function ProjectNavRail({ currentSlug }: ProjectNavRailProps) {
+export default function ProjectNavRail({ currentSlug, projects }: ProjectNavRailProps) {
   const { navigateWithTransition } = useNavigateWithTransition();
   const cards = projects.filter((p) => p.slug !== currentSlug);
 
@@ -41,7 +49,7 @@ export default function ProjectNavRail({ currentSlug }: ProjectNavRailProps) {
               >
                 <Image
                   src={project.thumbnail}
-                  alt={project.title}
+                  alt={project.thumbnailAlt ?? project.title}
                   fill
                   sizes="25vw"
                   draggable={false}
