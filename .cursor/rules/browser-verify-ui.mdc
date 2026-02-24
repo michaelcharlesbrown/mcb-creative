@@ -1,0 +1,16 @@
+---
+description: Verify UI changes in browser after frontend edits
+globs: "**/*.tsx,**/*.css,app/**/*"
+alwaysApply: false
+---
+
+# Browser Verification for UI Changes
+
+When making changes to UI components, layout, or styles:
+
+1. Ensure the dev server is running (`npm run dev` on port 3002)
+2. Use MCP browser tools (cursor-ide-browser, Playwright, or Puppeteer) to navigate to http://localhost:3002
+3. Take a full-page screenshot to visually verify the result
+4. Use browser_snapshot to inspect DOM structure when needed
+5. Check for layout issues (gaps, alignment, overflow, missing spaces)
+6. If issues are found, fix and re-verify in the browser
