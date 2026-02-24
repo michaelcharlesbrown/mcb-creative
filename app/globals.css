@@ -214,6 +214,7 @@ img {
 @media (max-width: 768px) {
   .about-blurb__text {
     grid-column: 1 / -1;
+    max-width: 100%;
   }
 }
 

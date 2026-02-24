@@ -147,7 +147,7 @@ export default function HeroSection() {
                 className="hero__subtitle mt-3 text-[12px] uppercase tracking-wide font-[var(--font-mono)] leading-relaxed text-black"
                 style={{ animation: "none", opacity: 0 }}
               >
-                Independent design studio of Michael Charles Brown
+                Independent design studio of<br className="md:hidden" /> Michael Charles Brown
               </p>
             </div>
           </div>
