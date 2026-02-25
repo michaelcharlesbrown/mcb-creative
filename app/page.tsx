@@ -13,24 +13,38 @@ type SanityGridProject = {
   scope?: string[];
   thumbnail?: string;
   thumbnailAlt?: string;
+  gridPosition?: number;
 };
 
 export default async function Home() {
   const sanityProjects = await sanityFetch<SanityGridProject[]>(projectsGridQuery).catch(() => []);
 
-  const sanityBySlug = Object.fromEntries(sanityProjects.map((p) => [p.slug, p]));
+  const staticBySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
 
-  const mergedProjects = projects.slice(0, 6).map((project) => {
-    const sanity = sanityBySlug[project.slug];
-    return {
-      ...project,
-      accentColor: sanity?.accentColor ?? project.accentColor,
-      subheadline: sanity?.subheadline,
-      scope: sanity?.scope ?? project.services,
-      thumbnail: sanity?.thumbnail ?? project.thumbnail,
-      thumbnailAlt: sanity?.thumbnailAlt,
-    };
-  });
+  // If Sanity has grid projects configured, use them as the ordered source of truth.
+  // Otherwise fall back to the first 6 static projects.
+  const mergedProjects = sanityProjects.length > 0
+    ? sanityProjects.map((sanity) => {
+        const staticProject = staticBySlug[sanity.slug];
+        return {
+          slug: sanity.slug,
+          title: sanity.title ?? staticProject?.title ?? '',
+          accentColor: sanity.accentColor ?? staticProject?.accentColor ?? '',
+          subheadline: sanity.subheadline ?? staticProject?.tagline,
+          scope: sanity.scope ?? staticProject?.services ?? [],
+          thumbnail: sanity.thumbnail ?? staticProject?.thumbnail ?? '',
+          thumbnailAlt: sanity.thumbnailAlt,
+        };
+      })
+    : projects.slice(0, 6).map((project) => ({
+        slug: project.slug,
+        title: project.title,
+        accentColor: project.accentColor,
+        subheadline: project.tagline,
+        scope: project.services,
+        thumbnail: project.thumbnail,
+        thumbnailAlt: undefined,
+      }));
 
   return (
     <div className="home min-h-screen bg-background text-black">

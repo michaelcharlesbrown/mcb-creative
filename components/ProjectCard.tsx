@@ -1,11 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { Project } from "@/data/projects";
 import { useNavigateWithTransition } from "@/components/transitions/useNavigateWithTransition";
 
 interface ProjectCardProps {
-  project: Project & { subheadline?: string; scope?: string[]; thumbnailAlt?: string };
+  project: {
+    slug: string;
+    title: string;
+    accentColor: string;
+    thumbnail: string;
+    thumbnailAlt?: string;
+    subheadline?: string;
+    scope?: string[];
+    services?: string[];
+  };
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
