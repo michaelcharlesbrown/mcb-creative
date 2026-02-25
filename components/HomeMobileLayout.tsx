@@ -27,6 +27,17 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
   const { navigateWithTransition } = useNavigateWithTransition();
 
+  // Lock body scroll on mobile so the snap container handles all scrolling
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    if (mq.matches) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
   // Track which card section is most visible within the scroll container
   useEffect(() => {
     const cards = cardRefs.current.filter(Boolean) as HTMLElement[];
