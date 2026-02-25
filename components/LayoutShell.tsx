@@ -17,6 +17,8 @@ export default function LayoutShell({
     return <>{children}</>;
   }
 
+  const isHomePage = pathname === "/";
+
   return (
     <>
       <CustomCursor />
@@ -24,7 +26,7 @@ export default function LayoutShell({
         <Navigation />
         {children}
       </TransitionWrapper>
-      <Footer />
+      {!isHomePage && <Footer />}
     </>
   );
 }
