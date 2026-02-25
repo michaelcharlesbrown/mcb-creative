@@ -35,6 +35,14 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'gridPosition',
+      title: 'Homepage Grid Position',
+      description: 'Set a number (1–6) to feature this project in the homepage grid at that slot. Leave blank to exclude from the grid.',
+      type: 'number',
+      validation: (Rule) =>
+        Rule.min(1).max(6).integer().warning('Must be a whole number between 1 and 6.'),
+    }),
+    defineField({
       name: 'coverImage',
       title: 'Cover Image',
       type: 'image',
