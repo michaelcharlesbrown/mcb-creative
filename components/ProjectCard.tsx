@@ -12,13 +12,11 @@ interface ProjectCardProps {
     thumbnailAlt?: string;
     subheadline?: string;
     scope?: string[];
-    services?: string[];
   };
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   const { navigateWithTransition } = useNavigateWithTransition();
-  const scopeItems = project.scope ?? project.services;
 
   return (
     <a
