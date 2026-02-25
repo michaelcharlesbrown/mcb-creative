@@ -25,7 +25,7 @@ export const projectSlugsQuery = `*[_type=="project" && defined(slug.current)][]
   "slug": slug.current
 }`;
 
-export const projectsGridQuery = `*[_type=="project" && defined(slug.current)] | order(_createdAt asc) {
+export const projectsGridQuery = `*[_type=="project" && defined(slug.current) && defined(gridPosition)] | order(gridPosition asc) {
   title,
   "slug": slug.current,
   "accentColor": accentColor.hex,
