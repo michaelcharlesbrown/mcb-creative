@@ -9,7 +9,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 const HERO_VIDEO_SRC = "/video/hero-placeholder-test.mp4";
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  disableScrollTrigger?: boolean;
+}
+
+export default function HeroSection({ disableScrollTrigger = false }: HeroSectionProps) {
   const heroRef     = useRef<HTMLElement>(null);
   const grayRef     = useRef<HTMLDivElement>(null);
   const overlayRef  = useRef<HTMLDivElement>(null);
@@ -53,6 +57,7 @@ export default function HeroSection() {
       const tl = gsap.timeline({
         defaults: { ease: "power3.out" },
         onComplete: () => {
+          if (disableScrollTrigger) return;
 
           // ── Hand off to ScrollTrigger ────────────────────────────────
           // Both panels move together from -25 → -100 on scroll
@@ -94,7 +99,7 @@ export default function HeroSection() {
     }, hero);
 
     return () => ctx.revert();
-  }, []);
+  }, [disableScrollTrigger]);
 
   return (
     <section
