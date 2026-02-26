@@ -78,7 +78,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
         className={`fixed z-40 pointer-events-none transition-all duration-700 ease-out md:hidden ${
           isInCardZone ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         }`}
-        style={{ top: "calc(var(--nav-height, 92px) + 0.5rem)", left: 0, right: 0 }}
+        style={{ top: "calc(var(--nav-height, 60px) + 0.5rem)", left: 0, right: 0 }}
       >
         <p
           className="content-inset text-black font-bold uppercase"
@@ -120,7 +120,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
               }}
             >
               {/* Spacer: clears fixed nav + "Featured Work" label */}
-              <div style={{ height: "calc(var(--nav-height, 92px) + 2rem)" }} className="flex-shrink-0" />
+              <div style={{ height: "calc(var(--nav-height, 60px) + 2.5rem)" }} className="flex-shrink-0" />
 
               {/* Thumbnail — fills remaining space above text */}
               <div className="flex-1 relative mx-[var(--content-inset)] rounded-[4px] overflow-hidden min-h-0">
