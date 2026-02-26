@@ -41,7 +41,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
       {/* Featured Work — full viewport section like About, card peek on right */}
       <section className="flex-shrink-0 bg-background min-h-dvh flex flex-col justify-center">
         <div className="content-inset py-10">
-          <h2 className="mb-6" style={{ fontSize: "16px", fontWeight: 400 }}>
+          <h2 className="mb-6 text-heading-sm font-normal">
             Featured Work
           </h2>
           <ProjectNavRail projects={projects} variant="homepage" />
