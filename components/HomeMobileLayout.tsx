@@ -62,7 +62,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
       ([entry]) => {
         if (entry.isIntersecting) setActiveCardIndex(null);
       },
-      { root: scrollContainerRef.current, threshold: 0.3 }
+      { root: scrollContainerRef.current, threshold: 0 }
     );
 
     observer.observe(sentinel);
@@ -149,12 +149,12 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
               >
                 <h2
                   className="text-black font-bold uppercase"
-                  style={{ fontSize: "16px", letterSpacing: "-0.04em" }}
+                  style={{ fontSize: "16px", letterSpacing: "-0.04em", fontFamily: "var(--font-ibm-plex-mono)" }}
                 >
                   {project.title}
                 </h2>
                 {project.subheadline && (
-                  <p className="text-black mt-1" style={{ fontSize: "12px" }}>
+                  <p className="text-black mt-1" style={{ fontSize: "12px", fontFamily: "var(--font-ibm-plex-mono)" }}>
                     {project.subheadline}
                   </p>
                 )}
@@ -164,7 +164,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
         ))}
 
         {/* Footer sentinel — detects when footer enters view to hide "Featured Work" label */}
-        <div ref={footerSentinelRef} />
+        <div ref={footerSentinelRef} style={{ height: "1px" }} />
 
         {/* Footer snap section */}
         <section className="snap-start flex-shrink-0">
