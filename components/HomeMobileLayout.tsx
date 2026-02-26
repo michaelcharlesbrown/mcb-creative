@@ -99,7 +99,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
         </section>
 
         {/* Section 2: About */}
-        <section className="h-screen snap-start flex-shrink-0 flex items-center bg-background">
+        <section className="snap-start flex-shrink-0">
           <AboutBlurb />
         </section>
 
