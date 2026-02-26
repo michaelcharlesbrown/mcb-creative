@@ -30,7 +30,7 @@
   --text-heading-sm:         16px;                          /* SCOPE/TEAM, mobile headings */
   --text-heading-lg:         20px;                          /* desktop "Featured Work", ProjectsScroll */
   --text-display-md:         clamp(1.75rem, 2.4vw, 3rem);  /* TextMediaBlock h2 */
-  --text-display-lg:         clamp(1.75rem, 2.5vw, 3rem);  /* AboutBlurb, info page */
+  --text-display-lg:         clamp(1.92rem, 5vw, 5.76rem); /* AboutBlurb, info page — 24px→72px */
   --text-display-xl:         clamp(3rem, 7.5vw, 17.5rem);  /* .intro giant text */
   --text-hero:               clamp(3rem, 10vw, 171px);      /* .hero__headline */
   --text-hero-minimal:       max(3rem, calc(100vw / 5.5)); /* minimal hero variant */
