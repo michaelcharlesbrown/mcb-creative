@@ -33,14 +33,15 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  // Add scroll-snap-type to html element on mount; remove on unmount
+  // Add scroll-snap-type to html element — only when desktop
   useEffect(() => {
+    if (!isDesktop) return;
     const html = document.documentElement;
     html.style.scrollSnapType = "y proximity";
     return () => {
       html.style.scrollSnapType = "";
     };
-  }, []);
+  }, [isDesktop]);
 
   // Stagger animation: fire once when grid section enters viewport
   useEffect(() => {
@@ -59,7 +60,7 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [isDesktop]); // re-run after isDesktop changes so gridRef is attached
 
   // Don't render on mobile or during SSR
   if (!isDesktop) return null;
