@@ -136,6 +136,22 @@ img {
   padding-right: var(--content-inset);
 }
 
+/* Project nav rail: 20px gap, slide widths account for gaps for proper alignment */
+.nav-rail--homepage .carousel-slide {
+  flex: 0 0 85%;
+}
+.nav-rail--rail .carousel-slide {
+  flex: 0 0 55%;
+}
+@media (min-width: 768px) {
+  .nav-rail--homepage .carousel-slide {
+    flex: 0 0 calc((100% - 40px) / 3); /* 3 cards, 2 gaps of 20px */
+  }
+  .nav-rail--rail .carousel-slide {
+    flex: 0 0 calc((100% - 60px) / 4); /* 4 cards, 3 gaps of 20px */
+  }
+}
+
 /* ========== Navigation (header) - slide down into place on load ========== */
 .nav {
   opacity: 0;
@@ -153,6 +169,7 @@ img {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
   min-height: 100vh;
   margin-top: -150px;
   background: var(--dark-background);
@@ -358,7 +375,7 @@ img {
 .hero__headline {
   font-family: 'Clash Display', var(--font-bebas-neue) !important;
   text-transform: none !important;
-  font-size: clamp(3rem, 10vw, 171px);
+  font-size: clamp(3.5rem, 12vw, 200px);
   font-weight: 600;
   line-height: 0.95;
   color: var(--color-black);

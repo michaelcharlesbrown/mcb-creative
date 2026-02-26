@@ -32,16 +32,12 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
   );
 
   return (
-    <div className="w-full overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
-      <div className="flex">
+    <div className={`nav-rail ${isHomepage ? "nav-rail--homepage" : "nav-rail--rail"} w-full overflow-hidden cursor-grab active:cursor-grabbing`} ref={emblaRef}>
+      <div className="flex gap-5">
         {cards.map((project) => (
           <div
             key={project.slug}
-            className={`carousel-slide min-w-0 ${
-              isHomepage
-                ? "flex-[0_0_85%] pl-0 pr-4 md:flex-[0_0_33.333%] md:px-1"
-                : "flex-[0_0_55%] pl-0 pr-4 md:flex-[0_0_25%] md:px-1"
-            }`}
+            className="carousel-slide min-w-0 last:mr-5"
           >
             <a
               href={`/projects/${project.slug}`}

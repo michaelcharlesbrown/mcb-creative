@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import GrainCanvas from "@/components/GrainCanvas";
+import FitText from "@/components/FitText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,7 +18,7 @@ export default function HeroSection({ disableScrollTrigger = false }: HeroSectio
   const heroRef     = useRef<HTMLElement>(null);
   const grayRef     = useRef<HTMLDivElement>(null);
   const overlayRef  = useRef<HTMLDivElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const headlineRef = useRef<HTMLDivElement>(null);
   const taglineRef  = useRef<HTMLParagraphElement>(null);
   const videoRef    = useRef<HTMLVideoElement>(null);
 
@@ -140,13 +141,21 @@ export default function HeroSection({ disableScrollTrigger = false }: HeroSectio
               className="hero__headline-wrap"
               style={{ animation: "none", opacity: 1 }}
             >
-              <h1
-                ref={headlineRef}
-                className="hero__headline"
-                style={{ animation: "none", opacity: 0 }}
-              >
-                MCB Creative
-              </h1>
+              {/* Headline: FitText on mobile (same as footer), h1 on desktop */}
+              <div ref={headlineRef} style={{ animation: "none", opacity: 0 }}>
+                <div className="md:hidden">
+                  <FitText
+                    text="MCB Creative"
+                    as="h1"
+                    fontFamily="'Clash Display', var(--font-bebas-neue)"
+                    sizeScale={0.98}
+                    style={{ color: "var(--color-black)", fontWeight: 600, textAlign: "left" }}
+                  />
+                </div>
+                <h1 className="hero__headline hidden md:block">
+                  MCB Creative
+                </h1>
+              </div>
               <p
                 ref={taglineRef}
                 className="hero__subtitle mt-3 text-[12px] uppercase tracking-wide font-[var(--font-mono)] leading-relaxed text-black"

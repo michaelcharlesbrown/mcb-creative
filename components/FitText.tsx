@@ -8,11 +8,12 @@ interface FitTextProps {
   style?: React.CSSProperties
   fontFamily?: string
   sizeScale?: number
+  as?: 'h1' | 'h2'
 }
 
 const MEASURE_FONT_SIZE = 100
 
-export default function FitText({ text, className = '', style = {}, fontFamily = 'var(--font-bebas-neue)', sizeScale = 1 }: FitTextProps) {
+export default function FitText({ text, className = '', style = {}, fontFamily = 'var(--font-bebas-neue)', sizeScale = 1, as: Tag = 'h2' }: FitTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const measureRef = useRef<HTMLSpanElement>(null)
   const [fontSize, setFontSize] = useState(1)
@@ -60,7 +61,7 @@ export default function FitText({ text, className = '', style = {}, fontFamily =
       >
         {text}
       </span>
-      <h2
+      <Tag
         className="select-none whitespace-nowrap w-full"
         style={{
           opacity: isReady ? 1 : 0,
@@ -74,7 +75,7 @@ export default function FitText({ text, className = '', style = {}, fontFamily =
         }}
       >
         {text}
-      </h2>
+      </Tag>
     </div>
   )
 }
