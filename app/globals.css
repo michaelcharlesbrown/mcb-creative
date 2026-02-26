@@ -147,13 +147,14 @@ img {
 /* Pull up to close gap from parallax offset (legacy hero with video) */
 .home .about-blurb {
   margin-top: 0;
+  height: 100%;
 }
 
 .about-blurb {
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 100vh;
+  min-height: 100dvh;
   margin-top: -150px;
   background: var(--dark-background);
   color: var(--color-white);
