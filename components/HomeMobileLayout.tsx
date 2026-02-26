@@ -38,9 +38,9 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
         <AboutBlurb />
       </section>
 
-      {/* Featured Work */}
-      <section className="flex-shrink-0 bg-background">
-        <div className="content-inset pt-10 pb-12">
+      {/* Featured Work — full viewport section like About, card peek on right */}
+      <section className="flex-shrink-0 bg-background min-h-dvh flex flex-col justify-center">
+        <div className="content-inset py-10">
           <h2 className="mb-6" style={{ fontSize: "16px", fontWeight: 400 }}>
             Featured Work
           </h2>

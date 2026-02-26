@@ -37,13 +37,11 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
         {cards.map((project) => (
           <div
             key={project.slug}
-            className="carousel-slide"
-            style={{
-              flex: isHomepage ? "0 0 33.333%" : "0 0 25%",
-              minWidth: 0,
-              paddingLeft: 4,
-              paddingRight: 4,
-            }}
+            className={`carousel-slide min-w-0 ${
+              isHomepage
+                ? "flex-[0_0_85%] pl-0 pr-4 md:flex-[0_0_33.333%] md:px-1"
+                : "flex-[0_0_55%] pl-0 pr-4 md:flex-[0_0_25%] md:px-1"
+            }`}
           >
             <a
               href={`/projects/${project.slug}`}
@@ -60,7 +58,7 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
                   src={project.thumbnail}
                   alt={project.thumbnailAlt ?? project.title}
                   fill
-                  sizes={isHomepage ? "33vw" : "25vw"}
+                  sizes={isHomepage ? "(max-width: 767px) 85vw, 33vw" : "(max-width: 767px) 55vw, 25vw"}
                   draggable={false}
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
