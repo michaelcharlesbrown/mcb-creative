@@ -78,7 +78,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
         className={`fixed z-40 pointer-events-none transition-all duration-700 ease-out md:hidden ${
           isInCardZone ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         }`}
-        style={{ top: "calc(var(--nav-height, 92px) + 1.5rem)", left: 0, right: 0 }}
+        style={{ top: "calc(var(--nav-height, 92px) + 0.5rem)", left: 0, right: 0 }}
       >
         <p
           className="content-inset text-black font-bold uppercase"
@@ -109,7 +109,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
             key={project.slug}
             ref={(el) => { cardRefs.current[i] = el; }}
             data-card-index={i}
-            className="h-screen snap-start flex-shrink-0 relative bg-background overflow-hidden"
+            className="h-dvh snap-start flex-shrink-0 relative bg-background overflow-hidden"
           >
             <a
               href={`/projects/${project.slug}`}
@@ -120,7 +120,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
               }}
             >
               {/* Spacer: clears fixed nav + "Featured Work" label */}
-              <div style={{ height: "calc(var(--nav-height, 92px) + 3.5rem)" }} className="flex-shrink-0" />
+              <div style={{ height: "calc(var(--nav-height, 92px) + 2rem)" }} className="flex-shrink-0" />
 
               {/* Thumbnail — fills remaining space above text */}
               <div className="flex-1 relative mx-[var(--content-inset)] rounded-[4px] overflow-hidden min-h-0">
@@ -136,7 +136,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
 
               {/* Title + subheadline — slip in from below when card is active */}
               <div
-                className={`flex-shrink-0 pt-4 pb-8 transition-all duration-700 ease-out ${
+                className={`flex-shrink-0 pt-3 pb-4 transition-all duration-700 ease-out ${
                   activeCardIndex === i
                     ? "translate-y-0 opacity-100"
                     : "translate-y-6 opacity-0"
