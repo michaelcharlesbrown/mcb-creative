@@ -23,6 +23,15 @@ interface HomeDesktopLayoutProps {
 export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) {
   const gridRef = useRef<HTMLDivElement>(null);
   const [gridInView, setGridInView] = useState(false);
+  const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   // Add scroll-snap-type to html element on mount; remove on unmount
   useEffect(() => {
@@ -52,8 +61,11 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
     return () => observer.disconnect();
   }, []);
 
+  // Don't render on mobile or during SSR
+  if (!isDesktop) return null;
+
   return (
-    <div className="hidden md:block">
+    <div className="bg-background">
       {/* Hero — GSAP ScrollTrigger pin provides snap-like feel; wrap in snap-start */}
       <div style={{ scrollSnapAlign: "start" }}>
         <HeroSection />
