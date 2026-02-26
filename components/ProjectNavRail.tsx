@@ -11,16 +11,20 @@ export interface NavRailProject {
   accentColor?: string;
   thumbnail: string;
   thumbnailAlt?: string;
+  subheadline?: string;
 }
 
 interface ProjectNavRailProps {
   currentSlug?: string;
   projects: NavRailProject[];
+  variant?: "rail" | "homepage";
 }
 
-export default function ProjectNavRail({ currentSlug, projects }: ProjectNavRailProps) {
+export default function ProjectNavRail({ currentSlug, projects, variant = "rail" }: ProjectNavRailProps) {
   const { navigateWithTransition } = useNavigateWithTransition();
-  const cards = projects.filter((p) => p.slug !== currentSlug);
+  const isHomepage = variant === "homepage";
+
+  const cards = isHomepage ? projects : projects.filter((p) => p.slug !== currentSlug);
 
   const [emblaRef] = useEmblaCarousel(
     { loop: true, align: "start", slidesToScroll: 1, dragFree: true },
@@ -34,7 +38,12 @@ export default function ProjectNavRail({ currentSlug, projects }: ProjectNavRail
           <div
             key={project.slug}
             className="carousel-slide"
-            style={{ flex: "0 0 25%", minWidth: 0, paddingLeft: 4, paddingRight: 4 }}
+            style={{
+              flex: isHomepage ? "0 0 33.333%" : "0 0 25%",
+              minWidth: 0,
+              paddingLeft: 4,
+              paddingRight: 4,
+            }}
           >
             <a
               href={`/projects/${project.slug}`}
@@ -51,13 +60,26 @@ export default function ProjectNavRail({ currentSlug, projects }: ProjectNavRail
                   src={project.thumbnail}
                   alt={project.thumbnailAlt ?? project.title}
                   fill
-                  sizes="25vw"
+                  sizes={isHomepage ? "33vw" : "25vw"}
                   draggable={false}
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
               <div className="pt-2">
-                <h3 className="font-bold truncate text-3xl">{project.title}</h3>
+                <h3
+                  className="truncate uppercase"
+                  style={{ fontSize: "16px", fontWeight: 400 }}
+                >
+                  {project.title}
+                </h3>
+                {isHomepage && project.subheadline && (
+                  <p
+                    className="truncate text-black/60 mt-0.5 font-[var(--font-mono)] uppercase"
+                    style={{ fontSize: "12px" }}
+                  >
+                    {project.subheadline}
+                  </p>
+                )}
               </div>
             </a>
           </div>

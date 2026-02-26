@@ -29,7 +29,7 @@ export default function ProjectNavLinks({ previous, next }: ProjectNavLinksProps
             }}
           >
             <div className="text-gray-500 mb-2">Previous Project</div>
-            <div className="font-bold font-display text-5xl md:text-6xl group-hover:underline">
+            <div className="uppercase" style={{ fontSize: "16px", fontWeight: 400 }}>
               {previous.title}
             </div>
           </a>
@@ -46,7 +46,7 @@ export default function ProjectNavLinks({ previous, next }: ProjectNavLinksProps
             }}
           >
             <div className="text-gray-500 mb-2">Next Project</div>
-            <div className="font-bold font-display text-5xl md:text-6xl group-hover:underline">
+            <div className="uppercase" style={{ fontSize: "16px", fontWeight: 400 }}>
               {next.title}
             </div>
           </a>
