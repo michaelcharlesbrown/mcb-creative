@@ -136,10 +136,10 @@ p, li {
   color: #C0C0C0;
 }
 
-/* Info page hero text */
+/* Info page / about blurb text */
 .info-page__text {
   font-size: var(--text-display-lg);
-  line-height: var(--leading-hero);
+  line-height: 1.1;
   letter-spacing: var(--tracking-display);
 }
 
