@@ -60,17 +60,11 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
                 />
               </div>
               <div className="pt-2">
-                <h3
-                  className="truncate uppercase"
-                  style={{ fontSize: "16px", fontWeight: 400 }}
-                >
+                <h3 className="truncate uppercase text-heading-sm font-normal">
                   {project.title}
                 </h3>
                 {isHomepage && project.subheadline && (
-                  <p
-                    className="truncate text-black/60 mt-0.5 font-[var(--font-mono)] uppercase"
-                    style={{ fontSize: "12px" }}
-                  >
+                  <p className="truncate text-black/60 mt-0.5 uppercase text-ui">
                     {project.subheadline}
                   </p>
                 )}

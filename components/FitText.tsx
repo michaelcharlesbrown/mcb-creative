@@ -55,8 +55,8 @@ export default function FitText({ text, className = '', style = {}, fontFamily =
           fontFamily,
           fontSize: MEASURE_FONT_SIZE,
           fontWeight: style.fontWeight,
-          lineHeight: 0.82,
-          letterSpacing: '-0.02em',
+          lineHeight: 'var(--leading-wordmark)',
+          letterSpacing: 'var(--tracking-tight)',
         }}
       >
         {text}
@@ -68,8 +68,8 @@ export default function FitText({ text, className = '', style = {}, fontFamily =
           transition: 'opacity 0.2s ease',
           fontFamily,
           fontSize: `${fontSize}px`,
-          lineHeight: 0.82,
-          letterSpacing: '-0.02em',
+          lineHeight: 'var(--leading-wordmark)',
+          letterSpacing: 'var(--tracking-tight)',
           textTransform: 'none',
           ...style,
         }}

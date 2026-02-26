@@ -48,7 +48,7 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
       {/* Featured Work */}
       <div className="bg-background">
         <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-[max(var(--nav-height),4rem)] pb-16 md:pt-[max(var(--nav-height),6rem)] md:pb-24">
-          <h2 className="text-left mb-8 md:mb-12" style={{ fontSize: "20px", fontWeight: 400 }}>
+          <h2 className="text-left mb-8 md:mb-12 text-heading-lg font-normal">
             Featured Work
           </h2>
           <ProjectNavRail projects={projects} variant="homepage" />

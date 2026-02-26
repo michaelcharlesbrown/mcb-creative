@@ -11,43 +11,92 @@
   --content-max-width: 2400px;
   --nav-height: 60px;
   --hero-charcoal: #0a0a0a;
+
+  /* Font family strings — used directly in CSS class rules via var()
+     NOT duplicated in @theme inline (would create circular references) */
+  --font-family-mono:     var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
+  --font-family-display:  'Clash Display', var(--font-bebas-neue), sans-serif;
+  --font-family-wordmark: 'Clash Display', var(--font-bebas-neue), sans-serif;
+
+  /* Font weights — used in CSS class rules only, no Tailwind utility needed */
+  --weight-regular:  400;
+  --weight-semibold: 600;
+  --weight-bold:     700;
 }
 
 @theme inline {
+  /* ============================================================
+     TYPOGRAPHY TOKENS
+     Root font-size: 12.5px intentional — 1rem = 12.5px
+
+     Values live HERE (not in :root) to avoid circular var() refs.
+     @theme inline emits these to :root, so CSS classes can use
+     var(--text-*), var(--leading-*), var(--tracking-*) directly.
+     ============================================================ */
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-black: #0a0a0a;
   --color-white: #fcfcfc;
-  --font-mono: var(--font-ibm-plex-mono);
-  --font-display: var(--font-ibm-plex-mono);
+
+  /* Font utilities — reference :root --font-family-* (different names = no circular) */
+  --font-mono:     var(--font-family-mono);
+  --font-display:  var(--font-family-display);
+  --font-wordmark: var(--font-family-wordmark);
+
+  /* Type scale — direct values → Tailwind text-* utilities */
+  --text-micro:              11px;                          /* footer, copyright */
+  --text-ui:                 12px;                          /* nav, labels, tags */
+  --text-body:               12.5px;                        /* body copy (= 1rem) */
+  --text-card-title:         14px;                          /* ProjectCard h3 */
+  --text-heading-sm:         16px;                          /* SCOPE/TEAM, mobile headings */
+  --text-heading-lg:         20px;                          /* desktop "Featured Work", ProjectsScroll */
+  --text-display-md:         clamp(1.75rem, 2.4vw, 3rem);  /* TextMediaBlock h2 */
+  --text-display-lg:         clamp(1.92rem, 5vw, 5.76rem); /* AboutBlurb, info page — 24px→72px */
+  --text-display-xl:         clamp(3rem, 7.5vw, 17.5rem);  /* .intro giant text */
+  --text-hero:               clamp(3.5rem, 12vw, 200px);    /* .hero__headline */
+  --text-hero-minimal:       max(3rem, calc(100vw / 5.5)); /* minimal hero variant */
+  --text-display-project-h1: clamp(2.5rem, 5.5vw, 5rem);  /* IntroBlock h1 */
+
+  /* Line heights — direct values → Tailwind leading-* utilities */
+  --leading-wordmark: 0.82;
+  --leading-display:  0.9;
+  --leading-hero:     0.95;
+  --leading-heading:  1.2;
+  --leading-body:     1.3;
+
+  /* Letter spacing — direct values → Tailwind tracking-* utilities */
+  --tracking-display: -0.04em;
+  --tracking-tight:   -0.02em;
+  --tracking-open:    0.025em;
+  --tracking-widest:  0.1em;
 }
 
-/* Global typography: two fonts only */
+/* Global typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-ibm-plex-mono);
-  font-weight: 700;
+  font-family: var(--font-family-mono);
+  font-weight: var(--weight-bold);
   text-transform: uppercase;
 }
 
 body, p, a, span, li, input, button {
-  font-family: var(--font-ibm-plex-mono);
+  font-family: var(--font-family-mono);
 }
 
-/* Project hero body - remains 12.5px */
+/* Project hero body */
 .project-hero__body {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.3 !important;
-  letter-spacing: -0.04em;
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-display);
 }
 
 /* SCOPE/TEAM labels */
 .project-hero__label {
-  font-family: var(--font-ibm-plex-mono) !important;
-  font-size: 16px !important;
-  font-weight: 400 !important;
-  line-height: 1.3 !important;
-  letter-spacing: -0.04em;
+  font-size: var(--text-heading-sm);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-display);
   text-transform: uppercase;
   text-align: left;
 }
@@ -67,53 +116,46 @@ body, p, a, span, li, input, button {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: 12.5px;
+  font-family: var(--font-family-mono);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
 }
 
-/* INTRO SECTION - SPECIAL EXCEPTION - OVERRIDE EVERYTHING */
-.intro.intro.intro {
-  font-family: var(--font-ibm-plex-mono) !important;
-  font-size: clamp(3rem, 7.5vw, 17.5rem) !important;
-  line-height: 0.9 !important;
-  font-weight: 400 !important;
-  letter-spacing: -0.04em !important;
-  color: #C0C0C0 !important;
+/* Body copy inherits from body; component classes override naturally */
+p, li {
+  font-size: inherit;
+  line-height: inherit;
 }
 
-/* Body copy sizing */
-p, li, a, .footer p {
-  font-size: 12.5px !important;
-  line-height: 1.3 !important;
+/* Intro section */
+.intro {
+  font-size: var(--text-display-xl);
+  line-height: var(--leading-display);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-display);
+  color: #C0C0C0;
 }
 
-/* Info page hero text - override body copy sizing */
+/* Info page / about blurb text */
 .info-page__text {
-  font-size: clamp(1.75rem, 2.5vw, 3rem) !important;
-  line-height: 0.95 !important;
-  letter-spacing: -0.04em;
+  font-size: var(--text-display-lg);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-display);
 }
 
 .nav__links,
 .nav__links a {
-  font-size: 12px !important;
+  font-size: var(--text-ui);
 }
 
-/* Project hero: SCOPE/TEAM headlines */
+/* Project hero: SCOPE/TEAM labels use smaller UI size */
 .project-hero .project-hero__label {
-  font-size: 12px !important;
+  font-size: var(--text-ui);
 }
 
 /* No underline on link hover globally */
 a:hover {
-  text-decoration: none !important;
-}
-
-/* Intro section exception */
-p.intro, .intro {
-  font-family: var(--font-ibm-plex-mono) !important;
-  font-size: clamp(3rem, 7.5vw, 17.5rem) !important;
-  line-height: 0.9 !important;
+  text-decoration: none;
 }
 
 .scrollbar-hide {
@@ -127,7 +169,7 @@ p.intro, .intro {
 
 /* Remove all rounded corners from images */
 img {
-  border-radius: 0 !important;
+  border-radius: 0;
 }
 
 /* Shared content alignment */
@@ -202,9 +244,8 @@ img {
   grid-column: 5 / 12;
   margin: 0;
   padding: 0;
-  font-family: var(--font-ibm-plex-mono) !important;
-  font-weight: 400 !important;
-  color: var(--color-white) !important;
+  font-weight: var(--weight-regular);
+  color: var(--color-white);
   text-align: left;
   text-transform: uppercase;
   width: 100%;
@@ -276,11 +317,10 @@ img {
 }
 
 .hero--minimal .hero__headline--minimal {
-  font-family: var(--font-ibm-plex-mono) !important;
-  font-size: max(3rem, calc(100vw / 5.5));
-  font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: 0.02em;
+  font-size: var(--text-hero-minimal);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-hero);
+  letter-spacing: var(--tracking-open);
   color: var(--color-black);
   margin: 0;
   white-space: nowrap;
@@ -351,9 +391,9 @@ img {
   justify-self: start;
   max-width: 340px;
   margin: 0;
-  font-size: 12.5px !important;
-  font-weight: 400;
-  line-height: 1.3;
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
   text-transform: uppercase;
   color: var(--color-black);
   opacity: 0;
@@ -373,11 +413,11 @@ img {
 }
 
 .hero__headline {
-  font-family: 'Clash Display', var(--font-bebas-neue) !important;
-  text-transform: none !important;
-  font-size: clamp(3.5rem, 12vw, 200px);
-  font-weight: 600;
-  line-height: 0.95;
+  font-family: var(--font-family-display);
+  text-transform: none;
+  font-size: var(--text-hero);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-hero);
   color: var(--color-black);
   margin: 0;
   margin-left: -5px;

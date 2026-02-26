@@ -234,10 +234,10 @@ export default function ProjectsScroll({ projects }: ProjectsScrollProps) {
               }`}
             >
               <div className="max-w-[var(--content-max-width)] mx-auto content-inset py-8 md:py-12 lg:py-16 flex flex-col items-start gap-1">
-                <h2 className="font-bold text-left" style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: '20px', textTransform: 'none' }}>
+                <h2 className="font-bold text-left text-heading-lg normal-case">
                   {project.title}
                 </h2>
-                <span className="font-normal text-left block" style={{ fontFamily: "var(--font-ibm-plex-mono)", fontSize: '12px' }}>
+                <span className="font-normal text-left block text-ui">
                   {project.firstScope ?? project.services[0] ?? ""}
                 </span>
               </div>

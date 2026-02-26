@@ -36,14 +36,7 @@ export default function TextMediaBlock({
       className={`flex flex-col ${justifyClass} gap-6 py-20 px-12 max-w-[83.33%] text-left h-full min-h-0`}
     >
       {heading && (
-        <h2
-          className="font-normal"
-          style={{
-            fontFamily: 'var(--font-ibm-plex-mono)',
-            fontSize: 'clamp(1.75rem, 2.4vw, 3rem)',
-            lineHeight: 1.2,
-          }}
-        >
+        <h2 className="font-normal text-display-md leading-heading">
           {heading}
         </h2>
       )}

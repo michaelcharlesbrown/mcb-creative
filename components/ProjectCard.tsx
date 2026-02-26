@@ -38,7 +38,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       </div>
 
       <div className="space-y-1 md:space-y-2">
-        <h3 className="font-bold" style={{ fontSize: '14px' }}>
+        <h3 className="font-bold text-card-title">
           {project.title}
         </h3>
         {project.subheadline && (
