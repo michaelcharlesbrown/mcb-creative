@@ -149,7 +149,7 @@ export default function HeroSection({ disableScrollTrigger = false }: HeroSectio
               </h1>
               <p
                 ref={taglineRef}
-                className="hero__subtitle mt-3 text-[12px] uppercase tracking-wide font-[var(--font-mono)] leading-relaxed text-black"
+                className="hero__subtitle mt-3 text-ui uppercase tracking-open leading-body text-black"
                 style={{ animation: "none", opacity: 0 }}
               >
                 Independent design studio of<br className="md:hidden" /> Michael Charles Brown
