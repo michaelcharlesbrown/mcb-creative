@@ -19,7 +19,7 @@ export default function Info() {
       <section className="min-h-screen bg-[#fcfcfc] text-black flex items-center relative z-10">
         <main className="w-full max-w-[var(--content-max-width)] mx-auto content-inset pt-[var(--nav-height)] min-h-[calc(100vh-var(--nav-height))] flex items-center">
           <div className="w-full grid grid-cols-12 gap-x-4 md:gap-x-[clamp(1rem,2vw,2rem)]">
-            <p className="info-page__text col-span-12 md:col-span-7 md:col-start-5 text-black uppercase font-display font-normal text-left max-w-[calc(100%-35px)]">
+            <p className="info-page__text col-span-12 md:col-span-7 md:col-start-5 text-black uppercase font-normal text-left max-w-[calc(100%-35px)]">
               I&apos;m a senior brand designer with 10+ years of experience
               creating brand identities, websites, and digital products for
               growing businesses, big and small. My work spans graphic design,
@@ -37,7 +37,7 @@ export default function Info() {
       <section className="min-h-screen bg-[#fcfcfc] text-black flex items-center relative z-10">
         <main className="w-full max-w-[var(--content-max-width)] mx-auto content-inset min-h-[calc(100vh-var(--nav-height))] flex items-center">
           <div className="w-full grid grid-cols-12 gap-x-4 md:gap-x-[clamp(1rem,2vw,2rem)]">
-            <p className="info-page__text col-span-12 md:col-span-7 md:col-start-5 text-black uppercase font-display font-normal text-left max-w-[calc(100%-35px)]">
+            <p className="info-page__text col-span-12 md:col-span-7 md:col-start-5 text-black uppercase font-normal text-left max-w-[calc(100%-35px)]">
               I&apos;m at my best when I&apos;m leading a team. I&apos;ve built
               creative departments from scratch, outlining processes and best
               practices, in both in-house and agency settings, while delivering

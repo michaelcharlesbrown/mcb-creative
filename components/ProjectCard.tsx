@@ -31,7 +31,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             alt={project.thumbnailAlt ?? project.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02]"
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
         </div>

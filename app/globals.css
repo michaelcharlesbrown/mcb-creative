@@ -30,8 +30,8 @@
      Root font-size: 12.5px intentional — 1rem = 12.5px
 
      Values live HERE (not in :root) to avoid circular var() refs.
-     @theme inline emits these to :root, so CSS classes can use
-     var(--text-*), var(--leading-*), var(--tracking-*) directly.
+     @theme inline registers tokens as Tailwind utilities + emits
+     var(--text-*), var(--leading-*), var(--tracking-*) to :root.
      ============================================================ */
 
   --color-background: var(--background);
@@ -40,7 +40,7 @@
   --color-white: #fcfcfc;
 
   /* Font utilities — reference :root --font-family-* (different names = no circular) */
-  --font-mono:     var(--font-family-mono);
+  --font-mono:     var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
   --font-display:  var(--font-family-display);
   --font-wordmark: var(--font-family-wordmark);
 
@@ -52,7 +52,7 @@
   --text-heading-sm:         16px;                          /* SCOPE/TEAM, mobile headings */
   --text-heading-lg:         20px;                          /* desktop "Featured Work", ProjectsScroll */
   --text-display-md:         clamp(1.75rem, 2.4vw, 3rem);  /* TextMediaBlock h2 */
-  --text-display-lg:         clamp(1.92rem, 5vw, 5.76rem); /* AboutBlurb, info page — 24px→72px */
+  --text-display-lg:         clamp(1.92rem, 5vw, 4.8rem);  /* AboutBlurb, info page — 24px→60px */
   --text-display-xl:         clamp(3rem, 7.5vw, 17.5rem);  /* .intro giant text */
   --text-hero:               clamp(3.5rem, 12vw, 200px);    /* .hero__headline */
   --text-hero-minimal:       max(3rem, calc(100vw / 5.5)); /* minimal hero variant */
@@ -74,13 +74,13 @@
 
 /* Global typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-family-mono);
+  font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
   font-weight: var(--weight-bold);
   text-transform: uppercase;
 }
 
 body, p, a, span, li, input, button {
-  font-family: var(--font-family-mono);
+  font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
 }
 
 /* Project hero body */
@@ -116,7 +116,7 @@ body, p, a, span, li, input, button {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-family-mono);
+  font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
   font-size: var(--text-body);
   line-height: var(--leading-body);
 }
@@ -139,6 +139,7 @@ p, li {
 /* Info page / about blurb text */
 .info-page__text {
   font-size: var(--text-display-lg);
+  font-weight: 400;
   line-height: 1.1;
   letter-spacing: var(--tracking-display);
 }
@@ -413,7 +414,7 @@ img {
 }
 
 .hero__headline {
-  font-family: var(--font-family-display);
+  font-family: 'Clash Display', var(--font-bebas-neue);
   text-transform: none;
   font-size: var(--text-hero);
   font-weight: var(--weight-semibold);

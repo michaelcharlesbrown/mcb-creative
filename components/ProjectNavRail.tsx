@@ -56,7 +56,7 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
                   fill
                   sizes={isHomepage ? "(max-width: 767px) 85vw, 33vw" : "(max-width: 767px) 55vw, 25vw"}
                   draggable={false}
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="object-cover"
                 />
               </div>
               <div className="pt-2">
