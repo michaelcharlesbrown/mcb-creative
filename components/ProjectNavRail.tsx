@@ -3,14 +3,12 @@
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
-import { useNavigateWithTransition } from "@/components/transitions/useNavigateWithTransition";
 
 export interface NavRailProject {
   slug: string;
   title: string;
   accentColor?: string;
-  thumbnail: string;
-  thumbnailAlt?: string;
+  heroImage: string;          // was: thumbnail
   subheadline?: string;
 }
 
@@ -21,7 +19,6 @@ interface ProjectNavRailProps {
 }
 
 export default function ProjectNavRail({ currentSlug, projects, variant = "rail" }: ProjectNavRailProps) {
-  const { navigateWithTransition } = useNavigateWithTransition();
   const isHomepage = variant === "homepage";
 
   const cards = isHomepage ? projects : projects.filter((p) => p.slug !== currentSlug);
@@ -44,15 +41,16 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
               className="block group"
               draggable={false}
               onDragStart={(e) => e.preventDefault()}
-              onClick={(e) => { e.preventDefault(); navigateWithTransition(`/projects/${project.slug}`, project.accentColor); }}
             >
               <div
                 className="relative w-full overflow-hidden rounded-sm"
-                style={{ aspectRatio: "5/7" }}
+                style={{
+                  aspectRatio: "5/7",
+                }}
               >
                 <Image
-                  src={project.thumbnail}
-                  alt={project.thumbnailAlt ?? project.title}
+                  src={project.heroImage}
+                  alt={project.title}
                   fill
                   sizes={isHomepage ? "(max-width: 767px) 85vw, 33vw" : "(max-width: 767px) 55vw, 25vw"}
                   draggable={false}

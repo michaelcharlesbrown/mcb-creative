@@ -12,8 +12,7 @@ export interface DesktopProject {
   accentColor: string;
   subheadline?: string;
   scope?: string[];
-  thumbnail: string;
-  thumbnailAlt?: string;
+  heroImage: string;
 }
 
 interface HomeDesktopLayoutProps {
@@ -40,6 +39,18 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
         <HeroSection />
       </div>
 
+      {/* Video */}
+      <div className="bg-black">
+        <video
+          className="w-full h-auto block"
+          src="/video/hero-placeholder-test.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      </div>
+
       {/* About */}
       <div className="min-h-screen flex items-center bg-background">
         <AboutBlurb />
@@ -48,9 +59,17 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
       {/* Featured Work */}
       <div className="bg-background">
         <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-[max(var(--nav-height),4rem)] pb-16 md:pt-[max(var(--nav-height),6rem)] md:pb-24">
-          <h2 className="text-left mb-8 md:mb-12 text-heading-lg font-normal">
-            Featured Work
-          </h2>
+          <div className="flex items-baseline justify-between gap-4 mb-8 md:mb-12">
+            <h2 className="text-heading-lg font-normal">
+              Featured Work
+            </h2>
+            <a
+              href="/projects"
+              className="uppercase text-ui tracking-widest  hover:opacity-50 transition-opacity shrink-0"
+            >
+              See All Work →
+            </a>
+          </div>
           <ProjectNavRail projects={projects} variant="homepage" />
         </div>
       </div>

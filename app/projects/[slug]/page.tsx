@@ -22,7 +22,6 @@ type SanityGridProject = {
   title: string;
   accentColor?: string;
   thumbnail?: string;
-  thumbnailAlt?: string;
 };
 
 async function getAdjacentProjectsFromSanity(slug: string) {
@@ -77,8 +76,7 @@ export default async function Project({
       slug: p.slug,
       title: sanity?.title ?? p.title,
       accentColor: sanity?.accentColor ?? p.accentColor,
-      thumbnail: sanity?.thumbnail ?? p.thumbnail,
-      thumbnailAlt: sanity?.thumbnailAlt,
+      heroImage: sanity?.thumbnail ?? p.heroImage ?? `/images/projects/${p.slug}/01-full.jpg`,
     };
   });
 
@@ -87,7 +85,9 @@ export default async function Project({
       <main>
         {/* Cover image: full screen, full bleed */}
         {sanityProject.coverImage && (
-          <div className="relative w-full h-screen overflow-hidden [&>*]:size-full">
+          <div
+            className="relative w-full h-screen overflow-hidden [&>*]:size-full"
+          >
             <MediaBlock
               image={sanityProject.coverImage}
               altFallback={sanityProject.title}

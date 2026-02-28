@@ -1,13 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useNavigateWithTransition } from "@/components/transitions/useNavigateWithTransition";
 
 export default function Navigation() {
   const pathname = usePathname();
   const isProjectsPage = pathname === "/projects";
-  const { navigateWithTransition } = useNavigateWithTransition();
 
   return (
     <nav
@@ -15,11 +14,7 @@ export default function Navigation() {
       style={{ mixBlendMode: "difference" }}
     >
       <div className="nav__inner max-w-[var(--content-max-width)] mx-auto content-inset pt-4 pb-2 flex justify-between items-center">
-        <a
-          href="/"
-          className="nav__logo flex items-center text-white"
-          onClick={(e) => { e.preventDefault(); navigateWithTransition("/"); }}
-        >
+        <Link href="/" className="nav__logo flex items-center text-white">
           <Image
             src="/images/mcb-creative-logo.svg"
             alt="MCB Creative"
@@ -27,23 +22,21 @@ export default function Navigation() {
             height={55}
             className="h-11 w-auto brightness-0 invert"
           />
-        </a>
+        </Link>
         <div className="nav__links flex items-center gap-0 text-ui uppercase tracking-widest leading-body text-white">
-          <a
+          <Link
             href="/projects"
             className={pathname === "/projects" ? "underline" : ""}
-            onClick={(e) => { e.preventDefault(); navigateWithTransition("/projects"); }}
           >
             WORK
-          </a>
-          <span className={isProjectsPage ? "opacity-80" : "opacity-80"}>///</span>
-          <a
+          </Link>
+          <span className="opacity-80">///</span>
+          <Link
             href="/info"
             className={pathname === "/info" ? "underline" : ""}
-            onClick={(e) => { e.preventDefault(); navigateWithTransition("/info"); }}
           >
             INFO
-          </a>
+          </Link>
         </div>
       </div>
     </nav>

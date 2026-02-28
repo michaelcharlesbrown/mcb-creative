@@ -1,7 +1,3 @@
-"use client";
-
-import { useNavigateWithTransition } from "@/components/transitions/useNavigateWithTransition";
-
 interface AdjacentProject {
   slug: string;
   title: string;
@@ -14,8 +10,6 @@ interface ProjectNavLinksProps {
 }
 
 export default function ProjectNavLinks({ previous, next }: ProjectNavLinksProps) {
-  const { navigateWithTransition } = useNavigateWithTransition();
-
   return (
     <section className="mt-16 mb-16 md:mb-24">
       <div className="flex justify-between items-center gap-8">
@@ -23,10 +17,6 @@ export default function ProjectNavLinks({ previous, next }: ProjectNavLinksProps
           <a
             href={`/projects/${previous.slug}`}
             className="flex-1 group cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault();
-              navigateWithTransition(`/projects/${previous.slug}`, previous.accentColor);
-            }}
           >
             <div className="text-gray-500 mb-2">Previous Project</div>
             <div className="uppercase text-heading-sm font-normal">
@@ -40,10 +30,6 @@ export default function ProjectNavLinks({ previous, next }: ProjectNavLinksProps
           <a
             href={`/projects/${next.slug}`}
             className="flex-1 text-right group cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault();
-              navigateWithTransition(`/projects/${next.slug}`, next.accentColor);
-            }}
           >
             <div className="text-gray-500 mb-2">Next Project</div>
             <div className="uppercase text-heading-sm font-normal">

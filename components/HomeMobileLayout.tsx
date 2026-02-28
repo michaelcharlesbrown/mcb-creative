@@ -12,8 +12,7 @@ export interface MobileProject {
   accentColor: string;
   subheadline?: string;
   scope?: string[];
-  thumbnail: string;
-  thumbnailAlt?: string;
+  heroImage: string;
 }
 
 interface HomeMobileLayoutProps {
@@ -30,6 +29,18 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
         <HeroSection disableScrollTrigger />
       </section>
 
+      {/* Video */}
+      <section className="flex-shrink-0 bg-black">
+        <video
+          className="w-full h-auto block"
+          src="/video/hero-placeholder-test.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      </section>
+
       {/* About */}
       <section className="flex-shrink-0">
         <AboutBlurb />
@@ -38,9 +49,17 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
       {/* Featured Work — full viewport section like About, card peek on right */}
       <section className="flex-shrink-0 bg-background min-h-dvh flex flex-col justify-center">
         <div className="content-inset py-10">
-          <h2 className="mb-6 text-heading-sm font-normal">
-            Featured Work
-          </h2>
+          <div className="flex items-baseline justify-between gap-4 mb-6">
+            <h2 className="text-heading-sm font-normal">
+              Featured Work
+            </h2>
+            <a
+              href="/projects"
+              className="uppercase text-ui tracking-widest  hover:opacity-50 transition-opacity shrink-0"
+            >
+              See All Work →
+            </a>
+          </div>
           <ProjectNavRail projects={projects} variant="homepage" />
         </div>
       </section>

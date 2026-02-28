@@ -11,7 +11,6 @@ type SanityGridProject = {
   subheadline?: string;
   scope?: string[];
   thumbnail?: string;
-  thumbnailAlt?: string;
 };
 
 export default async function Home() {
@@ -30,8 +29,7 @@ export default async function Home() {
           accentColor: sanity.accentColor ?? staticProject?.accentColor ?? "",
           subheadline: sanity.subheadline ?? staticProject?.tagline,
           scope: sanity.scope ?? staticProject?.services ?? [],
-          thumbnail: sanity.thumbnail ?? staticProject?.thumbnail ?? "",
-          thumbnailAlt: sanity.thumbnailAlt,
+          heroImage: sanity.thumbnail ?? staticProject?.heroImage ?? `/images/projects/${sanity.slug}/01-full.jpg`,
         };
       })
     : projects.slice(0, 6).map((project) => ({
@@ -40,8 +38,7 @@ export default async function Home() {
         accentColor: project.accentColor,
         subheadline: project.tagline,
         scope: project.services,
-        thumbnail: project.thumbnail,
-        thumbnailAlt: undefined,
+        heroImage: project.heroImage ?? `/images/projects/${project.slug}/01-full.jpg`,
       }));
 
   return (

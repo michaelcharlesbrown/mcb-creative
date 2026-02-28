@@ -1,14 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useNavigateWithTransition } from "@/components/transitions/useNavigateWithTransition";
 
 interface ProjectCardProps {
   project: {
     slug: string;
     title: string;
     accentColor: string;
-    thumbnail: string;
+    heroImage: string;        // was: thumbnail
     thumbnailAlt?: string;
     subheadline?: string;
     scope?: string[];
@@ -16,19 +15,18 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
-  const { navigateWithTransition } = useNavigateWithTransition();
-
   return (
     <a
       href={`/projects/${project.slug}`}
       className="group block w-full"
-      onClick={(e) => { e.preventDefault(); navigateWithTransition(`/projects/${project.slug}`, project.accentColor); }}
     >
-      <div className="relative w-full aspect-[5/7] overflow-hidden rounded-[4px] mb-3 md:mb-4">
+      <div
+        className="relative w-full aspect-[5/7] overflow-hidden rounded-[4px] mb-3 md:mb-4"
+      >
         <div className="relative w-full h-full">
           <Image
-            src={project.thumbnail}
-            alt={project.thumbnailAlt ?? project.title}
+            src={project.heroImage}
+            alt={project.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover"

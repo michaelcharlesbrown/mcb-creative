@@ -1,7 +1,7 @@
 import { projects } from "@/data/projects";
 import { sanityFetch } from "@/lib/sanity.fetch";
 import { projectsGridQuery } from "@/lib/sanity.queries";
-import ProjectsScroll from "@/components/ProjectsScroll";
+import WorkGrid from "@/components/WorkGrid";
 
 type SanityGridProject = {
   slug: string;
@@ -14,18 +14,16 @@ export default async function Projects() {
   const sanityProjects = await sanityFetch<SanityGridProject[]>(projectsGridQuery).catch(() => []);
   const sanityBySlug = Object.fromEntries(sanityProjects.map((p) => [p.slug, p]));
 
-  const projectsWithHeroes = projects.map((project) => {
-    const heroImage =
-      project.heroImage ?? `/images/projects/${project.slug}/01-full.jpg`;
+  const gridProjects = projects.map((project) => {
     const sanity = sanityBySlug[project.slug];
-    const firstScope = sanity?.scope?.[0] ?? project.services[0] ?? "";
     return {
-      ...project,
-      heroImage,
-      firstScope,
+      slug: project.slug,
+      title: project.title,
+      services: project.services,
+      heroImage: project.heroImage ?? `/images/projects/${project.slug}/01-full.jpg`,
       accentColor: sanity?.accentColor ?? project.accentColor,
     };
   });
 
-  return <ProjectsScroll projects={projectsWithHeroes} />;
+  return <WorkGrid projects={gridProjects} />;
 }
