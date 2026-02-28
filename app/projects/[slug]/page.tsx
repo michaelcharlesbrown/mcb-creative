@@ -94,6 +94,7 @@ export default async function Project({
               imagePreset="cover"
               fill
               sizes="100vw"
+              priority
             />
           </div>
         )}

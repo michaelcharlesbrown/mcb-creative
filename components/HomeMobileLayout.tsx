@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import HeroSection from "@/components/HeroSection";
 import AboutBlurb from "@/components/AboutBlurb";
 import Footer from "@/components/Footer";
@@ -21,11 +21,8 @@ interface HomeMobileLayoutProps {
 }
 
 export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
   return (
     <div
-      ref={scrollContainerRef}
       className="fixed inset-0 overflow-y-scroll scrollbar-hide md:hidden z-10"
     >
       {/* Hero */}

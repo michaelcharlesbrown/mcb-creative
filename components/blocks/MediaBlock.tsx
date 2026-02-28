@@ -16,6 +16,8 @@ interface MediaBlockProps {
   imagePreset?: SanityImagePreset;
   /** When true, fills parent container (e.g. for full-screen cover) */
   fill?: boolean;
+  /** When true, skips FadeIn wrapper and passes priority to <Image> for LCP preloading */
+  priority?: boolean;
 }
 
 export default function MediaBlock({
@@ -27,6 +29,7 @@ export default function MediaBlock({
   altFallback = "",
   imagePreset = "fullWidth",
   fill = false,
+  priority,
 }: MediaBlockProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -53,36 +56,36 @@ export default function MediaBlock({
 
   if (!hasImage && !hasVideo) return null;
 
-  return (
-    <FadeIn>
-      <div
-        ref={containerRef}
-        className={`relative overflow-hidden ${fill ? "size-full" : "w-full rounded-[4px]"} ${className}`}
-        style={fill ? undefined : { aspectRatio }}
-      >
-        {hasImage ? (
-          <Image
-            src={imageUrl!}
-            alt={image?.alt ?? altFallback}
-            fill
-            sizes={sizes}
-            className="object-cover"
-            loading="lazy"
-          />
-        ) : showVideo ? (
-          <video
-            ref={videoRef}
-            src={videoUrl}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="object-cover w-full h-full"
-          />
-        ) : (
-          <div className="absolute inset-0 bg-gray-100 animate-pulse" />
-        )}
-      </div>
-    </FadeIn>
+  const inner = (
+    <div
+      ref={containerRef}
+      className={`relative overflow-hidden ${fill ? "size-full" : "w-full rounded-[4px]"} ${className}`}
+      style={fill ? undefined : { aspectRatio }}
+    >
+      {hasImage ? (
+        <Image
+          src={imageUrl!}
+          alt={image?.alt ?? altFallback}
+          fill
+          sizes={sizes}
+          className="object-cover"
+          priority={priority}
+        />
+      ) : showVideo ? (
+        <video
+          ref={videoRef}
+          src={videoUrl}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="object-cover w-full h-full"
+        />
+      ) : (
+        <div className="absolute inset-0 bg-gray-100 animate-pulse" />
+      )}
+    </div>
   );
+
+  return priority ? inner : <FadeIn>{inner}</FadeIn>;
 }

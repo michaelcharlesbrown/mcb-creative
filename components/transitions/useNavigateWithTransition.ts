@@ -2,27 +2,22 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { useTransitionController } from "./TransitionContext";
 
 export function useNavigateWithTransition() {
   const router = useRouter();
-  const { playCover, playReveal, setAccentColor } = useTransitionController();
 
   const navigateWithTransition = useCallback(
-    async (href: string, accentColor?: string) => {
-      if (accentColor) setAccentColor(accentColor);
-      document.body.style.pointerEvents = "none";
-      try {
-        await playCover();
+    (href: string, _accentColor?: string) => {
+      // _accentColor kept for call-site compatibility, unused in new system
+      if (typeof document === "undefined" || !document.startViewTransition) {
         router.push(href);
-        playReveal().finally(() => {
-          document.body.style.pointerEvents = "";
-        });
-      } catch {
-        document.body.style.pointerEvents = "";
+        return;
       }
+      document.startViewTransition(() => {
+        router.push(href);
+      });
     },
-    [router, playCover, playReveal, setAccentColor]
+    [router]
   );
 
   return { navigateWithTransition };
