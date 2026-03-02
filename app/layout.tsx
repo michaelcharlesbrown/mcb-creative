@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import LayoutShell from "@/components/LayoutShell";
+import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600", "700"],
@@ -39,7 +40,9 @@ export default function RootLayout({
       <body
         className={`${ibmPlexMono.variable} ${bebasNeue.variable} antialiased bg-background text-black`}
       >
-        <LayoutShell>{children}</LayoutShell>
+        <SmoothScrollProvider>
+          <LayoutShell>{children}</LayoutShell>
+        </SmoothScrollProvider>
       </body>
     </html>
   );

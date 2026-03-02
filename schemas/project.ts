@@ -46,13 +46,19 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'coverImage',
-      title: 'Cover Image',
+      name: 'heroImage',
+      title: 'Hero Image',
       type: 'image',
       options: { hotspot: true },
       fields: [
         defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
       ],
+    }),
+    defineField({
+      name: 'heroVideoFile',
+      title: 'Hero Video',
+      type: 'file',
+      options: { accept: 'video/*' },
     }),
     defineField({
       name: 'pageContent',

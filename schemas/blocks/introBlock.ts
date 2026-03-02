@@ -25,18 +25,6 @@ export default defineType({
       type: 'array',
       of: [{ type: 'block' }],
     }),
-    defineField({
-      name: 'heroImage',
-      title: 'Hero Image',
-      type: 'image',
-      options: { hotspot: true },
-    }),
-    defineField({
-      name: 'heroVideoFile',
-      title: 'Hero Video',
-      type: 'file',
-      options: { accept: 'video/*' },
-    }),
   ],
   preview: {
     select: { headline: 'headline' },

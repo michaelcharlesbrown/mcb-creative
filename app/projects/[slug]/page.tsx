@@ -13,7 +13,8 @@ export type SanityProject = {
   title: string;
   slug: string;
   accentColor?: string;
-  coverImage?: { alt?: string; asset?: { url: string } };
+  heroImage?: { alt?: string; asset?: { url: string } };
+  heroVideoFileUrl?: string;
   pageContent?: PageContentBlock[];
 };
 
@@ -83,13 +84,13 @@ export default async function Project({
   return (
     <div className="min-h-screen bg-background text-black">
       <main>
-        {/* Cover image: full screen, full bleed */}
-        {sanityProject.coverImage && (
+        {/* Hero image: full screen, full bleed */}
+        {sanityProject.heroImage && (
           <div
             className="relative w-full h-screen overflow-hidden [&>*]:size-full"
           >
             <MediaBlock
-              image={sanityProject.coverImage}
+              image={sanityProject.heroImage}
               altFallback={sanityProject.title}
               imagePreset="cover"
               fill
@@ -101,7 +102,7 @@ export default async function Project({
 
         <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-16 pb-16">
           <div className="flex flex-col gap-[8px]">
-            {!hasBlocks && !sanityProject.coverImage && (
+            {!hasBlocks && !sanityProject.heroImage && (
               <section>
                 <h1 className="text-5xl font-bold">{sanityProject.title}</h1>
               </section>
@@ -112,6 +113,7 @@ export default async function Project({
                 block={block}
                 index={index}
                 titleFallback={sanityProject.title}
+                heroVideoFileUrl={sanityProject.heroVideoFileUrl}
               />
             ))}
           </div>

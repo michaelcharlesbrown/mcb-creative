@@ -10,8 +10,6 @@ export interface PageContentBlock {
   scope?: string[];
   team?: string[];
   description?: unknown;
-  heroImage?: { alt?: string; asset?: { url: string } };
-  heroVideoFileUrl?: string;
   image?: { alt?: string; asset?: { url: string } };
   videoFileUrl?: string;
   imageLeft?: { alt?: string; asset?: { url: string } };
@@ -28,12 +26,15 @@ interface BlockRendererProps {
   block: PageContentBlock;
   index: number;
   titleFallback?: string;
+  /** Project-level hero video (for intro block) */
+  heroVideoFileUrl?: string;
 }
 
 export default function BlockRenderer({
   block,
   index,
   titleFallback = "",
+  heroVideoFileUrl,
 }: BlockRendererProps) {
   switch (block._type) {
     case "introBlock":
@@ -45,8 +46,7 @@ export default function BlockRenderer({
           scope={block.scope}
           team={block.team}
           description={block.description}
-          heroImage={block.heroImage}
-          heroVideoFileUrl={block.heroVideoFileUrl}
+          heroVideoFileUrl={heroVideoFileUrl}
           titleFallback={titleFallback}
         />
       );

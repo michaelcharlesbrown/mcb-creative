@@ -7,7 +7,6 @@ interface IntroBlockProps {
   scope?: string[];
   team?: string[];
   description?: unknown;
-  heroImage?: { alt?: string; asset?: { url: string } };
   heroVideoFileUrl?: string;
   titleFallback?: string;
 }
@@ -18,13 +17,12 @@ export default function IntroBlock({
   scope,
   team,
   description,
-  heroImage,
   heroVideoFileUrl,
   titleFallback = "",
 }: IntroBlockProps) {
   const hasScopeOrTeam = (scope?.length ?? 0) > 0 || (team?.length ?? 0) > 0;
   const hasDescription = Array.isArray(description) && description.length > 0;
-  const hasMedia = heroImage || heroVideoFileUrl;
+  const hasMedia = Boolean(heroVideoFileUrl);
 
   const hasTwoColumn = hasScopeOrTeam || hasDescription || subheadline;
 
@@ -88,7 +86,6 @@ export default function IntroBlock({
 
       {hasMedia && (
         <MediaBlock
-          image={heroImage}
           videoUrl={heroVideoFileUrl}
           altFallback={headline ?? titleFallback}
           imagePreset="cover"
