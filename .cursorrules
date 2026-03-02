@@ -1,0 +1,54 @@
+---
+description: 
+alwaysApply: true
+---
+
+---
+description: 
+alwaysApply: true
+---
+
+---
+description: 
+alwaysApply: true
+---
+
+Stack
+
+Next.js App Router 16.1.5 — NOT Pages Router. Critical for every routing and animation decision.
+React 19.2.3
+Tailwind CSS 4
+Sanity CMS — projects at /projects/[slug]
+Framer Motion — component-level animation only
+GSAP + ScrollTrigger — scroll-driven effects, timelines, parallax
+Lenis — smooth scroll
+Embla — carousels
+TypeScript strict mode
+Vercel hosting, auto-deploy from GitHub main
+Dev server: localhost:3002 always. Never 3000. Port set in package.json.
+
+Animation Approaches
+Page transitions: next-view-transitions package or CSS on template.tsx
+Scroll animation: GSAP ScrollTrigger. Always use useGSAP from @gsap/react — never raw useEffect for GSAP.
+Component animation: Framer Motion for hover states, mount/unmount, stagger reveals within a single page.
+Text animation: GSAP SplitText with ScrollTrigger onEnter.
+Simple hover states: CSS transitions.
+Custom cursor: React component with mousemove + useState, no library.
+Project Structure
+/app/layout.tsx — global layout, edit with extreme care
+/app/template.tsx — page transition wrapper
+/app/globals.css — source of truth for all design tokens
+/app/projects/[slug]/page.tsx — Sanity-powered project template
+/components/LayoutShell.tsx — main shell wrapper, edit carefully
+/lib/sanityImage.ts — always use this for Sanity image URLs
+/lib/sanity.queries.ts — all GROQ queries live here
+Design System
+Clean, minimal, black and white. Work does the talking.
+Typography is managed globally in globals.css. Never set font sizes, weights, line heights, or letter spacing inline or in component-level styles. If type needs to change, it changes in globals.css — nowhere else.
+Breakpoints: Mobile <768px / Tablet 768-1024px / Desktop >1024px.
+Animation easing and duration values live in globals.css — use them, don't invent new ones.
+Sanity
+Always use next/image with sanityImage.ts URL builder. Never raw image URLs.
+Schema: title, slug, client, role, year, description, heroImage, gallery, categories.
+Standard to Meet
+Every decision benchmarked against: would a senior developer at Metalab, Fantasy, or Instrument be comfortable with this code? If no, do it differently.

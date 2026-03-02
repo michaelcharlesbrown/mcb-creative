@@ -1,8 +1,10 @@
+import BodyClass from "@/components/BodyClass";
+
 export default function Info() {
   return (
     <>
       {/* Make body transparent so the fixed video shows through the middle section */}
-      <style>{`body { background: transparent !important; }`}</style>
+      <BodyClass className="info-page-active" />
 
       {/* Fixed video — pinned behind all sections */}
       <video

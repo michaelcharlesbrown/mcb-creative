@@ -121,6 +121,11 @@ body {
   line-height: var(--leading-body);
 }
 
+/* Info page: body must be transparent so the fixed video shows through section 2 */
+body.info-page-active {
+  background: transparent;
+}
+
 /* Body copy inherits from body; component classes override naturally */
 p, li {
   font-size: inherit;
