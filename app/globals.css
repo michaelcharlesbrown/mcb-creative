@@ -11,6 +11,8 @@
   --content-max-width: 2400px;
   --nav-height: 60px;
   --hero-charcoal: #0a0a0a;
+  --text-hero: clamp(3.5rem, 12vw, 200px);
+  --leading-hero: 0.95;
 
   /* Font family strings — used directly in CSS class rules via var()
      NOT duplicated in @theme inline (would create circular references) */
@@ -256,6 +258,8 @@ img {
 .hero {
   --hero-charcoal: var(--color-black);
   --hero-gray: #454545;
+  /* Overlap 1px to eliminate subpixel gap/hairline at hero/video boundary */
+  margin-bottom: -1px;
 }
 
 .hero__overlay {
@@ -264,12 +268,13 @@ img {
 
 .hero__content {
   position: absolute;
-  top: 0;
-  left: 0;
   right: 0;
   bottom: 0;
   z-index: 3;
   padding: max(var(--nav-height), clamp(3rem, 8vh, 6rem)) 0 clamp(1.5rem, 4vw, 3.5rem);
+  box-sizing: content-box;
+  background-clip: unset;
+  -webkit-background-clip: unset;
 }
 
 .hero__video {
@@ -289,6 +294,7 @@ img {
   grid-template-columns: repeat(12, 1fr);
   gap: 0 clamp(1rem, 2vw, 2rem);
   grid-template-rows: 1fr auto;
+  box-sizing: content-box;
 }
 
 .hero__headline-wrap {
