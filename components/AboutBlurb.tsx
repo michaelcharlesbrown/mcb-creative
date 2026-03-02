@@ -38,7 +38,7 @@ export default function AboutBlurb() {
     >
       <div className="w-full max-w-[var(--content-max-width)] mx-auto content-inset">
         <div className="w-full grid grid-cols-12 gap-x-4 md:gap-x-[clamp(1rem,2vw,2rem)]">
-          <p className="info-page__text col-span-12 md:col-span-7 md:col-start-5 uppercase font-normal text-left max-w-[calc(100%-35px)]" style={{ color: "var(--color-white)" }}>
+          <p className="about-blurb__text col-span-12 md:col-span-7 md:col-start-5 uppercase font-normal text-left max-w-[calc(100%-35px)]" style={{ color: "var(--color-white)" }}>
             {mainText}
             <br /><br />
             <span style={{ fontSize: "0.75em" }}>{locationText}</span>

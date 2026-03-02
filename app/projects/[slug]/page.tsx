@@ -104,7 +104,7 @@ export default async function Project({
           <div className="flex flex-col gap-[8px]">
             {!hasBlocks && !sanityProject.heroImage && (
               <section>
-                <h1 className="text-5xl font-bold">{sanityProject.title}</h1>
+                <h1 className="text-5xl font-normal uppercase">{sanityProject.title}</h1>
               </section>
             )}
             {pageContent.map((block, index) => (

@@ -45,6 +45,10 @@ Project Structure
 Design System
 Clean, minimal, black and white. Work does the talking.
 Typography is managed globally in globals.css. Never set font sizes, weights, line heights, or letter spacing inline or in component-level styles. If type needs to change, it changes in globals.css — nowhere else.
+
+MCB Creative wordmark (hero + footer): ALWAYS Clash Display. Never change to another font. These are the only exceptions to the IBM Plex Mono headline rule.
+
+Homepage about section (.about-blurb__text): uses --text-display-lg (larger). Info page (.info-page__text): uses --text-display-md (smaller). These are distinct — do not unify them.
 Breakpoints: Mobile <768px / Tablet 768-1024px / Desktop >1024px.
 Animation easing and duration values live in globals.css — use them, don't invent new ones.
 Sanity

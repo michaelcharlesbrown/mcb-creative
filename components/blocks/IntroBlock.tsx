@@ -29,7 +29,7 @@ export default function IntroBlock({
   return (
     <div className="project-hero flex flex-col">
       {headline && (
-        <h1 className="pt-[240px] font-bold text-left text-display-project-h1">
+        <h1 className="pt-[240px] font-normal text-left text-display-project-h1 uppercase">
           {headline}
         </h1>
       )}
@@ -70,7 +70,7 @@ export default function IntroBlock({
               className={`w-full flex flex-col gap-4 justify-self-start ${!hasScopeOrTeam ? "lg:col-span-2" : ""}`}
             >
               {subheadline && (
-                <p className="text-heading-sm font-bold text-gray-700 uppercase">{subheadline}</p>
+                <p className="text-heading-sm font-normal text-gray-700 uppercase">{subheadline}</p>
               )}
               {hasDescription && description && (
                 <div className="project-hero__body flex flex-col gap-4">
