@@ -9,10 +9,7 @@ export default function Navigation() {
   const isProjectsPage = pathname === "/projects";
 
   return (
-    <nav
-      className="nav fixed top-0 left-0 right-0 z-50 bg-transparent"
-      style={{ mixBlendMode: "difference" }}
-    >
+    <nav className="nav fixed top-0 left-0 right-0 z-50 bg-transparent">
       <div className="nav__inner max-w-[var(--content-max-width)] mx-auto content-inset pt-4 pb-2 flex justify-between items-center">
         <Link href="/" className="nav__logo flex items-center text-white">
           <Image

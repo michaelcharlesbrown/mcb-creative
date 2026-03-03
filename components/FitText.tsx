@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 interface FitTextProps {
   text: string
   className?: string
+  tagClassName?: string
   style?: React.CSSProperties
   fontFamily?: string
   sizeScale?: number
@@ -13,7 +14,7 @@ interface FitTextProps {
 
 const MEASURE_FONT_SIZE = 100
 
-export default function FitText({ text, className = '', style = {}, fontFamily = 'var(--font-bebas-neue)', sizeScale = 1, as: Tag = 'h2' }: FitTextProps) {
+export default function FitText({ text, className = '', tagClassName = '', style = {}, fontFamily = 'var(--font-bebas-neue)', sizeScale = 1, as: Tag = 'h2' }: FitTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const measureRef = useRef<HTMLSpanElement>(null)
   const [fontSize, setFontSize] = useState(1)
@@ -62,7 +63,7 @@ export default function FitText({ text, className = '', style = {}, fontFamily =
         {text}
       </span>
       <Tag
-        className="select-none whitespace-nowrap w-full"
+        className={`select-none whitespace-nowrap w-full ${tagClassName}`.trim()}
         style={{
           opacity: isReady ? 1 : 0,
           transition: 'opacity 0.2s ease',

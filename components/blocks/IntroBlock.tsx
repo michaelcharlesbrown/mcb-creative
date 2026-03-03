@@ -1,4 +1,5 @@
 import { PortableText } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
 import MediaBlock from "./MediaBlock";
 
 interface IntroBlockProps {
@@ -6,7 +7,7 @@ interface IntroBlockProps {
   subheadline?: string;
   scope?: string[];
   team?: string[];
-  description?: unknown;
+  description?: PortableTextBlock[];
   heroVideoFileUrl?: string;
   titleFallback?: string;
 }
@@ -21,7 +22,7 @@ export default function IntroBlock({
   titleFallback = "",
 }: IntroBlockProps) {
   const hasScopeOrTeam = (scope?.length ?? 0) > 0 || (team?.length ?? 0) > 0;
-  const hasDescription = Array.isArray(description) && description.length > 0;
+  const hasDescription = (description?.length ?? 0) > 0;
   const hasMedia = Boolean(heroVideoFileUrl);
 
   const hasTwoColumn = hasScopeOrTeam || hasDescription;
@@ -75,7 +76,7 @@ export default function IntroBlock({
             >
               {description && (
                 <div className="project-hero__body flex flex-col gap-4 text-left">
-                  <PortableText value={Array.isArray(description) ? description : []} />
+                  <PortableText value={description ?? []} />
                 </div>
               )}
             </div>

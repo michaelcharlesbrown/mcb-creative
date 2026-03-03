@@ -14,12 +14,11 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
   const isInView = useInView(ref, { once: true, margin: '-10% 0px' })
 
   return (
-    <footer ref={ref} style={{ backgroundColor: 'var(--dark-background)' }} className="w-full">
+    <footer ref={ref} className="w-full bg-black">
       {/* Frame wrapper */}
       <div className="max-w-[var(--content-max-width)] mx-auto">
         <motion.div
-          className="relative w-full min-h-screen overflow-hidden flex flex-col"
-          style={{ backgroundColor: 'var(--dark-background)' }}
+          className="relative w-full min-h-screen overflow-hidden flex flex-col bg-black"
           initial={{ y: -20, opacity: 0 }}
           animate={isInView ? { y: 0, opacity: 1 } : {}}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
@@ -70,7 +69,7 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
 
         {/* Wordmark - stretches edge to edge */}
         <div className="overflow-hidden flex items-end w-full">
-          <FitText text="MCB Creative" fontFamily="'Clash Display', var(--font-bebas-neue)" sizeScale={0.98} style={{ color: accentColor, fontWeight: 600, textAlign: 'center' }} />
+          <FitText text="MCB Creative" fontFamily="'Clash Display', var(--font-bebas-neue)" sizeScale={0.98} tagClassName="text-center" style={{ color: accentColor, fontWeight: 'var(--weight-semibold)' }} />
         </div>
         </motion.div>
       </div>

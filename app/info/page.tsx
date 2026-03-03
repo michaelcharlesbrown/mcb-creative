@@ -8,28 +8,9 @@ export default function Info() {
       <BodyClass className="info-page-active" />
 
       {/* Hero — fullscreen infinite grid with headline */}
-      <div
-        style={{
-          width: '100vw',
-          height: '100vh',
-          position: 'relative',
-          overflow: 'hidden',
-          background: '#000',
-        }}
-      >
+      <div className="w-screen h-screen relative overflow-hidden bg-black">
         <InfiniteGrid />
-        <h1
-          style={{
-            position: 'absolute',
-            zIndex: 10,
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            color: '#fff',
-            margin: 0,
-          }}
-          className="hero__headline flex items-center justify-center pointer-events-none"
-        >
+        <h1 className="hero__headline absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none text-white m-0">
           Portfolio
         </h1>
       </div>

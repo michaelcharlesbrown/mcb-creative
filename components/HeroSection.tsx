@@ -1,9 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import GrainCanvas from "@/components/GrainCanvas";
 import FitText from "@/components/FitText";
+
+gsap.registerPlugin(useGSAP);
 
 interface HeroSectionProps {
   disableScrollTrigger?: boolean;
@@ -14,7 +17,7 @@ export default function HeroSection({ disableScrollTrigger: _ = false }: HeroSec
   const headlineRef = useRef<HTMLDivElement>(null);
   const taglineRef  = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     const section = sectionRef.current;
     const headline = headlineRef.current;
     const tagline  = taglineRef.current;
@@ -27,19 +30,15 @@ export default function HeroSection({ disableScrollTrigger: _ = false }: HeroSec
       return;
     }
 
-    const ctx = gsap.context(() => {
-      gsap.set(tagline,  { opacity: 0, y: 30 });
-      gsap.set(headline, { opacity: 0, y: 40 });
+    gsap.set(tagline,  { opacity: 0, y: 30 });
+    gsap.set(headline, { opacity: 0, y: 40 });
 
-      const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
-      tl
-        .to(section,  { y: 0, duration: 1.2, ease: "power3.inOut", overwrite: "auto" }, 0)
-        .to(tagline,  { opacity: 1, y: 0, duration: 0.6 }, 0.3)
-        .to(headline, { opacity: 1, y: 0, duration: 0.7 }, "-=0.35");
-    });
-
-    return () => ctx.revert();
-  }, []);
+    const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+    tl
+      .to(section,  { y: 0, duration: 1.2, ease: "power3.inOut", overwrite: "auto" }, 0)
+      .to(tagline,  { opacity: 1, y: 0, duration: 0.6 }, 0.3)
+      .to(headline, { opacity: 1, y: 0, duration: 0.7 }, "-=0.35");
+  }, { scope: sectionRef });
 
   return (
     <section ref={sectionRef} className="hero hero--slide-in relative bg-background overflow-hidden">
@@ -69,7 +68,7 @@ export default function HeroSection({ disableScrollTrigger: _ = false }: HeroSec
                   as="h1"
                   fontFamily="'Clash Display', var(--font-bebas-neue)"
                   sizeScale={0.98}
-                  style={{ color: "var(--color-black)", fontWeight: 600, textAlign: "left" }}
+                  tagClassName="hero__headline"
                 />
               </div>
               {/* Desktop: CSS headline */}

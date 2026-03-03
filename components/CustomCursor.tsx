@@ -40,7 +40,7 @@ export default function CustomCursor() {
     const handleMouseMove = (e: MouseEvent) => {
       // Update position instantly - no smoothing/lag
       setPosition({ x: e.clientX, y: e.clientY });
-      if (!isVisible) setIsVisible(true);
+      setIsVisible(true);
 
       const elementUnder = document.elementFromPoint(e.clientX, e.clientY);
       setIsHovering(isInteractiveElement(elementUnder));
@@ -68,7 +68,7 @@ export default function CustomCursor() {
         handleMouseEnter
       );
     };
-  }, [isVisible]);
+  }, []);
 
   if (disabled) return null;
 

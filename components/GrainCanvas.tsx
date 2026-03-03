@@ -165,16 +165,8 @@ export default function GrainCanvas({
   return (
     <canvas
       ref={canvasRef}
-      className="grain-canvas"
-      style={{
-        position: "absolute",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-        mixBlendMode: blendMode,
-        zIndex,
-      }}
+      className="grain-canvas absolute inset-0 w-full h-full pointer-events-none"
+      style={{ mixBlendMode: blendMode, zIndex }}
       aria-hidden
     />
   );

@@ -1,11 +1,12 @@
 import { PortableText } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
 import MediaBlock from "./MediaBlock";
 
 interface TextMediaBlockProps {
   layout?: "left" | "right";
   textAlignment?: "top" | "middle" | "bottom";
   heading?: string;
-  body?: unknown;
+  body?: PortableTextBlock[];
   image?: { alt?: string; asset?: { url: string } };
   videoFileUrl?: string;
   titleFallback?: string;
@@ -20,7 +21,7 @@ export default function TextMediaBlock({
   videoFileUrl,
   titleFallback = "",
 }: TextMediaBlockProps) {
-  const hasText = heading || (Array.isArray(body) && body.length > 0);
+  const hasText = heading || (body?.length ?? 0) > 0;
   const hasMedia = image || videoFileUrl;
   if (!hasText && !hasMedia) return null;
 
@@ -40,9 +41,9 @@ export default function TextMediaBlock({
           {heading}
         </h2>
       )}
-      {Array.isArray(body) && body.length > 0 ? (
+      {(body?.length ?? 0) > 0 ? (
         <div className="project-hero__body flex flex-col gap-4">
-          <PortableText value={body} />
+          <PortableText value={body!} />
         </div>
       ) : null}
     </div>

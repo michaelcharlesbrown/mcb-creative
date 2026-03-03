@@ -4,6 +4,8 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 
+const AUTOPLAY_DELAY = 3000;
+
 export interface NavRailProject {
   slug: string;
   title: string;
@@ -25,7 +27,7 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
 
   const [emblaRef] = useEmblaCarousel(
     { loop: true, align: "start", slidesToScroll: 1, dragFree: true },
-    [Autoplay({ delay: 3000, stopOnInteraction: false })]
+    [Autoplay({ delay: AUTOPLAY_DELAY, stopOnInteraction: false })]
   );
 
   return (
@@ -42,12 +44,7 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
               draggable={false}
               onDragStart={(e) => e.preventDefault()}
             >
-              <div
-                className="relative w-full overflow-hidden rounded-sm"
-                style={{
-                  aspectRatio: "5/7",
-                }}
-              >
+              <div className="relative w-full overflow-hidden rounded-sm aspect-[5/7]">
                 <Image
                   src={project.heroImage}
                   alt={project.title}

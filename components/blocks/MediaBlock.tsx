@@ -5,6 +5,8 @@ import Image from "next/image";
 import { getSanityImageUrl, type SanityImagePreset } from "@/lib/sanityImage";
 import FadeIn from "@/components/FadeIn";
 
+const DEFAULT_ASPECT_RATIO = "1400/787.5";
+
 interface MediaBlockProps {
   image?: { asset?: { url: string }; alt?: string };
   videoUrl?: string;
@@ -23,7 +25,7 @@ interface MediaBlockProps {
 export default function MediaBlock({
   image,
   videoUrl,
-  aspectRatio = "1400/787.5",
+  aspectRatio = DEFAULT_ASPECT_RATIO,
   className = "",
   sizes = "100vw",
   altFallback = "",

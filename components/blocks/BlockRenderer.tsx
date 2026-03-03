@@ -1,3 +1,4 @@
+import type { PortableTextBlock } from "@portabletext/types";
 import IntroBlock from "./IntroBlock";
 import FullWidthBlock from "./FullWidthBlock";
 import TwoColumnBlock from "./TwoColumnBlock";
@@ -9,7 +10,7 @@ export interface PageContentBlock {
   subheadline?: string;
   scope?: string[];
   team?: string[];
-  description?: unknown;
+  description?: PortableTextBlock[];
   image?: { alt?: string; asset?: { url: string } };
   videoFileUrl?: string;
   imageLeft?: { alt?: string; asset?: { url: string } };
@@ -19,7 +20,7 @@ export interface PageContentBlock {
   layout?: "left" | "right";
   textAlignment?: "top" | "middle" | "bottom";
   heading?: string;
-  body?: unknown;
+  body?: PortableTextBlock[];
 }
 
 interface BlockRendererProps {

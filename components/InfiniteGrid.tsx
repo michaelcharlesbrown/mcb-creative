@@ -29,6 +29,18 @@ const LAYOUT_DATA = [
 
 const ORIGINAL_SIZE = { w: 1600, h: 1200 };
 
+// Animation tuning constants
+const SCROLL_EASE = 0.06;
+const WHEEL_FACTOR = 0.4;
+const MOUSE_LERP = 0.04;
+const DRIFT_CYCLE_FREQ = 0.01;
+const DRIFT_SPEED_X_MIN = 0.06;
+const DRIFT_SPEED_X_RANGE = 0.34;
+const DRIFT_SPEED_Y_MIN = 0.03;
+const DRIFT_SPEED_Y_RANGE = 0.17;
+const MOUSE_PARALLAX_SCALE = 10;
+const PRESS_SCALE_RANGE = 0.2;
+
 interface GridItem {
   el: HTMLDivElement;
   container: HTMLDivElement;
@@ -60,7 +72,7 @@ export default function InfiniteGrid() {
     let tileSize = { w: 0, h: 0 };
 
     const scroll = {
-      ease: 0.06,
+      ease: SCROLL_EASE,
       current: { x: 0, y: 0 },
       target: { x: 0, y: 0 },
       last: { x: 0, y: 0 },
@@ -164,9 +176,8 @@ export default function InfiniteGrid() {
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      const factor = 0.4;
-      scroll.target.x -= e.deltaX * factor;
-      scroll.target.y -= e.deltaY * factor;
+      scroll.target.x -= e.deltaX * WHEEL_FACTOR;
+      scroll.target.y -= e.deltaY * WHEEL_FACTOR;
     };
 
     const onMouseDown = (e: MouseEvent) => {
@@ -200,12 +211,12 @@ export default function InfiniteGrid() {
 
     const render = () => {
       if (!mounted) return;
-      // Auto-drift: speed cycles up then down (0.06–0.4 over ~10s)
+      // Auto-drift: speed cycles up then down over ~10s
       if (!isDragging) {
         driftTime += 1;
-        const cycle = 0.5 + 0.5 * Math.sin(driftTime * 0.01);
-        const speedX = 0.06 + 0.34 * cycle;
-        const speedY = 0.03 + 0.17 * cycle;
+        const cycle = 0.5 + 0.5 * Math.sin(driftTime * DRIFT_CYCLE_FREQ);
+        const speedX = DRIFT_SPEED_X_MIN + DRIFT_SPEED_X_RANGE * cycle;
+        const speedY = DRIFT_SPEED_Y_MIN + DRIFT_SPEED_Y_RANGE * cycle;
         scroll.target.x += speedX;
         scroll.target.y += speedY;
       }
@@ -214,11 +225,11 @@ export default function InfiniteGrid() {
 
       scroll.delta.x.t = scroll.current.x - scroll.last.x;
       scroll.delta.y.t = scroll.current.y - scroll.last.y;
-      scroll.delta.x.c += (scroll.delta.x.t - scroll.delta.x.c) * 0.04;
-      scroll.delta.y.c += (scroll.delta.y.t - scroll.delta.y.c) * 0.04;
-      mouse.x.c += (mouse.x.t - mouse.x.c) * 0.04;
-      mouse.y.c += (mouse.y.t - mouse.y.c) * 0.04;
-      mouse.press.c += (mouse.press.t - mouse.press.c) * 0.04;
+      scroll.delta.x.c += (scroll.delta.x.t - scroll.delta.x.c) * MOUSE_LERP;
+      scroll.delta.y.c += (scroll.delta.y.t - scroll.delta.y.c) * MOUSE_LERP;
+      mouse.x.c += (mouse.x.t - mouse.x.c) * MOUSE_LERP;
+      mouse.y.c += (mouse.y.t - mouse.y.c) * MOUSE_LERP;
+      mouse.press.c += (mouse.press.t - mouse.press.c) * MOUSE_LERP;
 
       const dirX = scroll.current.x > scroll.last.x ? "right" : "left";
       const dirY = scroll.current.y > scroll.last.y ? "down" : "up";
@@ -244,7 +255,7 @@ export default function InfiniteGrid() {
         const fx = item.x + scrollX + item.extraX + newX;
         const fy = item.y + scrollY + item.extraY + newY;
         item.el.style.transform = `translate(${fx}px, ${fy}px)`;
-        item.img.style.transform = `scale(${1.2 + 0.2 * mouse.press.c * item.ease}) translate(${-mouse.x.c * item.ease * 10}%, ${-mouse.y.c * item.ease * 10}%)`;
+        item.img.style.transform = `scale(${1.2 + PRESS_SCALE_RANGE * mouse.press.c * item.ease}) translate(${-mouse.x.c * item.ease * MOUSE_PARALLAX_SCALE}%, ${-mouse.y.c * item.ease * MOUSE_PARALLAX_SCALE}%)`;
       });
 
       scroll.last.x = scroll.current.x;
@@ -303,47 +314,8 @@ export default function InfiniteGrid() {
   }, []);
 
   return (
-    <>
-      <style>{`
-        .infinite-grid {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-          background: var(--color-black);
-        }
-        .infinite-grid__canvas {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-        }
-        .ig-item {
-          position: absolute;
-          top: 0;
-          left: 0;
-          will-change: transform;
-        }
-        .ig-item-wrapper {
-          position: relative;
-          will-change: transform;
-        }
-        .ig-item-image {
-          overflow: hidden;
-          position: relative;
-        }
-        .ig-item-image img {
-          display: block;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          will-change: transform;
-        }
-      `}</style>
-      <div className="infinite-grid">
-        <div ref={containerRef} className="infinite-grid__canvas" />
-      </div>
-    </>
+    <div className="infinite-grid" aria-hidden="true">
+      <div ref={containerRef} className="infinite-grid__canvas" />
+    </div>
   );
 }
