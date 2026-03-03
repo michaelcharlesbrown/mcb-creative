@@ -54,11 +54,12 @@
   --text-heading-sm:         16px;                          /* SCOPE/TEAM, mobile headings */
   --text-heading-lg:         20px;                          /* desktop "Featured Work", ProjectsScroll */
   --text-display-md:         clamp(1.75rem, 2.4vw, 3rem);  /* TextMediaBlock h2 */
-  --text-display-lg:         clamp(1.92rem, 5vw, 4.8rem);  /* Homepage about section only */
+  --text-display-lg:         clamp(2.5rem, 6vw, 6rem);  /* Homepage about section only */
   --text-display-xl:         clamp(3rem, 7.5vw, 17.5rem);  /* .intro giant text */
   --text-hero:               clamp(3.5rem, 12vw, 200px);    /* .hero__headline */
   --text-hero-minimal:       max(3rem, calc(100vw / 5.5)); /* minimal hero variant */
   --text-display-project-h1: clamp(2.5rem, 5.5vw, 5rem);  /* IntroBlock h1 */
+  --text-project-detail:     24px;                          /* Project hero subheadline, SCOPE/TEAM, description */
 
   /* Line heights — direct values → Tailwind leading-* utilities */
   --leading-wordmark: 0.82;
@@ -85,27 +86,41 @@ body, p, a, span, li, input, button {
   font-family: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
 }
 
-/* Project hero body */
+/* Project hero body — 24px IBM Plex Mono (Figma mockup) */
 .project-hero__body {
-  font-size: var(--text-heading-sm);
+  font-size: var(--text-project-detail);
   font-weight: var(--weight-regular);
   line-height: var(--leading-body);
-  letter-spacing: var(--tracking-display);
+  letter-spacing: -0.04em;
 }
 
-/* SCOPE/TEAM labels */
+/* SCOPE/TEAM labels — IBM Plex Mono Bold 24px (Figma mockup) */
 .project-hero__label {
-  font-size: var(--text-heading-sm);
-  font-weight: var(--weight-regular);
+  font-family: var(--font-family-mono);
+  font-size: var(--text-project-detail);
+  font-weight: var(--weight-bold);
   line-height: var(--leading-body);
-  letter-spacing: var(--tracking-display);
-  text-transform: uppercase;
+  letter-spacing: -0.04em;
   text-align: left;
 }
 
 /* Project hero / intro headline */
 .project-hero h1 {
+  font-family: var(--font-family-display);
   text-align: left;
+  text-transform: none;
+}
+
+/* Project hero subheadline — IBM Plex Mono 24px uppercase (Figma mockup) */
+.project-hero__subheadline {
+  font-family: var(--font-family-mono);
+  font-size: var(--text-project-detail);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+  letter-spacing: -0.04em;
+  text-align: left;
+  text-transform: uppercase;
+  color: inherit;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -143,10 +158,11 @@ p, li {
   color: #C0C0C0;
 }
 
-/* Homepage about section — larger display type. Distinct from info page. */
+/* Homepage about section — large display type, monospace thin (Figma) */
 .about-blurb__text {
+  font-family: var(--font-family-mono);
   font-size: var(--text-display-lg);
-  font-weight: 400;
+  font-weight: 100;
   line-height: 1.1;
   letter-spacing: var(--tracking-display);
 }
@@ -161,11 +177,6 @@ p, li {
 
 .nav__links,
 .nav__links a {
-  font-size: var(--text-ui);
-}
-
-/* Project hero: SCOPE/TEAM labels use smaller UI size */
-.project-hero .project-hero__label {
   font-size: var(--text-ui);
 }
 
@@ -256,14 +267,26 @@ img {
 /* Minimal hero (homepage mockup): fills viewport, headline fills width edge-to-edge, anchored to bottom */
 /* Hero: pinned 100vh + peel-away overlay (GSAP ScrollTrigger) */
 .hero {
+  --hero-height: 66.67vh;
   --hero-charcoal: var(--color-black);
   --hero-gray: #454545;
+  height: var(--hero-height);
   /* Overlap 1px to eliminate subpixel gap/hairline at hero/video boundary */
   margin-bottom: -1px;
 }
 
+/* Initial slide-down state — JS animates to y: 0 on load */
+.hero--slide-in {
+  transform: translateY(-66.67vh);
+}
+
 .hero__overlay {
   /* Full viewport overlay - peels via GSAP yPercent */
+}
+
+/* Hero content — animate in via GSAP; hidden until animation runs */
+.hero__content-animate {
+  opacity: 0;
 }
 
 .hero__content {
@@ -303,6 +326,40 @@ img {
   align-self: end;
   justify-self: start;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: flex-start;
+}
+
+/* Hero tagline — above wordmark, IBM Plex Mono 20px uppercase (Figma) */
+.hero__tagline {
+  font-family: var(--font-family-mono);
+  font-size: var(--text-heading-lg);
+  font-weight: var(--weight-regular);
+  line-height: 0.9;
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+  color: var(--color-black);
+}
+
+/* Projects page hero — 2/3 viewport, title at bottom (matches homepage hero) */
+.projects-hero__content {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: end;
+}
+
+.projects-hero__content-inner {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 var(--content-inset);
+  padding-bottom: clamp(1.5rem, 4vw, 3.5rem);
+  box-sizing: border-box;
 }
 
 /* MCB Creative wordmark — ALWAYS Clash Display. Never change. */
@@ -330,9 +387,14 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero--slide-in {
+    transform: none;
+  }
+
   .nav,
   .hero__minimal-content,
   .hero__panel,
+  .hero__content-animate,
   .hero__tagline,
   .hero__headline-wrap,
   .hero__video-block,

@@ -24,20 +24,24 @@ export default function IntroBlock({
   const hasDescription = Array.isArray(description) && description.length > 0;
   const hasMedia = Boolean(heroVideoFileUrl);
 
-  const hasTwoColumn = hasScopeOrTeam || hasDescription || subheadline;
+  const hasTwoColumn = hasScopeOrTeam || hasDescription;
 
   return (
     <div className="project-hero flex flex-col">
       {headline && (
-        <h1 className="pt-[240px] font-normal text-left text-display-project-h1 uppercase">
+        <h1 className="pt-[240px] font-display font-normal text-left text-display-project-h1">
           {headline}
         </h1>
       )}
 
+      {subheadline && (
+        <p className="project-hero__subheadline mt-4 max-w-[620px]">{subheadline}</p>
+      )}
+
       {hasTwoColumn && (
-        <div className="mt-20 max-w-[83.33%] self-start grid grid-cols-1 lg:grid-cols-2 gap-x-12 lg:gap-x-16 items-start justify-items-start text-left">
+        <div className="mt-12 max-w-[1280px] self-start grid grid-cols-1 lg:grid-cols-2 gap-x-16 lg:gap-x-24 items-start justify-items-start text-left">
           {hasScopeOrTeam && (
-            <div className="w-full flex flex-col gap-4 justify-self-start">
+            <div className="w-full max-w-[620px] flex flex-col gap-4 justify-self-start">
               {scope && scope.length > 0 && (
                 <div className="flex flex-col gap-2">
                   <h3 className="project-hero__label">SCOPE</h3>
@@ -65,15 +69,12 @@ export default function IntroBlock({
             </div>
           )}
 
-          {(subheadline || hasDescription) && (
+          {hasDescription && (
             <div
-              className={`w-full flex flex-col gap-4 justify-self-start ${!hasScopeOrTeam ? "lg:col-span-2" : ""}`}
+              className={`w-full max-w-[620px] flex flex-col gap-4 justify-self-start text-left ${!hasScopeOrTeam ? "lg:col-span-2" : ""}`}
             >
-              {subheadline && (
-                <p className="text-heading-sm font-normal text-gray-700 uppercase">{subheadline}</p>
-              )}
-              {hasDescription && description && (
-                <div className="project-hero__body flex flex-col gap-4">
+              {description && (
+                <div className="project-hero__body flex flex-col gap-4 text-left">
                   <PortableText value={Array.isArray(description) ? description : []} />
                 </div>
               )}

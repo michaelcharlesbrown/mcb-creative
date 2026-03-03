@@ -1,10 +1,38 @@
 import BodyClass from "@/components/BodyClass";
+import InfiniteGrid from "@/components/InfiniteGrid";
 
 export default function Info() {
   return (
     <>
       {/* Make body transparent so the fixed video shows through the middle section */}
       <BodyClass className="info-page-active" />
+
+      {/* Hero — fullscreen infinite grid with headline */}
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          position: 'relative',
+          overflow: 'hidden',
+          background: '#000',
+        }}
+      >
+        <InfiniteGrid />
+        <h1
+          style={{
+            position: 'absolute',
+            zIndex: 10,
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            color: '#fff',
+            margin: 0,
+          }}
+          className="hero__headline flex items-center justify-center pointer-events-none"
+        >
+          Portfolio
+        </h1>
+      </div>
 
       {/* Fixed video — pinned behind all sections */}
       <video

@@ -10,35 +10,39 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ disableScrollTrigger: _ = false }: HeroSectionProps) {
+  const sectionRef = useRef<HTMLElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
-  const taglineRef  = useRef<HTMLParagraphElement>(null);
+  const taglineRef  = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const section = sectionRef.current;
     const headline = headlineRef.current;
     const tagline  = taglineRef.current;
-    if (!headline || !tagline) return;
+    if (!section || !headline || !tagline) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion) {
+      gsap.set(section, { y: 0 });
       gsap.set([headline, tagline], { opacity: 1, y: 0 });
       return;
     }
 
     const ctx = gsap.context(() => {
-      gsap.set(headline, { opacity: 0, y: 40 });
       gsap.set(tagline,  { opacity: 0, y: 30 });
+      gsap.set(headline, { opacity: 0, y: 40 });
 
       const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
       tl
-        .to(headline, { opacity: 1, y: 0, duration: 0.7 }, 0.2)
-        .to(tagline,  { opacity: 1, y: 0, duration: 0.6 }, "-=0.35");
+        .to(section,  { y: 0, duration: 1.2, ease: "power3.inOut", overwrite: "auto" }, 0)
+        .to(tagline,  { opacity: 1, y: 0, duration: 0.6 }, 0.3)
+        .to(headline, { opacity: 1, y: 0, duration: 0.7 }, "-=0.35");
     });
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section className="hero relative h-screen bg-background overflow-hidden">
+    <section ref={sectionRef} className="hero hero--slide-in relative bg-background overflow-hidden">
       {/* Grain overlay */}
       <div className="absolute inset-0 z-[5] pointer-events-none">
         <GrainCanvas opacity={0.04} blendMode="overlay" zIndex={5} />
@@ -48,7 +52,16 @@ export default function HeroSection({ disableScrollTrigger: _ = false }: HeroSec
       <div className="hero__content relative z-10">
         <div className="hero__content-inner">
           <div className="hero__headline-wrap">
-            <div ref={headlineRef} style={{ opacity: 0 }}>
+            {/* Tagline above wordmark (Figma spec) */}
+            <div
+              ref={taglineRef}
+              className="hero__tagline hero__content-animate mb-3 md:mb-4"
+            >
+              <p className="m-0">Independent </p>
+              <p className="m-0">DESIGN studio of </p>
+              <p className="m-0">Michael Charles Brown</p>
+            </div>
+            <div ref={headlineRef} className="hero__content-animate">
               {/* Mobile: FitText */}
               <div className="md:hidden">
                 <FitText
@@ -64,13 +77,6 @@ export default function HeroSection({ disableScrollTrigger: _ = false }: HeroSec
                 MCB Creative
               </h1>
             </div>
-            <p
-              ref={taglineRef}
-              className="hero__subtitle mt-3 text-ui uppercase tracking-open leading-body text-black"
-              style={{ opacity: 0 }}
-            >
-              Independent design studio of<br className="md:hidden" /> Michael Charles Brown
-            </p>
           </div>
         </div>
       </div>
