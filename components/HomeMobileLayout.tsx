@@ -2,7 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { CustomEase } from "gsap/CustomEase";
 import HeroSection from "@/components/HeroSection";
+
+gsap.registerPlugin(CustomEase);
+CustomEase.create("smooth-out", "0.22, 1, 0.36, 1");
 import BodyClass from "@/components/BodyClass";
 import AboutBlurb from "@/components/AboutBlurb";
 import Footer from "@/components/Footer";
@@ -33,7 +37,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
     if (reducedMotion) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(video, { y: "100vh" }, { y: 0, duration: 1.1, ease: [0.22, 1, 0.36, 1] });
+      gsap.fromTo(video, { y: "100vh" }, { y: 0, duration: 1.1, ease: "smooth-out" });
     }, video);
 
     return () => ctx.revert();

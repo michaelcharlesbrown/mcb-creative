@@ -2,7 +2,11 @@
 
 import { forwardRef, useEffect, useRef } from "react";
 import gsap from "gsap";
+import { CustomEase } from "gsap/CustomEase";
 import GrainCanvas from "@/components/GrainCanvas";
+
+gsap.registerPlugin(CustomEase);
+CustomEase.create("smooth-out", "0.22, 1, 0.36, 1");
 import FitText from "@/components/FitText";
 
 interface HeroSectionProps {
@@ -43,10 +47,9 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
 
       const ctx = gsap.context(() => {
         const tl = gsap.timeline();
-        const ease = [0.22, 1, 0.36, 1]; /* smooth out — fluid deceleration */
-        tl.fromTo(section, { yPercent: -100 }, { yPercent: 0, duration: 0.7, ease });
-        tl.fromTo(title, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.55, ease }, "-=0.2");
-        tl.fromTo(tagline, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.55, ease }, "-=0.15");
+        tl.fromTo(section, { yPercent: -100 }, { yPercent: 0, duration: 0.7, ease: "smooth-out" });
+        tl.fromTo(title, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.55, ease: "smooth-out" }, "-=0.2");
+        tl.fromTo(tagline, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.55, ease: "smooth-out" }, "-=0.15");
       }, section);
 
       return () => ctx.revert();

@@ -2,7 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
+import { CustomEase } from "gsap/CustomEase";
 import HeroSection from "@/components/HeroSection";
+
+gsap.registerPlugin(CustomEase);
+CustomEase.create("smooth-out", "0.22, 1, 0.36, 1");
 import BodyClass from "@/components/BodyClass";
 import AboutBlurb from "@/components/AboutBlurb";
 import Footer from "@/components/Footer";
@@ -51,17 +55,16 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
-      const ease = [0.22, 1, 0.36, 1]; /* smooth out — fluid deceleration */
       // 1. Hero + video meet — smooth, fluid (first thing)
-      tl.fromTo(section, { yPercent: -100 }, { yPercent: 0, duration: 0.7, ease }, 0);
-      tl.fromTo(video, { y: "100vh" }, { y: 0, duration: 0.7, ease }, 0);
+      tl.fromTo(section, { yPercent: -100 }, { yPercent: 0, duration: 0.7, ease: "smooth-out" }, 0);
+      tl.fromTo(video, { y: "100vh" }, { y: 0, duration: 0.7, ease: "smooth-out" }, 0);
       // 2. Title (MCB Creative) — slide up + fade
-      tl.fromTo(title, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.55, ease }, ">");
+      tl.fromTo(title, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.55, ease: "smooth-out" }, ">");
       // 3. Tagline — slide up + fade
-      tl.fromTo(tagline, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.55, ease }, ">-0.12");
+      tl.fromTo(tagline, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.55, ease: "smooth-out" }, ">-0.12");
       // 4. Nav — slide down, last
       if (nav) {
-        tl.fromTo(nav, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.6, ease }, ">-0.08");
+        tl.fromTo(nav, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.6, ease: "smooth-out" }, ">-0.08");
       }
     }, section);
 
