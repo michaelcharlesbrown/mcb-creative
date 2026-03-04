@@ -55,7 +55,7 @@ export default function HeroSection({ disableScrollTrigger: _ = false }: HeroSec
                 <FitText
                   text="MCB Creative"
                   as="h1"
-                  fontFamily="'Clash Display', var(--font-bebas-neue)"
+                  fontFamily="var(--font-family-wordmark)"
                   sizeScale={0.98}
                   style={{ color: "var(--color-black)", fontWeight: 600, textAlign: "left" }}
                 />

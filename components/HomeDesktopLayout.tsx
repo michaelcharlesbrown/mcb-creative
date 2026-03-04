@@ -58,7 +58,7 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
 
       {/* Featured Work */}
       <div className="bg-background">
-        <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-[max(var(--nav-height),4rem)] pb-16 md:pt-[max(var(--nav-height),6rem)] md:pb-24">
+        <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-[max(var(--nav-height),200px)] pb-[200px] md:pt-[max(var(--nav-height),200px)] md:pb-[200px]">
           <div className="flex items-baseline justify-between gap-4 mb-8 md:mb-12">
             <h2 className="text-heading-lg font-normal">
               Featured Work

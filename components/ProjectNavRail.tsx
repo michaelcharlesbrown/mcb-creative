@@ -9,7 +9,7 @@ export interface NavRailProject {
   title: string;
   accentColor?: string;
   heroImage: string;          // was: thumbnail
-  subheadline?: string;
+  scope?: string[];
 }
 
 interface ProjectNavRailProps {
@@ -61,9 +61,9 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
                 <h3 className="truncate uppercase text-heading-sm font-normal" suppressHydrationWarning>
                   {project.title}
                 </h3>
-                {isHomepage && project.subheadline && (
-                  <p className="truncate text-black/60 mt-0.5 uppercase text-ui">
-                    {project.subheadline}
+                {project.scope && project.scope.length > 0 && (
+                  <p className="line-clamp-2 text-black/60 mt-0.5 uppercase text-ui">
+                    {project.scope.join(", ")}
                   </p>
                 )}
               </div>

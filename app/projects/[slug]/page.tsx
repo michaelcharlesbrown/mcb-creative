@@ -22,6 +22,7 @@ type SanityGridProject = {
   slug: string;
   title: string;
   accentColor?: string;
+  scope?: string[];
   thumbnail?: string;
 };
 
@@ -77,6 +78,7 @@ export default async function Project({
       slug: p.slug,
       title: sanity?.title ?? p.title,
       accentColor: sanity?.accentColor ?? p.accentColor,
+      scope: sanity?.scope ?? p.scope ?? p.services ?? [],
       heroImage: sanity?.thumbnail ?? p.heroImage ?? `/images/projects/${p.slug}/01-full.jpg`,
     };
   });

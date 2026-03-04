@@ -48,7 +48,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
 
       {/* Featured Work — full viewport section like About, card peek on right */}
       <section className="flex-shrink-0 bg-background min-h-dvh flex flex-col justify-center">
-        <div className="content-inset py-10">
+        <div className="content-inset pt-[200px] pb-[200px]">
           <div className="flex items-baseline justify-between gap-4 mb-6">
             <h2 className="text-heading-sm font-normal">
               Featured Work

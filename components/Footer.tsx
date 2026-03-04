@@ -70,7 +70,7 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
 
         {/* Wordmark - stretches edge to edge */}
         <div className="overflow-hidden flex items-end w-full">
-          <FitText text="MCB Creative" fontFamily="'Clash Display', var(--font-bebas-neue)" sizeScale={0.98} style={{ color: accentColor, fontWeight: 600, textAlign: 'center' }} />
+          <FitText text="MCB Creative" fontFamily="var(--font-family-wordmark)" sizeScale={0.98} style={{ color: accentColor, fontWeight: 600, textAlign: 'center' }} />
         </div>
         </motion.div>
       </div>
