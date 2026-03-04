@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useAccentColor } from "@/components/AccentColorContext";
 
 const CURSOR_SIZE = 14;
 const prefersReducedMotion = () =>
@@ -24,6 +25,7 @@ function isInteractiveElement(element: Element | null): boolean {
 }
 
 export default function CustomCursor() {
+  const { accentColor } = useAccentColor();
   const [position, setPosition] = useState({ x: -100, y: -100 });
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -86,7 +88,7 @@ export default function CustomCursor() {
         marginLeft: -size / 2,
         marginTop: -size / 2,
         borderRadius: "50%",
-        backgroundColor: "var(--color-white)",
+        backgroundColor: accentColor ?? "var(--color-white)",
         mixBlendMode: "difference",
         pointerEvents: "none",
         zIndex: 9999,
