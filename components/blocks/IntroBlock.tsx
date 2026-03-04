@@ -35,13 +35,13 @@ export default function IntroBlock({
       )}
 
       {hasTwoColumn && (
-        <div className="mt-20 max-w-[83.33%] self-start grid grid-cols-1 lg:grid-cols-2 gap-x-12 lg:gap-x-16 items-start justify-items-start text-left">
+        <div className="mt-20 w-full grid grid-cols-1 lg:grid-cols-2 gap-x-12 lg:gap-x-16 items-start justify-items-start text-left">
           {hasScopeOrTeam && (
             <div className="w-full flex flex-col gap-4 justify-self-start">
               {scope && scope.length > 0 && (
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-4">
                   <h3 className="project-hero__label">SCOPE</h3>
-                  <ul className="flex flex-col gap-2 list-none pl-0 m-0">
+                  <ul className="flex flex-col list-none pl-0 m-0">
                     {scope.map((item, i) => (
                       <li key={i} className="project-hero__body">
                         {item}
@@ -51,9 +51,9 @@ export default function IntroBlock({
                 </div>
               )}
               {team && team.length > 0 && (
-                <div className="flex flex-col gap-2 mt-8">
+                <div className="flex flex-col gap-4">
                   <h3 className="project-hero__label">TEAM</h3>
-                  <ul className="flex flex-col gap-2 list-none pl-0 m-0">
+                  <ul className="flex flex-col list-none pl-0 m-0">
                     {team.map((item, i) => (
                       <li key={i} className="project-hero__body">
                         {item}

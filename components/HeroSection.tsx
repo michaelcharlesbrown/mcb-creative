@@ -45,8 +45,9 @@ export default function HeroSection({ disableScrollTrigger: _ = false }: HeroSec
       </div>
 
       {/* Content */}
-      <div className="hero__content relative z-10">
-        <div className="hero__content-inner">
+      <div className="hero__content relative z-10 flex flex-col">
+        <div className="min-h-[calc(66.67vh-var(--nav-height))] shrink-0" aria-hidden />
+        <div className="hero__content-inner flex-1 min-h-0">
           <div className="hero__headline-wrap">
             <div ref={headlineRef} style={{ opacity: 0 }}>
               {/* Mobile: FitText */}
