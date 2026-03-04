@@ -7,6 +7,7 @@
 
 :root {
   /* Colors */
+  --project-accent-overlay: transparent; /* set by SetAccentColor on project pages */
   --background:      #fcfcfc;
   --foreground:      #0a0a0a;
   --dark-background: #0a0a0a;
@@ -194,7 +195,21 @@ a:hover {
   font-size: var(--text-ui);
 }
 
+/* Hero H1 tagline — semantic H1, visually matches body copy (12px mono), all caps */
+.hero h1.hero__tagline {
+  font-family: var(--font-family-mono);
+  font-size: var(--text-ui);
+  font-weight: var(--weight-regular);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 /* MCB Creative wordmark — ALWAYS Clash Display. Never change font here. */
+.hero__headline-block {
+  /* Optical alignment: pull M to match tagline/logo left edge (Clash Display side-bearing) */
+  transform: translateX(-6px);
+}
+
 .hero__headline {
   font-family: var(--font-family-wordmark);
   font-size: var(--text-hero);
@@ -203,7 +218,6 @@ a:hover {
   color: var(--color-black);
   text-transform: none;
   margin: 0;
-  margin-left: -5px;
   white-space: nowrap;
 }
 
@@ -250,7 +264,29 @@ body.info-page-active {
 ============================================================ */
 
 .hero {
-  margin-bottom: -1px; /* eliminate subpixel gap at hero/video boundary */
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+
+.hero-video {
+  position: relative;
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+
+/* White cap overlaps hero bottom — eliminates seam (video draws on top of boundary) */
+.hero-video::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -4px;
+  height: 4px;
+  background: var(--background);
+  z-index: 1;
+  pointer-events: none;
 }
 
 .hero__content {
@@ -259,7 +295,7 @@ body.info-page-active {
   z-index: 3;
   display: flex;
   flex-direction: column;
-  padding: max(var(--nav-height), clamp(3rem, 8vh, 6rem)) 0 clamp(1.5rem, 4vw, 3.5rem);
+  padding: max(var(--nav-height), clamp(3rem, 8vh, 6rem)) 0 clamp(0.75rem, 2vw, 1.5rem);
   box-sizing: content-box;
 }
 
@@ -271,38 +307,11 @@ body.info-page-active {
   object-fit: cover;
 }
 
-.hero__content-inner {
-  max-width: var(--content-max-width);
-  margin: 0 auto;
-  padding: 0 var(--content-inset);
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 0 clamp(1rem, 2vw, 2rem);
-  grid-template-rows: auto;
-  align-content: start;
-  box-sizing: content-box;
-}
-
-.hero__headline-wrap {
-  grid-column: 1 / 7;
-  grid-row: 1;
-  justify-self: start;
-  text-align: left;
-}
 
 .project-hero h1 {
   text-align: left;
 }
 
-@media (max-width: 768px) {
-  .hero__content-inner {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-  }
-  .hero__headline-wrap {
-    grid-column: 1;
-  }
-}
 
 /* ============================================================
    ABOUT BLURB
@@ -342,6 +351,16 @@ body.info-page-active {
 }
 
 /* ============================================================
+   LOGO VIDEO (project page accent overlay)
+============================================================ */
+
+.logo-video-accent-overlay {
+  background-color: var(--project-accent-overlay);
+  opacity: 0.45;
+  mix-blend-mode: overlay;
+}
+
+/* ============================================================
    ANIMATIONS
 ============================================================ */
 
@@ -349,6 +368,12 @@ body.info-page-active {
   opacity: 0;
   animation: nav-slide-down 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
   will-change: opacity, transform;
+}
+
+/* Homepage: nav controlled by GSAP timeline, not CSS */
+body.home .nav {
+  animation: none;
+  opacity: 0;
 }
 
 @keyframes nav-slide-down {

@@ -4,6 +4,7 @@ import BlockRenderer, { type PageContentBlock } from "@/components/blocks/BlockR
 import MediaBlock from "@/components/blocks/MediaBlock";
 import ProjectNavRail, { type NavRailProject } from "@/components/ProjectNavRail";
 import ProjectNavLinks from "@/components/ProjectNavLinks";
+import SetAccentColor from "@/components/SetAccentColor";
 import { projects as hardcodedProjects } from "@/data/projects";
 
 export const revalidate = 0;
@@ -85,6 +86,7 @@ export default async function Project({
 
   return (
     <div className="min-h-screen bg-background text-black">
+      <SetAccentColor color={sanityProject.accentColor} />
       <main>
         {/* Hero image: full screen, full bleed */}
         {sanityProject.heroImage && (

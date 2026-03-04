@@ -1,9 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
 import HeroSection from "@/components/HeroSection";
+import BodyClass from "@/components/BodyClass";
 import AboutBlurb from "@/components/AboutBlurb";
 import Footer from "@/components/Footer";
+import LogoVideoReveal from "@/components/LogoVideoReveal";
 import ProjectNavRail from "@/components/ProjectNavRail";
 
 export interface MobileProject {
@@ -20,17 +23,34 @@ interface HomeMobileLayoutProps {
 }
 
 export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
-  return (
-    <div
-      className="fixed inset-0 overflow-y-scroll scrollbar-hide md:hidden z-10"
-    >
-      {/* Hero */}
-      <section className="h-screen flex-shrink-0">
-        <HeroSection disableScrollTrigger />
-      </section>
+  const videoRef = useRef<HTMLElement>(null);
 
-      {/* Video */}
-      <section className="flex-shrink-0 bg-black">
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(video, { y: "100vh" }, { y: 0, duration: 1.1, ease: [0.22, 1, 0.36, 1] });
+    }, video);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <>
+      <BodyClass className="home" />
+      <div
+        className="fixed inset-0 overflow-y-scroll scrollbar-hide md:hidden z-10"
+      >
+      {/* Hero + video in black container — black visible during slide animations */}
+      <div className="flex-shrink-0 overflow-hidden bg-black isolate">
+        <section className="h-[66.67vh] flex-shrink-0 overflow-hidden">
+          <HeroSection disableScrollTrigger />
+        </section>
+        <section ref={videoRef} className="hero-video flex-shrink-0 bg-black">
         <video
           className="w-full h-auto block"
           src="/video/hero-placeholder-test.mp4"
@@ -39,7 +59,8 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
           loop
           playsInline
         />
-      </section>
+        </section>
+      </div>
 
       {/* About */}
       <section className="flex-shrink-0">
@@ -64,10 +85,16 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
         </div>
       </section>
 
+      {/* Logo video peel-away — same effect as info page */}
+      <section className="flex-shrink-0 min-h-screen relative">
+        <LogoVideoReveal />
+      </section>
+
       {/* Footer */}
       <section className="flex-shrink-0">
         <Footer />
       </section>
     </div>
+    </>
   );
 }

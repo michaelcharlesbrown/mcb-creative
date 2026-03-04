@@ -4,6 +4,8 @@ import { usePathname } from "next/navigation";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
+import LogoVideoReveal from "@/components/LogoVideoReveal";
+import { AccentColorProvider } from "@/components/AccentColorContext";
 
 export default function LayoutShell({
   children,
@@ -19,11 +21,16 @@ export default function LayoutShell({
   const isHomePage = pathname === "/";
 
   return (
-    <>
+    <AccentColorProvider>
       <CustomCursor />
       <Navigation />
       {children}
-      {!isHomePage && <Footer />}
-    </>
+      {!isHomePage && (
+        <>
+          <LogoVideoReveal />
+          <Footer />
+        </>
+      )}
+    </AccentColorProvider>
   );
 }

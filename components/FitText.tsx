@@ -8,7 +8,7 @@ interface FitTextProps {
   style?: React.CSSProperties
   fontFamily?: string
   sizeScale?: number
-  as?: 'h1' | 'h2'
+  as?: 'h1' | 'h2' | 'span'
 }
 
 const MEASURE_FONT_SIZE = 100

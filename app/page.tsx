@@ -42,7 +42,7 @@ export default async function Home() {
       }));
 
   return (
-    <div className="home bg-background text-black">
+    <div className="home text-black">
       <HomeMobileLayout projects={mergedProjects} />
       <HomeDesktopLayout projects={mergedProjects} />
     </div>
