@@ -19,6 +19,8 @@ export default function LayoutShell({
   }
 
   const isHomePage = pathname === "/";
+  const isProjectsPage = pathname === "/projects" || pathname?.startsWith("/projects/");
+  const showLogoVideo = !isHomePage && !isProjectsPage;
 
   return (
     <AccentColorProvider>
@@ -27,7 +29,7 @@ export default function LayoutShell({
       {children}
       {!isHomePage && (
         <>
-          <LogoVideoReveal />
+          {showLogoVideo && <LogoVideoReveal />}
           <Footer />
         </>
       )}

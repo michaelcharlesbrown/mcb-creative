@@ -264,6 +264,7 @@ body.info-page-active {
 ============================================================ */
 
 .hero {
+  margin: 0;
   box-shadow: none;
   border: none;
   outline: none;
@@ -276,18 +277,12 @@ body.info-page-active {
   outline: none;
 }
 
-/* White cap overlaps hero bottom — eliminates seam (video draws on top of boundary) */
-.hero-video::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -4px;
-  height: 4px;
-  background: var(--background);
-  z-index: 1;
-  pointer-events: none;
+.hero-video video {
+  border: none;
+  outline: none;
+  display: block;
 }
+
 
 .hero__content {
   position: absolute;
@@ -370,11 +365,6 @@ body.info-page-active {
   will-change: opacity, transform;
 }
 
-/* Homepage: nav controlled by GSAP timeline, not CSS */
-body.home .nav {
-  animation: none;
-  opacity: 0;
-}
 
 @keyframes nav-slide-down {
   from { opacity: 0; transform: translateY(-100%); }
