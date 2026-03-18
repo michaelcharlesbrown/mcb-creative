@@ -1,6 +1,12 @@
+# TYPOGRAPHY RULE — READ THIS FIRST
+
+All typographic properties — font family, size, weight, line-height, letter-spacing — are controlled exclusively by component CSS class rules in `globals.css` using tokens defined in `:root`. This is the only mechanism. To change how type looks, change a token value or a component rule in `globals.css`. Do not add Tailwind utility classes (`tracking-*`, `leading-*`, `font-*`, `text-*`) to JSX for any typographic property. Do not use raw numbers as CSS values. There is no other correct way to control typography on this project. See `TYPOGRAPHY.md` for the complete token reference and component class inventory.
+
+---
+
 # MCB Creative Portfolio — Claude Code Project Brief
 
-**Site:** mcb-creative.vercel.app  
+**Site:** mcb-creative.vercel.app
 **Owner:** Michael Charles Brown, Creative Director  
 **Repo:** mcb-creative (Next.js + Sanity, deployed on Vercel)  
 **Motion lab (separate):** mcb-motion-lab  

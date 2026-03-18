@@ -24,7 +24,7 @@ export default function HeroSection() {
       <div className="hero__content z-10 flex flex-col justify-end">
         <div className="max-w-[var(--content-max-width)] mx-auto content-inset w-full pt-0">
           <div className="hero__headline-wrap flex flex-col gap-2 text-left">
-            <h1 className="hero__tagline tracking-widest text-black [&>span]:block" style={{ textTransform: "uppercase" }}>
+            <h1 className="hero__tagline text-black [&>span]:block" style={{ textTransform: "uppercase" }}>
               <span>Independent</span>
               <span>Design Studio Of</span>
               <span>Michael Charles Brown</span>

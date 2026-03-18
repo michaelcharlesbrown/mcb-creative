@@ -33,15 +33,15 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
               animate={isInView ? { y: 0, opacity: 1 } : {}}
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             >
-              <p className="text-micro uppercase tracking-widest leading-body" style={{ color: accentColor }}>
+              <p className="text-micro uppercase" style={{ color: accentColor }}>
                 Independent Design Studio And<br />
                 Portfolio Of Creative Director<br />
                 Michael Charles Brown
               </p>
-              <p className="text-micro uppercase tracking-widest leading-body" style={{ color: accentColor }}>
+              <p className="text-micro uppercase" style={{ color: accentColor }}>
                 San Francisco///Los Angeles
               </p>
-              <p className="text-micro uppercase tracking-widest leading-body opacity-50" style={{ color: accentColor }}>
+              <p className="text-micro uppercase opacity-50" style={{ color: accentColor }}>
                 ©{new Date().getFullYear()}
               </p>
             </motion.div>
@@ -52,17 +52,17 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
               animate={isInView ? { y: 0, opacity: 1 } : {}}
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             >
-              <p className="text-micro uppercase tracking-widest leading-body" style={{ color: accentColor }}>
+              <p className="text-micro uppercase" style={{ color: accentColor }}>
                 Got A Project In Mind?<br />
                 I&apos;d Love To Hear About It.<br />
                 Get In Touch:
               </p>
-              <a href="mailto:hello@mcb-creative.design" className="text-micro normal-case tracking-widest leading-body hover:opacity-60 transition-opacity cursor-pointer inline-block" style={{ color: accentColor }}>
+              <a href="mailto:hello@mcb-creative.design" className="text-micro normal-case hover:opacity-60 transition-opacity cursor-pointer inline-block" style={{ color: accentColor }}>
                 hello@mcb-creative.design
               </a>
               <div className="flex flex-col gap-2 mt-2">
-                <Link href="https://www.behance.net/mcb-creative" target="_blank" rel="noopener noreferrer" className="text-micro uppercase tracking-widest leading-body hover:opacity-60 transition-opacity" style={{ color: accentColor }}>Behance</Link>
-                <Link href="https://www.linkedin.com/in/michaelcharlesbrown/" target="_blank" rel="noopener noreferrer" className="text-micro uppercase tracking-widest leading-body hover:opacity-60 transition-opacity" style={{ color: accentColor }}>LinkedIn</Link>
+                <Link href="https://www.behance.net/mcb-creative" target="_blank" rel="noopener noreferrer" className="text-micro uppercase hover:opacity-60 transition-opacity" style={{ color: accentColor }}>Behance</Link>
+                <Link href="https://www.linkedin.com/in/michaelcharlesbrown/" target="_blank" rel="noopener noreferrer" className="text-micro uppercase hover:opacity-60 transition-opacity" style={{ color: accentColor }}>LinkedIn</Link>
               </div>
             </motion.div>
           </div>

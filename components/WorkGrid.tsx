@@ -19,7 +19,7 @@ export default function WorkGrid({ projects }: WorkGridProps) {
         {/* Spacer — top white section so first row of projects sits nicely in viewport */}
         <div className="min-h-[calc(28vh-max(var(--nav-height),4rem))]" aria-hidden />
 
-        <h1 className="uppercase text-ui tracking-widest mb-6 md:mb-8">
+        <h1 className="uppercase text-ui mb-6 md:mb-8">
           Portfolio
         </h1>
 

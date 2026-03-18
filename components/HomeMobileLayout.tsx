@@ -51,7 +51,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
               </h2>
               <a
                 href="/projects"
-                className="uppercase text-ui tracking-widest hover:opacity-50 transition-opacity shrink-0"
+                className="uppercase text-ui hover:opacity-50 transition-opacity shrink-0"
               >
                 See All Work →
               </a>
