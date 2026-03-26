@@ -6,7 +6,7 @@ import BodyClass from "@/components/BodyClass";
 import AboutBlurb from "@/components/AboutBlurb";
 import Footer from "@/components/Footer";
 import LogoVideoReveal from "@/components/LogoVideoReveal";
-import ProjectNavRail from "@/components/ProjectNavRail";
+import { FluidWorkGrid } from "@/components/FluidWorkGrid";
 
 export interface DesktopProject {
   slug: string;
@@ -57,11 +57,9 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
         </div>
 
         <div className="bg-background">
-          <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-[max(var(--nav-height),200px)] pb-[200px] md:pt-[max(var(--nav-height),200px)] md:pb-[200px]">
-            <div className="flex items-baseline justify-between gap-4 mb-8 md:mb-12">
-              <h2 className="text-heading-lg font-normal">
-                Featured Work
-              </h2>
+          <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-[max(var(--nav-height),200px)] pb-8 md:pb-12">
+            <div className="flex items-baseline justify-between gap-4">
+              <h2 className="text-heading-lg font-normal">Featured Work</h2>
               <a
                 href="/projects"
                 className="uppercase text-ui hover:opacity-50 transition-opacity shrink-0"
@@ -69,8 +67,9 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
                 See All Work →
               </a>
             </div>
-            <ProjectNavRail projects={projects} variant="homepage" />
           </div>
+          <FluidWorkGrid projects={projects} />
+          <div className="pb-[200px]" />
         </div>
       </div>
 

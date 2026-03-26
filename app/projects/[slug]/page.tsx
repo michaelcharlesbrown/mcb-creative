@@ -2,6 +2,7 @@ import { sanityFetch } from "@/lib/sanity.fetch";
 import { projectBySlugQuery, projectsGridQuery } from "@/lib/sanity.queries";
 import BlockRenderer, { type PageContentBlock } from "@/components/blocks/BlockRenderer";
 import MediaBlock from "@/components/blocks/MediaBlock";
+import IntroBlock from "@/components/blocks/IntroBlock";
 import ProjectNavRail, { type NavRailProject } from "@/components/ProjectNavRail";
 import ProjectNavLinks from "@/components/ProjectNavLinks";
 import SetAccentColor from "@/components/SetAccentColor";
@@ -69,7 +70,19 @@ export default async function Project({
 
   const { previous, next } = await getAdjacentProjectsFromSanity(slug);
   const pageContent = sanityProject.pageContent ?? [];
-  const hasBlocks = pageContent.length > 0;
+  const introBlock = pageContent.find((b) => b._type === "introBlock");
+  const restBlocks = pageContent.filter((b) => b._type !== "introBlock");
+  const hasRestBlocks = restBlocks.length > 0;
+
+  const hardcoded = hardcodedProjects.find((p) => p.slug === slug);
+
+  const introHeadline = introBlock?.headline ?? sanityProject.title;
+  const introSubheadline = introBlock?.subheadline ?? hardcoded?.heroTagline;
+  const introScope = introBlock?.scope ?? hardcoded?.scope;
+  const introTeam = introBlock?.team ?? hardcoded?.team;
+  const introDescription = introBlock?.description ?? hardcoded?.description;
+
+  const hasHeroMedia = Boolean(sanityProject.heroImage || sanityProject.heroVideoFileUrl);
 
   const sanityGridProjects = await sanityFetch<SanityGridProject[]>(projectsGridQuery).catch(() => []);
   const sanityBySlug = Object.fromEntries(sanityGridProjects.map((p) => [p.slug, p]));
@@ -88,16 +101,21 @@ export default async function Project({
     <div className="min-h-screen bg-background text-black">
       <SetAccentColor color={sanityProject.accentColor} />
       <main>
-        {/* Hero image: full screen, full bleed */}
-        {sanityProject.heroImage && (
-          <div
-            className="relative w-full h-screen overflow-hidden [&>*]:size-full"
-          >
+        <IntroBlock
+          headline={introHeadline}
+          subheadline={introSubheadline}
+          scope={introScope}
+          team={introTeam}
+          description={introDescription}
+          titleFallback={sanityProject.title}
+        />
+
+        {hasHeroMedia && (
+          <div className="max-w-[var(--content-max-width)] mx-auto content-inset">
             <MediaBlock
               image={sanityProject.heroImage}
+              videoUrl={sanityProject.heroVideoFileUrl}
               altFallback={sanityProject.title}
-              imagePreset="cover"
-              fill
               sizes="100vw"
               priority
             />
@@ -106,27 +124,20 @@ export default async function Project({
 
         <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-16 pb-16">
           <div className="flex flex-col gap-[8px]">
-            {!hasBlocks && !sanityProject.heroImage && (
-              <section>
-                <h1 className="text-5xl font-normal uppercase">{sanityProject.title}</h1>
-              </section>
-            )}
-            {pageContent.map((block, index) => (
-              <BlockRenderer
-                key={index}
-                block={block}
-                index={index}
-                titleFallback={sanityProject.title}
-                heroVideoFileUrl={sanityProject.heroVideoFileUrl}
-              />
-            ))}
+            {hasRestBlocks &&
+              restBlocks.map((block, index) => (
+                <BlockRenderer
+                  key={index}
+                  block={block}
+                  index={index}
+                  titleFallback={sanityProject.title}
+                />
+              ))}
           </div>
 
-          {/* Next/Previous Navigation */}
           <ProjectNavLinks previous={previous} next={next} />
         </div>
 
-        {/* Project Nav Rail */}
         <div className="max-w-[var(--content-max-width)] mx-auto content-inset mt-8 pb-48">
           <ProjectNavRail currentSlug={slug} projects={navRailProjects} />
         </div>

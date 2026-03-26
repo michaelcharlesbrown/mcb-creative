@@ -30,14 +30,14 @@ export default function WorkCard({ project }: WorkCardProps) {
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
       </div>
-      <div className="space-y-1">
-        <h3 className="uppercase text-heading-sm font-normal">
-          {project.title}
-        </h3>
-        <p className="text-black/50 uppercase text-ui">
-          {project.services.slice(0, 2).join(", ")}
-        </p>
-      </div>
+      <h3 className="work-card__caption">
+        {project.title}
+        <span className="work-card__caption-sep" aria-hidden>
+          {" "}
+          ///{" "}
+        </span>
+        {project.services.slice(0, 2).join(", ")}
+      </h3>
     </a>
   );
 }

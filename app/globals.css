@@ -13,6 +13,8 @@
   --dark-background: #0a0a0a;
   --color-black:     #0a0a0a;
   --color-white:     #fcfcfc;
+  /* Work CTA pill — Figma fill #020202 */
+  --color-work-cta-button: #020202;
   --hero-charcoal:   #0a0a0a;
 
   /* Layout */
@@ -26,6 +28,7 @@
 
   /* Weights */
   --weight-regular:  400;
+  --weight-medium:   500; /* Geist Medium — work CTA (Figma 933:265 / 1029:379) */
   --weight-semibold: 600;
   --weight-bold:     700;
 
@@ -40,6 +43,37 @@
   --text-display-about: clamp(1.92rem, 5vw, 3.8rem);
   --text-display-info:  clamp(1.75rem, 2.4vw, 3rem);
   --text-hero:          clamp(3.5rem, 12vw, 200px);
+  /* Work page CTA — Figma 933:265 @ 1440 (1029:379 headline 200px / 1029:382–383 pill / spacing) */
+  --text-work-cta:        clamp(3rem, 13.89vw, 12.5rem);
+  --leading-work-cta:     0.9;
+  --text-work-cta-button: 2.5rem;
+  --width-work-cta-button:  394px;
+  --height-work-cta-button: 135px;
+  --radius-work-cta-button: 160px;
+  --size-work-cta-arrow-w: 142px;
+  --size-work-cta-arrow-h: 141px;
+  --padding-work-cta-top:    clamp(6rem, 23.54vw, 21.1875rem);
+  --space-work-cta-after-headline: clamp(5rem, 12.15vw, 10.9375rem);
+  --padding-work-cta-b:      clamp(6rem, 16.75vw, 15.0625rem);
+  --gap-work-cta-row:        clamp(1.5rem, 5.76vw, 5.1875rem);
+  /* Work page — dual marquees above footer */
+  --text-work-marquee: 24px;
+  --leading-work-marquee:   0.9;
+  --min-height-work-marquee: 51px;
+  --duration-work-marquee:   160s;
+  --ease-work-marquee:       linear;
+  --focus-ring-width:     2px;
+  --focus-ring-offset:    3px;
+
+  /* Letter-spacing (use only via component classes in this file) */
+  --letter-spacing-work: 0.06em;
+
+  --space-project-hero-bottom: clamp(3rem, 8vw, 6rem);
+  /* Air above intro copy (below fixed nav) — matches project page mockup */
+  --padding-project-hero-top: max(
+    calc(var(--nav-height) + clamp(2.5rem, 6vw, 5rem)),
+    clamp(7rem, 20vh, 14rem)
+  );
 
   /* Leading */
   --leading-body:    1.5;
@@ -148,6 +182,30 @@ a:hover {
   line-height: var(--leading-display);
 }
 
+/* Project page — intro (two columns: title / scope / team | headline + body) */
+.project-hero h1.project-hero__title {
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-ui);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-body);
+  letter-spacing: var(--letter-spacing-work);
+  text-transform: uppercase;
+  margin:         0;
+}
+
+.project-hero .project-hero__headline {
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-ui);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-body);
+  text-transform: uppercase;
+  margin:         0;
+}
+
+.project-hero__richtext p {
+  margin: 0;
+}
+
 /* Project hero body copy */
 .project-hero__body {
   font-size:   var(--text-ui);
@@ -162,7 +220,8 @@ a:hover {
 }
 
 /* Project hero SCOPE/TEAM labels */
-.project-hero__label {
+.project-hero .project-hero__label {
+  font-family:    var(--font-family-mono);
   font-size:      var(--text-ui);
   font-weight:    var(--weight-regular);
   line-height:    var(--leading-body);
@@ -174,6 +233,152 @@ a:hover {
 .nav__links,
 .nav__links a {
   font-size: var(--text-ui);
+}
+
+/* Work page — portfolio grid (matches Figma: mono, tracked caps, single-line captions) */
+h1.work-page__label {
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-ui);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-heading);
+  letter-spacing: var(--letter-spacing-work);
+  text-transform: uppercase;
+  color:          var(--color-black);
+}
+
+h3.work-card__caption {
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-ui);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-heading);
+  letter-spacing: var(--letter-spacing-work);
+  text-transform: uppercase;
+  color:          var(--color-black);
+}
+
+.work-card__caption-sep {
+  /* Visual separator only — same type color as caption */
+  font-weight: var(--weight-regular);
+}
+
+/* Work page — “Let’s work together” CTA (Figma specs baked into tokens above) */
+.work-page__cta {
+  padding-top:    var(--padding-work-cta-top);
+  padding-bottom: var(--padding-work-cta-b);
+}
+
+h2.work-page__cta-headline {
+  font-family:    var(--font-family-headline);
+  font-size:      var(--text-work-cta);
+  font-weight:    var(--weight-medium);
+  line-height:    var(--leading-work-cta);
+  color:          var(--color-black);
+  text-align:     left;
+  margin:         0 0 var(--space-work-cta-after-headline) 0;
+}
+
+.work-page__cta-row {
+  display:     flex;
+  flex-wrap:   wrap;
+  align-items: center;
+  gap:         var(--gap-work-cta-row);
+}
+
+a.work-page__cta-button {
+  box-sizing:      border-box;
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  width:           min(100%, var(--width-work-cta-button));
+  min-height:      var(--height-work-cta-button);
+  border-radius:   var(--radius-work-cta-button);
+  background:      var(--color-work-cta-button);
+  color:           var(--color-white);
+  font-family:     var(--font-family-headline);
+  font-size:       var(--text-work-cta-button);
+  font-weight:     var(--weight-medium);
+  line-height:     var(--leading-work-cta);
+  text-decoration: none;
+  transition:      opacity 0.25s ease;
+}
+
+a.work-page__cta-button:hover {
+  opacity: 0.88;
+}
+
+a.work-page__cta-button:focus-visible {
+  outline:        var(--focus-ring-width) solid var(--color-work-cta-button);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.work-page__cta-arrow {
+  display:     block;
+  width:       var(--size-work-cta-arrow-w);
+  height:      var(--size-work-cta-arrow-h);
+  flex-shrink: 0;
+  object-fit:  contain;
+}
+
+/* Work page — infinite horizontal marquees (scroll left) */
+.work-page-marquees {
+  width: 100%;
+}
+
+.work-page-marquee {
+  display:     flex;
+  align-items: center;
+  overflow:    hidden;
+  width:       100%;
+  min-height:  var(--min-height-work-marquee);
+}
+
+.work-page-marquee--dark {
+  background: var(--color-black);
+  color:      var(--color-white);
+}
+
+.work-page-marquee--light {
+  background: var(--color-white);
+  color:      var(--color-black);
+}
+
+.work-page-marquee__track {
+  display:       flex;
+  align-items:   center;
+  width:         max-content;
+  will-change:   transform;
+  animation:     work-page-marquee-scroll var(--duration-work-marquee)
+    var(--ease-work-marquee) infinite;
+}
+
+.work-page-marquee__chunk {
+  flex-shrink:    0;
+  white-space:    nowrap;
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-work-marquee);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-work-marquee);
+  letter-spacing: var(--letter-spacing-work);
+  text-transform: uppercase;
+}
+
+.work-page-marquee--light .work-page-marquee__track {
+  animation-direction: reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-page-marquee__track {
+    animation: none;
+  }
+}
+
+@keyframes work-page-marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 /* Hero H1 tagline — semantic H1, visually matches body copy (12px mono), all caps */
@@ -288,6 +493,10 @@ body.info-page-active {
   text-align: left;
 }
 
+.project-hero__inner {
+  padding-top:    var(--padding-project-hero-top);
+  padding-bottom: var(--space-project-hero-bottom);
+}
 
 /* ============================================================
    ABOUT BLURB

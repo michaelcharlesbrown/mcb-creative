@@ -21,7 +21,7 @@ export default async function Home() {
   // If Sanity has grid projects configured, use them as the ordered source of truth.
   // Otherwise fall back to the first 6 static projects.
   const mergedProjects = sanityProjects.length > 0
-    ? sanityProjects.slice(0, 6).map((sanity) => {
+    ? sanityProjects.slice(0, 4).map((sanity) => {
         const staticProject = staticBySlug[sanity.slug];
         return {
           slug: sanity.slug,
@@ -32,7 +32,7 @@ export default async function Home() {
           heroImage: sanity.thumbnail ?? staticProject?.heroImage ?? `/images/projects/${sanity.slug}/01-full.jpg`,
         };
       })
-    : projects.slice(0, 6).map((project) => ({
+    : projects.slice(0, 4).map((project) => ({
         slug: project.slug,
         title: project.title,
         accentColor: project.accentColor,

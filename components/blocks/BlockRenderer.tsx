@@ -26,15 +26,12 @@ interface BlockRendererProps {
   block: PageContentBlock;
   index: number;
   titleFallback?: string;
-  /** Project-level hero video (for intro block) */
-  heroVideoFileUrl?: string;
 }
 
 export default function BlockRenderer({
   block,
   index,
   titleFallback = "",
-  heroVideoFileUrl,
 }: BlockRendererProps) {
   switch (block._type) {
     case "introBlock":
@@ -46,7 +43,6 @@ export default function BlockRenderer({
           scope={block.scope}
           team={block.team}
           description={block.description}
-          heroVideoFileUrl={heroVideoFileUrl}
           titleFallback={titleFallback}
         />
       );
