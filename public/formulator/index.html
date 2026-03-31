@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulator — Parametric Geometry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0d0d0d;--panel:#141414;--panel2:#1a1a1a;
+  --border:#262626;--text:#f0f0f0;--muted:#888888;--accent:#fff;
+  --mono:'DM Mono',monospace;--display:'Bebas Neue',sans-serif;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--mono);}
+
+input[type=range]{-webkit-appearance:none;width:100%;height:1px;background:var(--border);outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:var(--text);cursor:pointer;transition:transform .12s;}
+input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.4);}
+input[type=color]{-webkit-appearance:none;width:34px;height:24px;border:1px solid var(--border);background:none;cursor:pointer;padding:2px;border-radius:2px;}
+input[type=color]::-webkit-color-swatch-wrapper{padding:0;}
+input[type=color]::-webkit-color-swatch{border:none;}
+
+.layout{display:flex;height:100vh;}
+
+/* LEFT PANEL */
+.left-panel{width:220px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;}
+.logo{padding:20px 16px 16px;border-bottom:1px solid var(--border);}
+.logo-title{font-family:var(--display);font-size:30px;letter-spacing:.06em;line-height:1;color:var(--text);}
+.logo-by{font-size:11px;color:var(--muted);letter-spacing:.12em;margin-top:4px;}
+.logo-sub{font-size:12px;color:var(--muted);letter-spacing:.22em;margin-top:14px;text-transform:uppercase;}
+
+.shapes-scroll{flex:1;overflow-y:auto;padding:12px 10px;}
+.shapes-scroll::-webkit-scrollbar{width:3px;}
+.shapes-scroll::-webkit-scrollbar-track{background:transparent;}
+.shapes-scroll::-webkit-scrollbar-thumb{background:var(--border);}
+.section-label{font-size:12px;color:var(--muted);letter-spacing:.2em;margin-bottom:10px;padding:0 4px;text-transform:uppercase;}
+
+.shape-btn{background:none;border:1px solid transparent;color:var(--muted);font-family:var(--mono);font-size:13px;letter-spacing:.1em;padding:8px 10px;cursor:pointer;text-align:left;width:100%;transition:all .12s;border-radius:2px;margin-bottom:2px;text-transform:uppercase;}
+.shape-btn:hover{color:var(--text);border-color:var(--border);}
+.shape-btn.active{color:var(--text);border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.04);}
+.shape-desc{display:block;font-size:12px;color:var(--muted);margin-top:3px;letter-spacing:.06em;text-transform:none;}
+.shape-btn.active .shape-desc{color:var(--muted);}
+
+.global-section{padding:16px;border-top:1px solid var(--border);}
+.param-row{margin-bottom:16px;}
+.param-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.param-label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text);}
+.param-val{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:30px;text-align:right;}
+.param-range-labels{display:flex;justify-content:space-between;margin-top:5px;}
+.param-range-labels span{font-size:12px;color:var(--muted);}
+
+.color-row{display:flex;gap:16px;align-items:flex-end;}
+.color-item label{display:block;font-size:12px;letter-spacing:.14em;margin-bottom:6px;color:var(--text);}
+
+.actions{padding:12px;border-top:1px solid var(--border);display:flex;gap:8px;}
+.btn{background:none;border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:12px;letter-spacing:.14em;padding:10px 12px;cursor:pointer;transition:all .15s;border-radius:2px;flex:1;text-transform:uppercase;}
+.btn:hover{background:var(--text);color:var(--bg);}
+.btn.primary{border-color:rgba(255,255,255,.4);}
+.btn.primary:hover{border-color:var(--text);}
+
+/* CANVAS */
+.canvas-area{flex:1;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative;overflow:hidden;}
+.canvas-label{position:absolute;top:16px;left:20px;font-size:12px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;}
+.canvas-corner{position:absolute;bottom:16px;right:20px;font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;}
+.canvas-crosshair{position:absolute;pointer-events:none;opacity:.04;}
+.canvas-crosshair::before,.canvas-crosshair::after{content:'';position:absolute;background:var(--text);}
+.canvas-crosshair::before{width:1px;height:100vh;left:50%;top:-50vh;}
+.canvas-crosshair::after{width:100vw;height:1px;top:50%;left:-50vw;}
+
+#mainSvg{max-width:min(calc(100vh - 60px), calc(100vw - 500px));max-height:min(calc(100vh - 60px), calc(100vw - 500px));width:500px;height:500px;}
+
+/* RIGHT PANEL */
+.right-panel{width:240px;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;}
+.panel-header{padding:20px 16px 16px;border-bottom:1px solid var(--border);}
+.panel-title{font-family:var(--display);font-size:26px;letter-spacing:.06em;line-height:1;color:var(--text);}
+.panel-sub{font-size:12px;color:var(--muted);letter-spacing:.18em;margin-top:4px;text-transform:uppercase;}
+
+.params-panel{padding:18px 16px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;flex:1;}
+.params-panel::-webkit-scrollbar{width:3px;}
+.params-panel::-webkit-scrollbar-thumb{background:var(--border);}
+
+.status-bar{padding:12px 16px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.status-text{font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;}
+.status-dot{width:5px;height:5px;border-radius:50%;background:#3a3a3a;border:1px solid #444;}
+.status-dot.live{background:#2a5;border-color:#3c7;}
+
+/* Subtle scanline overlay */
+.canvas-area::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="logo">
+      <div class="logo-title">Formulator</div>
+      <div class="logo-by">by MCB Creative</div>
+      <div class="logo-sub">Parametric Geometry System</div>
+    </div>
+
+    <div class="shapes-scroll">
+      <div class="section-label">Shape</div>
+      <div id="shapeList"></div>
+    </div>
+
+    <div class="global-section">
+      <div class="section-label">Global</div>
+      <div class="param-row">
+        <div class="param-header">
+          <span class="param-label">Stroke Weight</span>
+          <span class="param-val" id="strokeVal">1.5</span>
+        </div>
+        <input type="range" id="strokeSlider" min="0.3" max="6" step="0.1" value="1.5">
+        <div class="param-range-labels"><span>0.3</span><span>6.0</span></div>
+      </div>
+      <div class="color-row">
+        <div class="color-item">
+          <label>Background</label>
+          <input type="color" id="bgColor" value="#111111">
+        </div>
+        <div class="color-item">
+          <label>Ink</label>
+          <input type="color" id="fgColor" value="#ffffff">
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="randomBtn">Randomize</button>
+      <button class="btn primary" id="downloadBtn">↓ SVG</button>
+    </div>
+  </div>
+
+  <!-- CANVAS -->
+  <div class="canvas-area">
+    <div class="canvas-crosshair"></div>
+    <div class="canvas-label" id="canvasLabel">RINGS · 3 PATHS</div>
+    <svg id="mainSvg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+      <rect id="svgBg" width="500" height="500" fill="#111111"/>
+      <g id="svgPaths"></g>
+    </svg>
+    <div class="canvas-corner">500 × 500 · SVG</div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="panel-header">
+      <div class="panel-title" id="panelTitle">RINGS</div>
+      <div class="panel-sub">Shape Parameters</div>
+    </div>
+    <div class="params-panel" id="paramsPanel"></div>
+    <div class="status-bar">
+      <span class="status-text" id="statusText">3 PATHS · READY</span>
+      <div class="status-dot live" id="statusDot"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const W=500,CX=250,CY=250,K=0.5522847498;
+const f=v=>parseFloat(v.toFixed(3));
+
+function circPath(x,y,r){
+  const a=f(r),ka=f(r*K),px=f(x),py=f(y);
+  return `M${px-a} ${py} C${px-a} ${py-ka} ${px-ka} ${py-a} ${px} ${py-a} C${px+ka} ${py-a} ${px+a} ${py-ka} ${px+a} ${py} C${px+a} ${py+ka} ${px+ka} ${py+a} ${px} ${py+a} C${px-ka} ${py+a} ${px-a} ${py+ka} ${px-a} ${py} Z`;
+}
+function ellPath(x,y,rx,ry){
+  const a=f(rx),b=f(ry),ka=f(rx*K),kb=f(ry*K),px=f(x),py=f(y);
+  return `M${px-a} ${py} C${px-a} ${py-kb} ${px-ka} ${py-b} ${px} ${py-b} C${px+ka} ${py-b} ${px+a} ${py-kb} ${px+a} ${py} C${px+a} ${py+kb} ${px+ka} ${py+b} ${px} ${py+b} C${px-ka} ${py+b} ${px-a} ${py+kb} ${px-a} ${py} Z`;
+}
+function spline(pts,close){
+  if(!pts.length)return '';
+  let d=`M${f(pts[0][0])} ${f(pts[0][1])}`;
+  for(let i=0;i<pts.length-1;i++){
+    const p0=pts[Math.max(0,i-1)],p1=pts[i],p2=pts[i+1],p3=pts[Math.min(pts.length-1,i+2)];
+    const c1x=p1[0]+(p2[0]-p0[0])/6,c1y=p1[1]+(p2[1]-p0[1])/6;
+    const c2x=p2[0]-(p3[0]-p1[0])/6,c2y=p2[1]-(p3[1]-p1[1])/6;
+    d+=` C${f(c1x)} ${f(c1y)} ${f(c2x)} ${f(c2y)} ${f(p2[0])} ${f(p2[1])}`;
+  }
+  return close?d+' Z':d;
+}
+function linePath(x1,y1,x2,y2){return `M${f(x1)} ${f(y1)} L${f(x2)} ${f(y2)}`;}
+function arrow(x1,y1,x2,y2){
+  const dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy),s=7;
+  const ux=dx/len,uy=dy/len;
+  return `M${f(x1)} ${f(y1)} L${f(x2)} ${f(y2)} M${f(x2-ux*s+uy*s*.45)} ${f(y2-uy*s-ux*s*.45)} L${f(x2)} ${f(y2)} L${f(x2-ux*s-uy*s*.45)} ${f(y2-uy*s+ux*s*.45)}`;
+}
+
+const GEN={
+  rings({count,radius,overlap,rotation}){
+    const n=Math.round(count),dist=radius*(1-Math.min(overlap,1.95)*0.52);
+    return Array.from({length:n},(_,i)=>{
+      const a=(i/n)*Math.PI*2+(rotation*Math.PI/180);
+      return circPath(CX+dist*Math.cos(a),CY+dist*Math.sin(a),radius);
+    });
+  },
+  star({points,skip,radius,innerRatio,rotation}){
+    const N=Math.round(points),S=Math.max(1,Math.min(Math.floor((N-1)/2),Math.round(skip)));
+    const useInner=innerRatio<0.99;
+    if(!useInner){
+      let d='';
+      for(let i=0;i<=N;i++){
+        const vi=(i*S)%N,a=(vi/N)*Math.PI*2-Math.PI/2+(rotation*Math.PI/180);
+        d+=i===0?`M${f(CX+radius*Math.cos(a))} ${f(CY+radius*Math.sin(a))}`:` L${f(CX+radius*Math.cos(a))} ${f(CY+radius*Math.sin(a))}`;
+      }
+      return [d+' Z'];
+    }else{
+      let d='';
+      for(let i=0;i<N*2;i++){
+        const a=(i/(N*2))*Math.PI*2-Math.PI/2+(rotation*Math.PI/180);
+        const r=i%2===0?radius:radius*innerRatio;
+        d+=(i===0?'M':'L')+`${f(CX+r*Math.cos(a))} ${f(CY+r*Math.sin(a))}`;
+      }
+      return [d+' Z'];
+    }
+  },
+  lissajous({freqA,freqB,delta,scale}){
+    const R=W*0.44*scale;
+    const pts=[];
+    for(let i=0;i<=500;i++){
+      const t=(i/500)*Math.PI*2;
+      pts.push([CX+R*Math.sin(Math.round(freqA)*t+(delta*Math.PI/180)),CY+R*Math.sin(Math.round(freqB)*t)]);
+    }
+    return [spline(pts,true)];
+  },
+  polar({rings,spokes,rotation,gap,filled}){
+    const paths=[],maxR=W*0.44,minR=maxR*Math.max(0,gap);
+    for(let i=1;i<=Math.round(rings);i++){
+      const r=minR+(maxR-minR)*(i/Math.round(rings));
+      paths.push(circPath(CX,CY,r));
+    }
+    for(let i=0;i<Math.round(spokes);i++){
+      const a=(i/Math.round(spokes))*Math.PI*2+(rotation*Math.PI/180);
+      paths.push(linePath(CX+minR*Math.cos(a),CY+minR*Math.sin(a),CX+maxR*Math.cos(a),CY+maxR*Math.sin(a)));
+    }
+    return paths;
+  },
+  spiral({turns,rotation,scale,arms}){
+    const maxR=W*0.44*scale,A=Math.round(arms),paths=[];
+    for(let arm=0;arm<A;arm++){
+      const offset=(arm/A)*Math.PI*2;
+      const steps=Math.round(turns*100),pts=[];
+      for(let i=0;i<=steps;i++){
+        const t=(i/steps)*turns*Math.PI*2;
+        const r=(t/(turns*Math.PI*2))*maxR;
+        const a=t+offset+(rotation*Math.PI/180);
+        pts.push([CX+r*Math.cos(a),CY+r*Math.sin(a)]);
+      }
+      paths.push(spline(pts));
+    }
+    return paths;
+  },
+  sineWave({frequency,amplitude,waves,phase,harmonics}){
+    const mg=36,amp=amplitude*(CY-mg-10),paths=[];
+    paths.push(arrow(mg,CY,W-mg+10,CY));
+    paths.push(arrow(CX,W-mg,CX,mg-10));
+    const pts=[],steps=400;
+    for(let i=0;i<=steps;i++){
+      const x=mg+i/steps*(W-2*mg);
+      const t=(i/steps)*waves*Math.PI*2*frequency+(phase*Math.PI/180);
+      let y=CY-amp*Math.sin(t);
+      if(harmonics>1)y-=(amp/3)*Math.sin(3*t+(phase*Math.PI/180));
+      pts.push([x,y]);
+    }
+    paths.push(spline(pts));
+    return paths;
+  },
+  torus({ringCount,tubeRatio,perspective,offset}){
+    const R=W*0.26,r=R*tubeRatio,P=perspective,n=Math.round(ringCount),paths=[];
+    for(let i=0;i<n;i++){
+      const phi=(i/n)*Math.PI*2;
+      paths.push(ellPath(CX+R*Math.cos(phi),CY+R*P*Math.sin(phi)+offset,r,r*P));
+    }
+    paths.push(ellPath(CX,CY+offset,R+r,(R+r)*P));
+    paths.push(ellPath(CX,CY+offset,R-r,(R-r)*P));
+    return paths;
+  },
+  hyperboloid({ringCount,spokes,waist,height,perspective}){
+    const paths=[],P=perspective,rc=Math.round(ringCount),sp=Math.round(spokes);
+    for(let i=0;i<=rc;i++){
+      const t=(i/rc)*2-1,z=t*height,rx=waist*Math.sqrt(1+t*t*3.5);
+      paths.push(ellPath(CX,CY+z,rx,rx*P));
+    }
+    for(let i=0;i<sp;i++){
+      const phi=(i/sp)*Math.PI*2,pts=[];
+      for(let j=0;j<=30;j++){
+        const t=(j/30)*2-1,z=t*height,r=waist*Math.sqrt(1+t*t*3.5);
+        pts.push([CX+r*Math.cos(phi),CY+z+r*P*Math.sin(phi)]);
+      }
+      paths.push(spline(pts));
+    }
+    return paths;
+  },
+  concentric({count,squish,rotation,tickDensity}){
+    const paths=[],n=Math.round(count),maxR=W*0.44;
+    for(let i=1;i<=n;i++){
+      paths.push(ellPath(CX,CY,(i/n)*maxR,(i/n)*maxR*squish));
+    }
+    const ticks=Math.round(n*tickDensity*4);
+    for(let i=0;i<ticks;i++){
+      const a=(i/ticks)*Math.PI*2+(rotation*Math.PI/180);
+      const r1=(1/n)*maxR*0.4,r2=maxR;
+      paths.push(linePath(CX+r1*Math.cos(a),CY+r1*squish*Math.sin(a),CX+r2*Math.cos(a),CY+r2*squish*Math.sin(a)));
+    }
+    return paths;
+  },
+  grid({cols,rows,perspective,vanishX,vanishY}){
+    const paths=[],mg=30,gx=(W-2*mg)/cols,gy=(W-2*mg)/rows;
+    if(perspective<0.1){
+      for(let i=0;i<=cols;i++)paths.push(linePath(mg+i*gx,mg,mg+i*gx,W-mg));
+      for(let j=0;j<=rows;j++)paths.push(linePath(mg,mg+j*gy,W-mg,mg+j*gy));
+    }else{
+      const vx=CX+(vanishX-0.5)*W*perspective*2;
+      const vy=mg+(vanishY)*perspective*(W-2*mg);
+      const bx0=mg,bx1=W-mg,by=W-mg;
+      for(let i=0;i<=cols;i++){
+        const bx=bx0+i*(bx1-bx0)/cols;
+        paths.push(linePath(vx,vy,bx,by));
+      }
+      const steps=Math.round(rows);
+      for(let j=1;j<=steps;j++){
+        const t=j/steps,y=vy+(by-vy)*t,hw=(bx1-bx0)*t/2;
+        paths.push(linePath(vx-hw,y,vx+hw,y));
+      }
+    }
+    return paths;
+  },
+};
+
+const SHAPES=[
+  {id:'rings',label:'Rings',desc:'Interlocking circles in formation',gen:'rings',
+   defaults:{count:3,radius:130,overlap:0.7,rotation:0},
+   params:[
+    {id:'count',label:'Count',min:2,max:9,step:1},
+    {id:'radius',label:'Radius',min:30,max:215,step:1},
+    {id:'overlap',label:'Overlap',min:0,max:1.9,step:.01},
+    {id:'rotation',label:'Rotation °',min:0,max:360,step:1},
+  ]},
+  {id:'star',label:'Star Polygon',desc:'Connected vertex star forms',gen:'star',
+   defaults:{points:6,skip:2,radius:185,innerRatio:1,rotation:0},
+   params:[
+    {id:'points',label:'Points',min:3,max:16,step:1},
+    {id:'skip',label:'Skip (polygon)',min:1,max:7,step:1},
+    {id:'radius',label:'Radius',min:50,max:235,step:1},
+    {id:'innerRatio',label:'Inner Ratio',min:.15,max:1,step:.01},
+    {id:'rotation',label:'Rotation °',min:0,max:360,step:1},
+  ]},
+  {id:'lissajous',label:'Lissajous',desc:'Parametric figure-eight curves',gen:'lissajous',
+   defaults:{freqA:3,freqB:2,delta:45,scale:.88},
+   params:[
+    {id:'freqA',label:'Frequency A',min:1,max:8,step:1},
+    {id:'freqB',label:'Frequency B',min:1,max:8,step:1},
+    {id:'delta',label:'Phase °',min:0,max:180,step:1},
+    {id:'scale',label:'Scale',min:.2,max:1,step:.01},
+  ]},
+  {id:'polar',label:'Polar Grid',desc:'Rings with radial spokes',gen:'polar',
+   defaults:{rings:5,spokes:12,rotation:0,gap:0},
+   params:[
+    {id:'rings',label:'Rings',min:1,max:16,step:1},
+    {id:'spokes',label:'Spokes',min:3,max:36,step:1},
+    {id:'rotation',label:'Rotation °',min:0,max:360,step:1},
+    {id:'gap',label:'Inner Void',min:0,max:.85,step:.01},
+  ]},
+  {id:'spiral',label:'Spiral',desc:'Archimedean spiral, single or multi-arm',gen:'spiral',
+   defaults:{turns:5,rotation:0,scale:1,arms:1},
+   params:[
+    {id:'turns',label:'Turns',min:1,max:16,step:.5},
+    {id:'arms',label:'Arms',min:1,max:6,step:1},
+    {id:'rotation',label:'Rotation °',min:0,max:360,step:1},
+    {id:'scale',label:'Scale',min:.2,max:1,step:.01},
+  ]},
+  {id:'sineWave',label:'Sine Wave',desc:'Wave plotted on coordinate axes',gen:'sineWave',
+   defaults:{frequency:2,amplitude:.72,waves:1,phase:0,harmonics:1},
+   params:[
+    {id:'frequency',label:'Frequency',min:1,max:8,step:1},
+    {id:'amplitude',label:'Amplitude',min:.05,max:1,step:.01},
+    {id:'waves',label:'Cycles',min:.5,max:4,step:.5},
+    {id:'phase',label:'Phase °',min:0,max:360,step:1},
+    {id:'harmonics',label:'Harmonics',min:1,max:2,step:1},
+  ]},
+  {id:'torus',label:'Torus',desc:'Wireframe donut — 3D projected',gen:'torus',
+   defaults:{ringCount:14,tubeRatio:.34,perspective:.32,offset:10},
+   params:[
+    {id:'ringCount',label:'Ring Count',min:4,max:32,step:1},
+    {id:'tubeRatio',label:'Tube Ratio',min:.05,max:.65,step:.01},
+    {id:'perspective',label:'Perspective',min:.1,max:.7,step:.01},
+    {id:'offset',label:'Vertical Shift',min:-60,max:60,step:1},
+  ]},
+  {id:'hyperboloid',label:'Hyperboloid',desc:'Ruled surface wireframe',gen:'hyperboloid',
+   defaults:{ringCount:10,spokes:14,waist:46,height:170,perspective:.3},
+   params:[
+    {id:'ringCount',label:'Ring Count',min:4,max:22,step:1},
+    {id:'spokes',label:'Spokes',min:4,max:28,step:1},
+    {id:'waist',label:'Waist Width',min:16,max:115,step:1},
+    {id:'height',label:'Height',min:60,max:225,step:1},
+    {id:'perspective',label:'Perspective',min:.1,max:.6,step:.01},
+  ]},
+  {id:'concentric',label:'Concentric',desc:'Nested ellipses with tick marks',gen:'concentric',
+   defaults:{count:6,squish:1,rotation:0,tickDensity:.5},
+   params:[
+    {id:'count',label:'Count',min:1,max:14,step:1},
+    {id:'squish',label:'Squish',min:.15,max:1,step:.01},
+    {id:'rotation',label:'Rotation °',min:0,max:360,step:1},
+    {id:'tickDensity',label:'Tick Density',min:0,max:1,step:.05},
+  ]},
+  {id:'grid',label:'Grid',desc:'Cartesian or perspective grid',gen:'grid',
+   defaults:{cols:8,rows:8,perspective:0,vanishX:.5,vanishY:.12},
+   params:[
+    {id:'cols',label:'Columns',min:2,max:20,step:1},
+    {id:'rows',label:'Rows',min:2,max:20,step:1},
+    {id:'perspective',label:'Perspective',min:0,max:1,step:.01},
+    {id:'vanishX',label:'Vanish X',min:0,max:1,step:.01},
+    {id:'vanishY',label:'Vanish Y',min:0,max:.5,step:.01},
+  ]},
+];
+
+let activeIdx=0;
+const paramState={};
+SHAPES.forEach(s=>{paramState[s.id]={...s.defaults};});
+let strokeW=1.5,bgCol='#111111',fgCol='#ffffff';
+
+function renderPaths(){
+  const shape=SHAPES[activeIdx];
+  const paths=GEN[shape.gen](paramState[shape.id]);
+  const g=document.getElementById('svgPaths');
+  g.innerHTML='';
+  paths.forEach(d=>{
+    const el=document.createElementNS('http://www.w3.org/2000/svg','path');
+    el.setAttribute('d',d);
+    el.setAttribute('fill','none');
+    el.setAttribute('stroke',fgCol);
+    el.setAttribute('stroke-width',strokeW);
+    el.setAttribute('stroke-linecap','round');
+    el.setAttribute('stroke-linejoin','round');
+    g.appendChild(el);
+  });
+  document.getElementById('svgBg').setAttribute('fill',bgCol);
+  document.getElementById('canvasLabel').textContent=`${shape.label.toUpperCase()} · ${paths.length} PATH${paths.length!==1?'S':''}`;
+  document.getElementById('statusText').textContent=`${paths.length} PATH${paths.length!==1?'S':''} · READY`;
+}
+
+function buildShapeList(){
+  const list=document.getElementById('shapeList');
+  list.innerHTML='';
+  SHAPES.forEach((s,i)=>{
+    const btn=document.createElement('button');
+    btn.className='shape-btn'+(i===activeIdx?' active':'');
+    btn.innerHTML=`${s.label}<span class="shape-desc">${s.desc}</span>`;
+    btn.onclick=()=>{activeIdx=i;buildShapeList();buildParams();renderPaths();};
+    list.appendChild(btn);
+  });
+}
+
+function buildParams(){
+  const shape=SHAPES[activeIdx];
+  document.getElementById('panelTitle').textContent=shape.label.toUpperCase();
+  const panel=document.getElementById('paramsPanel');
+  panel.innerHTML='';
+  shape.params.forEach(p=>{
+    const cur=paramState[shape.id][p.id];
+    const isInt=p.step>=1;
+    const row=document.createElement('div');
+    row.className='param-row';
+    row.innerHTML=`
+      <div class="param-header">
+        <span class="param-label">${p.label}</span>
+        <span class="param-val" id="pval-${p.id}">${isInt?Math.round(cur):cur.toFixed(2)}</span>
+      </div>
+      <input type="range" min="${p.min}" max="${p.max}" step="${p.step}" value="${cur}" id="pslider-${p.id}">
+      <div class="param-range-labels"><span>${p.min}</span><span>${p.max}</span></div>`;
+    panel.appendChild(row);
+    panel.querySelector(`#pslider-${p.id}`).addEventListener('input',e=>{
+      const val=+e.target.value;
+      paramState[shape.id][p.id]=val;
+      document.getElementById(`pval-${p.id}`).textContent=p.step>=1?Math.round(val):val.toFixed(2);
+      renderPaths();
+    });
+  });
+}
+
+document.getElementById('strokeSlider').addEventListener('input',e=>{
+  strokeW=+e.target.value;
+  document.getElementById('strokeVal').textContent=strokeW.toFixed(1);
+  renderPaths();
+});
+document.getElementById('bgColor').addEventListener('input',e=>{bgCol=e.target.value;renderPaths();});
+document.getElementById('fgColor').addEventListener('input',e=>{fgCol=e.target.value;renderPaths();});
+
+document.getElementById('randomBtn').addEventListener('click',()=>{
+  const shape=SHAPES[activeIdx];
+  shape.params.forEach(p=>{
+    let v=p.min+Math.random()*(p.max-p.min);
+    if(p.step>=1)v=Math.round(v);
+    paramState[shape.id][p.id]=v;
+  });
+  buildParams();renderPaths();
+});
+
+document.getElementById('downloadBtn').addEventListener('click',()=>{
+  const shape=SHAPES[activeIdx];
+  const paths=GEN[shape.gen](paramState[shape.id]);
+  const svgStr=`<?xml version="1.0" encoding="UTF-8"?>\n<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">\n  <rect width="500" height="500" fill="${bgCol}"/>\n${paths.map(d=>`  <path d="${d}" fill="none" stroke="${fgCol}" stroke-width="${strokeW}" stroke-linecap="round" stroke-linejoin="round"/>`).join('\n')}\n</svg>`;
+  const blob=new Blob([svgStr],{type:'image/svg+xml'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`geoform-${shape.id}.svg`;a.click();
+  URL.revokeObjectURL(url);
+});
+
+buildShapeList();buildParams();renderPaths();
+</script>
+</body>
+</html>
