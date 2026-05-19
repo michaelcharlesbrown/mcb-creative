@@ -1,50 +1,33 @@
-import { projects } from "@/data/projects";
-import { sanityFetch } from "@/lib/sanity.fetch";
-import { projectsGridQuery } from "@/lib/sanity.queries";
-import HomeMobileLayout from "@/components/HomeMobileLayout";
-import HomeDesktopLayout from "@/components/HomeDesktopLayout";
+import Image from "next/image";
 
-type SanityGridProject = {
-  slug: string;
-  title: string;
-  accentColor?: string;
-  subheadline?: string;
-  scope?: string[];
-  thumbnail?: string;
-};
-
-export default async function Home() {
-  const sanityProjects = await sanityFetch<SanityGridProject[]>(projectsGridQuery).catch(() => []);
-
-  const staticBySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
-
-  // If Sanity has grid projects configured, use them as the ordered source of truth.
-  // Otherwise fall back to the first 6 static projects.
-  const mergedProjects = sanityProjects.length > 0
-    ? sanityProjects.slice(0, 4).map((sanity) => {
-        const staticProject = staticBySlug[sanity.slug];
-        return {
-          slug: sanity.slug,
-          title: sanity.title ?? staticProject?.title ?? "",
-          accentColor: sanity.accentColor ?? staticProject?.accentColor ?? "",
-          subheadline: sanity.subheadline ?? staticProject?.tagline,
-          scope: sanity.scope ?? staticProject?.services ?? [],
-          heroImage: sanity.thumbnail ?? staticProject?.heroImage ?? `/images/projects/${sanity.slug}/01-full.jpg`,
-        };
-      })
-    : projects.slice(0, 4).map((project) => ({
-        slug: project.slug,
-        title: project.title,
-        accentColor: project.accentColor,
-        subheadline: project.tagline,
-        scope: project.services,
-        heroImage: project.heroImage ?? `/images/projects/${project.slug}/01-full.jpg`,
-      }));
-
+/**
+ * Temporary holding / under-construction homepage.
+ * Full homepage lived here before 2026-05 — restore from git history when ready to ship.
+ */
+export default function Home() {
   return (
-    <div className="home text-black">
-      <HomeMobileLayout projects={mergedProjects} />
-      <HomeDesktopLayout projects={mergedProjects} />
+    <div className="holding-page">
+      <div className="holding-page__inner">
+        <p className="holding-page__eyebrow">Site update in progress</p>
+        <div className="holding-page__brand">
+          <Image
+            className="holding-page__logo"
+            src="/images/mcb-creative-logo.svg"
+            alt=""
+            width={165}
+            height={55}
+            priority
+          />
+          <h1 className="hero__headline-block">
+            <span className="hero__headline">MCB Creative</span>
+          </h1>
+        </div>
+        <p className="holding-page__message">
+          New work is on the way.
+          <br />
+          Please check back soon.
+        </p>
+      </div>
     </div>
   );
 }

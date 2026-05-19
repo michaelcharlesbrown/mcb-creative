@@ -6,6 +6,7 @@ import BodyClass from "@/components/BodyClass";
 import AboutBlurb from "@/components/AboutBlurb";
 import Footer from "@/components/Footer";
 import LogoVideoReveal from "@/components/LogoVideoReveal";
+import WorkPageMarquees from "@/components/WorkPageMarquees";
 import { FluidWorkGrid } from "@/components/FluidWorkGrid";
 
 export interface DesktopProject {
@@ -74,9 +75,8 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
       </div>
 
       <LogoVideoReveal />
-      <div>
-        <Footer />
-      </div>
+      <WorkPageMarquees />
+      <Footer />
     </>
   );
 }
