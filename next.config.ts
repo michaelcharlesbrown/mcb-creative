@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+// No-op bump: trigger Vercel production deploy.
+
 const nextConfig: NextConfig = {
   async rewrites() {
     return [
