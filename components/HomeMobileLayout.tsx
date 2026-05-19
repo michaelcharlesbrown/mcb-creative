@@ -5,7 +5,6 @@ import BodyClass from "@/components/BodyClass";
 import AboutBlurb from "@/components/AboutBlurb";
 import Footer from "@/components/Footer";
 import LogoVideoReveal from "@/components/LogoVideoReveal";
-import WorkPageMarquees from "@/components/WorkPageMarquees";
 import ProjectNavRail from "@/components/ProjectNavRail";
 
 export interface MobileProject {
@@ -65,8 +64,9 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
           <LogoVideoReveal />
         </section>
 
-        <WorkPageMarquees />
-        <Footer />
+        <section className="flex-shrink-0">
+          <Footer />
+        </section>
       </div>
     </>
   );

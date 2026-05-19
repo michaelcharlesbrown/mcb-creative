@@ -22,16 +22,14 @@ export default function LayoutShell({
   const isHomePage = pathname === "/";
   const isProjectsPage = pathname === "/projects" || pathname?.startsWith("/projects/");
   const showLogoVideo = !isHomePage && !isProjectsPage;
-  const showSiteChrome = !isHomePage;
 
   return (
     <AccentColorProvider>
       <CustomCursor />
-      {showSiteChrome && <Navigation />}
+      <Navigation />
       {children}
       {!isHomePage && showLogoVideo && <LogoVideoReveal />}
-      {/* Holding homepage at `/` has no chrome; full homepage used Home*Layout for marquee + footer. */}
-      {!isHomePage && <WorkPageMarquees />}
+      <WorkPageMarquees />
       {!isHomePage && <Footer />}
     </AccentColorProvider>
   );
