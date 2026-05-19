@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
 import AboutBlurb from "@/components/AboutBlurb";
 import Footer from "@/components/Footer";
-import LogoVideoReveal from "@/components/LogoVideoReveal";
 import { FluidWorkGrid } from "@/components/FluidWorkGrid";
 
 export interface DesktopProject {
@@ -22,20 +20,11 @@ interface HomeDesktopLayoutProps {
 }
 
 export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) {
-  const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
-    setIsDesktop(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-
-  if (!isDesktop) return null;
+  const fluidRowTop = projects.slice(0, 2);
+  const fluidRowBottom = projects.slice(2, 4);
 
   return (
-    <>
+    <div className="hidden md:block">
       <BodyClass className="home" />
       <div className="bg-background">
         <div className="overflow-hidden bg-background">
@@ -56,27 +45,30 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
           <AboutBlurb />
         </div>
 
-        <div className="bg-background">
-          <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-[max(var(--nav-height),200px)] pb-8 md:pb-12">
-            <div className="flex items-baseline justify-between gap-4">
-              <h2 className="text-heading-lg font-normal">Featured Work</h2>
-              <a
-                href="/projects"
-                className="uppercase text-ui hover:opacity-50 transition-opacity shrink-0"
-              >
-                See All Work →
-              </a>
-            </div>
+        <div className="bg-background pt-[max(var(--nav-height),200px)] pb-8 md:pb-12">
+          <div className="flex flex-col gap-4 md:gap-5">
+            {fluidRowTop.length === 2 && (
+              <FluidWorkGrid
+                key={fluidRowTop.map((p) => p.slug).join("-")}
+                pairedRow
+                projects={fluidRowTop}
+              />
+            )}
+            {fluidRowBottom.length === 2 && (
+              <FluidWorkGrid
+                key={fluidRowBottom.map((p) => p.slug).join("-")}
+                pairedRow
+                projects={fluidRowBottom}
+              />
+            )}
           </div>
-          <FluidWorkGrid projects={projects} />
           <div className="pb-[200px]" />
         </div>
       </div>
 
-      <LogoVideoReveal />
       <div>
         <Footer />
       </div>
-    </>
+    </div>
   );
 }

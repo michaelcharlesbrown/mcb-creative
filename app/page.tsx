@@ -1,4 +1,4 @@
-import { projects } from "@/data/projects";
+import { projects, type Project } from "@/data/projects";
 import { sanityFetch } from "@/lib/sanity.fetch";
 import { projectsGridQuery } from "@/lib/sanity.queries";
 import HomeMobileLayout from "@/components/HomeMobileLayout";
@@ -13,38 +13,71 @@ type SanityGridProject = {
   thumbnail?: string;
 };
 
+/** Homepage FluidWork grid: two stacked rows × two tiles — fixed order */
+const FEATURED_HOME_SLUGS = [
+  "shiftdrink",
+  "protools",
+  "bittorrent",
+  "alluvial",
+] as const;
+
+type HomeFeaturedProject = {
+  slug: string;
+  title: string;
+  accentColor: string;
+  subheadline?: string;
+  scope?: string[];
+  heroImage: string;
+};
+
+function featuredFromSanity(
+  sanity: SanityGridProject,
+  stat?: Project,
+): HomeFeaturedProject {
+  return {
+    slug: sanity.slug,
+    title: sanity.title ?? stat?.title ?? "",
+    accentColor: sanity.accentColor ?? stat?.accentColor ?? "",
+    subheadline: sanity.subheadline ?? stat?.tagline,
+    scope: sanity.scope ?? stat?.services ?? [],
+    heroImage:
+      sanity.thumbnail ??
+      stat?.heroImage ??
+      `/images/projects/${sanity.slug}/01-full.jpg`,
+  };
+}
+
+function featuredFromStatic(stat: Project): HomeFeaturedProject {
+  return {
+    slug: stat.slug,
+    title: stat.title,
+    accentColor: stat.accentColor,
+    subheadline: stat.tagline,
+    scope: stat.services,
+    heroImage: stat.heroImage ?? `/images/projects/${stat.slug}/01-full.jpg`,
+  };
+}
+
 export default async function Home() {
-  const sanityProjects = await sanityFetch<SanityGridProject[]>(projectsGridQuery).catch(() => []);
+  const sanityProjects =
+    await sanityFetch<SanityGridProject[]>(projectsGridQuery).catch(() => []);
 
   const staticBySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
 
-  // If Sanity has grid projects configured, use them as the ordered source of truth.
-  // Otherwise fall back to the first 6 static projects.
-  const mergedProjects = sanityProjects.length > 0
-    ? sanityProjects.slice(0, 4).map((sanity) => {
-        const staticProject = staticBySlug[sanity.slug];
-        return {
-          slug: sanity.slug,
-          title: sanity.title ?? staticProject?.title ?? "",
-          accentColor: sanity.accentColor ?? staticProject?.accentColor ?? "",
-          subheadline: sanity.subheadline ?? staticProject?.tagline,
-          scope: sanity.scope ?? staticProject?.services ?? [],
-          heroImage: sanity.thumbnail ?? staticProject?.heroImage ?? `/images/projects/${sanity.slug}/01-full.jpg`,
-        };
-      })
-    : projects.slice(0, 4).map((project) => ({
-        slug: project.slug,
-        title: project.title,
-        accentColor: project.accentColor,
-        subheadline: project.tagline,
-        scope: project.services,
-        heroImage: project.heroImage ?? `/images/projects/${project.slug}/01-full.jpg`,
-      }));
+  const featuredHomeProjects: HomeFeaturedProject[] = FEATURED_HOME_SLUGS.map(
+    (slug) => {
+      const fromSanity = sanityProjects.find((p) => p.slug === slug);
+      const stat = staticBySlug[slug];
+      if (fromSanity) return featuredFromSanity(fromSanity, stat);
+      if (stat) return featuredFromStatic(stat);
+      return null;
+    },
+  ).filter((p): p is HomeFeaturedProject => p !== null);
 
   return (
     <div className="home text-black">
-      <HomeMobileLayout projects={mergedProjects} />
-      <HomeDesktopLayout projects={mergedProjects} />
+      <HomeMobileLayout projects={featuredHomeProjects} />
+      <HomeDesktopLayout projects={featuredHomeProjects} />
     </div>
   );
 }

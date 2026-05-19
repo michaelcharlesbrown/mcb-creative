@@ -3,9 +3,7 @@
 import { usePathname } from "next/navigation";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import WorkPageMarquees from "@/components/WorkPageMarquees";
 import CustomCursor from "@/components/CustomCursor";
-import LogoVideoReveal from "@/components/LogoVideoReveal";
 import { AccentColorProvider } from "@/components/AccentColorContext";
 
 export default function LayoutShell({
@@ -20,16 +18,12 @@ export default function LayoutShell({
   }
 
   const isHomePage = pathname === "/";
-  const isProjectsPage = pathname === "/projects" || pathname?.startsWith("/projects/");
-  const showLogoVideo = !isHomePage && !isProjectsPage;
 
   return (
     <AccentColorProvider>
       <CustomCursor />
       <Navigation />
       {children}
-      {!isHomePage && showLogoVideo && <LogoVideoReveal />}
-      <WorkPageMarquees />
       {!isHomePage && <Footer />}
     </AccentColorProvider>
   );

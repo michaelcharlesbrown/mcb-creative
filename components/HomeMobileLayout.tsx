@@ -4,7 +4,6 @@ import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
 import AboutBlurb from "@/components/AboutBlurb";
 import Footer from "@/components/Footer";
-import LogoVideoReveal from "@/components/LogoVideoReveal";
 import ProjectNavRail from "@/components/ProjectNavRail";
 
 export interface MobileProject {
@@ -45,23 +44,8 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
 
         <section className="flex-shrink-0 bg-background min-h-dvh flex flex-col justify-center">
           <div className="content-inset pt-[200px] pb-[200px]">
-            <div className="flex items-baseline justify-between gap-4 mb-6">
-              <h2 className="text-heading-sm font-normal">
-                Featured Work
-              </h2>
-              <a
-                href="/projects"
-                className="uppercase text-ui hover:opacity-50 transition-opacity shrink-0"
-              >
-                See All Work →
-              </a>
-            </div>
             <ProjectNavRail projects={projects} variant="homepage" />
           </div>
-        </section>
-
-        <section className="flex-shrink-0 min-h-screen relative">
-          <LogoVideoReveal />
         </section>
 
         <section className="flex-shrink-0">

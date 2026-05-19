@@ -21,6 +21,10 @@
   --content-inset:     clamp(1.5rem, 2.7vw, 52px);
   --content-max-width: 2400px;
   --nav-height:        60px;
+  /* Homepage Featured Work — two-up FluidWorkGrid rows */
+  --fluid-work-grid-pair-row-height: clamp(26rem, 38vh, 36rem);
+  /* Homepage intro — exactly one viewport; title sits on bottom edge (HeroSection) */
+  --height-home-hero: 100dvh;
 
   /* ── TYPOGRAPHY ─────────────────────────────────────────
      All type decisions live here. No values elsewhere.
@@ -56,12 +60,6 @@
   --space-work-cta-after-headline: clamp(5rem, 12.15vw, 10.9375rem);
   --padding-work-cta-b:      clamp(6rem, 16.75vw, 15.0625rem);
   --gap-work-cta-row:        clamp(1.5rem, 5.76vw, 5.1875rem);
-  /* Work page — dual marquees above footer */
-  --text-work-marquee: 24px;
-  --leading-work-marquee:   0.9;
-  --min-height-work-marquee: 51px;
-  --duration-work-marquee:   160s;
-  --ease-work-marquee:       linear;
   --focus-ring-width:     2px;
   --focus-ring-offset:    3px;
 
@@ -168,11 +166,28 @@ a:hover {
   color: #C0C0C0;
 }
 
-/* Homepage about section */
+/* Homepage about section — mono, caps; light panel */
+.about-blurb__frame {
+  width:            100%;
+  max-width:        var(--content-max-width);
+  margin-inline:    auto;
+  padding-inline:   var(--content-inset);
+  box-sizing:       border-box;
+  display:          flex;
+  justify-content:  center;
+  align-items:      center;
+}
+
 .about-blurb__text {
-  font-size:   var(--text-display-about);
-  font-weight: var(--weight-regular);
-  line-height: var(--leading-display);
+  font-family:       var(--font-family-mono);
+  font-size:         var(--text-display-about);
+  font-weight:       var(--weight-regular);
+  line-height:       var(--leading-display);
+  letter-spacing:    var(--letter-spacing-work);
+  text-transform:    uppercase;
+  text-align:        left;
+  color:             var(--color-black);
+  margin:            0;
 }
 
 /* Info page text */
@@ -319,93 +334,8 @@ a.work-page__cta-button:focus-visible {
   object-fit:  contain;
 }
 
-/* Work page — infinite horizontal marquees (scroll left) */
-.work-page-marquees {
-  width: 100%;
-}
-
-.work-page-marquee {
-  display:     flex;
-  align-items: center;
-  overflow:    hidden;
-  width:       100%;
-  min-height:  var(--min-height-work-marquee);
-}
-
-.work-page-marquee--dark {
-  background: var(--color-black);
-  color:      var(--color-white);
-}
-
-.work-page-marquee--light {
-  background: var(--color-white);
-  color:      var(--color-black);
-}
-
-.work-page-marquee__track {
-  display:       flex;
-  align-items:   center;
-  width:         max-content;
-  will-change:   transform;
-  animation:     work-page-marquee-scroll var(--duration-work-marquee)
-    var(--ease-work-marquee) infinite;
-}
-
-.work-page-marquee__chunk {
-  flex-shrink:    0;
-  white-space:    nowrap;
-  font-family:    var(--font-family-mono);
-  font-size:      var(--text-work-marquee);
-  font-weight:    var(--weight-regular);
-  line-height:    var(--leading-work-marquee);
-  letter-spacing: var(--letter-spacing-work);
-  text-transform: uppercase;
-}
-
-.work-page-marquee--light .work-page-marquee__track {
-  animation-direction: reverse;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .work-page-marquee__track {
-    animation: none;
-  }
-}
-
-@keyframes work-page-marquee-scroll {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
-/* Hero H1 tagline — semantic H1, visually matches body copy (12px mono), all caps */
-.hero h1.hero__tagline {
-  font-family:    var(--font-family-mono);
-  font-size:      var(--text-ui);
-  font-weight:    var(--weight-regular);
-  line-height:    var(--leading-heading);
-  text-transform: uppercase;
-}
-
 /* MCB Creative wordmark — ALWAYS Clash Display. Never change font here. */
-.hero__headline-block {
-  /* Optical alignment: pull M to match tagline/logo left edge (Clash Display side-bearing) */
-  transform: translateX(-6px);
-}
-
-.hero__headline {
-  font-family:    var(--font-family-wordmark);
-  font-size:      var(--text-hero);
-  font-weight:    var(--weight-semibold);
-  line-height:    var(--leading-hero);
-  color:          var(--color-black);
-  text-transform: none;
-  margin:         0;
-  white-space:    nowrap;
-}
+/* Hero wordmark: sized by FitText to full footer frame width — see Footer wordmark strip */
 
 /* ============================================================
    LAYOUT & UTILITIES
@@ -454,6 +384,9 @@ body.info-page-active {
   box-shadow: none;
   border: none;
   outline: none;
+  min-height: var(--height-home-hero);
+  height: var(--height-home-hero);
+  box-sizing: border-box;
 }
 
 .hero-video {
@@ -510,11 +443,12 @@ body.info-page-active {
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
   min-height: 100vh;
   margin-top: -150px;
-  background: var(--dark-background);
-  color: var(--color-white);
+  background: var(--background);
+  color: var(--color-black);
   padding: clamp(3.5rem, 6vh, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
   overflow: hidden;
 }
@@ -533,16 +467,6 @@ body.info-page-active {
     min-height: 100dvh;
     padding: clamp(3rem, 8vh, 8vh) 0;
   }
-}
-
-/* ============================================================
-   LOGO VIDEO (project page accent overlay)
-============================================================ */
-
-.logo-video-accent-overlay {
-  background-color: var(--project-accent-overlay);
-  opacity: 0.45;
-  mix-blend-mode: overlay;
 }
 
 /* ============================================================
@@ -570,8 +494,6 @@ body.info-page-active {
   .nav,
   .hero__minimal-content,
   .hero__panel,
-  .hero__tagline,
-  .hero__headline-wrap,
   .hero__video-block,
   .hero__overlay-block,
   .hero__video-spacer,

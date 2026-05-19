@@ -7,6 +7,11 @@
   visibility: hidden; /* revealed by GSAP after initial snap */
 }
 
+/* Homepage Featured Work — two tiles per horizontal strip */
+.gridPairRow {
+  height: var(--fluid-work-grid-pair-row-height);
+}
+
 /* ─── Every column (absolute-positioned by GSAP) ──── */
 .col {
   position: absolute;
@@ -16,13 +21,13 @@
   padding: 0 3px; /* column gap */
 }
 
-/* ─── Card wrapper (height set by GSAP) ────────────── */
+/* Card wrapper — height set once via GSAP; column widths animate on hover */
+
 .colWrapper {
   position: relative;
   width: 100%;
   overflow: hidden;
   border-radius: 2px;
-  will-change: height;
 }
 
 /* ─── Image container ───────────────────────────────── */
@@ -34,14 +39,6 @@
 
 .colImage {
   object-fit: cover;
-}
-
-/* ─── Index number above card ───────────────────────── */
-.colNumber {
-  display: block;
-  padding: 0.5rem 0 0.6rem 0.6rem;
-  font-style: italic;
-  color: var(--foreground);
 }
 
 /* ─── Pill tag overlay (top-left of card) ───────────── */

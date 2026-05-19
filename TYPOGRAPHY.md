@@ -75,24 +75,11 @@ Individual sizes: `h1` → `--text-h1`, `h2` → `--text-h2`, `h3` → `--text-h
 
 ## Component Classes
 
-### `.hero h1.hero__tagline`
-The semantic H1 that reads "Independent Design Studio Of Michael Charles Brown." Visually matches body copy — small, mono, uppercase — not a display heading.
-```css
-font-family: var(--font-family-mono);
-font-size: var(--text-ui);
-font-weight: var(--weight-regular);
-line-height: var(--leading-heading);
-text-transform: uppercase;
-```
+### Hero wordmark (`HeroSection` → `FitText` as `<h1>`)
+The homepage hero title **MCB Creative** is the sole `<h1>`. Typography is scaled by **`FitText`** to the hero frame width (same approach as the footer wordmark — Clash Display via `--font-family-wordmark`, weight from component props).
 
-### `.hero__headline`
-The MCB Creative wordmark. **Always uses `--font-family-wordmark` (ClashDisplay). Never change this font.**
-```css
-font-family: var(--font-family-wordmark);
-font-size: var(--text-hero);
-font-weight: var(--weight-semibold);
-line-height: var(--leading-hero);
-```
+### ~~`.hero__headline`~~ (removed)
+Legacy CSS-sized wordmark. Hero and footer wordmarks both use **`FitText`** now.
 
 ### `.intro`
 Giant display text for the homepage intro section.
@@ -103,11 +90,16 @@ line-height: var(--leading-display);
 ```
 
 ### `.about-blurb__text`
-Large text in the homepage about/dark section.
+Homepage intro copy on a light panel — mono, tracked caps (`text-transform`).
 ```css
+font-family: var(--font-family-mono);
 font-size: var(--text-display-about);
 font-weight: var(--weight-regular);
 line-height: var(--leading-display);
+letter-spacing: var(--letter-spacing-work);
+text-transform: uppercase;
+text-align: left;
+color: var(--color-black);
 ```
 
 ### `.info-page__text`
