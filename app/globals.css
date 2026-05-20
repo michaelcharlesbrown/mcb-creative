@@ -247,15 +247,13 @@ a:hover {
 
 .info-page__portrait-wrap {
   width: clamp(14rem, 23vw, 21rem);
-  aspect-ratio: 1 / 1;
   overflow: hidden;
   margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
 }
 
 .info-page__portrait-img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   display: block;
 }
 
@@ -314,7 +312,7 @@ a:hover {
 .info-page__cta-title {
   font-family:  var(--font-family-headline);
   font-size:    var(--text-info-cta-heading);
-  font-weight:  var(--weight-regular);
+  font-weight:  var(--weight-bold);
   line-height:  var(--leading-info-cta-heading);
   margin:       0;
 }

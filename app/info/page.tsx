@@ -1,4 +1,4 @@
-import { HOMEPAGE_HERO_VIDEO_SRC } from "@/lib/homepageHeroVideo";
+import Image from "next/image";
 
 export default function Info() {
   return (
@@ -8,13 +8,13 @@ export default function Info() {
         <section className="info-page__hero">
           <div className="info-page__portrait-col">
             <div className="info-page__portrait-wrap">
-              <video
-                className="info-page__portrait-video"
-                src={HOMEPAGE_HERO_VIDEO_SRC}
-                autoPlay
-                muted
-                loop
-                playsInline
+              <Image
+                className="info-page__portrait-img"
+                src="/images/michael-charles-brown.jpg"
+                alt="Michael Charles Brown"
+                width={800}
+                height={1000}
+                priority
               />
             </div>
             <p className="info-page__caption-name">Michael Charles Brown,</p>
@@ -63,8 +63,7 @@ export default function Info() {
           <h2 className="info-page__cta-title">Get in touch</h2>
           <div className="info-page__cta-body">
             <p className="info-page__cta-copy">
-              Thinking about a new identity, site, or campaign system?
-              I&apos;d love to chat.
+              Got a project in mind? I&apos;d love to hear about it.
             </p>
             <a
               className="info-page__cta-button"

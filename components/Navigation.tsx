@@ -23,18 +23,14 @@ export default function Navigation() {
             className="h-11 w-auto brightness-0 invert"
           />
         </Link>
-        <div className="nav__links flex items-center gap-0 text-ui uppercase text-white">
+        <div className="nav__links flex items-center gap-2 text-ui uppercase text-white">
           <Link
             href="/projects"
             className={pathname === "/projects" ? "underline" : ""}
           >
             WORK
           </Link>
-          {" "}
-          <span className="opacity-80 triple-slash" aria-hidden>
-            ///
-          </span>
-          {" "}
+          <span className="opacity-80" aria-hidden>///</span>
           <Link
             href="/info"
             className={pathname === "/info" ? "underline" : ""}
