@@ -58,7 +58,7 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
                 />
               </div>
               <div className="pt-2">
-                <h3 className="truncate uppercase text-heading-sm font-normal" suppressHydrationWarning>
+                <h3 className="nav-rail__card-title truncate" suppressHydrationWarning>
                   {project.title}
                 </h3>
                 {project.scope && project.scope.length > 0 && (

@@ -36,7 +36,7 @@ export default function TextMediaBlock({
       className={`flex flex-col ${justifyClass} gap-6 py-20 px-12 max-w-[83.33%] text-left h-full min-h-0`}
     >
       {heading && (
-        <h2 className="font-normal text-display-md">
+        <h2 className="text-media__heading">
           {heading}
         </h2>
       )}

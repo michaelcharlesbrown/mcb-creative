@@ -13,6 +13,8 @@
   --dark-background: #0a0a0a;
   --color-black:     #0a0a0a;
   --color-white:     #fcfcfc;
+  --color-intro-text: #C0C0C0;
+  --color-caption:    rgba(0, 0, 0, 0.5);
   /* Work CTA pill — Figma fill #020202 */
   --color-work-cta-button: #020202;
   --hero-charcoal:   #0a0a0a;
@@ -37,15 +39,18 @@
   --weight-bold:     700;
 
   /* Scale */
-  --text-body:          12px;
-  --text-ui:            12px;
-  --text-h1:            clamp(2.5rem, 5.5vw, 5rem);
-  --text-h2:            clamp(1.75rem, 2.4vw, 3rem);
-  --text-h3:            clamp(1.25rem, 2vw, 1.75rem);
-  --text-h4:            1rem;
-  --text-display:       clamp(3rem, 7.5vw, 17.5rem);
-  --text-display-about: clamp(1.92rem, 5vw, 3.8rem);
-  --text-display-info:  clamp(1.75rem, 2.4vw, 3rem);
+  --text-body:       12px;
+  --text-ui:         var(--text-body); /* same scale; kept separate for future divergence */
+  --text-micro:      10px;
+  --text-h1:         clamp(2.5rem, 5.5vw, 5rem);
+  --text-h2:         clamp(1.75rem, 2.4vw, 3rem);
+  --text-h3:         clamp(1.25rem, 2vw, 1.75rem);
+  --text-h4:         1rem;
+  --text-display:    clamp(3rem, 7.5vw, 17.5rem);
+  /* Component-specific scales */
+  --text-card-title:  var(--text-ui);
+  --text-heading-sm:  var(--text-ui);
+  --text-display-md:  var(--text-h2);
   /* Work page CTA — Figma 933:265 @ 1440 (1029:379 headline 200px / 1029:382–383 pill / spacing) */
   --text-work-cta:        clamp(3rem, 13.89vw, 12.5rem);
   --leading-work-cta:     0.9;
@@ -67,7 +72,7 @@
   /* Nav / work cards / footer — triple-slash; design tracking −30 → −0.03em */
   --letter-spacing-triple-slash: -0.03em;
 
-  --project-hero-line: 18px; /* --text-ui (12px) × --leading-body (1.5) — baseline unit */
+  --project-hero-line: calc(var(--text-ui) * var(--leading-body)); /* 12px × 1.5 = 18px baseline unit */
   --space-project-hero-bottom: clamp(3rem, 8vw, 6rem);
   --space-info-page-paragraph: clamp(1.25rem, 3vw, 2rem);
   /* Info (/about-style) editorial page */
@@ -80,13 +85,6 @@
   --leading-info-body:     1.2;
   --text-info-caption:     clamp(0.75rem, 0.94vw, 0.85rem);
   --leading-info-caption:  1.2;
-  --text-info-cta-heading: clamp(1.5rem, 2.87vw, 2.58rem);
-  --leading-info-cta-heading: 1;
-  --text-info-section:     clamp(0.6875rem, 0.95vw, 0.8125rem);
-  --leading-info-section:  1.35;
-  --letter-info-section:   0.12em;
-  --space-info-block:      clamp(2.5rem, 6vw, 4.5rem);
-  --space-info-cta:        clamp(3rem, 8vw, 6rem);
   --padding-info-page-bottom: clamp(4rem, 12vw, 8rem);
   /* Air above intro copy (below fixed nav) — matches project page mockup */
   --padding-project-hero-top: max(
@@ -115,14 +113,16 @@
   --font-headline: var(--font-family-headline);
 
   /* Expose type tokens as Tailwind text-* utilities */
-  --text-body:          var(--text-body);
-  --text-ui:            var(--text-ui);
-  --text-h1:            var(--text-h1);
-  --text-h2:            var(--text-h2);
-  --text-h3:            var(--text-h3);
-  --text-display:       var(--text-display);
-  --text-display-about: var(--text-display-about);
-  --text-display-info:  var(--text-display-info);
+  --text-body:        var(--text-body);
+  --text-ui:          var(--text-ui);
+  --text-micro:       var(--text-micro);
+  --text-card-title:  var(--text-card-title);
+  --text-heading-sm:  var(--text-heading-sm);
+  --text-display-md:  var(--text-display-md);
+  --text-h1:          var(--text-h1);
+  --text-h2:          var(--text-h2);
+  --text-h3:          var(--text-h3);
+  --text-display:     var(--text-display);
 
   /* Leading */
   --leading-body:     var(--leading-body);
@@ -185,7 +185,7 @@ a:hover {
   font-size:   var(--text-display);
   font-weight: var(--weight-regular);
   line-height: var(--leading-display);
-  color: #C0C0C0;
+  color: var(--color-intro-text);
 }
 
 /* Homepage about section — mono, caps; light panel */
@@ -267,14 +267,14 @@ a:hover {
 .info-page__caption-name {
   font-size:   var(--text-info-caption);
   line-height: var(--leading-info-caption);
-  color:       rgba(0, 0, 0, 0.5);
+  color:       var(--color-caption);
   margin: 0;
 }
 
 .info-page__caption-role {
   font-size:   var(--text-info-caption);
   line-height: var(--leading-info-caption);
-  color:       rgba(0, 0, 0, 0.5);
+  color:       var(--color-caption);
   margin: 0;
 }
 
@@ -301,56 +301,6 @@ a:hover {
   border:     none;
 }
 
-/* ── CTA — same 50/50 as hero (separate grid; keeps column alignment) ── */
-.info-page__cta {
-  display:               grid;
-  grid-template-columns: 1fr 1fr;
-  gap:                   0;
-  margin-bottom:         clamp(4rem, 8vw, 6rem);
-}
-
-.info-page__cta-title {
-  font-family:  var(--font-family-headline);
-  font-size:    var(--text-info-cta-heading);
-  font-weight:  var(--weight-bold);
-  line-height:  var(--leading-info-cta-heading);
-  margin:       0;
-}
-
-.info-page__cta-body {
-  display:        flex;
-  flex-direction: column;
-  gap:            clamp(1.25rem, 3vw, 2rem);
-  margin-bottom:  0;
-}
-
-.info-page__cta-copy {
-  font-family:  var(--font-family-headline);
-  font-size:    clamp(1.5rem, 3vw, 2.5rem);
-  font-weight:  var(--weight-bold);
-  line-height:  var(--leading-heading);
-  margin:       0;
-}
-
-.info-page__cta-button {
-  display:          inline-flex;
-  align-items:      center;
-  justify-content:  center;
-  align-self:       flex-start;
-  padding:          clamp(0.75rem, 1.5vw, 1rem) clamp(1.5rem, 3vw, 2.5rem);
-  border:           1px solid var(--color-black);
-  border-radius:    999px;
-  color:            var(--color-black);
-  font-size:        var(--text-info-body);
-  line-height:      var(--leading-info-body);
-  text-decoration:  none;
-  transition:       background 0.25s ease, color 0.25s ease;
-}
-
-.info-page__cta-button:hover {
-  background: var(--color-black);
-  color:      var(--color-white);
-}
 
 /* ── Mobile: stack everything ── */
 @media (max-width: 767px) {
@@ -369,25 +319,12 @@ a:hover {
     margin: clamp(2rem, 6vw, 4rem) 0 clamp(2rem, 5vw, 3rem) 0;
   }
 
-  .info-page__cta {
-    grid-template-columns: 1fr;
-    gap:                   clamp(1.5rem, 4vw, 2rem);
-    margin-bottom:         0;
-  }
-
   .info-page__portrait-col {
     position: static;
     max-width: 70%;
   }
 
-  .info-page__grid-section {
-    grid-template-columns: 1fr;
-    gap: clamp(1rem, 3vw, 1.5rem);
-  }
 
-  .info-page__grid-list {
-    column-count: 1;
-  }
 }
 
 /* Project page — intro grid + two columns (title / scope / team | headline + body) */
@@ -511,7 +448,7 @@ h1.work-page__label {
   color:          var(--color-black);
 }
 
-h3.work-card__caption {
+h2.work-card__caption {
   font-family:    var(--font-family-mono);
   font-size:      var(--text-ui);
   font-weight:    var(--weight-regular);
@@ -519,6 +456,47 @@ h3.work-card__caption {
   letter-spacing: var(--letter-spacing-work);
   text-transform: uppercase;
   color:          var(--color-black);
+}
+
+/* Project card title — label style; mono, caps, regular weight */
+h3.project-card__title {
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-card-title);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-heading);
+  letter-spacing: var(--letter-spacing-work);
+  text-transform: uppercase;
+  margin:         0;
+}
+
+/* Nav rail card title — label style */
+h3.nav-rail__card-title {
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-heading-sm);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-heading);
+  letter-spacing: var(--letter-spacing-work);
+  text-transform: uppercase;
+  margin:         0;
+}
+
+/* Prev/next project nav labels */
+.nav-links__project-title {
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-heading-sm);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-heading);
+  letter-spacing: var(--letter-spacing-work);
+  text-transform: uppercase;
+}
+
+/* Text/media block section heading — editorial; regular weight */
+h2.text-media__heading {
+  font-family:  var(--font-family-headline);
+  font-size:    var(--text-display-md);
+  font-weight:  var(--weight-regular);
+  line-height:  var(--leading-heading);
+  margin:       0;
 }
 
 .work-card__caption-sep {
