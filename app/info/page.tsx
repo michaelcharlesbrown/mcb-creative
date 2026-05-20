@@ -21,13 +21,21 @@ export default function Info() {
       <section className="min-h-screen bg-[#fcfcfc] text-black flex items-center relative z-10">
         <main className="w-full max-w-[var(--content-max-width)] mx-auto content-inset pt-[var(--nav-height)] min-h-[calc(100vh-var(--nav-height))] flex items-center">
           <div className="w-full grid grid-cols-12 gap-x-4 md:gap-x-[clamp(1rem,2vw,2rem)]">
-            <p className="info-page__text col-span-12 md:col-span-7 md:col-start-5 text-black uppercase font-normal text-left max-w-[calc(100%-35px)]">
-              I&apos;m a senior brand designer with 10+ years of experience
-              creating brand identities, websites, and digital products for
-              growing businesses, big and small. My work spans graphic design,
-              web design, motion and illustration, as well as product design and
-              design systems.
-            </p>
+            <div className="info-page__copy col-span-12 md:col-span-7 md:col-start-5 text-black uppercase font-normal text-left max-w-[calc(100%-35px)]">
+              <p className="info-page__text">
+                <strong>
+                  I help people define and develop the unique visual language
+                  that tells their story.
+                </strong>
+              </p>
+              <p className="info-page__text">
+                I&apos;ve been building brand identities and designing websites
+                for 15 years, starting on the web team at LeapFrog, through a
+                UI design role at Pro Tools, to Creative Director at BitTorrent
+                where I led the global rebrand for one of the internet&apos;s
+                most recognized platforms.
+              </p>
+            </div>
           </div>
         </main>
       </section>
@@ -40,12 +48,10 @@ export default function Info() {
         <main className="w-full max-w-[var(--content-max-width)] mx-auto content-inset min-h-[calc(100vh-var(--nav-height))] flex items-center">
           <div className="w-full grid grid-cols-12 gap-x-4 md:gap-x-[clamp(1rem,2vw,2rem)]">
             <p className="info-page__text col-span-12 md:col-span-7 md:col-start-5 text-black uppercase font-normal text-left max-w-[calc(100%-35px)]">
-              I&apos;m at my best when I&apos;m leading a team. I&apos;ve built
-              creative departments from scratch, outlining processes and best
-              practices, in both in-house and agency settings, while delivering
-              projects reaching millions of users. My focus is cultivating a
-              fun, collaborative environment where everyone is heard and
-              inspired to do their best work.
+              My work spans brand identity, web design, motion, and
+              illustration. Today I work with other founders and creators to
+              help take their businesses and projects from inspiration to
+              complete visual identity.
             </p>
           </div>
         </main>

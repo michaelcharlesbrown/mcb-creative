@@ -67,6 +67,7 @@
   --letter-spacing-work: 0.06em;
 
   --space-project-hero-bottom: clamp(3rem, 8vw, 6rem);
+  --space-info-page-paragraph: clamp(1.25rem, 3vw, 2rem);
   /* Air above intro copy (below fixed nav) — matches project page mockup */
   --padding-project-hero-top: max(
     calc(var(--nav-height) + clamp(2.5rem, 6vw, 5rem)),
@@ -191,10 +192,21 @@ a:hover {
 }
 
 /* Info page text */
+.info-page__copy {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-info-page-paragraph);
+}
+
 .info-page__text {
   font-size:   var(--text-display-info);
   font-weight: var(--weight-regular);
   line-height: var(--leading-display);
+  margin:      0;
+}
+
+.info-page__text strong {
+  font-weight: var(--weight-bold);
 }
 
 /* Project page — intro (two columns: title / scope / team | headline + body) */
