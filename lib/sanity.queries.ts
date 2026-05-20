@@ -30,6 +30,10 @@ export const projectsGridQuery = `*[_type=="project" && defined(slug.current) &&
   "accentColor": accentColor.hex,
   "subheadline": pageContent[_type=="introBlock"][0].subheadline,
   "scope": pageContent[_type=="introBlock"][0].scope,
+  heroImage{
+    alt,
+    asset->{url}
+  },
   "thumbnail": thumbnail.asset->url,
   "thumbnailAlt": thumbnail.alt
 }`;

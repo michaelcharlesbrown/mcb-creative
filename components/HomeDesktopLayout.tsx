@@ -27,14 +27,16 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
         <div className="overflow-hidden bg-background">
           <HeroSection />
           <div className="hero-video bg-background">
-            <video
-              className="w-full h-auto block"
-              src="/video/mcb-creative-hp-video.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-            />
+            <div className="max-w-[var(--content-max-width)] mx-auto content-inset">
+              <video
+                className="w-full h-auto block"
+                src="/video/mcb-creative-hp-video.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            </div>
           </div>
         </div>
 

@@ -1,5 +1,6 @@
 import { sanityFetch } from "@/lib/sanity.fetch";
 import { projectBySlugQuery, projectsGridQuery } from "@/lib/sanity.queries";
+import { getSanityImageUrl } from "@/lib/sanityImage";
 import BlockRenderer, { type PageContentBlock } from "@/components/blocks/BlockRenderer";
 import MediaBlock from "@/components/blocks/MediaBlock";
 import IntroBlock from "@/components/blocks/IntroBlock";
@@ -25,6 +26,7 @@ type SanityGridProject = {
   title: string;
   accentColor?: string;
   scope?: string[];
+  heroImage?: { alt?: string; asset?: { url: string } };
   thumbnail?: string;
 };
 
@@ -93,7 +95,11 @@ export default async function Project({
       title: sanity?.title ?? p.title,
       accentColor: sanity?.accentColor ?? p.accentColor,
       scope: sanity?.scope ?? p.scope ?? p.services ?? [],
-      heroImage: sanity?.thumbnail ?? p.heroImage ?? `/images/projects/${p.slug}/01-full.jpg`,
+      heroImage:
+        getSanityImageUrl(sanity?.heroImage, "thumbnail") ??
+        sanity?.thumbnail ??
+        p.heroImage ??
+        `/images/projects/${p.slug}/01-full.jpg`,
     };
   });
 

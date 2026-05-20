@@ -1,6 +1,7 @@
 import { projects, type Project } from "@/data/projects";
 import { sanityFetch } from "@/lib/sanity.fetch";
 import { projectsGridQuery } from "@/lib/sanity.queries";
+import { getSanityImageUrl } from "@/lib/sanityImage";
 import HomeMobileLayout from "@/components/HomeMobileLayout";
 import HomeDesktopLayout from "@/components/HomeDesktopLayout";
 
@@ -10,6 +11,7 @@ type SanityGridProject = {
   accentColor?: string;
   subheadline?: string;
   scope?: string[];
+  heroImage?: { alt?: string; asset?: { url: string } };
   thumbnail?: string;
 };
 
@@ -40,7 +42,9 @@ function featuredFromSanity(
     accentColor: sanity.accentColor ?? stat?.accentColor ?? "",
     subheadline: sanity.subheadline ?? stat?.tagline,
     scope: sanity.scope ?? stat?.services ?? [],
+    /** Match work page hero (MediaBlock): Sanity hero image first, then grid thumbnail, then static/local */
     heroImage:
+      getSanityImageUrl(sanity.heroImage, "twoColumn") ??
       sanity.thumbnail ??
       stat?.heroImage ??
       `/images/projects/${sanity.slug}/01-full.jpg`,
