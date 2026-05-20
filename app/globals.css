@@ -68,6 +68,18 @@
 
   --space-project-hero-bottom: clamp(3rem, 8vw, 6rem);
   --space-info-page-paragraph: clamp(1.25rem, 3vw, 2rem);
+  /* Info (/about-style) editorial page */
+  --info-page-reading-max: clamp(21rem, 90vw, 40rem);
+  --text-info-intro:       clamp(1.75rem, 4vw, 2.75rem);
+  --leading-info-intro:    1.35;
+  --text-info-body:        clamp(0.9375rem, 1.35vw, 1.0625rem);
+  --leading-info-body:     1.65;
+  --text-info-section:     clamp(0.6875rem, 0.95vw, 0.8125rem);
+  --leading-info-section:  1.35;
+  --letter-info-section:   0.12em;
+  --space-info-block:      clamp(2.5rem, 6vw, 4.5rem);
+  --space-info-cta:        clamp(3rem, 8vw, 6rem);
+  --padding-info-page-bottom: clamp(4rem, 12vw, 8rem);
   /* Air above intro copy (below fixed nav) — matches project page mockup */
   --padding-project-hero-top: max(
     calc(var(--nav-height) + clamp(2.5rem, 6vw, 5rem)),
@@ -191,22 +203,174 @@ a:hover {
   margin:            0;
 }
 
-/* Info page text */
-.info-page__copy {
-  display:        flex;
+/* Info page — editorial / long-form (layout like jaredgranger.com/about) */
+.info-page {
+  background: var(--background);
+  color:      var(--color-black);
+}
+
+.info-page__main {
+  max-width:     var(--content-max-width);
+  margin-inline: auto;
+  padding-top:   var(--padding-info-page-top);
+  padding-bottom: var(--padding-info-page-bottom);
+}
+
+.info-page__header {
+  display: flex;
   flex-direction: column;
-  gap:            var(--space-info-page-paragraph);
+  gap:            clamp(0.35rem, 1.2vw, 0.5rem);
+  margin:         0 0 var(--space-info-block) 0;
 }
 
-.info-page__text {
-  font-size:   var(--text-display-info);
-  font-weight: var(--weight-regular);
-  line-height: var(--leading-display);
-  margin:      0;
+.info-page__name {
+  font-family:    var(--font-family-headline);
+  font-size:      var(--text-info-intro);
+  font-weight:    var(--weight-bold);
+  line-height:    var(--leading-info-intro);
+  letter-spacing: normal;
+  margin:         0;
 }
 
-.info-page__text strong {
+.info-page__role {
+  font-family:    var(--font-family-headline);
+  font-size:      var(--text-info-intro);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-info-intro);
+  margin:         0;
+}
+
+.info-page__prose {
+  max-width:   var(--info-page-reading-max);
+  display:     flex;
+  flex-direction: column;
+  gap:         var(--space-info-page-paragraph);
+}
+
+.info-page__prose > p {
+  font-size:      var(--text-info-body);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-info-body);
+  letter-spacing: normal;
+  margin:         0;
+  text-transform: none;
+}
+
+.info-page__prose-lead strong {
   font-weight: var(--weight-bold);
+}
+
+.info-page__section {
+  margin-top: var(--space-info-block);
+}
+
+.info-page__section:first-of-type {
+  margin-top: 0;
+}
+
+.info-page__section-title {
+  font-family:       var(--font-family-mono);
+  font-size:         var(--text-info-section);
+  font-weight:       var(--weight-regular);
+  line-height:       var(--leading-info-section);
+  letter-spacing:    var(--letter-info-section);
+  text-transform:    uppercase;
+  margin:            0 0 clamp(1rem, 2vw, 1.5rem) 0;
+}
+
+.info-page__list {
+  list-style:     none;
+  margin:         0;
+  padding:        0;
+  column-count:   2;
+  column-gap:     clamp(1.5rem, 4vw, 3rem);
+}
+
+@media (max-width: 767px) {
+  .info-page__list {
+    column-count: 1;
+  }
+}
+
+.info-page__list-item {
+  font-size:      var(--text-info-body);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-info-body);
+  letter-spacing: normal;
+  margin:         0 0 0.4em 0;
+  padding:        0;
+  break-inside:   avoid;
+}
+
+.info-page__recognition-grid {
+  display:   grid;
+  grid-template-columns: 1fr;
+  gap:       clamp(0.35rem, 1vw, 0.55rem)
+             clamp(1.5rem, 4vw, 3rem);
+}
+
+@media (min-width: 768px) {
+  .info-page__recognition-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.info-page__recognition-grid a {
+  font-size:         var(--text-info-body);
+  line-height:       var(--leading-info-body);
+  color:             inherit;
+  text-decoration:   underline;
+  text-underline-offset: 0.2em;
+  transition: opacity 0.2s ease;
+}
+
+.info-page__recognition-grid a:hover {
+  opacity: 0.55;
+}
+
+.info-page__rule {
+  height:           1px;
+  background:       var(--color-black);
+  opacity:          0.15;
+  margin:           var(--space-info-cta) 0;
+  border:           none;
+}
+
+.info-page__cta {
+  max-width: var(--info-page-reading-max);
+}
+
+.info-page__cta-title {
+  font-family:    var(--font-family-headline);
+  font-size:    var(--text-h2);
+  font-weight:  var(--weight-bold);
+  line-height:  var(--leading-heading);
+  margin:       0 0 clamp(0.75rem, 2vw, 1.25rem) 0;
+}
+
+.info-page__cta-copy {
+  font-size:      var(--text-info-body);
+  line-height:    var(--leading-info-body);
+  margin:         0 0 clamp(1.25rem, 3vw, 2rem) 0;
+}
+
+.info-page__cta-link {
+  font-family:    var(--font-family-headline);
+  font-size:      var(--text-h3);
+  font-weight:    var(--weight-medium);
+  line-height:    var(--leading-heading);
+  color:          inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  transition:     opacity 0.2s ease;
+}
+
+.info-page a:hover {
+  text-decoration: underline;
+}
+
+.info-page__cta-link:hover {
+  opacity: 0.55;
 }
 
 /* Project page — intro (two columns: title / scope / team | headline + body) */
@@ -368,11 +532,6 @@ a.work-page__cta-button:focus-visible {
 
 img {
   border-radius: 0;
-}
-
-/* Info page: transparent so fixed video shows through */
-body.info-page-active {
-  background: transparent;
 }
 
 /* ============================================================

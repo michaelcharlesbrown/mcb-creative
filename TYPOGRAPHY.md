@@ -102,13 +102,8 @@ text-align: left;
 color: var(--color-black);
 ```
 
-### `.info-page__text`
-Body-style display text on the info page.
-```css
-font-size: var(--text-display-info);
-font-weight: var(--weight-regular);
-line-height: var(--leading-display);
-```
+### Info page (`/info`) — editorial layout
+Sentence-case body (`--text-info-body`), monospace uppercase section labels, Geist masthead (`--text-info-intro`). Structural classes: `.info-page`, `.info-page__main`, `.info-page__header`, `.info-page__name`, `.info-page__role`, `.info-page__prose`, `.info-page__section-title`, `.info-page__list`, `.info-page__recognition-grid`, `.info-page__cta-title`, `.info-page__cta-link`.
 
 ### `.project-hero__label`
 Uppercase section labels (SCOPE, TEAM) in project hero.
