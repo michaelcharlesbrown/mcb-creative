@@ -48,7 +48,7 @@ Typography is managed globally in globals.css. Never set font sizes, weights, li
 
 MCB Creative wordmark (hero + footer): ALWAYS Clash Display. Never change to another font. These are the only exceptions to the IBM Plex Mono headline rule.
 
-Homepage about section (.about-blurb__text): larger display (--text-display-about). Info page (/info): editorial layout — reading body (--text-info-body), intro (--text-info-intro), section labels (--text-info-section); do not merge with homepage about styles.
+Homepage about (`.about-blurb__headline`) and Info hero (`h1.info-page__headline`) share one editorial headline rule in globals.css (Geist Sans, `--text-info-headline`, bold). Info body uses `--text-info-body`. Do not set type for these in components.
 Breakpoints: Mobile <768px / Tablet 768-1024px / Desktop >1024px.
 Animation easing and duration values live in globals.css — use them, don't invent new ones.
 Sanity

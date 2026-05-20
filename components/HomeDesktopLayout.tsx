@@ -1,5 +1,6 @@
 "use client";
 
+import { HOMEPAGE_HERO_VIDEO_SRC } from "@/lib/homepageHeroVideo";
 import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
 import AboutBlurb from "@/components/AboutBlurb";
@@ -30,7 +31,7 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
             <div className="max-w-[var(--content-max-width)] mx-auto content-inset">
               <video
                 className="w-full h-auto block"
-                src="/video/mcb-creative-hp-video.mp4"
+                src={HOMEPAGE_HERO_VIDEO_SRC}
                 autoPlay
                 muted
                 loop

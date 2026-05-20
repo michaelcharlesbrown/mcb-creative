@@ -34,7 +34,7 @@ export default function WorkCard({ project }: WorkCardProps) {
         {project.title}
         <span className="work-card__caption-sep" aria-hidden>
           {" "}
-          ///{" "}
+          <span className="triple-slash">///</span>{" "}
         </span>
         {project.services.slice(0, 2).join(", ")}
       </h3>

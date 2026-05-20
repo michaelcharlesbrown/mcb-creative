@@ -1,5 +1,6 @@
 "use client";
 
+import { HOMEPAGE_HERO_VIDEO_SRC } from "@/lib/homepageHeroVideo";
 import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
 import AboutBlurb from "@/components/AboutBlurb";
@@ -29,7 +30,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
           <section className="hero-video flex-shrink-0 bg-background">
             <video
               className="w-full h-auto block"
-              src="/video/mcb-creative-hp-video.mp4"
+              src={HOMEPAGE_HERO_VIDEO_SRC}
               autoPlay
               muted
               loop

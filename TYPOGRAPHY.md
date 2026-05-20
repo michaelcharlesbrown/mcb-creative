@@ -15,7 +15,7 @@ Defined as inline CSS variables on `<html>` in `app/layout.tsx`, not in `:root`.
 |---|---|---|
 | `--font-family-mono` | GeistMono | Body, UI, taglines |
 | `--font-family-headline` | GeistSans | Headings (h1–h6) |
-| `--font-family-wordmark` | ClashDisplay | MCB Creative wordmark only — never change |
+| `--font-family-wordmark` | ClashDisplay | Type style guide `.sg-display` only; live hero/footer wordmarks are SVG |
 
 ### Font Weights
 
@@ -23,7 +23,7 @@ Defined as inline CSS variables on `<html>` in `app/layout.tsx`, not in `:root`.
 |---|---|---|
 | `--weight-regular` | 400 | Body, UI, display text |
 | `--weight-semibold` | 600 | (Reserved — use sparingly) |
-| `--weight-bold` | 700 | All headings, wordmark |
+| `--weight-bold` | 700 | All headings |
 
 ### Type Scale
 
@@ -38,7 +38,6 @@ Defined as inline CSS variables on `<html>` in `app/layout.tsx`, not in `:root`.
 | `--text-display` | clamp(3rem, 7.5vw, 17.5rem) | Intro section |
 | `--text-display-about` | clamp(1.92rem, 5vw, 3.8rem) | About blurb |
 | `--text-display-info` | clamp(1.75rem, 2.4vw, 3rem) | Info page |
-| `--text-hero` | clamp(3.5rem, 12vw, 200px) | MCB Creative wordmark |
 
 ### Line Heights
 
@@ -47,7 +46,13 @@ Defined as inline CSS variables on `<html>` in `app/layout.tsx`, not in `:root`.
 | `--leading-body` | 1.5 | Body copy, UI labels |
 | `--leading-heading` | 1.2 | h1–h6, hero tagline |
 | `--leading-display` | 0.9 | Intro, about blurb, info page (tight display text) |
-| `--leading-hero` | 0.95 | Hero wordmark |
+
+### Letter-spacing tokens
+
+| Token | Value | Usage |
+|---|---|---|
+| `--letter-spacing-work` | 0.06em | Tracked caps (work captions, project hero labels) |
+| `--letter-spacing-triple-slash` | -0.03em | Triple-slash `///` only — wrap in `.triple-slash` (design tracking −30) |
 
 ---
 
@@ -75,11 +80,14 @@ Individual sizes: `h1` → `--text-h1`, `h2` → `--text-h2`, `h3` → `--text-h
 
 ## Component Classes
 
-### Hero wordmark (`HeroSection` → `FitText` as `<h1>`)
-The homepage hero title **MCB Creative** is the sole `<h1>`. Typography is scaled by **`FitText`** to the hero frame width (same approach as the footer wordmark — Clash Display via `--font-family-wordmark`, weight from component props).
+### Hero wordmark (`HeroSection`)
+The homepage hero **MCB Creative** mark is the sole `<h1>`: `/images/MCBCreative-dark.svg` inside `.hero__wordmark`, **`width="100%"`** and **`height="auto"`** on the `<img>`. Wrapper uses **`max-width: --content-max-width`**, **`margin-inline: auto`**, and **`content-inset`** (same horizontal band as nav/body).
 
 ### ~~`.hero__headline`~~ (removed)
-Legacy CSS-sized wordmark. Hero and footer wordmarks both use **`FitText`** now.
+Legacy CSS-sized wordmark.
+
+### Footer wordmark (`Footer`)
+`/images/MCBCreative-light.svg` — same **`width`** / **`height`** attributes and full-width inset row as hero.
 
 ### `.intro`
 Giant display text for the homepage intro section.
@@ -89,21 +97,19 @@ font-weight: var(--weight-regular);
 line-height: var(--leading-display);
 ```
 
-### `.about-blurb__text`
-Homepage intro copy on a light panel — mono, tracked caps (`text-transform`).
+### `.info-page__headline` + `.about-blurb__headline`
+Shared editorial headline: Geist Sans, Info scale (`--text-info-headline`), bold, tight leading — used for the Info page hero line (`h1`) and the homepage about blurb (`h2`).
 ```css
-font-family: var(--font-family-mono);
-font-size: var(--text-display-about);
-font-weight: var(--weight-regular);
-line-height: var(--leading-display);
-letter-spacing: var(--letter-spacing-work);
-text-transform: uppercase;
+font-family: var(--font-family-headline);
+font-size: var(--text-info-headline);
+font-weight: var(--weight-bold);
+line-height: var(--leading-info-headline);
 text-align: left;
 color: var(--color-black);
 ```
 
 ### Info page (`/info`) — editorial layout
-Sentence-case body (`--text-info-body`), monospace uppercase section labels, Geist masthead (`--text-info-intro`). Structural classes: `.info-page`, `.info-page__main`, `.info-page__header`, `.info-page__name`, `.info-page__role`, `.info-page__prose`, `.info-page__section-title`, `.info-page__list`, `.info-page__recognition-grid`, `.info-page__cta-title`, `.info-page__cta-link`.
+Sentence-case body (`--text-info-body`), monospace captions. Masthead matches `.info-page__headline` above. Structural classes: `.info-page`, `.info-page__main`, `.info-page__hero`, `.info-page__portrait-col`, `.info-page__intro-col`, `.info-page__prose`, `.info-page__rule`, `.info-page__cta-title`, `.info-page__cta-body`, etc.
 
 ### `.project-hero__label`
 Uppercase section labels (SCOPE, TEAM) in project hero.
@@ -135,4 +141,4 @@ font-size: var(--text-ui);
 - **Do not** add `tracking-*`, `leading-*`, `font-*`, `text-*` Tailwind utilities to JSX elements that are controlled by the above component classes. Those classes are unlayered CSS and always override Tailwind utilities — the utility silently does nothing.
 - **Do not** use raw numbers (`1.4`, `0.05em`) as CSS values. Every value must reference a token from `:root`.
 - **Do not** define new type tokens anywhere except `:root` in `globals.css`.
-- **Do not** change the wordmark font family (`--font-family-wordmark`). It is locked to ClashDisplay by project spec.
+- **Do not** change SVG wordmark assets for production hero/footer (`MCBCreative-dark.svg`, `MCBCreative-light.svg`) without updating both placements. **`--font-family-wordmark`** remains for the typography style guide’s Clash Display demo only.

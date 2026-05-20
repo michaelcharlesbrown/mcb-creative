@@ -3,7 +3,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Link from 'next/link'
-import FitText from '@/components/FitText'
 
 interface FooterProps {
   accentColor?: string
@@ -39,7 +38,9 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
                 Michael Charles Brown
               </p>
               <p className="text-micro uppercase" style={{ color: accentColor }}>
-                San Francisco///Los Angeles
+                San Francisco
+                <span className="triple-slash">///</span>
+                Los Angeles
               </p>
               <p className="text-micro uppercase opacity-50" style={{ color: accentColor }}>
                 ©{new Date().getFullYear()}
@@ -68,9 +69,15 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
           </div>
         </div>
 
-        {/* Wordmark - stretches edge to edge */}
-        <div className="overflow-hidden flex items-end w-full">
-          <FitText text="MCB Creative" fontFamily="var(--font-family-wordmark)" sizeScale={0.98} style={{ color: accentColor, fontWeight: 600, textAlign: 'center' }} />
+        {/* Wordmark — full width matches nav + body (content-inset inside max-width) */}
+        <div className="overflow-hidden flex items-end w-full content-inset box-border">
+          <img
+            src="/images/MCBCreative-light.svg"
+            alt="MCB Creative"
+            width="100%"
+            height="auto"
+            className="footer__wordmark"
+          />
         </div>
         </motion.div>
       </div>

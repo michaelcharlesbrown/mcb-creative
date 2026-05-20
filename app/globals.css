@@ -46,7 +46,6 @@
   --text-display:       clamp(3rem, 7.5vw, 17.5rem);
   --text-display-about: clamp(1.92rem, 5vw, 3.8rem);
   --text-display-info:  clamp(1.75rem, 2.4vw, 3rem);
-  --text-hero:          clamp(3.5rem, 12vw, 200px);
   /* Work page CTA — Figma 933:265 @ 1440 (1029:379 headline 200px / 1029:382–383 pill / spacing) */
   --text-work-cta:        clamp(3rem, 13.89vw, 12.5rem);
   --leading-work-cta:     0.9;
@@ -65,6 +64,8 @@
 
   /* Letter-spacing (use only via component classes in this file) */
   --letter-spacing-work: 0.06em;
+  /* Nav / work cards / footer — triple-slash; design tracking −30 → −0.03em */
+  --letter-spacing-triple-slash: -0.03em;
 
   --project-hero-line: 18px; /* --text-ui (12px) × --leading-body (1.5) — baseline unit */
   --space-project-hero-bottom: clamp(3rem, 8vw, 6rem);
@@ -97,7 +98,6 @@
   --leading-body:    1.5;
   --leading-heading: 1.2;
   --leading-display: 0.9;
-  --leading-hero:    0.95;
 }
 
 /* ============================================================
@@ -113,7 +113,6 @@
   /* Font utilities — point to layout.tsx variables */
   --font-mono:     var(--font-family-mono);
   --font-headline: var(--font-family-headline);
-  --font-wordmark: var(--font-family-wordmark);
 
   /* Expose type tokens as Tailwind text-* utilities */
   --text-body:          var(--text-body);
@@ -124,13 +123,11 @@
   --text-display:       var(--text-display);
   --text-display-about: var(--text-display-about);
   --text-display-info:  var(--text-display-info);
-  --text-hero:          var(--text-hero);
 
   /* Leading */
   --leading-body:     var(--leading-body);
   --leading-heading:  var(--leading-heading);
   --leading-display:  var(--leading-display);
-  --leading-hero:     var(--leading-hero);
 }
 
 /* ============================================================
@@ -178,6 +175,11 @@ a:hover {
    These are intentional exceptions, not patches.
 ============================================================ */
 
+/* Triple-slash only (///) — tight tracking; use on a span wrapping just the slashes */
+.triple-slash {
+  letter-spacing: var(--letter-spacing-triple-slash);
+}
+
 /* Intro section — giant display text */
 .intro {
   font-size:   var(--text-display);
@@ -198,16 +200,16 @@ a:hover {
   align-items:      center;
 }
 
-.about-blurb__text {
-  font-family:       var(--font-family-mono);
-  font-size:         var(--text-display-about);
-  font-weight:       var(--weight-regular);
-  line-height:       var(--leading-display);
-  letter-spacing:    var(--letter-spacing-work);
-  text-transform:    uppercase;
-  text-align:        left;
-  color:             var(--color-black);
-  margin:            0;
+/* Editorial headline — shared by Info hero h1 and homepage about h2 */
+.info-page__headline,
+.about-blurb__headline {
+  font-family:  var(--font-family-headline);
+  font-size:    var(--text-info-headline);
+  font-weight:  var(--weight-bold);
+  line-height:  var(--leading-info-headline);
+  margin:       0;
+  text-align:   left;
+  color:        var(--color-black);
 }
 
 /* Info page — editorial two-column layout */
@@ -216,36 +218,31 @@ a:hover {
   color:      var(--color-black);
 }
 
-/* Info page — one parent grid + display:contents so col 1 / col 2 line up
-   from hero through CTA (nested sibling grids can compute different track sizes). */
+/* Info page — hero is a real containing block so sticky portrait cannot overlap
+   the divider/CTA; CTA uses the same 50/50 split (full width of main). */
 .info-page__main {
   max-width:      var(--content-max-width);
   margin-inline:  auto;
   padding-top:    var(--padding-project-hero-top);
   padding-bottom: var(--padding-info-page-bottom);
-  display:        grid;
-  grid-template-columns: 1fr 1fr;
-  gap:            0;
-  align-items:    start;
 }
 
 .info-page__hero {
-  display:       contents;
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   0;
+  align-items:           start;
 }
 
 .info-page__portrait-col {
-  position:      sticky;
-  top:           calc(var(--nav-height) + 2rem);
-  grid-column:   1;
-  grid-row:      1;
+  position: sticky;
+  top:      calc(var(--nav-height) + 2rem);
 }
 
 .info-page__intro-col {
   display:        flex;
   flex-direction: column;
   gap:            clamp(3.5rem, 8vw, 6rem);
-  grid-column:    2;
-  grid-row:       1;
 }
 
 .info-page__portrait-wrap {
@@ -283,14 +280,6 @@ a:hover {
   margin: 0;
 }
 
-.info-page__headline {
-  font-family:  var(--font-family-headline);
-  font-size:    var(--text-info-headline);
-  font-weight:  var(--weight-bold);
-  line-height:  var(--leading-info-headline);
-  margin:       0;
-}
-
 .info-page__prose {
   display: flex;
   flex-direction: column;
@@ -306,11 +295,6 @@ a:hover {
 }
 
 /* ── Divider ── */
-.info-page__main > .info-page__rule {
-  grid-column: 1 / -1;
-  grid-row:    2;
-}
-
 .info-page__rule {
   height:     1px;
   background: var(--color-black);
@@ -319,29 +303,27 @@ a:hover {
   border:     none;
 }
 
-/* ── CTA — participates in same grid as hero (see .info-page__cta display) ── */
+/* ── CTA — same 50/50 as hero (separate grid; keeps column alignment) ── */
 .info-page__cta {
-  display:        contents;
-  margin-bottom:  0;
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   0;
+  margin-bottom:         clamp(4rem, 8vw, 6rem);
 }
 
 .info-page__cta-title {
-  font-family:   var(--font-family-headline);
-  font-size:     var(--text-info-cta-heading);
-  font-weight:   var(--weight-regular);
-  line-height:   var(--leading-info-cta-heading);
-  margin:        0;
-  grid-column:   1;
-  grid-row:      3;
+  font-family:  var(--font-family-headline);
+  font-size:    var(--text-info-cta-heading);
+  font-weight:  var(--weight-regular);
+  line-height:  var(--leading-info-cta-heading);
+  margin:       0;
 }
 
 .info-page__cta-body {
   display:        flex;
   flex-direction: column;
   gap:            clamp(1.25rem, 3vw, 2rem);
-  grid-column:    2;
-  grid-row:       3;
-  margin-bottom:  clamp(4rem, 8vw, 6rem);
+  margin-bottom:  0;
 }
 
 .info-page__cta-copy {
@@ -380,29 +362,19 @@ a:hover {
     gap:            clamp(2rem, 6vw, 3rem);
   }
 
-  .info-page__portrait-col,
-  .info-page__intro-col {
-    grid-column: unset;
-    grid-row:    unset;
-  }
-
-  .info-page__main > .info-page__rule {
-    grid-column: unset;
-    grid-row:    unset;
+  .info-page__hero {
+    grid-template-columns: 1fr;
+    gap:                   clamp(2rem, 6vw, 3rem);
   }
 
   .info-page__rule {
     margin: clamp(2rem, 6vw, 4rem) 0 clamp(2rem, 5vw, 3rem) 0;
   }
 
-  .info-page__cta-title,
-  .info-page__cta-body {
-    grid-column: unset;
-    grid-row:    unset;
-  }
-
-  .info-page__cta-body {
-    margin-bottom: 0;
+  .info-page__cta {
+    grid-template-columns: 1fr;
+    gap:                   clamp(1.5rem, 4vw, 2rem);
+    margin-bottom:         0;
   }
 
   .info-page__portrait-col {
@@ -614,8 +586,6 @@ a.work-page__cta-button:focus-visible {
   object-fit:  contain;
 }
 
-/* MCB Creative wordmark — ALWAYS Clash Display. Never change font here. */
-/* Hero wordmark: sized by FitText to full footer frame width — see Footer wordmark strip */
 
 /* ============================================================
    LAYOUT & UTILITIES
@@ -669,12 +639,16 @@ img {
   box-shadow: none;
   border: none;
   outline: none;
+  overflow: hidden;
+  background-color: var(--background);
 }
 
 .hero-video video {
   border: none;
   outline: none;
   display: block;
+  transform: scale(1.005);
+  transform-origin: center center;
 }
 
 
@@ -686,6 +660,20 @@ img {
   flex-direction: column;
   padding: max(var(--nav-height), clamp(3rem, 8vh, 6rem)) 0 clamp(0.75rem, 2vw, 1.5rem);
   box-sizing: content-box;
+}
+
+/* Homepage hero + footer: SVG wordmarks (<img>). Collapse h1 metrics; block images for clean baseline. */
+
+.hero__wordmark {
+  margin: 0;
+  font-size: 0;
+  line-height: 0;
+}
+
+.hero__wordmark img,
+img.footer__wordmark {
+  display: block;
+  box-sizing: border-box;
 }
 
 .hero__video {

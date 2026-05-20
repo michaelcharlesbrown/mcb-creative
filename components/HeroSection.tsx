@@ -1,7 +1,6 @@
 "use client";
 
 import GrainCanvas from "@/components/GrainCanvas";
-import FitText from "@/components/FitText";
 
 export default function HeroSection() {
   return (
@@ -12,14 +11,15 @@ export default function HeroSection() {
       </div>
 
       <div className="hero__content z-10 flex flex-col justify-end">
-        <div className="max-w-[var(--content-max-width)] mx-auto w-full overflow-hidden flex items-end">
-          <FitText
-            as="h1"
-            text="MCB Creative"
-            fontFamily="var(--font-family-wordmark)"
-            sizeScale={0.98}
-            style={{ color: "var(--color-black)", fontWeight: 600, textAlign: "center" }}
-          />
+        <div className="max-w-[var(--content-max-width)] mx-auto w-full content-inset overflow-hidden flex items-end box-border">
+          <h1 className="hero__wordmark m-0 w-full">
+            <img
+              src="/images/MCBCreative-dark.svg"
+              alt="MCB Creative"
+              width="100%"
+              height="auto"
+            />
+          </h1>
         </div>
       </div>
     </section>

@@ -208,7 +208,7 @@ export default function StyleGuidePage() {
             <div className="sg-display">MCB Creative</div>
           </div>
           <div className="sg-color-note">
-            Clash Display loads via next/font/local in layout.tsx. Use only via --font-family-wordmark (homepage hero FitText / footer FitText).
+            Clash Display loads via next/font/local in layout.tsx (`--font-family-wordmark`). Live hero/footer wordmarks use SVG files; this sample shows the display face only.
           </div>
         </div>
 

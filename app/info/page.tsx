@@ -1,3 +1,5 @@
+import { HOMEPAGE_HERO_VIDEO_SRC } from "@/lib/homepageHeroVideo";
+
 export default function Info() {
   return (
     <article className="info-page">
@@ -8,7 +10,7 @@ export default function Info() {
             <div className="info-page__portrait-wrap">
               <video
                 className="info-page__portrait-video"
-                src="/video/mcb-creative-hp-video.mp4"
+                src={HOMEPAGE_HERO_VIDEO_SRC}
                 autoPlay
                 muted
                 loop
