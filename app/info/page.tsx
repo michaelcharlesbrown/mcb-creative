@@ -23,28 +23,34 @@ export default function Info() {
 
           <div className="info-page__intro-col">
             <h1 className="info-page__headline">
-              I help people define and develop the unique visual language that
-              tells their story.
+              I help people define and develop a unique visual language to tell
+              their story.
             </h1>
 
             <div className="info-page__prose">
               <p>
-                I partner with founders, marketing leads, and design teams who
-                need clarity and conviction in how they show up—from early
-                identity work through polished digital experiences.
+                I&apos;ve been building brand identities, creating visual
+                personalities and constructing digital worlds for 15 years.
               </p>
               <p>
-                I&apos;ve been building brand identities and designing websites
-                for 15 years—from the web team at LeapFrog, through UI design
-                at Pro Tools, to Creative Director at BitTorrent, where I led
-                the global rebrand for one of the internet&apos;s most
-                recognizable platforms.
+                As a web designer at LeapFrog, a user interface designer at Pro
+                Tools, and as the Creative Director of BitTorrent, I&apos;ve
+                maintained global e-commerce platforms, crafted graphics for
+                industry standard music technology and led the design of
+                products and campaigns reaching millions.
               </p>
               <p>
-                My work spans brand identity, web design, motion, and
-                illustration. Today I collaborate with other founders and
-                creators to take projects from inspiration to a complete visual
-                system—one your team can ship and grow with.
+                Today I partner with other creators and founders to help take
+                their projects from the spark of inspiration to complete visual
+                identity.
+              </p>
+              <p>
+                My work spans brand, web, motion, and illustration, always with
+                the focus of speaking directly to the right people.
+              </p>
+              <p>
+                I&apos;m also a classically trained musician and have just
+                completed my first feature film score.
               </p>
             </div>
           </div>

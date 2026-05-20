@@ -215,25 +215,36 @@ a:hover {
   color:      var(--color-black);
 }
 
+/* Info page — one parent grid + display:contents so col 1 / col 2 line up
+   from hero through CTA (nested sibling grids can compute different track sizes). */
 .info-page__main {
   max-width:      var(--content-max-width);
   margin-inline:  auto;
   padding-top:    var(--padding-project-hero-top);
   padding-bottom: var(--padding-info-page-bottom);
+  display:        grid;
+  grid-template-columns: 1fr 1fr;
+  gap:            0;
+  align-items:    start;
 }
 
-/* ── Hero: portrait left, headline + prose right ── */
 .info-page__hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  align-items: start;
-  margin-bottom: clamp(5rem, 12vw, 10rem);
+  display:       contents;
 }
 
 .info-page__portrait-col {
-  position: sticky;
-  top: calc(var(--nav-height) + 2rem);
+  position:      sticky;
+  top:           calc(var(--nav-height) + 2rem);
+  grid-column:   1;
+  grid-row:      1;
+}
+
+.info-page__intro-col {
+  display:        flex;
+  flex-direction: column;
+  gap:            clamp(3.5rem, 8vw, 6rem);
+  grid-column:    2;
+  grid-row:       1;
 }
 
 .info-page__portrait-wrap {
@@ -264,12 +275,6 @@ a:hover {
   margin: 0;
 }
 
-.info-page__intro-col {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(3.5rem, 8vw, 6rem);
-}
-
 .info-page__headline {
   font-family:  var(--font-family-headline);
   font-size:    var(--text-info-headline);
@@ -293,34 +298,42 @@ a:hover {
 }
 
 /* ── Divider ── */
+.info-page__main > .info-page__rule {
+  grid-column: 1 / -1;
+  grid-row:    2;
+}
+
 .info-page__rule {
   height:     1px;
   background: var(--color-black);
   opacity:    0.15;
-  margin:     0 0 clamp(3rem, 6vw, 5rem) 0;
+  margin:     clamp(5rem, 12vw, 10rem) 0 clamp(3rem, 6vw, 5rem) 0;
   border:     none;
 }
 
-/* ── CTA — two-column like reference ── */
+/* ── CTA — participates in same grid as hero (see .info-page__cta display) ── */
 .info-page__cta {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(3rem, 6vw, 8rem);
-  margin-bottom: clamp(4rem, 8vw, 6rem);
+  display:        contents;
+  margin-bottom:  0;
 }
 
 .info-page__cta-title {
-  font-family:  var(--font-family-headline);
-  font-size:    var(--text-info-cta-heading);
-  font-weight:  var(--weight-regular);
-  line-height:  var(--leading-info-cta-heading);
-  margin:       0;
+  font-family:   var(--font-family-headline);
+  font-size:     var(--text-info-cta-heading);
+  font-weight:   var(--weight-regular);
+  line-height:   var(--leading-info-cta-heading);
+  margin:        0;
+  grid-column:   1;
+  grid-row:      3;
 }
 
 .info-page__cta-body {
-  display: flex;
+  display:        flex;
   flex-direction: column;
-  gap: clamp(1.25rem, 3vw, 2rem);
+  gap:            clamp(1.25rem, 3vw, 2rem);
+  grid-column:    2;
+  grid-row:       3;
+  margin-bottom:  clamp(4rem, 8vw, 6rem);
 }
 
 .info-page__cta-copy {
@@ -353,9 +366,35 @@ a:hover {
 
 /* ── Mobile: stack everything ── */
 @media (max-width: 767px) {
-  .info-page__hero {
-    grid-template-columns: 1fr;
-    gap: clamp(2rem, 6vw, 3rem);
+  .info-page__main {
+    display:        flex;
+    flex-direction: column;
+    gap:            clamp(2rem, 6vw, 3rem);
+  }
+
+  .info-page__portrait-col,
+  .info-page__intro-col {
+    grid-column: unset;
+    grid-row:    unset;
+  }
+
+  .info-page__main > .info-page__rule {
+    grid-column: unset;
+    grid-row:    unset;
+  }
+
+  .info-page__rule {
+    margin: clamp(2rem, 6vw, 4rem) 0 clamp(2rem, 5vw, 3rem) 0;
+  }
+
+  .info-page__cta-title,
+  .info-page__cta-body {
+    grid-column: unset;
+    grid-row:    unset;
+  }
+
+  .info-page__cta-body {
+    margin-bottom: 0;
   }
 
   .info-page__portrait-col {
@@ -370,11 +409,6 @@ a:hover {
 
   .info-page__grid-list {
     column-count: 1;
-  }
-
-  .info-page__cta {
-    grid-template-columns: 1fr;
-    gap: clamp(1.5rem, 4vw, 2rem);
   }
 }
 
