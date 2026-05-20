@@ -22,7 +22,7 @@
   --content-max-width: 2400px;
   --nav-height:        60px;
   /* Homepage Featured Work — two-up FluidWorkGrid rows */
-  --fluid-work-grid-pair-row-height: clamp(26rem, 38vh, 36rem);
+  --fluid-work-grid-pair-row-height: clamp(26rem, 38vh, 36rem); /* homepage 2×2 grid row height */
   /* Homepage intro — exactly one viewport; title sits on bottom edge (HeroSection) */
   --height-home-hero: 100dvh;
 

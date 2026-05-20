@@ -4,7 +4,7 @@ import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
 import AboutBlurb from "@/components/AboutBlurb";
 import Footer from "@/components/Footer";
-import { FluidWorkGrid } from "@/components/FluidWorkGrid";
+import WorkCard from "@/components/WorkCard";
 
 export interface DesktopProject {
   slug: string;
@@ -20,9 +20,6 @@ interface HomeDesktopLayoutProps {
 }
 
 export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) {
-  const fluidRowTop = projects.slice(0, 2);
-  const fluidRowBottom = projects.slice(2, 4);
-
   return (
     <div className="hidden md:block">
       <BodyClass className="home" />
@@ -45,24 +42,23 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
           <AboutBlurb />
         </div>
 
-        <div className="bg-background pt-[max(var(--nav-height),200px)] pb-8 md:pb-12">
-          <div className="flex flex-col gap-4 md:gap-5">
-            {fluidRowTop.length === 2 && (
-              <FluidWorkGrid
-                key={fluidRowTop.map((p) => p.slug).join("-")}
-                pairedRow
-                projects={fluidRowTop}
-              />
-            )}
-            {fluidRowBottom.length === 2 && (
-              <FluidWorkGrid
-                key={fluidRowBottom.map((p) => p.slug).join("-")}
-                pairedRow
-                projects={fluidRowBottom}
-              />
-            )}
+        <div className="bg-background pt-[max(var(--nav-height),200px)] pb-[200px]">
+          <div className="max-w-[var(--content-max-width)] mx-auto content-inset">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-14">
+              {projects.map((project) => (
+                <WorkCard
+                  key={project.slug}
+                  project={{
+                    slug: project.slug,
+                    title: project.title,
+                    accentColor: project.accentColor,
+                    services: project.scope ?? [],
+                    heroImage: project.heroImage,
+                  }}
+                />
+              ))}
+            </div>
           </div>
-          <div className="pb-[200px]" />
         </div>
       </div>
 
