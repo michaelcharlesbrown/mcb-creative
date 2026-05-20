@@ -70,10 +70,16 @@
   --space-info-page-paragraph: clamp(1.25rem, 3vw, 2rem);
   /* Info (/about-style) editorial page */
   --info-page-reading-max: clamp(21rem, 90vw, 40rem);
+  --text-info-headline:    clamp(2.25rem, 4.15vw, 3.73rem);
+  --leading-info-headline: 0.95;
   --text-info-intro:       clamp(1.75rem, 4vw, 2.75rem);
   --leading-info-intro:    1.35;
-  --text-info-body:        clamp(0.9375rem, 1.35vw, 1.0625rem);
-  --leading-info-body:     1.65;
+  --text-info-body:        clamp(0.9375rem, 1.25vw, 1.12rem);
+  --leading-info-body:     1.2;
+  --text-info-caption:     clamp(0.75rem, 0.94vw, 0.85rem);
+  --leading-info-caption:  1.2;
+  --text-info-cta-heading: clamp(1.5rem, 2.87vw, 2.58rem);
+  --leading-info-cta-heading: 1;
   --text-info-section:     clamp(0.6875rem, 0.95vw, 0.8125rem);
   --leading-info-section:  1.35;
   --letter-info-section:   0.12em;
@@ -203,48 +209,79 @@ a:hover {
   margin:            0;
 }
 
-/* Info page — editorial / long-form (layout like jaredgranger.com/about) */
+/* Info page — editorial two-column layout */
 .info-page {
   background: var(--background);
   color:      var(--color-black);
 }
 
 .info-page__main {
-  max-width:     var(--content-max-width);
-  margin-inline: auto;
-  padding-top:   var(--padding-info-page-top);
+  max-width:      var(--content-max-width);
+  margin-inline:  auto;
+  padding-top:    var(--padding-project-hero-top);
   padding-bottom: var(--padding-info-page-bottom);
 }
 
-.info-page__header {
+/* ── Hero: portrait left, headline + prose right ── */
+.info-page__hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: start;
+  margin-bottom: clamp(5rem, 12vw, 10rem);
+}
+
+.info-page__portrait-col {
+  position: sticky;
+  top: calc(var(--nav-height) + 2rem);
+}
+
+.info-page__portrait-wrap {
+  width: clamp(14rem, 23vw, 21rem);
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+
+.info-page__portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.info-page__caption-name {
+  font-size:   var(--text-info-caption);
+  line-height: var(--leading-info-caption);
+  color:       rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+.info-page__caption-role {
+  font-size:   var(--text-info-caption);
+  line-height: var(--leading-info-caption);
+  color:       rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+.info-page__intro-col {
   display: flex;
   flex-direction: column;
-  gap:            clamp(0.35rem, 1.2vw, 0.5rem);
-  margin:         0 0 var(--space-info-block) 0;
+  gap: clamp(3.5rem, 8vw, 6rem);
 }
 
-.info-page__name {
-  font-family:    var(--font-family-headline);
-  font-size:      var(--text-info-intro);
-  font-weight:    var(--weight-bold);
-  line-height:    var(--leading-info-intro);
-  letter-spacing: normal;
-  margin:         0;
-}
-
-.info-page__role {
-  font-family:    var(--font-family-headline);
-  font-size:      var(--text-info-intro);
-  font-weight:    var(--weight-regular);
-  line-height:    var(--leading-info-intro);
-  margin:         0;
+.info-page__headline {
+  font-family:  var(--font-family-headline);
+  font-size:    var(--text-info-headline);
+  font-weight:  var(--weight-bold);
+  line-height:  var(--leading-info-headline);
+  margin:       0;
 }
 
 .info-page__prose {
-  max-width:   var(--info-page-reading-max);
-  display:     flex;
+  display: flex;
   flex-direction: column;
-  gap:         var(--space-info-page-paragraph);
+  gap: var(--space-info-page-paragraph);
 }
 
 .info-page__prose > p {
@@ -253,124 +290,92 @@ a:hover {
   line-height:    var(--leading-info-body);
   letter-spacing: normal;
   margin:         0;
-  text-transform: none;
 }
 
-.info-page__prose-lead strong {
-  font-weight: var(--weight-bold);
-}
-
-.info-page__section {
-  margin-top: var(--space-info-block);
-}
-
-.info-page__section:first-of-type {
-  margin-top: 0;
-}
-
-.info-page__section-title {
-  font-family:       var(--font-family-mono);
-  font-size:         var(--text-info-section);
-  font-weight:       var(--weight-regular);
-  line-height:       var(--leading-info-section);
-  letter-spacing:    var(--letter-info-section);
-  text-transform:    uppercase;
-  margin:            0 0 clamp(1rem, 2vw, 1.5rem) 0;
-}
-
-.info-page__list {
-  list-style:     none;
-  margin:         0;
-  padding:        0;
-  column-count:   2;
-  column-gap:     clamp(1.5rem, 4vw, 3rem);
-}
-
-@media (max-width: 767px) {
-  .info-page__list {
-    column-count: 1;
-  }
-}
-
-.info-page__list-item {
-  font-size:      var(--text-info-body);
-  font-weight:    var(--weight-regular);
-  line-height:    var(--leading-info-body);
-  letter-spacing: normal;
-  margin:         0 0 0.4em 0;
-  padding:        0;
-  break-inside:   avoid;
-}
-
-.info-page__recognition-grid {
-  display:   grid;
-  grid-template-columns: 1fr;
-  gap:       clamp(0.35rem, 1vw, 0.55rem)
-             clamp(1.5rem, 4vw, 3rem);
-}
-
-@media (min-width: 768px) {
-  .info-page__recognition-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.info-page__recognition-grid a {
-  font-size:         var(--text-info-body);
-  line-height:       var(--leading-info-body);
-  color:             inherit;
-  text-decoration:   underline;
-  text-underline-offset: 0.2em;
-  transition: opacity 0.2s ease;
-}
-
-.info-page__recognition-grid a:hover {
-  opacity: 0.55;
-}
-
+/* ── Divider ── */
 .info-page__rule {
-  height:           1px;
-  background:       var(--color-black);
-  opacity:          0.15;
-  margin:           var(--space-info-cta) 0;
-  border:           none;
+  height:     1px;
+  background: var(--color-black);
+  opacity:    0.15;
+  margin:     0 0 clamp(3rem, 6vw, 5rem) 0;
+  border:     none;
 }
 
+/* ── CTA — two-column like reference ── */
 .info-page__cta {
-  max-width: var(--info-page-reading-max);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(3rem, 6vw, 8rem);
+  margin-bottom: clamp(4rem, 8vw, 6rem);
 }
 
 .info-page__cta-title {
-  font-family:    var(--font-family-headline);
-  font-size:    var(--text-h2);
-  font-weight:  var(--weight-bold);
-  line-height:  var(--leading-heading);
-  margin:       0 0 clamp(0.75rem, 2vw, 1.25rem) 0;
+  font-family:  var(--font-family-headline);
+  font-size:    var(--text-info-cta-heading);
+  font-weight:  var(--weight-regular);
+  line-height:  var(--leading-info-cta-heading);
+  margin:       0;
+}
+
+.info-page__cta-body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 3vw, 2rem);
 }
 
 .info-page__cta-copy {
-  font-size:      var(--text-info-body);
-  line-height:    var(--leading-info-body);
-  margin:         0 0 clamp(1.25rem, 3vw, 2rem) 0;
+  font-family:  var(--font-family-headline);
+  font-size:    clamp(1.5rem, 3vw, 2.5rem);
+  font-weight:  var(--weight-bold);
+  line-height:  var(--leading-heading);
+  margin:       0;
 }
 
-.info-page__cta-link {
-  font-family:    var(--font-family-headline);
-  font-size:      var(--text-h3);
-  font-weight:    var(--weight-medium);
-  line-height:    var(--leading-heading);
-  color:          inherit;
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
-  transition:     opacity 0.2s ease;
+.info-page__cta-button {
+  display:          inline-flex;
+  align-items:      center;
+  justify-content:  center;
+  align-self:       flex-start;
+  padding:          clamp(0.75rem, 1.5vw, 1rem) clamp(1.5rem, 3vw, 2.5rem);
+  border:           1px solid var(--color-black);
+  border-radius:    999px;
+  color:            var(--color-black);
+  font-size:        var(--text-info-body);
+  line-height:      var(--leading-info-body);
+  text-decoration:  none;
+  transition:       background 0.25s ease, color 0.25s ease;
 }
 
-.info-page a:hover {
-  text-decoration: underline;
+.info-page__cta-button:hover {
+  background: var(--color-black);
+  color:      var(--color-white);
 }
 
-.info-page__cta-link:hover {
-  opacity: 0.55;
+/* ── Mobile: stack everything ── */
+@media (max-width: 767px) {
+  .info-page__hero {
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 6vw, 3rem);
+  }
+
+  .info-page__portrait-col {
+    position: static;
+    max-width: 70%;
+  }
+
+  .info-page__grid-section {
+    grid-template-columns: 1fr;
+    gap: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  .info-page__grid-list {
+    column-count: 1;
+  }
+
+  .info-page__cta {
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 4vw, 2rem);
+  }
 }
 
 /* Project page — intro (two columns: title / scope / team | headline + body) */
