@@ -640,17 +640,18 @@ img {
   border: none;
   outline: none;
   overflow: hidden;
-  background-color: var(--background);
 }
 
 .hero-video video {
   border: none;
   outline: none;
   display: block;
-  transform: scale(1.005);
-  transform-origin: center center;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  background-color: var(--background);
 }
-
 
 .hero__content {
   position: absolute;

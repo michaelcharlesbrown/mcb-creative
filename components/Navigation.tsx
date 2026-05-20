@@ -30,9 +30,11 @@ export default function Navigation() {
           >
             WORK
           </Link>
+          {" "}
           <span className="opacity-80 triple-slash" aria-hidden>
             ///
           </span>
+          {" "}
           <Link
             href="/info"
             className={pathname === "/info" ? "underline" : ""}

@@ -29,12 +29,13 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
           <HeroSection />
           <section className="hero-video flex-shrink-0 bg-background">
             <video
-              className="w-full h-auto block"
+              className="block"
               src={HOMEPAGE_HERO_VIDEO_SRC}
               autoPlay
               muted
               loop
               playsInline
+              preload="metadata"
             />
           </section>
         </div>
