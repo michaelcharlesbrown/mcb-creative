@@ -1,5 +1,4 @@
 import WorkCard from "@/components/WorkCard";
-import WorkPageCta from "@/components/WorkPageCta";
 
 interface WorkGridProject {
   slug: string;
@@ -28,7 +27,6 @@ export default function WorkGrid({ projects }: WorkGridProps) {
           ))}
         </div>
 
-        <WorkPageCta />
       </div>
     </div>
   );

@@ -58,8 +58,8 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
                 I&apos;d Love To Hear About It.<br />
                 Get In Touch:
               </p>
-              <a href="mailto:hello@mcb-creative.design" className="text-micro normal-case hover:opacity-60 transition-opacity cursor-pointer inline-block" style={{ color: accentColor }}>
-                hello@mcb-creative.design
+              <a href="mailto:hello@mcbcreative.design" className="text-micro normal-case hover:opacity-60 transition-opacity cursor-pointer inline-block" style={{ color: accentColor }}>
+                hello@mcbcreative.design
               </a>
               <div className="flex flex-col gap-2 mt-2">
                 <Link href="https://www.behance.net/mcb-creative" target="_blank" rel="noopener noreferrer" className="text-micro uppercase hover:opacity-60 transition-opacity" style={{ color: accentColor }}>Behance</Link>
@@ -72,7 +72,7 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
         {/* Wordmark — full width matches nav + body (content-inset inside max-width) */}
         <div className="overflow-hidden flex items-end w-full content-inset box-border">
           <img
-            src="/images/MCBCreative-light.svg"
+            src="/images/mcb-creative-light.svg"
             alt="MCB Creative"
             width="100%"
             height="auto"

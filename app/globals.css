@@ -528,8 +528,10 @@ h3.work-card__caption {
 
 /* Work page — “Let’s work together” CTA (Figma specs baked into tokens above) */
 .work-page__cta {
-  padding-top:    var(--padding-work-cta-top);
-  padding-bottom: var(--padding-work-cta-b);
+  min-height:     100vh;
+  display:        flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 h2.work-page__cta-headline {

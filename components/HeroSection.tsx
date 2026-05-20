@@ -14,7 +14,7 @@ export default function HeroSection() {
         <div className="max-w-[var(--content-max-width)] mx-auto w-full content-inset overflow-hidden flex items-end box-border">
           <h1 className="hero__wordmark m-0 w-full">
             <img
-              src="/images/MCBCreative-dark.svg"
+              src="/images/mcb-creative-dark.svg"
               alt="MCB Creative"
               width="100%"
               height="auto"

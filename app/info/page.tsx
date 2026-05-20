@@ -56,23 +56,7 @@ export default function Info() {
           </div>
         </section>
 
-        {/* ── CTA ── */}
         <hr className="info-page__rule" />
-
-        <section className="info-page__cta">
-          <h2 className="info-page__cta-title">Get in touch</h2>
-          <div className="info-page__cta-body">
-            <p className="info-page__cta-copy">
-              Got a project in mind? I&apos;d love to hear about it.
-            </p>
-            <a
-              className="info-page__cta-button"
-              href="mailto:hello@mcb-creative.design"
-            >
-              Say hello
-            </a>
-          </div>
-        </section>
       </div>
     </article>
   );
