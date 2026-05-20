@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export default function Info() {
   return (
     <article className="info-page">
@@ -8,13 +6,13 @@ export default function Info() {
         <section className="info-page__hero">
           <div className="info-page__portrait-col">
             <div className="info-page__portrait-wrap">
-              <Image
-                src="/images/portrait.jpg"
-                alt="Michael Charles Brown, Creative Director"
-                width={640}
-                height={800}
-                className="info-page__portrait-img"
-                priority
+              <video
+                className="info-page__portrait-video"
+                src="/video/mcb-creative-hp-video.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
               />
             </div>
             <p className="info-page__caption-name">Michael Charles Brown,</p>

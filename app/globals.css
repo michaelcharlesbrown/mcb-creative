@@ -66,6 +66,7 @@
   /* Letter-spacing (use only via component classes in this file) */
   --letter-spacing-work: 0.06em;
 
+  --project-hero-line: 18px; /* --text-ui (12px) × --leading-body (1.5) — baseline unit */
   --space-project-hero-bottom: clamp(3rem, 8vw, 6rem);
   --space-info-page-paragraph: clamp(1.25rem, 3vw, 2rem);
   /* Info (/about-style) editorial page */
@@ -261,6 +262,13 @@ a:hover {
   display: block;
 }
 
+.info-page__portrait-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .info-page__caption-name {
   font-size:   var(--text-info-caption);
   line-height: var(--leading-info-caption);
@@ -412,11 +420,29 @@ a:hover {
   }
 }
 
-/* Project page — intro (two columns: title / scope / team | headline + body) */
+/* Project page — intro grid + two columns (title / scope / team | headline + body) */
+.project-hero__grid {
+  display:               grid;
+  grid-template-columns: 1fr;
+  align-items:           start;
+  text-align:            left;
+  column-gap:            clamp(3rem, 4vw, 4rem);
+  row-gap:               var(--project-hero-line);
+}
+
+@media (min-width: 1024px) {
+  .project-hero__grid--split {
+    grid-template-columns: 1fr 1fr;
+    /* First-line baselines: project title lines up with subhead */
+    align-items:           baseline;
+  }
+}
+
 .project-hero h1.project-hero__title {
-  font-family:    var(--font-family-mono);
-  font-size:      var(--text-ui);
-  font-weight:    var(--weight-regular);
+  font-family:             var(--font-family-mono);
+  font-size:               var(--text-ui);
+  font-weight:             var(--weight-bold);
+  font-variation-settings: "wght" var(--weight-bold);
   line-height:    var(--leading-body);
   letter-spacing: var(--letter-spacing-work);
   text-transform: uppercase;
@@ -424,12 +450,20 @@ a:hover {
 }
 
 .project-hero .project-hero__headline {
-  font-family:    var(--font-family-mono);
-  font-size:      var(--text-ui);
-  font-weight:    var(--weight-regular);
-  line-height:    var(--leading-body);
-  text-transform: uppercase;
-  margin:         0;
+  font-family:             var(--font-family-mono);
+  font-size:               var(--text-ui);
+  font-weight:             var(--weight-bold);
+  /* Variable Geist Mono: force wght so bold differs from regular on all engines */
+  font-variation-settings: "wght" var(--weight-bold);
+  line-height:             var(--leading-body);
+  text-transform:          uppercase;
+  margin:                  0;
+}
+
+.project-hero__richtext {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--project-hero-line);
 }
 
 .project-hero__richtext p {
@@ -441,6 +475,7 @@ a:hover {
   font-size:   var(--text-ui);
   font-weight: var(--weight-regular);
   line-height: var(--leading-body);
+  margin:      0;
 }
 
 /* Project hero scope/team lists — no extra spacing, stacks like body copy */
@@ -457,6 +492,36 @@ a:hover {
   line-height:    var(--leading-body);
   text-transform: uppercase;
   text-align:     left;
+  margin:         0;
+}
+
+/* One vertical rhythm everywhere: title→SCOPE gap = headline→body gap; lists
+   stack on line-height only (no extra flex gap between items). */
+.project-hero__left-col {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--project-hero-line);
+}
+
+.project-hero__section-group {
+  display:        flex;
+  flex-direction: column;
+  gap:            0;
+}
+
+.project-hero__list {
+  list-style: none;
+  padding:    0;
+  margin:     0;
+  display:        flex;
+  flex-direction: column;
+  gap:            0;
+}
+
+.project-hero__right-col {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--project-hero-line);
 }
 
 /* Nav links */

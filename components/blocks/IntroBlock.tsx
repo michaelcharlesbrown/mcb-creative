@@ -46,20 +46,22 @@ export default function IntroBlock({
     >
       <div className="project-hero__inner max-w-[var(--content-max-width)] mx-auto content-inset">
         <div
-          className={`grid grid-cols-1 gap-x-12 lg:gap-x-16 gap-y-10 lg:gap-y-12 items-start text-left ${
-            hasRightColumn ? "lg:grid-cols-2" : ""
-          }`}
+          className={
+            hasRightColumn
+              ? "project-hero__grid project-hero__grid--split"
+              : "project-hero__grid"
+          }
         >
-          <div className="flex flex-col gap-8">
+          <div className="project-hero__left-col">
             {title && (
               <h1 id="project-hero-title" className="project-hero__title">
                 {title}
               </h1>
             )}
             {hasScope && (
-              <div className="flex flex-col gap-4">
+              <div className="project-hero__section-group">
                 <h2 className="project-hero__label">SCOPE</h2>
-                <ul className="flex flex-col list-none pl-0 m-0 gap-2">
+                <ul className="project-hero__list">
                   {scope!.map((item, i) => (
                     <li key={i} className="project-hero__body">
                       {item}
@@ -69,9 +71,9 @@ export default function IntroBlock({
               </div>
             )}
             {hasTeam && (
-              <div className="flex flex-col gap-4">
+              <div className="project-hero__section-group">
                 <h2 className="project-hero__label">TEAM</h2>
-                <ul className="flex flex-col list-none pl-0 m-0 gap-2">
+                <ul className="project-hero__list">
                   {team!.map((item, i) => (
                     <li key={i} className="project-hero__body">
                       {item}
@@ -83,9 +85,9 @@ export default function IntroBlock({
           </div>
 
           {hasRightColumn && (
-            <div className="flex flex-col gap-4">
+            <div className="project-hero__right-col">
               {subheadline && (
-                <p className="project-hero__headline">{subheadline}</p>
+                <h2 className="project-hero__headline">{subheadline}</h2>
               )}
               {hasDescriptionBlocks && description && (
                 <>
@@ -96,7 +98,7 @@ export default function IntroBlock({
                       </p>
                     ))
                   ) : (
-                    <div className="project-hero__richtext flex flex-col gap-4">
+                    <div className="project-hero__richtext">
                       <PortableText
                         value={description as never}
                         components={portableComponents}
