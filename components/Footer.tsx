@@ -24,7 +24,7 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
         {/* Upper content - flex-1 + justify-center centers text vertically above wordmark */}
-        <div className="relative z-10 flex-1 flex items-center">
+        <div className="relative z-10 flex-1 flex items-center hidden">
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 content-inset py-10">
             <motion.div
               className="flex flex-col gap-5"
@@ -70,7 +70,7 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
         </div>
 
         {/* Wordmark — full width matches nav + body (content-inset inside max-width) */}
-        <div className="overflow-hidden flex items-end w-full content-inset box-border">
+        <div className="overflow-hidden flex items-end w-full content-inset box-border mt-auto">
           <img
             src="/images/mcb-creative-light.svg"
             alt="MCB Creative"

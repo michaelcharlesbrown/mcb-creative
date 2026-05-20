@@ -110,7 +110,7 @@ export default function StyleGuidePage() {
 
         /* DISPLAY / WORDMARK */
         .sg-display {
-          font-family: var(--font-family-wordmark), var(--font-family-headline);
+          font-family: var(--font-family-headline);
           font-size: clamp(4rem, 12vw, 14rem);
           line-height: 0.9;
           letter-spacing: -0.03em;
@@ -197,18 +197,18 @@ export default function StyleGuidePage() {
 
         {/* 01 — DISPLAY */}
         <div className="sg-section">
-          <div className="sg-section-label">01 — Display / Wordmark (Clash Display)</div>
+          <div className="sg-section-label">01 — Display / Wordmark (Geist Sans)</div>
           <div className="sg-row">
             <div className="sg-meta">
-              <span>Clash Display</span>
+              <span>Geist Sans</span>
               <span>clamp 4–14rem</span>
               <span>lh 0.9</span>
-              <span className="sg-token">--font-family-wordmark</span>
+              <span className="sg-token">--font-family-headline</span>
             </div>
             <div className="sg-display">MCB Creative</div>
           </div>
           <div className="sg-color-note">
-            Clash Display loads via next/font/local in layout.tsx (`--font-family-wordmark`). Live hero/footer wordmarks use SVG files; this sample shows the display face only.
+            Geist Sans is the sole sans-serif face. Live hero/footer wordmarks use SVG files; this sample shows the display scale only.
           </div>
         </div>
 
@@ -347,7 +347,6 @@ export default function StyleGuidePage() {
   /* fonts — variables set in layout.tsx */
   /* --font-family-mono       Geist Mono  */
   /* --font-family-headline   Geist Sans  */
-  /* --font-family-wordmark   Clash Display via next/font/local */
 
   /* base */
   font-size: 12px;

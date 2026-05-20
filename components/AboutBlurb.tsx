@@ -2,13 +2,10 @@ export default function AboutBlurb() {
   return (
     <section className="about-blurb" aria-label="About">
       <div className="about-blurb__frame">
-        <h2 className="about-blurb__headline">
-          <span className="triple-slash">///</span> Independent creative studio of
-          <br />
-          Brand designer and creative director
-          <br />
-          Michael Charles Brown
-        </h2>
+        <div className="site-tagline">
+          <span className="site-tagline__marker">///</span>
+          <h2 className="site-tagline__text">INDEPENDENT CREATIVE STUDIO OF BRAND DESIGNER AND CREATIVE DIRECTOR MICHAEL CHARLES BROWN</h2>
+        </div>
       </div>
     </section>
   );
