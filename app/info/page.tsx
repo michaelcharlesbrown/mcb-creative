@@ -1,5 +1,23 @@
 import Image from "next/image";
 
+const testimonials = [
+  {
+    body: "A clear communicator who speaks candidly but always with sincerity and understanding. One of the first people I call when I get something going and need to think creatively or strategically about any venture I\u2019m thinking about.",
+    name: "Scott MacDonald,",
+    titles: ["CTO, AllSides"],
+  },
+  {
+    body: "One of the most talented creative directors in the game. I hired him for a complete rebrand of my startup and he led us through a thorough branding exercise which led to a gorgeous new logo and all of the associated business collateral.",
+    name: "Aaron Selverson,",
+    titles: ["Co-founder & CEO, Superspatial"],
+  },
+  {
+    body: "I\u2019m so lucky that I had the opportunity to work with Michael, as he contributed immensely to my growth as a designer. He has a talent for creating an environment where the team feels heard, encouraged, and inspired.",
+    name: "Brianna Jackson,",
+    titles: ["UX & Product Designer"],
+  },
+];
+
 export default function Info() {
   return (
     <article className="info-page">
@@ -57,6 +75,26 @@ export default function Info() {
         </section>
 
         <hr className="info-page__rule" />
+
+        <section className="info-page__testimonials">
+          <h2 className="info-page__testimonials-headline">
+            See what my clients have to say about working with me
+          </h2>
+          <div className="info-page__testimonials-grid">
+            {testimonials.map((t) => (
+              <div key={t.name} className="info-page__testimonial">
+                <span className="info-page__testimonial-mark">&ldquo;</span>
+                <p className="info-page__testimonial-body">{t.body}</p>
+                <footer className="info-page__testimonial-attribution">
+                  <span>{t.name}</span>
+                  {t.titles.map((title) => (
+                    <span key={title}>{title}</span>
+                  ))}
+                </footer>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </article>
   );

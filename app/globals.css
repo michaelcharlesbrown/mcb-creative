@@ -53,6 +53,8 @@
   --text-display-md:  var(--text-h2);
   /* Work page CTA — Figma 933:265 @ 1440 (1029:379 headline 200px / 1029:382–383 pill / spacing) */
   --text-work-cta:        clamp(3rem, 13.89vw, 12.5rem);
+  --text-footer-cta:      48px;
+  --text-footer-cta-body: 24px;
   --leading-work-cta:     0.9;
   --text-work-cta-button: 2.5rem;
   --width-work-cta-button:  394px;
@@ -332,6 +334,68 @@ a:hover {
   border:     none;
 }
 
+/* ── Testimonials ── */
+.info-page__testimonials {
+  padding-bottom: clamp(5rem, 12vw, 10rem);
+}
+
+h2.info-page__testimonials-headline {
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-info-headline);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-info-headline);
+  text-transform: uppercase;
+  color:          var(--color-black);
+  margin:         0 0 clamp(3rem, 6vw, 5rem) 0;
+  max-width:      22ch;
+}
+
+.info-page__testimonials-grid {
+  display:               grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap:            var(--content-inset);
+  row-gap:               clamp(3rem, 6vw, 5rem);
+  align-items:           start;
+}
+
+.info-page__testimonial {
+  display:        flex;
+  flex-direction: column;
+  gap:            1.5rem;
+}
+
+.info-page__testimonial-mark {
+  font-family:  var(--font-family-mono);
+  font-size:    clamp(3rem, 6vw, 5rem);
+  line-height:  1;
+  color:        var(--color-black);
+  opacity:      0.4;
+  align-self:   flex-start;
+  display:      block;
+}
+
+.info-page__testimonial-body {
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-body);
+  font-weight:    var(--weight-regular);
+  line-height:    1.7;
+  text-transform: uppercase;
+  color:          var(--color-black);
+  margin:         0;
+}
+
+.info-page__testimonial-attribution {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.15em;
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-micro);
+  font-weight:    var(--weight-regular);
+  line-height:    1.5;
+  text-transform: uppercase;
+  color:          var(--color-caption);
+}
+
 
 /* ── Mobile: stack everything ── */
 
@@ -568,6 +632,49 @@ a.work-page__cta-button:focus-visible {
   animation:   arrow-nudge 2.4s ease-in-out infinite;
 }
 
+/* Footer CTA — dark background variant */
+h2.footer__cta-headline {
+  font-family:  var(--font-family-mono);
+  font-size:    var(--text-footer-cta);
+  font-weight:  var(--weight-regular);
+  line-height:  1.2;
+  color:        var(--color-white);
+  text-align:   left;
+  margin:       0;
+  text-transform: uppercase;
+}
+
+.footer__cta-body {
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-footer-cta-body);
+  font-weight:    var(--weight-regular);
+  line-height:    1.3;
+  text-transform: uppercase;
+  color:          var(--color-white);
+}
+
+a.footer__cta-link {
+  font-family:     var(--font-family-mono);
+  font-size:       var(--text-footer-cta-body);
+  font-weight:     var(--weight-regular);
+  line-height:     1.3;
+  text-transform:  uppercase;
+  color:           var(--color-white);
+  text-decoration: none;
+  display:         inline-flex;
+  align-items:     center;
+  gap:             1rem;
+  transition:      opacity 0.25s ease;
+}
+
+a.footer__cta-link:hover {
+  opacity: 0.6;
+}
+
+img.footer__cta-arrow {
+  animation: arrow-swing 2s ease-in-out infinite;
+}
+
 
 /* ============================================================
    LAYOUT & UTILITIES
@@ -775,6 +882,11 @@ img.footer__wordmark {
   25%           { transform: translateX(8px); }
 }
 
+@keyframes arrow-swing {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(6px); }
+}
+
 /* ============================================================
    RESPONSIVE OVERRIDES
    All breakpoint rules live here, after all base styles.
@@ -803,6 +915,30 @@ img.footer__wordmark {
 
   .info-page__rule {
     margin: clamp(2rem, 6vw, 4rem) 0 clamp(2rem, 5vw, 3rem) 0;
+  }
+
+  .info-page__testimonials-grid {
+    grid-template-columns: 1fr;
+    row-gap: clamp(3rem, 8vw, 4rem);
+  }
+
+  h2.info-page__testimonials-headline {
+    max-width: 100%;
+    margin-bottom: clamp(2rem, 6vw, 3rem);
+  }
+
+  h2.footer__cta-headline {
+    font-size: 28px;
+  }
+
+  .footer__cta-body,
+  a.footer__cta-link {
+    font-size: 16px;
+  }
+
+  img.footer__cta-arrow {
+    width:  22px;
+    height: 22px;
   }
 }
 
