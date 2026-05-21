@@ -1,6 +1,5 @@
 "use client";
 
-import { HOMEPAGE_HERO_VIDEO_SRC } from "@/lib/homepageHeroVideo";
 import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
 import AboutBlurb from "@/components/AboutBlurb";
@@ -27,19 +26,6 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
       <div className="bg-background">
         <div className="overflow-hidden bg-background">
           <HeroSection />
-          <div className="hero-video bg-background">
-            <div className="max-w-[var(--content-max-width)] mx-auto w-full content-inset box-border">
-              <video
-                className="block w-full"
-                src={HOMEPAGE_HERO_VIDEO_SRC}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-              />
-            </div>
-          </div>
         </div>
 
         <div className="min-h-screen flex items-center bg-background">

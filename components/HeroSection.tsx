@@ -1,37 +1,65 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import GrainCanvas from "@/components/GrainCanvas";
+import { HOMEPAGE_HERO_VIDEO_SRC } from "@/lib/homepageHeroVideo";
+
+const EASE = [0.25, 0.1, 0.25, 1] as const;
 
 export default function HeroSection() {
-  const { scrollY } = useScroll();
-  const exitY = useTransform(scrollY, [0, 350], [0, -220]);
-  const exitOpacity = useTransform(scrollY, [0, 350], [1, 0]);
-
   return (
     <section className="hero relative bg-background">
-      {/* Grain — inset from bottom to avoid seam at hero/video boundary */}
-      <div className="absolute inset-0 z-[5] pointer-events-none [clip-path:inset(0_0_48px_0)]">
+      {/* Grain overlay */}
+      <div className="absolute inset-0 z-[5] pointer-events-none">
         <GrainCanvas opacity={0.04} blendMode="overlay" zIndex={5} />
       </div>
 
-      <div className="hero__content z-10 flex flex-col justify-end">
-        {/* Scroll-exit wrapper: outside overflow-hidden so the upward motion is unclipped */}
-        <motion.div style={{ y: exitY, opacity: exitOpacity }}>
-          <div className="max-w-[var(--content-max-width)] mx-auto w-full content-inset overflow-hidden flex items-end box-border">
-            <motion.h1
-              className="hero__wordmark m-0 w-full"
-              initial={{ opacity: 0, y: 80 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
-            >
-              <img
-                src="/images/mcb-creative-dark.svg"
-                alt="MCB Creative"
-                width="100%"
-                height="auto"
+      {/* Upper half — title + tagline, centered */}
+      <div className="hero__upper">
+        <motion.h1
+          className="hero__wordmark"
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: EASE }}
+        >
+          <img
+            src="/images/mcb-creative-dark.svg"
+            alt="MCB Creative"
+            width="100%"
+            height="auto"
+          />
+        </motion.h1>
+
+        <motion.p
+          className="hero__tagline"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.38 }}
+        >
+          Independent Design Studio
+        </motion.p>
+      </div>
+
+      {/* Lower half — video slides up after text settles */}
+      <div className="hero__lower">
+        <motion.div
+          className="hero__lower-inner"
+          initial={{ y: 56, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1.0, ease: EASE, delay: 1.0 }}
+        >
+          <div className="max-w-[var(--content-max-width)] mx-auto w-full content-inset box-border">
+            <div className="hero__video-frame aspect-[5/7] md:aspect-auto">
+              <video
+                className="w-full h-full object-cover md:h-auto md:object-contain"
+                src={HOMEPAGE_HERO_VIDEO_SRC}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
               />
-            </motion.h1>
+            </div>
           </div>
         </motion.div>
       </div>

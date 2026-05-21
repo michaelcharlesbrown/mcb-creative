@@ -57,6 +57,7 @@
   --text-work-cta-button: 2.5rem;
   --width-work-cta-button:  394px;
   --height-work-cta-button: 135px;
+  --radius-card:            12px;
   --radius-work-cta-button: 160px;
   --size-work-cta-arrow-w: clamp(64px, 10vw, 142px);
   --size-work-cta-arrow-h: clamp(64px, 10vw, 141px);
@@ -333,29 +334,6 @@ a:hover {
 
 
 /* ── Mobile: stack everything ── */
-@media (max-width: 767px) {
-  .info-page__main {
-    display:        flex;
-    flex-direction: column;
-    gap:            clamp(2rem, 6vw, 3rem);
-  }
-
-  .info-page__hero {
-    display: block;
-  }
-
-  .info-page__portrait-col {
-    position:      static;
-    width:         calc(100% + 2 * var(--content-inset));
-    margin-inline: calc(var(--content-inset) * -1);
-    margin-bottom: clamp(2rem, 6vw, 3rem);
-  }
-
-  .info-page__rule {
-    margin: clamp(2rem, 6vw, 4rem) 0 clamp(2rem, 5vw, 3rem) 0;
-  }
-
-}
 
 /* Project page — intro grid + two columns (title / scope / team | headline + body) */
 .project-hero__grid {
@@ -367,13 +345,6 @@ a:hover {
   row-gap:               var(--project-hero-line);
 }
 
-@media (min-width: 1024px) {
-  .project-hero__grid--split {
-    grid-template-columns: 1fr 1fr;
-    /* First-line baselines: project title lines up with subhead */
-    align-items:           baseline;
-  }
-}
 
 .project-hero h1.project-hero__title {
   font-family:             var(--font-family-mono);
@@ -626,10 +597,6 @@ img {
 .nav-rail--homepage .carousel-slide { flex: 0 0 85%; }
 .nav-rail--rail     .carousel-slide { flex: 0 0 55%; }
 
-@media (min-width: 768px) {
-  .nav-rail--homepage .carousel-slide { flex: 0 0 calc((100% - 40px) / 3); }
-  .nav-rail--rail     .carousel-slide { flex: 0 0 calc((100% - 60px) / 4); }
-}
 
 /* ============================================================
    HERO
@@ -640,9 +607,32 @@ img {
   box-shadow: none;
   border: none;
   outline: none;
-  min-height: var(--height-home-hero);
-  height: var(--height-home-hero);
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Upper half — title + tagline, vertically and horizontally centered */
+.hero__upper {
+  height: 50dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 1.5vh, 1rem);
+  position: relative;
+  z-index: 10;
+}
+
+/* Lower half — video flows at natural height, no clipping */
+.hero__lower {
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+.hero__lower-inner {
+  width: 100%;
 }
 
 .hero-video {
@@ -677,6 +667,8 @@ img {
 /* Homepage hero + footer: SVG wordmarks (<img>). Collapse h1 metrics; block images for clean baseline. */
 
 .hero__wordmark {
+  max-width: clamp(240px, 36vw, 540px);
+  width: 100%;
   margin: 0;
   font-size: 0;
   line-height: 0;
@@ -687,6 +679,29 @@ img.footer__wordmark {
   display: block;
   box-sizing: border-box;
 }
+
+.hero__tagline {
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-ui);
+  font-weight:    var(--weight-regular);
+  letter-spacing: var(--letter-spacing-work);
+  text-transform: uppercase;
+  margin:         0;
+}
+
+/* Video frame — clips the slightly-scaled video so no edges bleed out */
+.hero__video-frame {
+  width:         100%;
+  overflow:      hidden;
+  border-radius: var(--radius-card);
+}
+
+.hero__video-frame video {
+  display:   block;
+  width:     100%;
+  transform: scale(1.04);
+}
+
 
 .hero__video {
   position: absolute;
@@ -710,39 +725,29 @@ img.footer__wordmark {
    ABOUT BLURB
 ============================================================ */
 
-.home .about-blurb {
-  margin-top: 0;
-}
-
 .about-blurb {
-  position: relative;
-  display: flex;
-  align-items: center;
+  display:         flex;
+  align-items:     center;
   justify-content: center;
-  width: 100%;
-  min-height: 100vh;
-  margin-top: -150px;
-  background: var(--background);
-  color: var(--color-black);
-  padding: clamp(3.5rem, 6vh, 5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
-  overflow: hidden;
+  width:           100%;
+  min-height:      100vh;
+  background:      var(--background);
+  padding:         clamp(4rem, 10vh, 8rem) var(--content-inset);
+  box-sizing:      border-box;
 }
 
-.about-blurb::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.04;
-  pointer-events: none;
+.about-blurb__statement {
+  font-family:    var(--font-family-mono);
+  font-size:      clamp(1.1rem, 2vw, 1.5rem);
+  font-weight:    var(--weight-regular);
+  letter-spacing: var(--letter-spacing-work);
+  text-transform: uppercase;
+  text-align:     center;
+  line-height:    var(--leading-body);
+  max-width:      clamp(22rem, 43vw, 39rem);
+  margin:         0;
 }
 
-@media (max-width: 768px) {
-  .about-blurb {
-    min-height: 100dvh;
-    padding: clamp(3rem, 8vh, 8vh) 0;
-  }
-}
 
 /* ============================================================
    ANIMATIONS
@@ -768,6 +773,54 @@ img.footer__wordmark {
 @keyframes arrow-nudge {
   0%, 55%, 100% { transform: translateX(0); }
   25%           { transform: translateX(8px); }
+}
+
+/* ============================================================
+   RESPONSIVE OVERRIDES
+   All breakpoint rules live here, after all base styles.
+   One block per condition — Tailwind v4 / Lightning CSS
+   deduplicates blocks with the same condition, so never add
+   a second block elsewhere in this file.
+============================================================ */
+
+@media (max-width: 767px) {
+  .info-page__main {
+    display:        flex;
+    flex-direction: column;
+    gap:            clamp(2rem, 6vw, 3rem);
+  }
+
+  .info-page__hero {
+    display: block;
+  }
+
+  .info-page__portrait-col {
+    position:      static;
+    width:         calc(100% + 2 * var(--content-inset));
+    margin-inline: calc(var(--content-inset) * -1);
+    margin-bottom: clamp(2rem, 6vw, 3rem);
+  }
+
+  .info-page__rule {
+    margin: clamp(2rem, 6vw, 4rem) 0 clamp(2rem, 5vw, 3rem) 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .nav-rail--homepage .carousel-slide { flex: 0 0 calc((100% - 40px) / 3); }
+  .nav-rail--rail     .carousel-slide { flex: 0 0 calc((100% - 60px) / 4); }
+
+  .about-blurb__statement {
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    max-width: clamp(40rem, 58vw, 66rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .project-hero__grid--split {
+    grid-template-columns: 1fr 1fr;
+    align-items:           baseline;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

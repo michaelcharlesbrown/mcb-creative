@@ -24,7 +24,7 @@ export default function Navigation() {
             alt="MCB Creative"
             width={165}
             height={55}
-            className="h-11 w-auto brightness-0 invert"
+            className="h-[22px] lg:h-8 w-auto brightness-0 invert"
           />
         </Link>
         <div className="nav__links flex items-center gap-2 text-ui uppercase text-white">
