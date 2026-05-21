@@ -23,8 +23,8 @@ export default function Info() {
 
           <div className="info-page__intro-col">
             <h1 className="info-page__headline">
-              I help people define and develop a unique visual language to tell
-              their story.
+              I help people define and develop a unique visual language that
+              speaks directly to their audience.
             </h1>
 
             <div className="info-page__prose">

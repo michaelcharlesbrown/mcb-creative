@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,9 +10,12 @@ export default function Navigation() {
   const isProjectsPage = pathname === "/projects";
 
   return (
-    <nav
+    <motion.nav
       className="nav fixed top-0 left-0 right-0 z-50 bg-transparent"
       style={{ mixBlendMode: "difference" }}
+      initial={{ opacity: 0, y: -16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
     >
       <div className="nav__inner max-w-[var(--content-max-width)] mx-auto content-inset pt-4 pb-2 flex justify-between items-center">
         <Link href="/" className="nav__logo flex items-center text-white">
@@ -39,6 +43,6 @@ export default function Navigation() {
           </Link>
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 }

@@ -12,6 +12,9 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-10% 0px' })
 
+  const wordmarkRef = useRef(null)
+  const wordmarkInView = useInView(wordmarkRef, { once: true, margin: '0px 0px 80px 0px' })
+
   return (
     <footer ref={ref} style={{ backgroundColor: 'var(--dark-background)' }} className="w-full">
       {/* Frame wrapper */}
@@ -70,13 +73,16 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
         </div>
 
         {/* Wordmark — full width matches nav + body (content-inset inside max-width) */}
-        <div className="overflow-hidden flex items-end w-full content-inset box-border mt-auto">
-          <img
+        <div ref={wordmarkRef} className="overflow-hidden flex items-end w-full content-inset box-border mt-auto">
+          <motion.img
             src="/images/mcb-creative-light.svg"
             alt="MCB Creative"
             width="100%"
             height="auto"
             className="footer__wordmark"
+            initial={{ opacity: 0, y: 80 }}
+            animate={wordmarkInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
           />
         </div>
         </motion.div>
