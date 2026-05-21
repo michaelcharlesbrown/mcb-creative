@@ -841,18 +841,8 @@ img.footer__wordmark {
   background:      var(--background);
   padding:         clamp(4rem, 10vh, 8rem) var(--content-inset);
   box-sizing:      border-box;
-}
-
-.about-blurb__statement {
-  font-family:    var(--font-family-mono);
-  font-size:      clamp(1.1rem, 2vw, 1.5rem);
-  font-weight:    var(--weight-regular);
-  letter-spacing: var(--letter-spacing-work);
-  text-transform: uppercase;
-  text-align:     center;
-  line-height:    var(--leading-body);
-  max-width:      clamp(22rem, 43vw, 39rem);
-  margin:         0;
+  max-width:       clamp(40rem, 58vw, 66rem);
+  margin-inline:   auto;
 }
 
 
@@ -946,10 +936,6 @@ img.footer__wordmark {
   .nav-rail--homepage .carousel-slide { flex: 0 0 calc((100% - 40px) / 3); }
   .nav-rail--rail     .carousel-slide { flex: 0 0 calc((100% - 60px) / 4); }
 
-  .about-blurb__statement {
-    font-size: clamp(2.2rem, 4vw, 3rem);
-    max-width: clamp(40rem, 58vw, 66rem);
-  }
 }
 
 @media (min-width: 1024px) {
