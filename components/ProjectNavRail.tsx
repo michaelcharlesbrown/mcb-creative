@@ -58,11 +58,11 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
                 />
               </div>
               <div className="pt-2">
-                <h3 className="nav-rail__card-title truncate" suppressHydrationWarning>
+                <h3 className="label truncate" suppressHydrationWarning>
                   {project.title}
                 </h3>
                 {project.scope && project.scope.length > 0 && (
-                  <p className="line-clamp-2 text-black/60 mt-0.5 uppercase text-ui">
+                  <p className="label line-clamp-2 text-black/60 mt-0.5">
                     {project.scope.join(", ")}
                   </p>
                 )}

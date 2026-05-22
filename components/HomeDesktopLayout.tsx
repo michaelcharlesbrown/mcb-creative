@@ -2,7 +2,7 @@
 
 import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
-import AboutBlurb from "@/components/AboutBlurb";
+import SectionIntro from "@/components/SectionIntro";
 import Footer from "@/components/Footer";
 import WorkCard from "@/components/WorkCard";
 
@@ -28,11 +28,14 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
           <HeroSection />
         </div>
 
-        <div className="min-h-screen flex items-center bg-background">
-          <AboutBlurb />
+        <div className="min-h-[50vh] flex items-center bg-background">
+          <SectionIntro
+            label="Featured Work"
+            tagline="I help brands define and develop a unique visual language that speaks directly to their audience."
+          />
         </div>
 
-        <div className="bg-background pt-[max(var(--nav-height),200px)] pb-[200px]">
+        <div className="bg-background pb-[50vh]">
           <div className="max-w-[var(--content-max-width)] mx-auto content-inset">
             <div className="grid grid-cols-2 gap-x-6 gap-y-14">
               {projects.map((project) => (

@@ -16,7 +16,7 @@ export default function HeroSection() {
 
       {/* Upper half — title + tagline, centered */}
       <div className="hero__upper">
-        <motion.h1
+        <motion.div
           className="hero__wordmark"
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
@@ -28,7 +28,7 @@ export default function HeroSection() {
             width="100%"
             height="auto"
           />
-        </motion.h1>
+        </motion.div>
 
         <motion.p
           className="hero__tagline"
@@ -36,7 +36,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: EASE, delay: 0.38 }}
         >
-          Independent Design Studio
+          Independent Design Studio of Michael Charles Brown
         </motion.p>
       </div>
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Link from 'next/link'
 
@@ -8,12 +8,28 @@ interface FooterProps {
   accentColor?: string
 }
 
+const WORDMARK_KEY = 'footer-wordmark-played'
+
 export default function Footer({ accentColor = 'var(--color-white)' }: FooterProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-10% 0px' })
 
   const wordmarkRef = useRef(null)
   const wordmarkInView = useInView(wordmarkRef, { once: true, margin: '0px' })
+
+  const [hasPlayedBefore, setHasPlayedBefore] = useState(false)
+
+  useEffect(() => {
+    if (sessionStorage.getItem(WORDMARK_KEY)) {
+      setHasPlayedBefore(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (wordmarkInView && !hasPlayedBefore) {
+      sessionStorage.setItem(WORDMARK_KEY, '1')
+    }
+  }, [wordmarkInView, hasPlayedBefore])
 
   return (
     <footer ref={ref} style={{ backgroundColor: 'var(--dark-background)' }} className="w-full">
@@ -75,11 +91,11 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
             width="100%"
             height="auto"
             className="footer__wordmark"
-            initial={{ opacity: 0, y: 140 }}
-            animate={wordmarkInView ? { opacity: 1, y: 0 } : {}}
-            transition={{
-              opacity: { duration: 3, ease: 'easeIn', delay: 0.6 },
-              y:       { duration: 3, ease: [0.16, 1, 0.3, 1], delay: 0.6 },
+            initial={hasPlayedBefore ? { opacity: 1, y: 0 } : { opacity: 0, y: 140 }}
+            animate={hasPlayedBefore || wordmarkInView ? { opacity: 1, y: 0 } : {}}
+            transition={hasPlayedBefore ? { duration: 0 } : {
+              opacity: { duration: 1.5, ease: 'easeIn', delay: 0.6 },
+              y:       { duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.6 },
             }}
           />
         </div>

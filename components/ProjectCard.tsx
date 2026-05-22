@@ -36,7 +36,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       </div>
 
       <div className="space-y-1 md:space-y-2">
-        <h3 className="project-card__title">
+        <h3 className="label">
           {project.title}
         </h3>
         {project.subheadline && (

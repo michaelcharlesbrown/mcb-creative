@@ -41,7 +41,7 @@ export default function TextMediaBlock({
         </h2>
       )}
       {Array.isArray(body) && body.length > 0 ? (
-        <div className="project-hero__body flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
           <PortableText value={body} />
         </div>
       ) : null}

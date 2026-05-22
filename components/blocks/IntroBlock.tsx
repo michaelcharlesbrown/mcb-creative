@@ -54,16 +54,16 @@ export default function IntroBlock({
         >
           <div className="project-hero__left-col">
             {title && (
-              <h1 id="project-hero-title" className="project-hero__title">
+              <h1 id="project-hero-title">
                 {title}
               </h1>
             )}
             {hasScope && (
               <div className="project-hero__section-group">
-                <p className="project-hero__label">SCOPE</p>
+                <p className="label">SCOPE</p>
                 <ul className="project-hero__list">
                   {scope!.map((item, i) => (
-                    <li key={i} className="project-hero__body">
+                    <li key={i}>
                       {item}
                     </li>
                   ))}
@@ -72,10 +72,10 @@ export default function IntroBlock({
             )}
             {hasTeam && (
               <div className="project-hero__section-group">
-                <p className="project-hero__label">TEAM</p>
+                <p className="label">TEAM</p>
                 <ul className="project-hero__list">
                   {team!.map((item, i) => (
-                    <li key={i} className="project-hero__body">
+                    <li key={i}>
                       {item}
                     </li>
                   ))}
@@ -87,7 +87,7 @@ export default function IntroBlock({
           {hasRightColumn && (
             <div className="project-hero__right-col">
               {subheadline && (
-                <h2 className="project-hero__headline">{subheadline}</h2>
+                <h2>{subheadline}</h2>
               )}
               {hasDescriptionBlocks && description && (
                 <>

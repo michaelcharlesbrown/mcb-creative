@@ -24,22 +24,24 @@ export default function Navigation() {
             alt="MCB Creative"
             width={165}
             height={55}
-            className="h-[22px] lg:h-8 w-auto brightness-0 invert"
+            className="h-[28px] lg:h-10 w-auto brightness-0 invert"
           />
         </Link>
-        <div className="nav__links flex items-center gap-2 text-ui uppercase text-white">
+        <div className="nav__links flex items-center gap-2 uppercase text-white">
           <Link
             href="/projects"
-            className={pathname === "/projects" ? "underline" : ""}
+            className="nav-flip-link"
+            aria-current={pathname === "/projects" ? "page" : undefined}
           >
-            WORK
+            <span className="nav-flip-link__inner" data-text="WORK">WORK</span>
           </Link>
           <span className="opacity-80" aria-hidden>///</span>
           <Link
             href="/info"
-            className={pathname === "/info" ? "underline" : ""}
+            className="nav-flip-link"
+            aria-current={pathname === "/info" ? "page" : undefined}
           >
-            INFO
+            <span className="nav-flip-link__inner" data-text="INFO">INFO</span>
           </Link>
         </div>
       </div>

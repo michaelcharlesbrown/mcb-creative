@@ -2,7 +2,7 @@
 
 import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
-import AboutBlurb from "@/components/AboutBlurb";
+import SectionIntro from "@/components/SectionIntro";
 import Footer from "@/components/Footer";
 import ProjectNavRail from "@/components/ProjectNavRail";
 
@@ -29,7 +29,10 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
         </div>
 
         <section className="flex-shrink-0">
-          <AboutBlurb />
+          <SectionIntro
+            label="Featured Work"
+            tagline="I help brands define and develop a unique visual language that speaks directly to their audience."
+          />
         </section>
 
         <section className="flex-shrink-0 bg-background min-h-dvh flex flex-col justify-center">
