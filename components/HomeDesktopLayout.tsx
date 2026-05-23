@@ -37,7 +37,7 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
 
         <div className="bg-background pb-[50vh]">
           <div className="max-w-[var(--content-max-width)] mx-auto content-inset">
-            <div className="grid grid-cols-2 gap-x-6 gap-y-14">
+            <div className="col-2">
               {projects.map((project) => (
                 <WorkCard
                   key={project.slug}

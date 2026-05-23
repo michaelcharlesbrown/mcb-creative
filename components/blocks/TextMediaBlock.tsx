@@ -62,7 +62,7 @@ export default function TextMediaBlock({
   const isTextLeft = layout === "left";
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-[8px] items-stretch">
+    <div className="col-2 items-stretch">
         {isTextLeft ? (
           <>
             <div>{textContent}</div>

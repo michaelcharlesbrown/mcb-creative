@@ -24,7 +24,7 @@ export default function WorkGrid({ projects }: WorkGridProps) {
       </div>
 
       <div className="max-w-[var(--content-max-width)] mx-auto content-inset pb-[50vh]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-14">
+        <div className="col-2">
           {projects.map((project) => (
             <WorkCard key={project.slug} project={project} />
           ))}

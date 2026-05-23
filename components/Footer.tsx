@@ -44,7 +44,7 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
         >
         {/* Upper content — CTA block, vertically centered above wordmark */}
         <div className="relative z-10 flex-1 flex items-center">
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 content-inset py-10">
+          <div className="col-2 w-full content-inset py-10">
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={isInView ? { y: 0, opacity: 1 } : {}}

@@ -107,6 +107,19 @@ export default async function Project({
     <div className="min-h-screen bg-background text-black">
       <SetAccentColor color={sanityProject.accentColor} />
       <main>
+        {hasHeroMedia && (
+          <div className="project-cover">
+            <MediaBlock
+              image={sanityProject.heroImage}
+              videoUrl={sanityProject.heroVideoFileUrl}
+              altFallback={sanityProject.title}
+              sizes="100vw"
+              fill
+              priority
+            />
+          </div>
+        )}
+
         <IntroBlock
           headline={introHeadline}
           subheadline={introSubheadline}
@@ -114,22 +127,11 @@ export default async function Project({
           team={introTeam}
           description={introDescription}
           titleFallback={sanityProject.title}
+          coverAbove={hasHeroMedia}
         />
 
-        {hasHeroMedia && (
-          <div className="max-w-[var(--content-max-width)] mx-auto content-inset">
-            <MediaBlock
-              image={sanityProject.heroImage}
-              videoUrl={sanityProject.heroVideoFileUrl}
-              altFallback={sanityProject.title}
-              sizes="100vw"
-              priority
-            />
-          </div>
-        )}
-
         <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-16 pb-16">
-          <div className="flex flex-col gap-[8px]">
+          <div className="flex flex-col gap-[var(--gap-grid)]">
             {hasRestBlocks &&
               restBlocks.map((block, index) => (
                 <BlockRenderer

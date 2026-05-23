@@ -190,6 +190,19 @@ These skills supplement CLAUDE.md — they don't replace it. CLAUDE.md's project
 
 ---
 
+## Browser Inspection — MANDATORY
+
+**Always verify visual changes directly in the browser at localhost:3002. Never guess.**
+
+Before and after every CSS or layout change:
+1. Use the preview tools to take a screenshot or snapshot at localhost:3002.
+2. Confirm the change is visible and correct in the rendered output.
+3. If the preview is not showing the expected result, investigate — do not declare the task complete based on code analysis alone.
+
+This is non-negotiable. Code that looks correct but renders incorrectly is broken. The browser is the source of truth.
+
+---
+
 ## Workflow Rules
 
 1. **Before touching any animation code**, state which "approved approaches" category it falls into. If it doesn't fit any category, flag it and discuss before proceeding.

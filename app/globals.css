@@ -6,6 +6,9 @@
 ============================================================ */
 
 :root {
+  /* Grid */
+  --gap-grid: 16px;
+
   /* Colors */
   --project-accent-overlay: transparent; /* set by SetAccentColor on project pages */
   --background:      #fcfcfc;
@@ -373,19 +376,35 @@ h2.info-page__testimonials-headline {
 }
 
 
-/* ── Mobile: stack everything ── */
-
-/* Project page — intro grid + two columns (title / scope / team | headline + body) */
-.project-hero__grid {
+/* ── Universal two-column grid — one class, used everywhere ── */
+.col-2 {
   display:               grid;
   grid-template-columns: 1fr;
-  align-items:           start;
-  text-align:            left;
-  column-gap:            clamp(3rem, 4vw, 4rem);
-  row-gap:               var(--project-hero-line);
+  gap:                   var(--gap-grid);
 }
 
+/* Project page — aligns columns at top; layout handled by .col-2 */
+.project-hero__grid {
+  align-items: start;
+}
 
+.project-hero__left-col {
+  display:        flex;
+  flex-direction: column;
+}
+
+.project-hero__right-col {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--project-hero-line);
+}
+
+/* Tagline rendered as a lead paragraph — weighted but not a heading */
+.project-hero__lead {
+  font-size:   var(--text-footer-cta-body);
+  line-height: var(--leading-display);
+  margin:      0;
+}
 
 .project-hero__richtext {
   display:        flex;
@@ -397,18 +416,10 @@ h2.info-page__testimonials-headline {
   margin: 0;
 }
 
-/* Project hero scope/team lists — no extra spacing, stacks like body copy */
+/* Scope/team lists — stack on line-height only */
 .project-hero ul li {
   margin:  0;
   padding: 0;
-}
-
-/* One vertical rhythm everywhere: title→SCOPE gap = headline→body gap; lists
-   stack on line-height only (no extra flex gap between items). */
-.project-hero__left-col {
-  display:        flex;
-  flex-direction: column;
-  gap:            var(--project-hero-line);
 }
 
 .project-hero__section-group {
@@ -424,12 +435,6 @@ h2.info-page__testimonials-headline {
   display:        flex;
   flex-direction: column;
   gap:            0;
-}
-
-.project-hero__right-col {
-  display:        flex;
-  flex-direction: column;
-  gap:            var(--project-hero-line);
 }
 
 /* Text/media block section heading — editorial sans exception; overrides global mono */
@@ -673,17 +678,42 @@ img.footer__wordmark {
 }
 
 
+/* Full-bleed cover image — 100dvh, fills the viewport on page load */
+.project-cover {
+  position: relative;
+  width:     100%;
+  height:    100dvh;
+}
+
 .project-hero {
-  min-height: 50dvh;
+  min-height:     50dvh;
+  text-transform: uppercase;
+}
+
+/* When a full-bleed cover sits above, vertically center content within the half-viewport —
+   mirrors the pattern used by section-intro and hero__upper */
+.project-hero--cover-above {
+  display:         flex;
+  flex-direction:  column;
+  justify-content: center;
 }
 
 .project-hero h1 {
+  font-size:  var(--text-footer-cta);
   text-align: left;
+  margin:     0;
 }
 
 .project-hero__inner {
   padding-top:    var(--padding-project-hero-top);
   padding-bottom: var(--space-project-hero-bottom);
+}
+
+/* When a full-bleed cover sits above, use modest equal padding as a floor —
+   the flex centering on the parent handles the breathing room */
+.project-hero__inner--cover-above {
+  padding-top:    clamp(3rem, 5vw, 4rem);
+  padding-bottom: clamp(3rem, 5vw, 4rem);
 }
 
 /* ============================================================
@@ -702,16 +732,13 @@ img.footer__wordmark {
 }
 
 .section-intro {
-  display:               grid;
-  grid-template-columns: 1fr 1fr;
-  align-items:           center;
-  gap:                   var(--content-inset);
-  width:                 100%;
-  max-width:             var(--content-max-width);
-  margin-inline:         auto;
-  min-height:            50vh;
-  padding-inline:        var(--content-inset);
-  box-sizing:            border-box;
+  align-items:    center;
+  width:          100%;
+  max-width:      var(--content-max-width);
+  margin-inline:  auto;
+  min-height:     50vh;
+  padding-inline: var(--content-inset);
+  box-sizing:     border-box;
 }
 
 
@@ -833,12 +860,12 @@ img.footer__wordmark {
 
 }
 
-@media (min-width: 1024px) {
-  .project-hero__grid--split {
+@media (min-width: 768px) {
+  .col-2 {
     grid-template-columns: 1fr 1fr;
-    align-items:           baseline;
   }
 }
+
 
 @media (prefers-reduced-motion: reduce) {
   .nav,
@@ -870,4 +897,5 @@ img.footer__wordmark {
     --foreground: #fcfcfc;
   }
 }
+
 

@@ -20,7 +20,7 @@ export default function TwoColumnBlock({
   if (!hasLeft && !hasRight) return null;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-[8px] w-full">
+    <div className="col-2 w-full">
       {(imageLeft || videoFileLeftUrl) && (
         <MediaBlock
           image={imageLeft}
