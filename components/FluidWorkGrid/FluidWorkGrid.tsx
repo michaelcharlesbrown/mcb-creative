@@ -11,7 +11,8 @@ interface Project {
   accentColor: string
   subheadline?: string
   scope?: string[]
-  heroImage: string
+  /** Landscape image — desktop fluid grid */
+  heroImageLandscape: string
 }
 
 interface FluidWorkGridProps {
@@ -153,7 +154,7 @@ export function FluidWorkGrid({ projects, pairedRow = false }: FluidWorkGridProp
           >
             <div className={styles.colInner}>
               <Image
-                src={project.heroImage}
+                src={project.heroImageLandscape}
                 alt={project.title}
                 fill
                 className={styles.colImage}

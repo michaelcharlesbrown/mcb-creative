@@ -7,22 +7,18 @@ interface WorkCardProps {
     slug: string;
     title: string;
     services: string[];
-    heroImage: string;
+    /** Landscape image — desktop grid, aspect-video */
+    heroImageLandscape: string;
     accentColor: string;
   };
 }
 
 export default function WorkCard({ project }: WorkCardProps) {
   return (
-    <a
-      href={`/projects/${project.slug}`}
-      className="group block w-full"
-    >
-      <div
-        className="relative w-full aspect-video overflow-hidden rounded-[4px] mb-3"
-      >
+    <a href={`/projects/${project.slug}`} className="group block w-full">
+      <div className="relative w-full aspect-video overflow-hidden rounded-[4px] mb-3">
         <Image
-          src={project.heroImage}
+          src={project.heroImageLandscape}
           alt={project.title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"

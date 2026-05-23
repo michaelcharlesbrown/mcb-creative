@@ -26,8 +26,8 @@ export default defineType({
     }),
     defineField({
       name: 'thumbnail',
-      title: 'Portfolio Grid Thumbnail',
-      description: 'Used for the project card in the home page portfolio grid (5:7 aspect ratio recommended).',
+      title: 'Mobile Hero / Portrait Card',
+      description: 'Portrait image (5:7 ratio, minimum 1000×1400px). Used as the hero on mobile, in the project carousel, and in portrait card grids. Keep the subject centered — hotspot controls the focal point.',
       type: 'image',
       options: { hotspot: true },
       fields: [
@@ -47,7 +47,8 @@ export default defineType({
     }),
     defineField({
       name: 'heroImage',
-      title: 'Hero Image',
+      title: 'Desktop Hero / Landscape Card',
+      description: 'Landscape image (16:9 or wider, minimum 2800×1575px). Used as the full-screen hero on desktop and in landscape work grid cards.',
       type: 'image',
       options: { hotspot: true },
       fields: [

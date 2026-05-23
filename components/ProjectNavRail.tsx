@@ -8,7 +8,8 @@ export interface NavRailProject {
   slug: string;
   title: string;
   accentColor?: string;
-  heroImage: string;          // was: thumbnail
+  /** Portrait image (5:7) — used for all cards regardless of breakpoint */
+  heroImagePortrait: string;
   scope?: string[];
 }
 
@@ -20,7 +21,6 @@ interface ProjectNavRailProps {
 
 export default function ProjectNavRail({ currentSlug, projects, variant = "rail" }: ProjectNavRailProps) {
   const isHomepage = variant === "homepage";
-
   const cards = isHomepage ? projects : projects.filter((p) => p.slug !== currentSlug);
 
   const [emblaRef] = useEmblaCarousel(
@@ -29,30 +29,29 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
   );
 
   return (
-    <div className={`nav-rail ${isHomepage ? "nav-rail--homepage" : "nav-rail--rail"} w-full overflow-hidden cursor-grab active:cursor-grabbing`} ref={emblaRef}>
+    <div
+      className={`nav-rail ${isHomepage ? "nav-rail--homepage" : "nav-rail--rail"} w-full overflow-hidden cursor-grab active:cursor-grabbing`}
+      ref={emblaRef}
+    >
       <div className="flex gap-5">
         {cards.map((project) => (
-          <div
-            key={project.slug}
-            className="carousel-slide min-w-0 last:mr-5"
-          >
+          <div key={project.slug} className="carousel-slide min-w-0 last:mr-5">
             <a
               href={`/projects/${project.slug}`}
               className="block group"
               draggable={false}
               onDragStart={(e) => e.preventDefault()}
             >
-              <div
-                className="relative w-full overflow-hidden rounded-sm"
-                style={{
-                  aspectRatio: "5/7",
-                }}
-              >
+              <div className="relative w-full overflow-hidden rounded-sm" style={{ aspectRatio: "5/7" }}>
                 <Image
-                  src={project.heroImage}
+                  src={project.heroImagePortrait}
                   alt={project.title}
                   fill
-                  sizes={isHomepage ? "(max-width: 767px) 85vw, 33vw" : "(max-width: 767px) 55vw, 25vw"}
+                  sizes={
+                    isHomepage
+                      ? "(max-width: 767px) 85vw, 33vw"
+                      : "(max-width: 767px) 55vw, 25vw"
+                  }
                   draggable={false}
                   className="object-cover"
                 />

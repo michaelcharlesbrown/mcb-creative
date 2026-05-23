@@ -1,7 +1,7 @@
 import { projects, type Project } from "@/data/projects";
 import { sanityFetch } from "@/lib/sanity.fetch";
 import { projectsGridQuery } from "@/lib/sanity.queries";
-import { getSanityImageUrl } from "@/lib/sanityImage";
+import { resolveProjectImages } from "@/lib/resolveProjectImages";
 import HomeMobileLayout from "@/components/HomeMobileLayout";
 import HomeDesktopLayout from "@/components/HomeDesktopLayout";
 
@@ -12,10 +12,10 @@ type SanityGridProject = {
   subheadline?: string;
   scope?: string[];
   heroImage?: { alt?: string; asset?: { url: string } };
-  thumbnail?: string;
+  thumbnail?: { alt?: string; asset?: { url: string } };
 };
 
-/** Homepage FluidWork grid: two stacked rows × two tiles — fixed order */
+/** Fixed order for the homepage featured grid */
 const FEATURED_HOME_SLUGS = [
   "shiftdrink",
   "protools",
@@ -29,36 +29,30 @@ type HomeFeaturedProject = {
   accentColor: string;
   subheadline?: string;
   scope?: string[];
-  heroImage: string;
+  heroImageLandscape: string;
+  heroImagePortrait: string;
 };
 
-function featuredFromSanity(
-  sanity: SanityGridProject,
-  stat?: Project,
-): HomeFeaturedProject {
-  return {
-    slug: sanity.slug,
-    title: sanity.title ?? stat?.title ?? "",
-    accentColor: sanity.accentColor ?? stat?.accentColor ?? "",
-    subheadline: sanity.subheadline ?? stat?.tagline,
-    scope: sanity.scope ?? stat?.services ?? [],
-    /** Match work page hero (MediaBlock): Sanity hero image first, then grid thumbnail, then static/local */
-    heroImage:
-      getSanityImageUrl(sanity.heroImage, "twoColumn") ??
-      sanity.thumbnail ??
-      stat?.heroImage ??
-      `/images/projects/${sanity.slug}/01-full.jpg`,
-  };
-}
+function buildFeaturedProject(
+  sanity: SanityGridProject | undefined,
+  stat: Project | undefined,
+): HomeFeaturedProject | null {
+  if (!sanity && !stat) return null;
 
-function featuredFromStatic(stat: Project): HomeFeaturedProject {
+  const slug = sanity?.slug ?? stat?.slug ?? "";
+  const { landscape, portrait } = resolveProjectImages(
+    sanity ? { slug, heroImage: sanity.heroImage, thumbnail: sanity.thumbnail } : null,
+    stat ? { slug, heroImage: stat.heroImage, thumbnail: stat.thumbnail } : null,
+  );
+
   return {
-    slug: stat.slug,
-    title: stat.title,
-    accentColor: stat.accentColor,
-    subheadline: stat.tagline,
-    scope: stat.services,
-    heroImage: stat.heroImage ?? `/images/projects/${stat.slug}/01-full.jpg`,
+    slug,
+    title: sanity?.title ?? stat?.title ?? "",
+    accentColor: sanity?.accentColor ?? stat?.accentColor ?? "",
+    subheadline: sanity?.subheadline ?? stat?.tagline,
+    scope: sanity?.scope ?? stat?.services ?? [],
+    heroImageLandscape: landscape,
+    heroImagePortrait: portrait,
   };
 }
 
@@ -67,21 +61,16 @@ export default async function Home() {
     await sanityFetch<SanityGridProject[]>(projectsGridQuery).catch(() => []);
 
   const staticBySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
+  const sanityBySlug = Object.fromEntries(sanityProjects.map((p) => [p.slug, p]));
 
-  const featuredHomeProjects: HomeFeaturedProject[] = FEATURED_HOME_SLUGS.map(
-    (slug) => {
-      const fromSanity = sanityProjects.find((p) => p.slug === slug);
-      const stat = staticBySlug[slug];
-      if (fromSanity) return featuredFromSanity(fromSanity, stat);
-      if (stat) return featuredFromStatic(stat);
-      return null;
-    },
-  ).filter((p): p is HomeFeaturedProject => p !== null);
+  const featuredProjects: HomeFeaturedProject[] = FEATURED_HOME_SLUGS
+    .map((slug) => buildFeaturedProject(sanityBySlug[slug], staticBySlug[slug]))
+    .filter((p): p is HomeFeaturedProject => p !== null);
 
   return (
     <div className="home text-black">
-      <HomeMobileLayout projects={featuredHomeProjects} />
-      <HomeDesktopLayout projects={featuredHomeProjects} />
+      <HomeMobileLayout projects={featuredProjects} />
+      <HomeDesktopLayout projects={featuredProjects} />
     </div>
   );
 }

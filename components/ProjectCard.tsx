@@ -7,7 +7,8 @@ interface ProjectCardProps {
     slug: string;
     title: string;
     accentColor: string;
-    heroImage: string;        // was: thumbnail
+    /** Portrait image (5:7) — carousel, mobile grid */
+    heroImagePortrait: string;
     thumbnailAlt?: string;
     subheadline?: string;
     scope?: string[];
@@ -16,17 +17,12 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <a
-      href={`/projects/${project.slug}`}
-      className="group block w-full"
-    >
-      <div
-        className="relative w-full aspect-[5/7] overflow-hidden rounded-[4px] mb-3 md:mb-4"
-      >
+    <a href={`/projects/${project.slug}`} className="group block w-full">
+      <div className="relative w-full aspect-[5/7] overflow-hidden rounded-[4px] mb-3 md:mb-4">
         <div className="relative w-full h-full">
           <Image
-            src={project.heroImage}
-            alt={project.title}
+            src={project.heroImagePortrait}
+            alt={project.thumbnailAlt ?? project.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover"
@@ -34,15 +30,10 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
         </div>
       </div>
-
       <div className="space-y-1 md:space-y-2">
-        <h3 className="label">
-          {project.title}
-        </h3>
+        <h3 className="label">{project.title}</h3>
         {project.subheadline && (
-          <p className="text-gray-600 line-clamp-2">
-            {project.subheadline}
-          </p>
+          <p className="text-gray-600 line-clamp-2">{project.subheadline}</p>
         )}
       </div>
     </a>

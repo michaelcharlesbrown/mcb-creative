@@ -16,13 +16,15 @@ export function urlFor(source: SanityImageSource) {
 
 /** Context presets for optimized CDN delivery at appropriate dimensions */
 export const sanityImagePresets = {
-  /** Cover/hero images (e.g. project cover, intro hero) */
+  /** Cover/hero images — desktop full-screen (e.g. project page hero, landscape) */
   cover: { width: 2800, quality: 85 },
-  /** Full-width content images (fullWidthBlock, textMediaBlock) */
+  /** Full-width landscape content images (fullWidthBlock, textMediaBlock) */
   fullWidth: { width: 2400, quality: 85 },
   /** Two-column split images */
   twoColumn: { width: 1200, quality: 85 },
-  /** Thumbnails (nav rail, cards) */
+  /** Portrait card / mobile hero (carousel, mobile grid, mobile page hero) */
+  portrait: { width: 900, quality: 85 },
+  /** Small thumbnails — legacy, prefer portrait for card contexts */
   thumbnail: { width: 600, quality: 80 },
 } as const;
 

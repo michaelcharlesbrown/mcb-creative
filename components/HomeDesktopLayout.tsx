@@ -12,7 +12,7 @@ export interface DesktopProject {
   accentColor: string;
   subheadline?: string;
   scope?: string[];
-  heroImage: string;
+  heroImageLandscape: string;
 }
 
 interface HomeDesktopLayoutProps {
@@ -35,7 +35,7 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
           />
         </div>
 
-        <div className="bg-background pb-[50vh]">
+        <div className="bg-background pb-[25vh]">
           <div className="max-w-[var(--content-max-width)] mx-auto content-inset">
             <div className="col-2">
               {projects.map((project) => (
@@ -46,7 +46,7 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
                     title: project.title,
                     accentColor: project.accentColor,
                     services: project.scope ?? [],
-                    heroImage: project.heroImage,
+                    heroImageLandscape: project.heroImageLandscape,
                   }}
                 />
               ))}

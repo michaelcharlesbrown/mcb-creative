@@ -1,6 +1,6 @@
 import { sanityFetch } from "@/lib/sanity.fetch";
 import { projectBySlugQuery, projectsGridQuery } from "@/lib/sanity.queries";
-import { getSanityImageUrl } from "@/lib/sanityImage";
+import { resolveProjectImages } from "@/lib/resolveProjectImages";
 import BlockRenderer, { type PageContentBlock } from "@/components/blocks/BlockRenderer";
 import MediaBlock from "@/components/blocks/MediaBlock";
 import IntroBlock from "@/components/blocks/IntroBlock";
@@ -17,6 +17,7 @@ export type SanityProject = {
   slug: string;
   accentColor?: string;
   heroImage?: { alt?: string; asset?: { url: string } };
+  thumbnail?: { alt?: string; asset?: { url: string } };
   heroVideoFileUrl?: string;
   pageContent?: PageContentBlock[];
 };
@@ -27,7 +28,7 @@ type SanityGridProject = {
   accentColor?: string;
   scope?: string[];
   heroImage?: { alt?: string; asset?: { url: string } };
-  thumbnail?: string;
+  thumbnail?: { alt?: string; asset?: { url: string } };
 };
 
 async function getAdjacentProjectsFromSanity(slug: string) {
@@ -36,9 +37,7 @@ async function getAdjacentProjectsFromSanity(slug: string) {
   );
   const currentIndex = projectList.findIndex((p) => p.slug === slug);
 
-  if (currentIndex === -1) {
-    return { previous: null, next: null };
-  }
+  if (currentIndex === -1) return { previous: null, next: null };
 
   const len = projectList.length;
   const previousIndex = currentIndex === 0 ? len - 1 : currentIndex - 1;
@@ -86,20 +85,22 @@ export default async function Project({
 
   const hasHeroMedia = Boolean(sanityProject.heroImage || sanityProject.heroVideoFileUrl);
 
+  // Build the project carousel — all projects except this one
   const sanityGridProjects = await sanityFetch<SanityGridProject[]>(projectsGridQuery).catch(() => []);
   const sanityBySlug = Object.fromEntries(sanityGridProjects.map((p) => [p.slug, p]));
+
   const navRailProjects: NavRailProject[] = hardcodedProjects.map((p) => {
     const sanity = sanityBySlug[p.slug];
+    const { portrait } = resolveProjectImages(
+      sanity ? { slug: p.slug, heroImage: sanity.heroImage, thumbnail: sanity.thumbnail } : null,
+      { slug: p.slug, heroImage: p.heroImage, thumbnail: p.thumbnail },
+    );
     return {
       slug: p.slug,
       title: sanity?.title ?? p.title,
       accentColor: sanity?.accentColor ?? p.accentColor,
       scope: sanity?.scope ?? p.scope ?? p.services ?? [],
-      heroImage:
-        getSanityImageUrl(sanity?.heroImage, "thumbnail") ??
-        sanity?.thumbnail ??
-        p.heroImage ??
-        `/images/projects/${p.slug}/01-full.jpg`,
+      heroImagePortrait: portrait,
     };
   });
 
@@ -111,6 +112,7 @@ export default async function Project({
           <div className="project-cover">
             <MediaBlock
               image={sanityProject.heroImage}
+              imageMobile={sanityProject.thumbnail}
               videoUrl={sanityProject.heroVideoFileUrl}
               altFallback={sanityProject.title}
               sizes="100vw"

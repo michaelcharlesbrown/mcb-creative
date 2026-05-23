@@ -7,14 +7,14 @@ const testimonials = [
     title: "CTO, AllSides",
   },
   {
-    body: "One of the most talented creative directors in the game. I hired him for a complete rebrand of my startup and he led us through a thorough branding exercise which led to a gorgeous new logo and all of the associated business collateral.",
+    body: "I hired Michael for a complete rebrand of my startup and he led us through a thorough branding exercise which led to a gorgeous new logo and all of the associated business collateral.",
     name: "Aaron Selverson",
-    title: "Co-founder & CEO, Superspatial",
+    title: "CEO, Superspatial",
   },
   {
     body: "I\u2019m so lucky that I had the opportunity to work with Michael, as he contributed immensely to my growth as a designer. He has a talent for creating an environment where the team feels heard, encouraged, and inspired.",
     name: "Brianna Jackson",
-    title: "UX & Product Designer",
+    title: "Product Designer, BitTorrent",
   },
 ];
 
@@ -44,18 +44,16 @@ export default function Info() {
 
           <div className="info-page__intro-col">
             <h1>
-              I help people define and develop a unique visual language that
-              speaks directly to their audience.
+              I&apos;ve been building brand identities and creating visual
+              personalities for fifteen years.
             </h1>
 
             <div className="info-page__prose">
               <p>
-                I&apos;ve been building brand identities and creating visual
-                personalities for 15 years. As a web designer at LeapFrog, a
-                UI designer at Pro Tools, and as the Creative Director of BitTorrent,
-                I&apos;ve maintained global platforms, crafted graphics for
-                industry-standard music technology and led rebrands reaching
-                millions.
+                As a web designer at LeapFrog, a UI designer at Pro Tools, and
+                as the Creative Director of BitTorrent, I&apos;ve maintained
+                global platforms, crafted graphics for industry-standard music
+                technology and led campaigns reaching millions.
               </p>
               <p>
                 I&apos;ve built creative departments from scratch in both

@@ -12,7 +12,8 @@ export interface MobileProject {
   accentColor: string;
   subheadline?: string;
   scope?: string[];
-  heroImage: string;
+  /** Portrait image (5:7) — mobile carousel cards */
+  heroImagePortrait: string;
 }
 
 interface HomeMobileLayoutProps {
@@ -20,6 +21,14 @@ interface HomeMobileLayoutProps {
 }
 
 export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
+  const navRailProjects = projects.map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    accentColor: p.accentColor,
+    scope: p.scope,
+    heroImagePortrait: p.heroImagePortrait,
+  }));
+
   return (
     <>
       <BodyClass className="home" />
@@ -37,7 +46,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
 
         <section className="flex-shrink-0 bg-background min-h-dvh flex flex-col justify-center">
           <div className="content-inset pt-[200px] pb-[200px]">
-            <ProjectNavRail projects={projects} variant="homepage" />
+            <ProjectNavRail projects={navRailProjects} variant="homepage" />
           </div>
         </section>
 

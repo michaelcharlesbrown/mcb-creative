@@ -5,7 +5,7 @@ interface WorkGridProject {
   slug: string;
   title: string;
   services: string[];
-  heroImage: string;
+  heroImageLandscape: string;
   accentColor: string;
 }
 
@@ -23,7 +23,7 @@ export default function WorkGrid({ projects }: WorkGridProps) {
         />
       </div>
 
-      <div className="max-w-[var(--content-max-width)] mx-auto content-inset pb-[50vh]">
+      <div className="max-w-[var(--content-max-width)] mx-auto content-inset pb-[25vh]">
         <div className="col-2">
           {projects.map((project) => (
             <WorkCard key={project.slug} project={project} />

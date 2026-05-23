@@ -6,6 +6,10 @@ export const projectBySlugQuery = `*[_type=="project" && slug.current==$slug][0]
     alt,
     asset->{url}
   },
+  thumbnail{
+    alt,
+    asset->{url}
+  },
   "heroVideoFileUrl": heroVideoFile.asset->url,
   pageContent[]{
     _type,
@@ -24,7 +28,8 @@ export const projectSlugsQuery = `*[_type=="project" && defined(slug.current)][]
   "slug": slug.current
 }`;
 
-export const projectsGridQuery = `*[_type=="project" && defined(slug.current) && defined(gridPosition)] | order(gridPosition asc) {
+/** All published projects — used for the carousel and work grid. */
+export const projectsGridQuery = `*[_type=="project" && defined(slug.current)] | order(_createdAt asc) {
   title,
   "slug": slug.current,
   "accentColor": accentColor.hex,
@@ -34,6 +39,8 @@ export const projectsGridQuery = `*[_type=="project" && defined(slug.current) &&
     alt,
     asset->{url}
   },
-  "thumbnail": thumbnail.asset->url,
-  "thumbnailAlt": thumbnail.alt
+  thumbnail{
+    alt,
+    asset->{url}
+  }
 }`;
