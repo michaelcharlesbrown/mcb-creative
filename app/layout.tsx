@@ -8,6 +8,7 @@ import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 export const metadata: Metadata = {
   title: "MCB Creative",
   description: "MCB Creative",
+  metadataBase: new URL("https://mcbcreative.design"),
   icons: {
     icon: "/images/mcb-creative-logo.svg",
   },

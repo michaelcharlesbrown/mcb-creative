@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.mcbcreative.design"
+        }
+      ],
+      "destination": "https://mcbcreative.design/:path*",
+      "permanent": true
+    }
+  ]
+}
