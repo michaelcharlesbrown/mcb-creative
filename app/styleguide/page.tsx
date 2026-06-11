@@ -7,7 +7,7 @@ export default function StyleGuidePage() {
     <>
       <style>{`
         .sg-wrap {
-          font-family: var(--font-family-mono);
+          font-family: var(--font-family-sans);
           font-size: 12px;
           line-height: 1.6;
           color: #0a0a0a;
@@ -117,8 +117,9 @@ export default function StyleGuidePage() {
           font-weight: 700;
         }
 
-        /* LABELS */
+        /* LABELS — always mono */
         .sg-label {
+          font-family: var(--font-family-mono);
           font-size: 10px;
           letter-spacing: 0.08em;
           text-transform: uppercase;
@@ -255,13 +256,13 @@ export default function StyleGuidePage() {
 
         {/* 03 — BODY */}
         <div className="sg-section">
-          <div className="sg-section-label">03 — Body Copy (Geist Mono)</div>
+          <div className="sg-section-label">03 — Body Copy (Geist Sans)</div>
           <div className="sg-row">
             <div className="sg-meta">
               <span>body / p</span>
-              <span>Geist Mono 400</span>
+              <span>Geist Sans 400</span>
               <span>12px / 1.6</span>
-              <span className="sg-token">--font-family-mono</span>
+              <span className="sg-token">--font-family-sans</span>
             </div>
             <div className="sg-body-demo">
               <p>
@@ -298,8 +299,10 @@ export default function StyleGuidePage() {
           <div className="sg-row">
             <div className="sg-meta">
               <span>label / small</span>
+              <span>Geist Mono 600</span>
               <span>10px uppercase</span>
               <span>ls 0.08em</span>
+              <span className="sg-token">--font-family-mono</span>
             </div>
             <div className="sg-inline-samples">
               <span className="sg-label">Brand Identity — 2024</span>
@@ -345,8 +348,9 @@ export default function StyleGuidePage() {
           <pre className="sg-token-block">{`
 :root {
   /* fonts — variables set in layout.tsx */
-  /* --font-family-mono       Geist Mono  */
-  /* --font-family-headline   Geist Sans  */
+  /* --font-family-sans       Geist Sans  (body, headlines, all default text) */
+  /* --font-family-mono       Geist Mono  (labels, captions, attributions)   */
+  /* --font-family-headline   Geist Sans  (alias, backward compat)           */
 
   /* base */
   font-size: 12px;
@@ -366,16 +370,20 @@ export default function StyleGuidePage() {
 }
 
 body {
-  font-family: var(--font-family-mono);
+  font-family: var(--font-family-sans);
   font-size: 12px;
   line-height: var(--body-lh);
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-family-headline);
+  font-family: var(--font-family-sans);
   font-weight: 700;
   text-transform: none;
+}
+
+.label {
+  font-family: var(--font-family-mono);
 }
 
 h1 { font-size: var(--h1-size); line-height: var(--h1-lh); letter-spacing: var(--h1-ls); }

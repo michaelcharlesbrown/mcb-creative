@@ -1,5 +1,6 @@
 "use client";
 
+import HomeHero from "@/components/HomeHero";
 import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
 import SectionIntro from "@/components/SectionIntro";
@@ -24,6 +25,8 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
     <div className="hidden md:block">
       <BodyClass className="home" />
       <div className="bg-background">
+        <HomeHero />
+
         <div className="overflow-hidden bg-background">
           <HeroSection />
         </div>

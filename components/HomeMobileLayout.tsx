@@ -1,5 +1,6 @@
 "use client";
 
+import HomeHero from "@/components/HomeHero";
 import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
 import SectionIntro from "@/components/SectionIntro";
@@ -33,6 +34,10 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
     <>
       <BodyClass className="home" />
       <div className="fixed inset-0 overflow-y-scroll scrollbar-hide md:hidden z-10">
+        <section className="flex-shrink-0">
+          <HomeHero />
+        </section>
+
         <div className="flex-shrink-0 overflow-hidden bg-background">
           <HeroSection />
         </div>

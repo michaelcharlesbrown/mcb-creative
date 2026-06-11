@@ -111,17 +111,33 @@ color: var(--color-black);
 ### Info page (`/info`) — editorial layout
 Sentence-case body (`--text-info-body`), monospace captions. Masthead matches `.info-page__headline` above. Structural classes: `.info-page`, `.info-page__main`, `.info-page__hero`, `.info-page__portrait-col`, `.info-page__intro-col`, `.info-page__prose`, `.info-page__rule`, `.info-page__cta-title`, `.info-page__cta-body`, etc.
 
-### `.project-hero__label`
-Uppercase section labels (SCOPE, TEAM) in project hero.
+### Project page intro (`/projects/[slug]`)
+The intro stacks an eyebrow + headline above a contained landscape hero, then a four-column info section (scope/team in column 1, two description paragraphs in columns 3–4). Structural classes: `.project-intro`, `.project-intro__header`, `.project-intro__cover`, `.project-intro__cover-media`, `.project-intro__info`, `.project-info__grid`, `.project-info__meta-col`, `.project-info__copy-col`, `.project-info__section-group`, `.project-info__list`.
+
+### `.project-intro__eyebrow`
+Small mono project name above the headline (mixed case).
 ```css
-font-size: var(--text-ui);
+font-family: var(--font-family-mono);
+font-size: var(--text-project-eyebrow);
 font-weight: var(--weight-regular);
 line-height: var(--leading-body);
+```
+
+### `.project-intro__headline`
+Project tagline rendered as the page H1 — bold uppercase headline font.
+```css
+font-family: var(--font-family-headline);
+font-size: var(--text-project-headline);
+font-weight: var(--weight-bold);
+line-height: var(--leading-project-headline);
 text-transform: uppercase;
 ```
 
-### `.project-hero__body`
-Descriptive copy in project hero.
+### Section labels (SCOPE, TEAM)
+Reuse the shared `.label` class (uppercase mono caps).
+
+### `.project-info__body`
+Descriptive copy in the project info section.
 ```css
 font-size: var(--text-ui);
 font-weight: var(--weight-regular);
