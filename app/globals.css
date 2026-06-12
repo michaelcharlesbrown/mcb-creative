@@ -670,6 +670,65 @@ img.footer__wordmark {
 }
 
 
+/* ============================================================
+   HOMEPAGE STEPPED VIDEO REVEAL (desktop)
+   Layered hero: brutalist type in front, video behind. The video
+   frame's transform is driven step-by-step by HomeHeroReveal.tsx.
+============================================================ */
+.home-reveal {
+  position: relative;
+  background: var(--background);
+  overflow: hidden;
+}
+
+/* Let the video show through the type layer. */
+.home-reveal .home-hero {
+  background: transparent;
+}
+
+/* Matches the content container's box exactly (max-width + centred + inset)
+   so the frame's 100% width aligns with the type, nav and grid. */
+.home-reveal__video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--content-inset);
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.home-reveal__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 82dvh;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-black);
+  opacity: 0; /* GSAP reveals; pre-JS state is the blank hero */
+  will-change: transform, opacity;
+}
+
+.home-reveal__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.home-reveal__fg {
+  position: relative;
+  z-index: 10;
+}
+
+
 /* Project intro — eyebrow + headline above a contained landscape hero */
 .project-intro {
   text-transform: none;
@@ -920,6 +979,7 @@ img.footer__wordmark {
     --foreground: #fcfcfc;
   }
 }
+
 
 
 

@@ -1,7 +1,6 @@
 "use client";
 
-import HomeHero from "@/components/HomeHero";
-import HeroSection from "@/components/HeroSection";
+import HomeHeroReveal from "@/components/HomeHeroReveal";
 import BodyClass from "@/components/BodyClass";
 import SectionIntro from "@/components/SectionIntro";
 import Footer from "@/components/Footer";
@@ -25,11 +24,7 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
     <div className="hidden md:block">
       <BodyClass className="home" />
       <div className="bg-background">
-        <HomeHero />
-
-        <div className="overflow-hidden bg-background">
-          <HeroSection />
-        </div>
+        <HomeHeroReveal />
 
         <div className="min-h-[50vh] flex items-center bg-background">
           <SectionIntro
