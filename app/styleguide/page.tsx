@@ -110,7 +110,7 @@ export default function StyleGuidePage() {
 
         /* DISPLAY / WORDMARK */
         .sg-display {
-          font-family: var(--font-family-headline);
+          font-family: var(--font-family-sans);
           font-size: clamp(4rem, 12vw, 14rem);
           line-height: 0.9;
           letter-spacing: -0.03em;
@@ -204,7 +204,7 @@ export default function StyleGuidePage() {
               <span>Geist Sans</span>
               <span>clamp 4–14rem</span>
               <span>lh 0.9</span>
-              <span className="sg-token">--font-family-headline</span>
+              <span className="sg-token">--font-family-sans</span>
             </div>
             <div className="sg-display">MCB Creative</div>
           </div>
@@ -348,9 +348,8 @@ export default function StyleGuidePage() {
           <pre className="sg-token-block">{`
 :root {
   /* fonts — variables set in layout.tsx */
-  /* --font-family-sans       Geist Sans  (body, headlines, all default text) */
-  /* --font-family-mono       Geist Mono  (labels, captions, attributions)   */
-  /* --font-family-headline   Geist Sans  (alias, backward compat)           */
+  /* --font-family-sans       Geist Sans  (body, headlines, descriptions)      */
+  /* --font-family-mono       Geist Mono  (labels, metadata, captions)        */
 
   /* base */
   font-size: 12px;

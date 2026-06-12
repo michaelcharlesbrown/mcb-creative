@@ -91,7 +91,7 @@ export default function IntroBlock({
               <div className="project-info__meta-col">
                 {hasScope && (
                   <div className="project-info__section-group">
-                    <p className="label">SCOPE</p>
+                    <p className="project-info__body">SCOPE</p>
                     <ul className="project-info__list">
                       {scope!.map((item, i) => (
                         <li key={i}>{item}</li>
@@ -101,7 +101,7 @@ export default function IntroBlock({
                 )}
                 {hasTeam && (
                   <div className="project-info__section-group">
-                    <p className="label">TEAM</p>
+                    <p className="project-info__body">TEAM</p>
                     <ul className="project-info__list">
                       {team!.map((item, i) => (
                         <li key={i}>{item}</li>

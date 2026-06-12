@@ -16,7 +16,6 @@
   --dark-background: #0a0a0a;
   --color-black:     #0a0a0a;
   --color-white:     #fcfcfc;
-  --color-intro-text: #C0C0C0;
   --color-caption:    rgba(0, 0, 0, 0.5);
   /* Work CTA pill — Figma fill #020202 */
   --color-work-cta-button: #020202;
@@ -41,25 +40,27 @@
   --weight-semibold: 600;
   --weight-bold:     700;
 
-  /* Scale */
+  /* Scale — base */
   --text-body:       12px;
-  --text-ui:         var(--text-body); /* same scale; kept separate for future divergence */
-  --text-micro:      10px;
+  --text-ui:         var(--text-body);
   --text-h1:         32px;
   --text-h2:         clamp(1.75rem, 2.4vw, 3rem);
   --text-h3:         clamp(1.25rem, 2vw, 1.75rem);
   --text-h4:         1rem;
-  --text-display:    clamp(3rem, 7.5vw, 17.5rem);
-  /* Component-specific scales */
-  --text-card-title:  var(--text-ui);
-  --text-heading-sm:  var(--text-ui);
-  --text-display-md:  var(--text-h2);
-  /* Work page CTA — Figma 933:265 @ 1440 (1029:379 headline 200px / 1029:382–383 pill / spacing) */
-  --text-work-cta:        clamp(3rem, 13.89vw, 12.5rem);
-  --text-footer-cta:      48px;
-  --text-footer-cta-body: 24px;
-  --leading-work-cta:     0.9;
-  --text-work-cta-button: 2.5rem;
+
+  /* Scale — component display (distinct sizes only) */
+  --text-monogram:            clamp(4rem, 13vw, 15rem);
+  --text-project-headline:    clamp(2rem, 4.2vw, 3.75rem);
+  --text-work-cta:            clamp(3rem, 13.89vw, 12.5rem);
+  --text-work-cta-button:     2.5rem;
+  --text-footer-cta:          48px;
+  --text-footer-cta-body:     24px;
+  --text-footer-cta-mobile:   28px;
+  --text-footer-cta-body-mobile: 16px;
+  --text-info-headline:       2rem;
+  --text-info-body:           1.5rem;
+  --text-info-caption:        clamp(0.75rem, 0.94vw, 0.85rem);
+  --text-testimonial-mark:    clamp(3rem, 6vw, 5rem);
   --width-work-cta-button:  394px;
   --height-work-cta-button: 135px;
   --radius-card:            12px;
@@ -80,47 +81,37 @@
 
   /* Letter-spacing (use only via component classes in this file) */
   --letter-spacing-work: 0.06em;
-  /* Nav / work cards / footer — triple-slash; design tracking −30 → −0.03em */
   --letter-spacing-triple-slash: -0.03em;
+  --letter-spacing-monogram: -0.02em;
 
-  --project-hero-line: calc(var(--text-ui) * var(--leading-body)); /* 12px × 1.5 = 18px baseline unit */
+  /* Leading — global defaults */
+  --leading-body:    1.5;
+  --leading-heading: 1.2;
+  --leading-display: 0.9;
+  --leading-monogram: 0.8;
+  --leading-work-cta: 0.9;
+
+  --project-hero-line: calc(var(--text-ui) * var(--leading-body));
   --space-project-hero-bottom: clamp(3rem, 8vw, 6rem);
-  /* Project page — intro header (eyebrow + headline) and contained landscape hero */
-  --text-project-eyebrow:        var(--text-ui);
-  --text-project-headline:       clamp(2rem, 4.2vw, 3.75rem);
-  /* Homepage monogram hero — M/C/B wordmark */
-  --text-monogram:               clamp(4rem, 13vw, 15rem);
-  --leading-monogram:            0.8;
   --leading-project-headline:    1.05;
   --space-project-eyebrow-gap:   clamp(0.75rem, 1.5vw, 1.25rem);
   --space-project-header-bottom: clamp(2.5rem, 5vw, 4rem);
   --aspect-project-hero:         3 / 2;
   --space-info-page-paragraph: clamp(1.25rem, 3vw, 2rem);
-  /* Site tagline (/// motif) */
-  --text-tagline:    1.5rem;
-  --text-tagline-lg: 2rem;
-  --gap-tagline-col: 0.875rem;
   /* Info (/about-style) editorial page */
   --info-page-reading-max: clamp(21rem, 90vw, 40rem);
-  --text-info-headline:    2rem;
   --leading-info-headline: 1.1;
-  --text-info-intro:       clamp(1.75rem, 4vw, 2.75rem);
-  --leading-info-intro:    1.35;
-  --text-info-body:        1.5rem;
   --leading-info-body:     1.3;
-  --text-info-caption:     clamp(0.75rem, 0.94vw, 0.85rem);
   --leading-info-caption:  1.2;
+  --leading-footer-cta:    1.2;
+  --leading-footer-cta-body: 1.3;
+  --leading-testimonial-mark: 1;
   --padding-info-page-bottom: clamp(4rem, 12vw, 8rem);
   /* Air above intro copy (below fixed nav) — matches project page mockup */
   --padding-project-hero-top: max(
     calc(var(--nav-height) + clamp(2.5rem, 6vw, 5rem)),
     clamp(7rem, 20vh, 14rem)
   );
-
-  /* Leading */
-  --leading-body:    1.5;
-  --leading-heading: 1.2;
-  --leading-display: 0.9;
 }
 
 /* ============================================================
@@ -133,27 +124,9 @@
   --color-black:      #0a0a0a;
   --color-white:      #fcfcfc;
 
-  /* Font utilities — point to layout.tsx variables */
-  --font-sans:     var(--font-family-sans);
-  --font-mono:     var(--font-family-mono);
-  --font-headline: var(--font-family-headline);
-
-  /* Expose type tokens as Tailwind text-* utilities */
-  --text-body:        var(--text-body);
-  --text-ui:          var(--text-ui);
-  --text-micro:       var(--text-micro);
-  --text-card-title:  var(--text-card-title);
-  --text-heading-sm:  var(--text-heading-sm);
-  --text-display-md:  var(--text-display-md);
-  --text-h1:          var(--text-h1);
-  --text-h2:          var(--text-h2);
-  --text-h3:          var(--text-h3);
-  --text-display:     var(--text-display);
-
-  /* Leading */
-  --leading-body:     var(--leading-body);
-  --leading-heading:  var(--leading-heading);
-  --leading-display:  var(--leading-display);
+  /* Font utilities — Geist Sans + Geist Mono only */
+  --font-sans: var(--font-family-sans);
+  --font-mono: var(--font-family-mono);
 }
 
 /* ============================================================
@@ -220,39 +193,6 @@ a {
 
 .label-meta {
   font-weight: var(--weight-regular);
-}
-
-/* Intro section — giant display text */
-.intro {
-  font-size:   var(--text-display);
-  font-weight: var(--weight-regular);
-  line-height: var(--leading-display);
-  color: var(--color-intro-text);
-}
-
-/* Homepage about section — mono, caps; light panel */
-
-
-/* Site tagline — /// two-column motif (homepage about blurb)
-   Page-level 3-column concept: marker right-aligns in left third,
-   text left-aligns at the 1/3 mark spanning the remaining two-thirds. */
-.site-tagline {
-  display:               grid;
-  grid-template-columns: 1fr 2fr;
-  gap:                   0.5em;
-  align-items:           start;
-  font-size:             max(14px, 2vw);
-  width:                 100%;
-}
-
-.site-tagline__marker,
-.site-tagline__text {
-  text-transform: none;
-  margin:         0;
-}
-
-.site-tagline__marker {
-  text-align: right;
 }
 
 /* Info page — editorial two-column layout */
@@ -368,8 +308,8 @@ h2.info-page__testimonials-headline {
 }
 
 .info-page__testimonial-mark {
-  font-size:   clamp(3rem, 6vw, 5rem);
-  line-height: 1;
+  font-size:   var(--text-testimonial-mark);
+  line-height: var(--leading-testimonial-mark);
   color:       var(--color-black);
   opacity:     0.4;
   align-self:  flex-start;
@@ -395,7 +335,7 @@ h2.info-page__testimonials-headline {
 }
 
 /* Project info — four-column editorial grid below the hero.
-   Col 1: scope + team. Cols 3–4: description paragraphs.
+   Col 1: scope + team. Col 3: description paragraphs.
    Mobile: single column stack. Desktop split handled in the 768px block. */
 .project-info__grid {
   display:               grid;
@@ -409,21 +349,11 @@ h2.info-page__testimonials-headline {
   display:        flex;
   flex-direction: column;
   gap:            var(--project-hero-line);
-}
-
-/* Scope + team rendered in mono (labels and list items) */
-.project-info__meta-col {
-  font-family: var(--font-family-mono);
+  font-family:    inherit;
 }
 
 .project-info__body {
   margin: 0;
-}
-
-/* Scope/team lists — stack on line-height only */
-.project-info ul li {
-  margin:  0;
-  padding: 0;
 }
 
 .project-info__section-group {
@@ -441,9 +371,14 @@ h2.info-page__testimonials-headline {
   gap:            0;
 }
 
+.project-info__list li {
+  margin:  0;
+  padding: 0;
+}
+
 /* Text/media block section heading — editorial sans exception; overrides global mono */
 h2.text-media__heading {
-  font-family:    var(--font-family-headline);
+  font-family:    var(--font-family-sans);
   line-height:    var(--leading-heading);
   text-transform: none;
 }
@@ -457,7 +392,7 @@ h2.text-media__heading {
 }
 
 h2.work-page__cta-headline {
-  font-family: var(--font-family-headline);
+  font-family: var(--font-family-sans);
   font-size:   var(--text-work-cta);
   font-weight: var(--weight-medium);
   margin:      0 0 var(--space-work-cta-after-headline) 0;
@@ -510,20 +445,20 @@ a.work-page__cta-button:focus-visible {
 /* Footer CTA — dark background variant */
 h2.footer__cta-headline {
   font-size:   var(--text-footer-cta);
-  line-height: 1.2;
+  line-height: var(--leading-footer-cta);
   color:       var(--color-white);
 }
 
 .footer__cta-body {
   font-size:      var(--text-footer-cta-body);
-  line-height:    1.3;
+  line-height:    var(--leading-footer-cta-body);
   text-transform: none;
   color:          var(--color-white);
 }
 
 a.footer__cta-link {
   font-size:       var(--text-footer-cta-body);
-  line-height:     1.3;
+  line-height:     var(--leading-footer-cta-body);
   text-transform:  none;
   color:           var(--color-white);
   text-decoration: none;
@@ -675,7 +610,7 @@ img {
   font-size:      var(--text-monogram);
   font-weight:    var(--weight-bold);
   line-height:    var(--leading-monogram);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--letter-spacing-monogram);
   text-transform: uppercase;
   margin:         0;
   min-width:      0;
@@ -748,19 +683,14 @@ img.footer__wordmark {
   gap:            var(--space-project-eyebrow-gap);
 }
 
-/* Eyebrow — small sans project name, mixed case */
+/* Eyebrow — inherits global body (12px sans) */
 .project-intro__eyebrow {
-  font-family:    var(--font-family-sans);
-  font-size:      var(--text-project-eyebrow);
-  font-weight:    var(--weight-regular);
-  line-height:    var(--leading-body);
-  text-transform: none;
-  margin:         0;
+  margin: 0;
 }
 
 /* Headline — the project tagline as the page H1 */
 .project-intro__headline {
-  font-family:    var(--font-family-headline);
+  font-family:    var(--font-family-sans);
   font-size:      var(--text-project-headline);
   font-weight:    var(--weight-bold);
   line-height:    var(--leading-project-headline);
@@ -790,13 +720,13 @@ img.footer__wordmark {
 
 .section-intro__display {
   font-size:      var(--text-footer-cta);
-  line-height:    1.2;
+  line-height:    var(--leading-footer-cta);
   text-transform: none;
 }
 
 .section-intro__body {
   font-size:   var(--text-footer-cta-body);
-  line-height: 1.3;
+  line-height: var(--leading-footer-cta-body);
 }
 
 .section-intro {
@@ -813,10 +743,6 @@ img.footer__wordmark {
 /* ============================================================
    ANIMATIONS
 ============================================================ */
-
-.nav__links {
-  font-size: 1rem;
-}
 
 /* ── Nav flip-link: departure-board roll-up effect ── */
 .nav-flip-link {
@@ -923,12 +849,12 @@ img.footer__wordmark {
   }
 
   h2.footer__cta-headline {
-    font-size: 28px;
+    font-size: var(--text-footer-cta-mobile);
   }
 
   .footer__cta-body,
   a.footer__cta-link {
-    font-size: 16px;
+    font-size: var(--text-footer-cta-body-mobile);
   }
 
   img.footer__cta-arrow {
@@ -957,9 +883,9 @@ img.footer__wordmark {
     grid-template-columns: repeat(4, 1fr);
   }
 
+  /* Description section — column 3 on desktop */
   .project-info__meta-col { grid-column: 1 / 2; }
 
-  /* Description sits in column 3 only; paragraphs stack */
   .project-info__copy-col { grid-column: 3 / 4; }
 }
 
@@ -994,6 +920,7 @@ img.footer__wordmark {
     --foreground: #fcfcfc;
   }
 }
+
 
 
 

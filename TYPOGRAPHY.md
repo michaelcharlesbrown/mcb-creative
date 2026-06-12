@@ -6,155 +6,127 @@ All typographic properties — font family, size, weight, line-height, letter-sp
 
 ---
 
-## Design Tokens (`globals.css` → `:root`)
-
-### Font Families
-Defined as inline CSS variables on `<html>` in `app/layout.tsx`, not in `:root`.
+## Two Faces Only
 
 | Variable | Font | Usage |
 |---|---|---|
-| `--font-family-mono` | GeistMono | Body, UI, taglines |
-| `--font-family-headline` | GeistSans | Headings (h1–h6) |
-| `--font-family-wordmark` | ClashDisplay | Type style guide `.sg-display` only; live hero/footer wordmarks are SVG |
+| `--font-family-sans` | Geist Sans | Body copy, descriptions, all headlines, eyebrows, display text |
+| `--font-family-mono` | Geist Mono | Labels, metadata, scope/team, nav labels, captions, card titles |
 
-### Font Weights
+Set on `<html>` in `app/layout.tsx`. Live hero/footer wordmarks use SVG assets, not a webfont.
 
-| Token | Value | Usage |
-|---|---|---|
-| `--weight-regular` | 400 | Body, UI, display text |
-| `--weight-semibold` | 600 | (Reserved — use sparingly) |
-| `--weight-bold` | 700 | All headings |
+---
 
-### Type Scale
+## Font Weights
 
 | Token | Value | Usage |
 |---|---|---|
-| `--text-body` | 12px | Body copy |
-| `--text-ui` | 12px | UI labels, nav links, taglines |
-| `--text-h1` | clamp(2.5rem, 5.5vw, 5rem) | h1 elements |
-| `--text-h2` | clamp(1.75rem, 2.4vw, 3rem) | h2 elements |
-| `--text-h3` | clamp(1.25rem, 2vw, 1.75rem) | h3 elements |
-| `--text-h4` | 1rem | h4 elements |
-| `--text-display` | clamp(3rem, 7.5vw, 17.5rem) | Intro section |
-| `--text-display-about` | clamp(1.92rem, 5vw, 3.8rem) | About blurb |
-| `--text-display-info` | clamp(1.75rem, 2.4vw, 3rem) | Info page |
+| `--weight-regular` | 400 | Body, UI, descriptions |
+| `--weight-medium` | 500 | Work page CTA headline + button |
+| `--weight-semibold` | 600 | `.label` (mono caps) |
+| `--weight-bold` | 700 | Headlines, monogram |
 
-### Line Heights
+---
 
-| Token | Value | Usage |
-|---|---|---|
-| `--leading-body` | 1.5 | Body copy, UI labels |
-| `--leading-heading` | 1.2 | h1–h6, hero tagline |
-| `--leading-display` | 0.9 | Intro, about blurb, info page (tight display text) |
+## Type Scale
 
-### Letter-spacing tokens
+### Base
 
 | Token | Value | Usage |
 |---|---|---|
-| `--letter-spacing-work` | 0.06em | Tracked caps (work captions, project hero labels) |
-| `--letter-spacing-triple-slash` | -0.03em | Triple-slash `///` only — wrap in `.triple-slash` (design tracking −30) |
+| `--text-body` | 12px | Global body default |
+| `--text-ui` | 12px | Same as body; labels inherit via `.label` |
+| `--text-h1` | 32px | Global `h1` default |
+| `--text-h2` | clamp(1.75rem, 2.4vw, 3rem) | Global `h2` |
+| `--text-h3` | clamp(1.25rem, 2vw, 1.75rem) | Global `h3` |
+| `--text-h4` | 1rem | Global `h4` |
+
+### Component display (distinct sizes only)
+
+| Token | Usage |
+|---|---|
+| `--text-monogram` | Homepage `M/C/B` hero |
+| `--text-project-headline` | Project page H1 tagline |
+| `--text-work-cta` | Work page CTA headline |
+| `--text-work-cta-button` | Work page CTA pill |
+| `--text-footer-cta` | Footer + section-intro display |
+| `--text-footer-cta-body` | Footer body, section-intro tagline, legacy hero tagline |
+| `--text-footer-cta-mobile` | Footer headline @ mobile |
+| `--text-footer-cta-body-mobile` | Footer body @ mobile |
+| `--text-info-headline` | Info testimonials headline |
+| `--text-info-body` | Info page prose + testimonial body |
+| `--text-info-caption` | Info portrait captions (reserved) |
+| `--text-testimonial-mark` | Info page opening quote mark |
+
+---
+
+## Line Heights & Letter-spacing
+
+| Token | Value | Usage |
+|---|---|---|
+| `--leading-body` | 1.5 | Body, labels, descriptions |
+| `--leading-heading` | 1.2 | `h2.text-media__heading` |
+| `--leading-display` | 0.9 | Global heading default |
+| `--leading-monogram` | 0.8 | Homepage monogram |
+| `--leading-project-headline` | 1.05 | Project page H1 |
+| `--leading-info-headline` | 1.1 | Info testimonials headline |
+| `--leading-info-body` | 1.3 | Info page prose |
+| `--leading-footer-cta` | 1.2 | Footer + section-intro display |
+| `--leading-footer-cta-body` | 1.3 | Footer body, section-intro tagline |
+| `--letter-spacing-work` | 0.06em | `.label` tracked caps |
+| `--letter-spacing-triple-slash` | -0.03em | `.triple-slash` only |
+| `--letter-spacing-monogram` | -0.02em | Homepage monogram |
 
 ---
 
 ## Base Rules
 
 ### `body`
-```css
-font-family: var(--font-family-mono);
-font-size: var(--text-body);
-font-weight: var(--weight-regular);
-line-height: var(--leading-body);
-letter-spacing: normal;
-```
+Geist Sans, `--text-body`, regular weight, `--leading-body`.
 
-### `h1, h2, h3, h4, h5, h6`
-```css
-font-family: var(--font-family-headline);
-font-weight: var(--weight-bold);
-line-height: var(--leading-heading);
-/* No letter-spacing — inherits normal from body */
-```
-Individual sizes: `h1` → `--text-h1`, `h2` → `--text-h2`, `h3` → `--text-h3`, `h4` → `--text-h4`.
+### `h1–h6`
+Geist Sans, regular weight by default. Individual sizes via `--text-h1` … `--text-h4`. Component classes override weight/size where needed.
 
 ---
 
 ## Component Classes
 
-### Hero wordmark (`HeroSection`)
-The homepage hero **MCB Creative** mark is the sole `<h1>`: `/images/MCBCreative-dark.svg` inside `.hero__wordmark`, **`width="100%"`** and **`height="auto"`** on the `<img>`. Wrapper uses **`max-width: --content-max-width`**, **`margin-inline: auto`**, and **`content-inset`** (same horizontal band as nav/body).
+### `.label` + `.label-meta`
+Mono caps for metadata: nav brand, work cards, captions, project nav. `.label-meta` drops to regular weight for secondary text in the same line.
 
-### ~~`.hero__headline`~~ (removed)
-Legacy CSS-sized wordmark.
+### Homepage monogram hero (`.home-hero*`)
+- `.home-hero__monogram` — Geist Sans bold, `--text-monogram`
+- `.home-hero__studio`, `.home-hero__services` — `.label` (mono)
 
-### Footer wordmark (`Footer`)
-`/images/MCBCreative-light.svg` — same **`width`** / **`height`** attributes and full-width inset row as hero.
+### Project page intro (`.project-intro*`, `.project-info*`)
+- `.project-intro__eyebrow` — inherits body (12px sans)
+- `.project-intro__headline` — Geist Sans bold uppercase, `--text-project-headline`
+- `.project-info__meta-col` — scope + team in column 1 (12px sans)
+- `.project-info__copy-col` — description paragraphs in column 3 (12px sans)
+- `.project-info__body` — inherits body; margin reset only
 
-### `.intro`
-Giant display text for the homepage intro section.
-```css
-font-size: var(--text-display);
-font-weight: var(--weight-regular);
-line-height: var(--leading-display);
-```
+### Info page (`.info-page*`)
+- Prose + testimonial body: `--text-info-body`
+- Testimonials headline: `--text-info-headline`
+- Captions: `.label` (mono)
+- Hero `h1`: global `h1` token (32px) — no separate info-headline class on the hero line
 
-### `.info-page__headline` + `.about-blurb__headline`
-Shared editorial headline: Geist Sans, Info scale (`--text-info-headline`), bold, tight leading — used for the Info page hero line (`h1`) and the homepage about blurb (`h2`).
-```css
-font-family: var(--font-family-headline);
-font-size: var(--text-info-headline);
-font-weight: var(--weight-bold);
-line-height: var(--leading-info-headline);
-text-align: left;
-color: var(--color-black);
-```
+### Footer / section intro
+- `.footer__cta-headline`, `.section-intro__display` — `--text-footer-cta`
+- `.footer__cta-body`, `.section-intro__body` — `--text-footer-cta-body`
 
-### Info page (`/info`) — editorial layout
-Sentence-case body (`--text-info-body`), monospace captions. Masthead matches `.info-page__headline` above. Structural classes: `.info-page`, `.info-page__main`, `.info-page__hero`, `.info-page__portrait-col`, `.info-page__intro-col`, `.info-page__prose`, `.info-page__rule`, `.info-page__cta-title`, `.info-page__cta-body`, etc.
+### Work page CTA
+- `.work-page__cta-headline` — Geist Sans medium, `--text-work-cta`
+- `.work-page__cta-button` — `--text-work-cta-button`
 
-### Project page intro (`/projects/[slug]`)
-The intro stacks an eyebrow + headline above a contained landscape hero, then a four-column info section (scope/team in column 1, two description paragraphs in columns 3–4). Structural classes: `.project-intro`, `.project-intro__header`, `.project-intro__cover`, `.project-intro__cover-media`, `.project-intro__info`, `.project-info__grid`, `.project-info__meta-col`, `.project-info__copy-col`, `.project-info__section-group`, `.project-info__list`.
-
-### `.project-intro__eyebrow`
-Small mono project name above the headline (mixed case).
-```css
-font-family: var(--font-family-mono);
-font-size: var(--text-project-eyebrow);
-font-weight: var(--weight-regular);
-line-height: var(--leading-body);
-```
-
-### `.project-intro__headline`
-Project tagline rendered as the page H1 — bold uppercase headline font.
-```css
-font-family: var(--font-family-headline);
-font-size: var(--text-project-headline);
-font-weight: var(--weight-bold);
-line-height: var(--leading-project-headline);
-text-transform: uppercase;
-```
-
-### Section labels (SCOPE, TEAM)
-Reuse the shared `.label` class (uppercase mono caps).
-
-### `.project-info__body`
-Descriptive copy in the project info section.
-```css
-font-size: var(--text-ui);
-font-weight: var(--weight-regular);
-line-height: var(--leading-body);
-```
-
-### `.nav__links, .nav__links a`
-Navigation links.
-```css
-font-size: var(--text-ui);
-```
+### Legacy homepage hero (`.hero*`)
+SVG wordmark via `<img>`. `.hero__tagline` uses `--text-footer-cta-body`.
 
 ---
 
 ## What Not To Do
 
-- **Do not** add `tracking-*`, `leading-*`, `font-*`, `text-*` Tailwind utilities to JSX elements that are controlled by the above component classes. Those classes are unlayered CSS and always override Tailwind utilities — the utility silently does nothing.
-- **Do not** use raw numbers (`1.4`, `0.05em`) as CSS values. Every value must reference a token from `:root`.
+- **Do not** add `tracking-*`, `leading-*`, `font-*`, `text-*` Tailwind utilities to JSX for typography controlled by component classes.
+- **Do not** use raw numbers as CSS values. Every value must reference a token from `:root`.
 - **Do not** define new type tokens anywhere except `:root` in `globals.css`.
-- **Do not** change SVG wordmark assets for production hero/footer (`MCBCreative-dark.svg`, `MCBCreative-light.svg`) without updating both placements. **`--font-family-wordmark`** remains for the typography style guide’s Clash Display demo only.
+- **Do not** introduce a third font family without updating this document and `layout.tsx`.
