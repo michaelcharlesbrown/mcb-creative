@@ -30,6 +30,10 @@
   --fluid-work-grid-pair-row-height: clamp(26rem, 38vh, 36rem); /* homepage 2×2 grid row height */
   /* Homepage intro — exactly one viewport; title sits on bottom edge (HeroSection) */
   --height-home-hero: 100dvh;
+  /* Homepage hero slideshow — image row offset below nav; bottom-corner inset */
+  --space-hero-row-top:     calc(var(--nav-height) + clamp(0.75rem, 3vh, 2rem));
+  --space-hero-corner-y:    clamp(1rem, 2.5vh, 1.75rem);
+  --space-hero-corner-stack: clamp(0.75rem, 3vw, 1.25rem); /* gap between the two stacked bottom lines on mobile */
 
   /* ── TYPOGRAPHY ─────────────────────────────────────────
      All type decisions live here. No values elsewhere.
@@ -800,6 +804,101 @@ img.footer__wordmark {
 }
 
 /* ============================================================
+   HOMEPAGE HERO — slideshow (phase 1)
+   Single locked viewport (no scroll). Two-image sets hard-cut on
+   a timer — no fade. Tops aligned, bottoms ragged: the mixed
+   aspect ratios are intentional editorial character. The four
+   corners are pinned over the image layer via the difference-blend
+   invert — TL/TR = global <Navigation>, BL/BR below.
+============================================================ */
+.home-hero {
+  position:   fixed;
+  inset:      0;
+  height:     100dvh;
+  width:      100%;
+  background: var(--background);
+  overflow:   hidden;
+  isolation:  isolate; /* contain the corner difference-blend to the hero layer */
+}
+
+/* Every set stays mounted and preloaded; only the active one is shown, so the
+   timed swap is an instant hard cut with no flash or half-loaded image. */
+.home-hero__set {
+  position:   absolute;
+  inset:      0;
+  visibility: hidden;
+}
+
+.home-hero__set[data-active="true"] {
+  visibility: visible;
+}
+
+.home-hero__row {
+  display:               grid;
+  grid-template-columns: 1fr;          /* mobile: stacked one column */
+  gap:                   var(--content-inset);
+  align-items:           start;        /* top-align both images; ragged bottom */
+  width:                 100%;
+  max-width:             var(--content-max-width);
+  margin-inline:         auto;
+  padding-inline:        var(--content-inset);
+  padding-top:           var(--space-hero-row-top);
+  box-sizing:            border-box;
+}
+
+.home-hero__img {
+  display: block;
+  width:   100%;
+  height:  auto;
+}
+
+/* Bottom corners — mirror the nav's fixed/max-width/inset structure so BL/BR
+   stay aligned with the nav and the image columns at every viewport width. */
+.home-hero__corners {
+  position:       fixed;
+  left:           0;
+  right:          0;
+  bottom:         0;
+  z-index:        40;
+  mix-blend-mode: difference;
+  pointer-events: none; /* decorative; the mailto re-enables itself */
+}
+
+.home-hero__corners-inner {
+  display:         flex;
+  flex-direction:  column;        /* mobile: two centered lines stacked */
+  align-items:     center;
+  gap:             var(--space-hero-corner-stack);
+  text-align:      center;
+  width:           100%;
+  max-width:       var(--content-max-width);
+  margin-inline:   auto;
+  padding-inline:  var(--content-inset);
+  padding-bottom:  var(--space-hero-corner-y);
+  box-sizing:      border-box;
+}
+
+/* Tagline segments: one flowing line on mobile, three stacked on desktop. */
+.home-hero__meta-seg {
+  display: inline;
+}
+
+.home-hero__meta {
+  font-family:    var(--font-family-mono);
+  font-size:      var(--text-ui);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-body);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-work);
+  color:          var(--color-white); /* difference-blended against the image layer */
+  margin:         0;
+}
+
+.home-hero__meta--br {
+  pointer-events: auto;
+}
+
+/* ============================================================
    RESPONSIVE OVERRIDES
    All breakpoint rules live here, after all base styles.
    One block per condition — Tailwind v4 / Lightning CSS
@@ -863,6 +962,27 @@ img.footer__wordmark {
 @media (min-width: 768px) {
   .col-2 {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .home-hero__row {
+    grid-template-columns: 1fr 1fr; /* desktop: two images side by side */
+  }
+
+  /* desktop: bottom anchors return to opposite corners */
+  .home-hero__corners-inner {
+    flex-direction:  row;
+    align-items:     flex-end;
+    justify-content: space-between;
+    gap:             0;
+    text-align:      left;
+  }
+
+  .home-hero__meta-seg {
+    display: block; /* tagline stacks to three lines in the corner */
+  }
+
+  .home-hero__meta--br {
+    text-align: right;
   }
 }
 
