@@ -1,13 +1,24 @@
-import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import type { ReactNode } from "react";
 
 interface IntroBlockProps {
+  /** Small eyebrow above the headline — the project name */
+  eyebrow?: string;
+  /** Page H1 — the project tagline */
   headline?: string;
-  subheadline?: string;
   scope?: string[];
   team?: string[];
   description?: unknown;
   titleFallback?: string;
-  coverAbove?: boolean;
+  /** Contained landscape hero, rendered between the header and the info section */
+  cover?: ReactNode;
+}
+
+interface PortableSpan {
+  text?: string;
+}
+
+interface PortableBlock {
+  children?: PortableSpan[];
 }
 
 function isStringArray(value: unknown): value is string[] {
@@ -18,87 +29,101 @@ function isStringArray(value: unknown): value is string[] {
   );
 }
 
-const portableComponents: PortableTextComponents = {
-  block: {
-    normal: ({ children }) => <p className="project-hero__body">{children}</p>,
-  },
-};
+/**
+ * Normalise a description into discrete paragraphs so they distribute across
+ * the two copy columns. Accepts a plain string array (static data) or Portable
+ * Text blocks (Sanity), where a single block may hold multiple paragraphs
+ * separated by blank lines.
+ */
+function toParagraphs(description: unknown): string[] {
+  if (isStringArray(description)) {
+    return description.map((p) => p.trim()).filter(Boolean);
+  }
+  if (Array.isArray(description)) {
+    return (description as PortableBlock[])
+      .flatMap((block) =>
+        (block?.children ?? []).map((child) => child?.text ?? "").join("")
+      )
+      .flatMap((text) => text.split(/\n{2,}/))
+      .map((p) => p.trim())
+      .filter(Boolean);
+  }
+  return [];
+}
 
 export default function IntroBlock({
+  eyebrow,
   headline,
-  subheadline,
   scope,
   team,
   description,
   titleFallback = "",
-  coverAbove = false,
+  cover,
 }: IntroBlockProps) {
   const title = headline ?? titleFallback;
   const hasScope = (scope?.length ?? 0) > 0;
   const hasTeam = (team?.length ?? 0) > 0;
-  const hasDescriptionBlocks = Array.isArray(description) && description.length > 0;
-  const hasSubheadline = Boolean(subheadline);
-  const hasRightContent = hasSubheadline || hasDescriptionBlocks || hasScope || hasTeam;
+  const paragraphs = toParagraphs(description);
+  const hasMetaContent = hasScope || hasTeam;
+  const hasInfoContent = hasMetaContent || paragraphs.length > 0;
 
   return (
-    <section className={`project-hero${coverAbove ? " project-hero--cover-above" : ""}`} aria-labelledby="project-hero-title">
-      <div className={`project-hero__inner max-w-[var(--content-max-width)] mx-auto content-inset${coverAbove ? " project-hero__inner--cover-above" : ""}`}>
-        <div className="col-2 project-hero__grid">
+    <section className="project-intro" aria-labelledby="project-intro-title">
+      <header className="project-intro__header max-w-[var(--content-max-width)] mx-auto content-inset">
+        {eyebrow && <p className="project-intro__eyebrow">{eyebrow}</p>}
+        {title && (
+          <h1 id="project-intro-title" className="project-intro__headline">
+            {title}
+          </h1>
+        )}
+      </header>
 
-          {/* Left: project title only */}
-          <div className="project-hero__left-col">
-            {title && (
-              <h1 id="project-hero-title" className="project-hero__title">
-                {title}
-              </h1>
+      {cover && (
+        <div className="project-intro__cover max-w-[var(--content-max-width)] mx-auto content-inset">
+          {cover}
+        </div>
+      )}
+
+      {hasInfoContent && (
+        <div className="project-intro__info max-w-[var(--content-max-width)] mx-auto content-inset">
+          <div className="project-info__grid">
+            {hasMetaContent && (
+              <div className="project-info__meta-col">
+                {hasScope && (
+                  <div className="project-info__section-group">
+                    <p className="project-info__body">SCOPE</p>
+                    <ul className="project-info__list">
+                      {scope!.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {hasTeam && (
+                  <div className="project-info__section-group">
+                    <p className="project-info__body">TEAM</p>
+                    <ul className="project-info__list">
+                      {team!.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {paragraphs.length > 0 && (
+              <div className="project-info__copy-col">
+                {paragraphs.map((para, i) => (
+                  <p key={i} className="project-info__body">
+                    {para}
+                  </p>
+                ))}
+              </div>
             )}
           </div>
-
-          {/* Right: tagline (as lead paragraph), description, scope, team */}
-          {hasRightContent && (
-            <div className="project-hero__right-col">
-              {hasSubheadline && (
-                <p className="project-hero__lead">{subheadline}</p>
-              )}
-              {hasDescriptionBlocks && description && (
-                isStringArray(description) ? (
-                  description.map((para, i) => (
-                    <p key={i} className="project-hero__body">{para}</p>
-                  ))
-                ) : (
-                  <div className="project-hero__richtext">
-                    <PortableText
-                      value={description as never}
-                      components={portableComponents}
-                    />
-                  </div>
-                )
-              )}
-              {hasScope && (
-                <div className="project-hero__section-group">
-                  <p className="label">SCOPE</p>
-                  <ul className="project-hero__list">
-                    {scope!.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {hasTeam && (
-                <div className="project-hero__section-group">
-                  <p className="label">TEAM</p>
-                  <ul className="project-hero__list">
-                    {team!.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          )}
-
         </div>
-      </div>
+      )}
     </section>
   );
 }

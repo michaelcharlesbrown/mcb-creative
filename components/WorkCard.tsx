@@ -16,7 +16,7 @@ interface WorkCardProps {
 export default function WorkCard({ project }: WorkCardProps) {
   return (
     <a href={`/projects/${project.slug}`} className="group block w-full">
-      <div className="relative w-full aspect-video overflow-hidden rounded-[4px] mb-3">
+      <div className="relative w-full aspect-video overflow-hidden mb-3">
         <Image
           src={project.heroImageLandscape}
           alt={project.title}

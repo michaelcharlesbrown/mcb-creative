@@ -59,7 +59,7 @@ export default function MediaBlock({
 
   if (!hasImage && !hasVideo) return null;
 
-  const containerClass = `relative overflow-hidden ${fill ? "size-full" : "w-full rounded-[4px]"} ${className}`;
+  const containerClass = `relative overflow-hidden ${fill ? "size-full" : "w-full"} ${className}`;
 
   /**
    * Art-direction mode: portrait mobile / landscape desktop.

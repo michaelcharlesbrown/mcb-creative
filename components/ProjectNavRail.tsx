@@ -42,7 +42,7 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
               draggable={false}
               onDragStart={(e) => e.preventDefault()}
             >
-              <div className="relative w-full overflow-hidden rounded-sm" style={{ aspectRatio: "5/7" }}>
+              <div className="relative w-full overflow-hidden" style={{ aspectRatio: "5/7" }}>
                 <Image
                   src={project.heroImagePortrait}
                   alt={project.title}

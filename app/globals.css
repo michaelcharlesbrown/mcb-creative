@@ -66,7 +66,6 @@
   --text-work-cta-button: 2.5rem;
   --width-work-cta-button:  394px;
   --height-work-cta-button: 135px;
-  --radius-card:            12px;
   --radius-work-cta-button: 160px;
   --size-work-cta-arrow-w: clamp(64px, 10vw, 142px);
   --size-work-cta-arrow-h: clamp(64px, 10vw, 141px);
@@ -89,6 +88,12 @@
 
   --project-hero-line: calc(var(--text-ui) * var(--leading-body)); /* 12px × 1.5 = 18px baseline unit */
   --space-project-hero-bottom: clamp(3rem, 8vw, 6rem);
+  /* Project intro layout — eyebrow, headline, contained hero */
+  --text-project-headline:       clamp(2rem, 4.2vw, 3.75rem);
+  --leading-project-headline:    1.05;
+  --space-project-eyebrow-gap:   clamp(0.75rem, 1.5vw, 1.25rem);
+  --space-project-header-bottom: clamp(2.5rem, 5vw, 4rem);
+  --aspect-project-hero:         3 / 2;
   --space-info-page-paragraph: clamp(1.25rem, 3vw, 2rem);
   /* Site tagline (/// motif) */
   --text-tagline:    1.5rem;
@@ -286,7 +291,6 @@ a {
 .info-page__portrait-wrap {
   width:         100%;
   overflow:      hidden;
-  border-radius: 4px;
   margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
 }
 
@@ -559,10 +563,6 @@ img.footer__cta-arrow {
   display: none;
 }
 
-img {
-  border-radius: 0;
-}
-
 /* ============================================================
    NAV RAIL — carousel slide widths
 ============================================================ */
@@ -663,7 +663,6 @@ img.footer__wordmark {
 .hero__video-frame {
   width:         100%;
   overflow:      hidden;
-  border-radius: var(--radius-card);
 }
 
 .hero__video-frame video {
@@ -721,7 +720,162 @@ img.footer__wordmark {
 }
 
 /* ============================================================
-   ABOUT BLURB
+   PROJECT INTRO — eyebrow, headline, contained hero, info grid
+============================================================ */
+
+.project-intro {
+  text-transform: none;
+}
+
+.project-intro__header {
+  padding-top:    var(--padding-project-hero-top);
+  padding-bottom: var(--space-project-header-bottom);
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--space-project-eyebrow-gap);
+}
+
+/* Eyebrow — small project name above the headline; Geist Sans at body size */
+.project-intro__eyebrow {
+  font-family: var(--font-family-headline);
+  margin:      0;
+}
+
+/* Headline — the project tagline as the page H1 */
+.project-intro__headline {
+  font-family:    var(--font-family-headline);
+  font-size:      var(--text-project-headline);
+  font-weight:    var(--weight-bold);
+  line-height:    var(--leading-project-headline);
+  text-transform: uppercase;
+  text-align:     left;
+  margin:         0;
+}
+
+/* Contained landscape hero — full content width with side margins */
+.project-intro__cover {
+  padding-bottom: var(--space-project-hero-bottom);
+}
+
+.project-intro__cover-media {
+  position:      relative;
+  aspect-ratio:  var(--aspect-project-hero);
+  overflow:      hidden;
+}
+
+.project-intro__info {
+  padding-bottom: var(--space-project-hero-bottom);
+}
+
+.project-info__grid {
+  display:               grid;
+  grid-template-columns: 1fr;
+  gap:                   var(--gap-grid);
+  align-items:           start;
+}
+
+.project-info__meta-col,
+.project-info__copy-col {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--project-hero-line);
+  font-family:    var(--font-family-headline);
+}
+
+.project-info__body {
+  margin: 0;
+}
+
+.project-info__section-group {
+  display:        flex;
+  flex-direction: column;
+  gap:            0;
+}
+
+.project-info__list {
+  list-style:     none;
+  padding:        0;
+  margin:         0;
+  display:        flex;
+  flex-direction: column;
+  gap:            0;
+}
+
+.project-info__list li {
+  margin:  0;
+  padding: 0;
+}
+
+/* ============================================================
+   STUDIO INTRO — homepage centered blurb
+============================================================ */
+
+.studio-intro {
+  display:            flex;
+  flex-direction:     column;
+  align-items:        center;
+  justify-content:    center;
+  text-align:         center;
+  width:              100%;
+  max-width:          var(--content-max-width);
+  margin-inline:      auto;
+  height:             100dvh;
+  min-height:         100dvh;
+  padding-inline:     var(--content-inset);
+  box-sizing:         border-box;
+  gap:                clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.studio-intro__logo {
+  height:     clamp(2rem, 4vw, 3rem);
+  width:      auto;
+}
+
+h2.studio-intro__headline {
+  font-family:    var(--font-family-headline);
+  font-size:      var(--text-info-intro);
+  font-weight:    var(--weight-medium);
+  line-height:    var(--leading-info-intro);
+  text-transform: none;
+  text-align:     center;
+  max-width:      28ch;
+  margin:         0;
+}
+
+.studio-intro__links {
+  display:         flex;
+  flex-wrap:       wrap;
+  justify-content: center;
+  align-items:     center;
+  gap:             clamp(1.5rem, 4vw, 3rem);
+}
+
+a.studio-intro__link {
+  font-family:     var(--font-family-headline);
+  font-size:       var(--text-footer-cta-body);
+  line-height:     1.3;
+  text-transform:  none;
+  color:           var(--color-black);
+  display:         inline-flex;
+  align-items:     center;
+  gap:             0.5rem;
+  transition:      opacity 0.25s ease;
+}
+
+a.studio-intro__link:hover {
+  opacity: 0.6;
+}
+
+img.studio-intro__arrow {
+  display:     block;
+  width:       clamp(1.25rem, 2vw, 1.875rem);
+  height:      clamp(1.25rem, 2vw, 1.875rem);
+  flex-shrink: 0;
+  object-fit:  contain;
+}
+
+/* ============================================================
+   SECTION INTRO — two-column label + tagline (work index)
 ============================================================ */
 
 .section-intro__display {
@@ -986,6 +1140,21 @@ img.footer__wordmark {
   }
 }
 
+/* Project intro — desktop info grid (scope/team in col 1, copy in col 3) */
+@media (min-width: 768px) {
+  .project-intro__headline {
+    max-width: 50%;
+  }
+
+  .project-info__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .project-info__meta-col { grid-column: 1 / 2; }
+
+  .project-info__copy-col { grid-column: 3 / 4; }
+}
+
 
 @media (prefers-reduced-motion: reduce) {
   .nav,
@@ -1017,5 +1186,6 @@ img.footer__wordmark {
     --foreground: #fcfcfc;
   }
 }
+
 
 

@@ -77,8 +77,8 @@ export default async function Project({
 
   const hardcoded = hardcodedProjects.find((p) => p.slug === slug);
 
-  const introHeadline = introBlock?.headline ?? sanityProject.title;
-  const introSubheadline = introBlock?.subheadline ?? hardcoded?.heroTagline;
+  const introEyebrow = introBlock?.headline ?? sanityProject.title;
+  const introHeadline = introBlock?.subheadline ?? hardcoded?.heroTagline ?? sanityProject.title;
   const introScope = introBlock?.scope ?? hardcoded?.scope;
   const introTeam = introBlock?.team ?? hardcoded?.team;
   const introDescription = introBlock?.description ?? hardcoded?.description;
@@ -108,28 +108,28 @@ export default async function Project({
     <div className="min-h-screen bg-background text-black">
       <SetAccentColor color={sanityProject.accentColor} />
       <main>
-        {hasHeroMedia && (
-          <div className="project-cover">
-            <MediaBlock
-              image={sanityProject.heroImage}
-              imageMobile={sanityProject.thumbnail}
-              videoUrl={sanityProject.heroVideoFileUrl}
-              altFallback={sanityProject.title}
-              sizes="100vw"
-              fill
-              priority
-            />
-          </div>
-        )}
-
         <IntroBlock
+          eyebrow={introEyebrow}
           headline={introHeadline}
-          subheadline={introSubheadline}
           scope={introScope}
           team={introTeam}
           description={introDescription}
           titleFallback={sanityProject.title}
-          coverAbove={hasHeroMedia}
+          cover={
+            hasHeroMedia ? (
+              <div className="project-intro__cover-media">
+                <MediaBlock
+                  image={sanityProject.heroImage}
+                  imageMobile={sanityProject.thumbnail}
+                  videoUrl={sanityProject.heroVideoFileUrl}
+                  altFallback={sanityProject.title}
+                  sizes="(min-width: 768px) 92vw, 100vw"
+                  fill
+                  priority
+                />
+              </div>
+            ) : null
+          }
         />
 
         <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-16 pb-16">

@@ -38,8 +38,8 @@ export default function BlockRenderer({
       return (
         <IntroBlock
           key={index}
-          headline={block.headline}
-          subheadline={block.subheadline}
+          eyebrow={block.headline ?? titleFallback}
+          headline={block.subheadline}
           scope={block.scope}
           team={block.team}
           description={block.description}

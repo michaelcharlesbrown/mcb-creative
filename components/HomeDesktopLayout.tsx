@@ -2,7 +2,7 @@
 
 import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
-import SectionIntro from "@/components/SectionIntro";
+import StudioIntro from "@/components/StudioIntro";
 import Footer from "@/components/Footer";
 import WorkCard from "@/components/WorkCard";
 
@@ -28,11 +28,8 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
           <HeroSection />
         </div>
 
-        <div className="min-h-[50vh] flex items-center bg-background">
-          <SectionIntro
-            label="Featured Work"
-            tagline="I help brands define and develop a unique visual language that speaks directly to their audience."
-          />
+        <div className="min-h-dvh flex items-center bg-background">
+          <StudioIntro />
         </div>
 
         <div className="bg-background pb-[25vh]">
