@@ -58,6 +58,7 @@
   --text-card-title:  var(--text-ui);
   --text-heading-sm:  var(--text-ui);
   --text-display-md:  var(--text-h2);
+  --text-nav-logo:    clamp(1.5rem, 1.4vw + 1rem, 2rem); /* M/C/B wordmark */
   /* Work page CTA — Figma 933:265 @ 1440 (1029:379 headline 200px / 1029:382–383 pill / spacing) */
   --text-work-cta:        clamp(3rem, 13.89vw, 12.5rem);
   --text-footer-cta:      48px;
@@ -85,6 +86,8 @@
   --letter-spacing-work: 0.06em;
   /* Nav / work cards / footer — triple-slash; design tracking −30 → −0.03em */
   --letter-spacing-triple-slash: -0.03em;
+  /* M/C/B wordmark — design tracking −50 → −0.05em */
+  --letter-spacing-logo: -0.05em;
 
   --project-hero-line: calc(var(--text-ui) * var(--leading-body)); /* 12px × 1.5 = 18px baseline unit */
   --space-project-hero-bottom: clamp(3rem, 8vw, 6rem);
@@ -905,7 +908,17 @@ img.studio-intro__arrow {
 ============================================================ */
 
 .nav__links {
-  font-size: 1rem;
+  font-size:      var(--text-ui); /* standard 12px mono — matches body + hero corner meta */
+  letter-spacing: var(--letter-spacing-work);
+}
+
+/* Wordmark — bold Geist Sans "M/C/B" lockup (replaces the SVG logo) */
+.nav__logo-text {
+  font-family:    var(--font-family-headline);
+  font-weight:    var(--weight-bold);
+  font-size:      var(--text-nav-logo);
+  line-height:    1;
+  letter-spacing: var(--letter-spacing-logo);
 }
 
 /* ── Nav flip-link: departure-board roll-up effect ── */
@@ -1186,6 +1199,7 @@ img.studio-intro__arrow {
     --foreground: #fcfcfc;
   }
 }
+
 
 
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -18,14 +17,12 @@ export default function Navigation() {
       transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
     >
       <div className="nav__inner max-w-[var(--content-max-width)] mx-auto content-inset pt-4 pb-2 flex justify-between items-center">
-        <Link href="/" className="nav__logo flex items-center text-white">
-          <Image
-            src="/images/mcb-creative-logo.svg"
-            alt="MCB Creative"
-            width={165}
-            height={55}
-            className="h-[28px] lg:h-10 w-auto brightness-0 invert"
-          />
+        <Link
+          href="/"
+          className="nav__logo flex items-center text-white"
+          aria-label="MCB Creative"
+        >
+          <span className="nav__logo-text">M/C/B</span>
         </Link>
         <div className="nav__links flex items-center gap-2 uppercase text-white">
           <Link
