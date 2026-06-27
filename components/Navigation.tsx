@@ -33,7 +33,7 @@ export default function Navigation() {
             MCB Creative
           </span>
         )}
-        <div className="nav__links flex items-center gap-2 text-white">
+        <div className="nav__links label flex items-center gap-2 text-white">
           <Link
             href="/projects"
             className="nav-flip-link"
