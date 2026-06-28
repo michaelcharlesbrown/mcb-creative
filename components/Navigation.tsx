@@ -3,10 +3,10 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import TripleSlash from "@/components/TripleSlash";
 
 export default function Navigation() {
   const pathname = usePathname();
-  const isProjectsPage = pathname === "/projects";
 
   return (
     <motion.nav
@@ -32,7 +32,7 @@ export default function Navigation() {
           >
             <span className="nav-flip-link__inner" data-text="WORK">WORK</span>
           </Link>
-          <span className="opacity-80" aria-hidden>///</span>
+          <TripleSlash />
           <Link
             href="/info"
             className="nav-flip-link"

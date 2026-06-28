@@ -51,6 +51,11 @@ function toParagraphs(description: unknown): string[] {
   return [];
 }
 
+function splitParagraphs(paragraphs: string[]): [string[], string[]] {
+  const mid = Math.ceil(paragraphs.length / 2);
+  return [paragraphs.slice(0, mid), paragraphs.slice(mid)];
+}
+
 export default function IntroBlock({
   eyebrow,
   headline,
@@ -64,6 +69,7 @@ export default function IntroBlock({
   const hasScope = (scope?.length ?? 0) > 0;
   const hasTeam = (team?.length ?? 0) > 0;
   const paragraphs = toParagraphs(description);
+  const [copyLeft, copyRight] = splitParagraphs(paragraphs);
   const hasMetaContent = hasScope || hasTeam;
   const hasInfoContent = hasMetaContent || paragraphs.length > 0;
 
@@ -91,20 +97,20 @@ export default function IntroBlock({
               <div className="project-info__meta-col">
                 {hasScope && (
                   <div className="project-info__section-group">
-                    <p className="project-info__body">SCOPE</p>
+                    <p className="project-info__section-title">SCOPE</p>
                     <ul className="project-info__list">
                       {scope!.map((item, i) => (
-                        <li key={i}>{item}</li>
+                        <li key={i}>→ {item}</li>
                       ))}
                     </ul>
                   </div>
                 )}
                 {hasTeam && (
                   <div className="project-info__section-group">
-                    <p className="project-info__body">TEAM</p>
+                    <p className="project-info__section-title">TEAM</p>
                     <ul className="project-info__list">
                       {team!.map((item, i) => (
-                        <li key={i}>{item}</li>
+                        <li key={i}>→ {item}</li>
                       ))}
                     </ul>
                   </div>
@@ -112,10 +118,19 @@ export default function IntroBlock({
               </div>
             )}
 
-            {paragraphs.length > 0 && (
+            {copyLeft.length > 0 && (
               <div className="project-info__copy-col">
-                {paragraphs.map((para, i) => (
-                  <p key={i} className="project-info__body">
+                {copyLeft.map((para) => (
+                  <p key={para} className="project-info__body">
+                    {para}
+                  </p>
+                ))}
+              </div>
+            )}
+            {copyRight.length > 0 && (
+              <div className="project-info__copy-col">
+                {copyRight.map((para) => (
+                  <p key={para} className="project-info__body">
                     {para}
                   </p>
                 ))}

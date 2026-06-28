@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import PageFooter from "@/components/PageFooter";
 import CustomCursor from "@/components/CustomCursor";
 import { AccentColorProvider } from "@/components/AccentColorContext";
 
@@ -24,7 +24,7 @@ export default function LayoutShell({
       <CustomCursor />
       <Navigation />
       {children}
-      {!isHomePage && <Footer />}
+      {!isHomePage && <PageFooter />}
     </AccentColorProvider>
   );
 }

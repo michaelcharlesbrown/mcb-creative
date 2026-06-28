@@ -18,7 +18,7 @@ export default function ProjectNavLinks({ previous, next }: ProjectNavLinksProps
             href={`/projects/${previous.slug}`}
             className="flex-1 group cursor-pointer"
           >
-            <div className="text-gray-500 mb-2">Previous Project</div>
+            <div className="text-gray-500 mb-2">&larr; Previous Project</div>
             <div className="label">
               {previous.title}
             </div>
@@ -31,7 +31,7 @@ export default function ProjectNavLinks({ previous, next }: ProjectNavLinksProps
             href={`/projects/${next.slug}`}
             className="flex-1 text-right group cursor-pointer"
           >
-            <div className="text-gray-500 mb-2">Next Project</div>
+            <div className="text-gray-500 mb-2">Next Project &rarr;</div>
             <div className="label">
               {next.title}
             </div>

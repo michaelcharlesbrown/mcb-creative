@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import TripleSlash from "@/components/TripleSlash";
 
 interface WorkCardProps {
   project: {
@@ -26,12 +27,11 @@ export default function WorkCard({ project }: WorkCardProps) {
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
       </div>
-      <h2 className="label">
-        {project.title}
-        <span className="work-card__caption-sep" aria-hidden>
-          {" "}
-          <span className="triple-slash">///</span>{" "}
-        </span>
+      <h2 className="label work-card__label">
+        <span className="work-card__title">{project.title}</span>
+        {" "}
+        <TripleSlash />
+        {" "}
         <span className="label-meta">{project.services.slice(0, 2).join(", ")}</span>
       </h2>
     </a>
