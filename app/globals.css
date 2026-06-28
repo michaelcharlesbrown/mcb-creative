@@ -267,7 +267,6 @@ a {
 .info-page__main {
   max-width:      var(--content-max-width);
   margin-inline:  auto;
-  padding-top:    var(--padding-project-hero-top);
   padding-bottom: var(--padding-info-page-bottom);
 }
 
@@ -1166,6 +1165,10 @@ img.studio-intro__arrow {
   .project-info__meta-col { grid-column: 1 / 2; }
 
   .project-info__copy-col { grid-column: 3 / 4; }
+
+  /* Info page — two copy columns in the right half (cols 3–4) */
+  .info-intro .project-info__copy-col:first-child { grid-column: 3 / 4; }
+  .info-intro .project-info__copy-col:last-child  { grid-column: 4 / 5; }
 }
 
 
