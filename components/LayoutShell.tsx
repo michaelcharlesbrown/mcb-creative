@@ -17,14 +17,16 @@ export default function LayoutShell({
     return <>{children}</>;
   }
 
-  const isHomePage = pathname === "/";
+  // Locked single-viewport pages render their own fixed corner lockup
+  // (HeroCorners), so the in-flow PageFooter is suppressed for them.
+  const isLockedViewport = pathname === "/" || pathname === "/info";
 
   return (
     <AccentColorProvider>
       <CustomCursor />
       <Navigation />
       {children}
-      {!isHomePage && <PageFooter />}
+      {!isLockedViewport && <PageFooter />}
     </AccentColorProvider>
   );
 }

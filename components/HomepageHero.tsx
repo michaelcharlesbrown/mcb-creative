@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import HeroCorners from "@/components/HeroCorners";
 import {
   HOMEPAGE_HERO_SETS,
   HOMEPAGE_HERO_HOLD_MS,
@@ -64,21 +65,7 @@ export default function HomepageHero() {
         </div>
       ))}
 
-      <div className="home-hero__corners">
-        <div className="home-hero__corners-inner">
-          <p className="home-hero__meta home-hero__meta--bl">
-            <span className="home-hero__meta-seg">Independent</span>{" "}
-            <span className="home-hero__meta-seg">Creative Studio of</span>{" "}
-            <span className="home-hero__meta-seg">Michael Charles Brown</span>
-          </p>
-          <a
-            className="home-hero__meta home-hero__meta--br"
-            href="mailto:hello@mcbcreative.com"
-          >
-            Hello @ mcbcreative.com
-          </a>
-        </div>
-      </div>
+      <HeroCorners />
     </section>
   );
 }
