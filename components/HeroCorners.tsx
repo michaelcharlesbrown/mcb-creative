@@ -5,7 +5,7 @@
  * top-left wordmark and top-right nav are the global <Navigation>.
  *
  * Rides the site's mix-blend-difference invert on the homepage (over imagery)
- * and is plain foreground on the info page, where it fades on scroll.
+ * and plain foreground on the info page (same fixed corner grid, no blend).
  */
 export default function HeroCorners() {
   return (

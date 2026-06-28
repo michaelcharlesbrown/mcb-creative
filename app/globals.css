@@ -84,13 +84,6 @@
   --nav-flip-ease:        cubic-bezier(0.76, 0, 0.24, 1);
   --nav-flip-line-height: 1.2;
 
-  /* Info chrome "rush at the viewer" fade — scale + blur + opacity.
-     Ease borrowed from the june-update hero reveal (expo.out feel). */
-  --info-fade-duration: 0.6s;
-  --info-fade-ease:     cubic-bezier(0.16, 1, 0.3, 1);
-  --info-fade-scale:    1.08;
-  --info-fade-blur:     8px;
-
   /* Letter-spacing (use only via component classes in this file) */
   --letter-spacing-work: 0.06em;
   /* Nav / work cards / footer — triple-slash; design tracking −30 → −0.03em */
@@ -122,6 +115,8 @@
   --text-info-caption:     clamp(0.75rem, 0.94vw, 0.85rem);
   --leading-info-caption:  1.2;
   --padding-info-page-bottom: clamp(4rem, 12vw, 8rem);
+  /* Gap above masonry — keeps the grid below the first screen on desktop */
+  --space-info-archive-top: clamp(4rem, 16vh, 10rem);
   /* Air above intro copy (below fixed nav) — matches project page mockup */
   --padding-project-hero-top: max(
     calc(var(--nav-height) + clamp(2.5rem, 6vw, 5rem)),
@@ -1189,70 +1184,24 @@ img.studio-intro__arrow {
 }
 
 /* ============================================================
-   INFO / ARCHIVE — pinned typography over a scroll-revealed masonry.
-   Desktop: the text is a fixed, difference-blended overlay; a two-column
-   image masonry scrolls up from below (100dvh spacer) and inverts the text
-   as it passes behind. Mobile overrides (in RESPONSIVE) drop the pin/invert
-   and stack typography → grid in normal flow.
+   INFO PAGE — intro copy, masonry archive, fixed corner chrome.
 ============================================================ */
-.info-archive-page {
-  position:   relative;
-  isolation:  isolate; /* contain the difference-blend to this page */
-  background: var(--background);
+.info-page {
+  background:     var(--background);
+  padding-bottom: var(--padding-info-page-bottom); /* clear fixed bottom corner chrome */
 }
 
-/* Pinned text overlay — shown at the top, fades out the instant you scroll. */
-.info-archive-page__text {
-  position:       fixed;
-  inset:          0;
-  z-index:        2;
-  color:          var(--foreground);
-  pointer-events: none;               /* let wheel/touch scroll reach the grid */
-  transition:     opacity   var(--info-fade-duration) var(--info-fade-ease),
-                  transform var(--info-fade-duration) var(--info-fade-ease),
-                  filter    var(--info-fade-duration) var(--info-fade-ease);
-}
-
-.info-archive-page__text a {
-  pointer-events: auto; /* keep the in-text links clickable while visible */
-}
-
-/* Corners ride along with the type: plain foreground, fade on scroll. */
-.info-archive-page .home-hero__corners {
+.info-page .home-hero__corners {
   mix-blend-mode: normal;
-  transition:     opacity   var(--info-fade-duration) var(--info-fade-ease),
-                  transform var(--info-fade-duration) var(--info-fade-ease),
-                  filter    var(--info-fade-duration) var(--info-fade-ease);
 }
 
-.info-archive-page .home-hero__meta {
+.info-page .home-hero__meta {
   color: var(--foreground);
 }
 
-/* Nav fades with the rest of the info chrome (fade the inner so it doesn't
-   fight the nav's own framer-motion opacity on the wrapper). */
-.nav__inner {
-  transition: opacity   var(--info-fade-duration) var(--info-fade-ease),
-              transform var(--info-fade-duration) var(--info-fade-ease),
-              filter    var(--info-fade-duration) var(--info-fade-ease);
-}
-
-/* Content band — vertical rhythm comes from the shared .project-intro rules,
-   so the headline sits at the same height as the Work and project pages. */
-.info-archive__band {
-  width:          100%;
-  max-width:      var(--content-max-width);
-  margin-inline:  auto;
-  padding-inline: var(--content-inset);
-  box-sizing:     border-box;
-}
-
-/* Scrolling masonry layer — starts a full viewport below the fold. */
 .info-archive {
-  position:       relative;
-  z-index:        1;
-  padding-top:    100dvh;
-  padding-bottom: clamp(1.5rem, 4vh, 3rem); /* small tail; corners invert over the last images */
+  padding-top:    var(--space-info-archive-top);
+  padding-bottom: clamp(1.5rem, 4vh, 3rem);
 }
 
 .info-archive__grid {
@@ -1275,7 +1224,6 @@ img.studio-intro__arrow {
   width:   100%;
   height:  auto;
 }
-
 /* ============================================================
    RESPONSIVE OVERRIDES
    All breakpoint rules live here, after all base styles.
@@ -1330,32 +1278,8 @@ img.studio-intro__arrow {
     height: 22px;
   }
 
-  /* Info / archive — no pin or invert on mobile. Typography reads in normal
-     flow, then the masonry grid follows below it; corners close the page. */
-  .info-archive-page__text {
-    position:       static;
-    mix-blend-mode: normal;
-    color:          var(--foreground);
-    pointer-events: auto;
-  }
-
-  .info-archive {
-    padding-top:    clamp(2.5rem, 9vw, 4rem); /* grid follows the text, not a viewport down */
-    padding-bottom: clamp(2.5rem, 8vw, 3.5rem);
-  }
-
   .info-archive__grid {
-    columns: 1; /* single-column stack, like the homepage on mobile */
-  }
-
-  .info-archive-page .home-hero__corners {
-    position:       static;
-    mix-blend-mode: normal;
-    margin-top:     clamp(2.5rem, 10vw, 4rem);
-  }
-
-  .info-archive-page .home-hero__meta {
-    color: var(--foreground);
+    columns: 1;
   }
 
   /* Corners on mobile: the top studio line spans full width and centres. */
@@ -1419,22 +1343,6 @@ img.studio-intro__arrow {
   .project-info__copy-col + .project-info__copy-col {
     margin-left: var(--gap-grid);
   }
-
-  /* Info chrome fade — once scrolled, hide the type + all four corners (incl.
-     nav) so the archive reads clean; returns at the top. Desktop only — on
-     mobile the type simply scrolls away in normal flow. */
-  .info-scrolled .info-archive-page__text,
-  .info-scrolled .info-archive-page .home-hero__corners,
-  .info-scrolled .nav__inner {
-    opacity:        0;
-    transform:      scale(var(--info-fade-scale)); /* rushes out toward the viewer */
-    filter:         blur(var(--info-fade-blur));
-    pointer-events: none;
-  }
-
-  .info-scrolled .info-archive-page__text a {
-    pointer-events: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1454,14 +1362,6 @@ img.studio-intro__arrow {
 
   .nav-flip-link__inner {
     transition: none;
-  }
-
-  /* Info chrome: keep the opacity fade but drop the scale/blur rush. */
-  .info-scrolled .info-archive-page__text,
-  .info-scrolled .info-archive-page .home-hero__corners,
-  .info-scrolled .nav__inner {
-    transform: none;
-    filter:    none;
   }
 }
 

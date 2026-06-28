@@ -1,6 +1,6 @@
 /**
- * Info page archive — the masonry images that scroll up behind the pinned
- * typography. Local test set; drop files in /public/images/info-archive/ and
+ * Info page archive — masonry images below the intro copy. Local test set;
+ * drop files in /public/images/info-archive/ and
  * append an entry here. width/height are intrinsic pixel dimensions so
  * next/image reserves the correct aspect ratio. Order interleaves portrait /
  * landscape / square so the two-column masonry stays ragged.
