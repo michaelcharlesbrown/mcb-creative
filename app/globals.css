@@ -806,6 +806,10 @@ img.footer__wordmark {
   margin:      0;
 }
 
+.project-intro__eyebrow-name {
+  font-weight: var(--weight-bold);
+}
+
 /* Headline — the project tagline as the page H1 */
 .project-intro__headline {
   font-family:    var(--font-family-headline);

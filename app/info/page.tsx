@@ -1,3 +1,5 @@
+import TripleSlash from "@/components/TripleSlash";
+
 const introColLeft = [
   "As a web designer at LeapFrog, a UI designer at Pro Tools, and as the Creative Director of BitTorrent, I\u2019ve maintained global platforms, crafted graphics for industry-standard music technology and led campaigns reaching millions.",
   "I\u2019ve built creative departments from scratch in both in-house and agency settings, always focused on delivering work that speaks directly to the right people.",
@@ -17,6 +19,10 @@ export default function Info() {
           aria-labelledby="info-intro-title"
         >
           <header className="project-intro__header">
+            <p className="project-intro__eyebrow">
+              <span className="project-intro__eyebrow-name">MICHAEL CHARLES BROWN</span>{" "}
+              <TripleSlash /> INDEPENDENT CREATIVE
+            </p>
             <h1 id="info-intro-title" className="project-intro__headline">
               I&apos;ve been building brand identities and creating visual
               personalities for fifteen years.
