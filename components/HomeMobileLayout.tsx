@@ -2,33 +2,22 @@
 
 import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
-import StudioIntro from "@/components/StudioIntro";
 import Footer from "@/components/Footer";
-import ProjectNavRail from "@/components/ProjectNavRail";
+import WorkGrid from "@/components/WorkGrid";
 
-export interface MobileProject {
+interface GridProject {
   slug: string;
   title: string;
+  services: string[];
+  heroImageLandscape: string;
   accentColor: string;
-  subheadline?: string;
-  scope?: string[];
-  /** Portrait image (5:7) — mobile carousel cards */
-  heroImagePortrait: string;
 }
 
 interface HomeMobileLayoutProps {
-  projects: MobileProject[];
+  projects: GridProject[];
 }
 
 export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
-  const navRailProjects = projects.map((p) => ({
-    slug: p.slug,
-    title: p.title,
-    accentColor: p.accentColor,
-    scope: p.scope,
-    heroImagePortrait: p.heroImagePortrait,
-  }));
-
   return (
     <>
       <BodyClass className="home" />
@@ -37,14 +26,8 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
           <HeroSection />
         </div>
 
-        <section className="flex-shrink-0 min-h-dvh flex items-center">
-          <StudioIntro />
-        </section>
-
-        <section className="flex-shrink-0 bg-background min-h-dvh flex flex-col justify-center">
-          <div className="content-inset pt-[200px] pb-[200px]">
-            <ProjectNavRail projects={navRailProjects} variant="homepage" />
-          </div>
+        <section className="flex-shrink-0">
+          <WorkGrid projects={projects} />
         </section>
 
         <section className="flex-shrink-0">

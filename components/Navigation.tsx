@@ -30,9 +30,9 @@ export default function Navigation() {
         </Link>
         <div className="nav__links flex items-center gap-2 uppercase text-white">
           <Link
-            href="/projects"
+            href="/"
             className="nav-flip-link"
-            aria-current={pathname === "/projects" ? "page" : undefined}
+            aria-current={pathname === "/" ? "page" : undefined}
           >
             <span className="nav-flip-link__inner" data-text="WORK">WORK</span>
           </Link>
