@@ -1,6 +1,3 @@
-import HeroCorners from "@/components/HeroCorners";
-import InfoArchiveGrid from "@/components/InfoArchiveGrid";
-
 const introColLeft = [
   "As a web designer at LeapFrog, a UI designer at Pro Tools, and as the Creative Director of BitTorrent, I've maintained global platforms, crafted graphics for industry-standard music technology and led campaigns reaching millions.",
   "I've built creative departments from scratch in both in-house and agency settings, always focused on delivering work that speaks directly to the right people.",
@@ -16,7 +13,6 @@ export default function Info() {
     <main className="info-page info-intro" aria-label="About Michael Charles Brown">
       <section className="project-intro">
         <header className="project-intro__header max-w-[var(--content-max-width)] mx-auto content-inset">
-          <p className="project-intro__eyebrow">WHAT I DO</p>
           <h1 className="project-intro__headline">
             I&apos;ve been building brand identities and creating visual
             personalities for fifteen years.
@@ -46,9 +42,6 @@ export default function Info() {
         </div>
       </section>
 
-      <InfoArchiveGrid />
-
-      <HeroCorners />
     </main>
   );
 }

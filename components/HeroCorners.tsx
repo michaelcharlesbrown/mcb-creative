@@ -11,12 +11,6 @@ export default function HeroCorners() {
   return (
     <div className="home-hero__corners">
       <div className="hero-corners__grid">
-        <p className="home-hero__meta hero-corners__studio">
-          <span className="home-hero__meta-seg">Independent</span>{" "}
-          <span className="home-hero__meta-seg">Creative Studio of</span>{" "}
-          <span className="home-hero__meta-seg">Michael Charles Brown</span>
-        </p>
-
         <p className="home-hero__meta hero-corners__services">
           Branding <span className="triple-slash">///</span> Web{" "}
           <span className="triple-slash">///</span> Social{" "}

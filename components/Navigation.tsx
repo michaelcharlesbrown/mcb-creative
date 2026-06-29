@@ -22,7 +22,11 @@ export default function Navigation() {
           className="nav__logo flex items-center text-white"
           aria-label="MCB Creative"
         >
-          <span className="nav__logo-text">M/C/B</span>
+          <img
+            src="/images/mcb-creative-logo.svg"
+            alt="MCB Creative"
+            className="nav__logo-img"
+          />
         </Link>
         <div className="nav__links flex items-center gap-2 uppercase text-white">
           <Link

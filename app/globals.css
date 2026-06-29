@@ -1018,6 +1018,13 @@ img.studio-intro__arrow {
   letter-spacing: var(--letter-spacing-logo);
 }
 
+.nav__logo-img {
+  display: block;
+  height:  56px;
+  width:   auto;
+  filter:  invert(1); /* makes dark fills white; nav mix-blend-mode:difference inverts to black over light bg */
+}
+
 /* ── Nav flip-link: departure-board roll-up effect ── */
 .nav-flip-link {
   display:     inline-block;
@@ -1114,6 +1121,18 @@ img.studio-intro__arrow {
   display: block;
   width:   100%;
   height:  auto;
+}
+
+.home-hero__video {
+  display:    block;
+  width:      100%;
+  height:     100%;
+  object-fit: cover;
+}
+
+.home-hero__row--video {
+  height:      100dvh;
+  align-items: stretch;
 }
 
 /* Corner overlay — full-viewport so it can anchor the studio line at the top
@@ -1314,6 +1333,10 @@ img.studio-intro__arrow {
 
   .home-hero__row {
     grid-template-columns: 1fr 1fr; /* desktop: two images side by side */
+  }
+
+  .home-hero__row--video {
+    grid-template-columns: 1fr; /* single video spans full content width */
   }
 
   /* desktop: bottom anchors return to opposite corners */

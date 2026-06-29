@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Navigation from "@/components/Navigation";
 import PageFooter from "@/components/PageFooter";
+import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
 import { AccentColorProvider } from "@/components/AccentColorContext";
 
@@ -17,16 +18,15 @@ export default function LayoutShell({
     return <>{children}</>;
   }
 
-  // Locked single-viewport pages render their own fixed corner lockup
-  // (HeroCorners), so the in-flow PageFooter is suppressed for them.
-  const isLockedViewport = pathname === "/" || pathname === "/info";
+  // Homepage already embeds Footer inside HomeMobileLayout/HomeDesktopLayout
+  const isHomepage = pathname === "/";
 
   return (
     <AccentColorProvider>
       <CustomCursor />
       <Navigation />
       {children}
-      {!isLockedViewport && <PageFooter />}
+      {!isHomepage && <Footer />}
     </AccentColorProvider>
   );
 }
