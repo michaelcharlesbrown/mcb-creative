@@ -4,9 +4,13 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import HeroCorners from "@/components/HeroCorners";
 import {
-  HOMEPAGE_HERO_SETS,
   HOMEPAGE_HERO_HOLD_MS,
+  type HeroSet,
 } from "@/lib/homepageHeroSlideshow";
+
+interface HomepageHeroProps {
+  sets: HeroSet[];
+}
 
 /**
  * Homepage hero — non-interactive, auto-rotating image slideshow.
@@ -19,23 +23,23 @@ import {
  * site's difference-blend invert: TL/TR are the global <Navigation>; the two
  * bottom anchors live here.
  */
-export default function HomepageHero() {
+export default function HomepageHero({ sets }: HomepageHeroProps) {
   const [active, setActive] = useState(0);
 
   useEffect(() => {
-    if (HOMEPAGE_HERO_SETS.length <= 1) return;
+    if (sets.length <= 1) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const id = window.setInterval(() => {
-      setActive((i) => (i + 1) % HOMEPAGE_HERO_SETS.length);
+      setActive((i) => (i + 1) % sets.length);
     }, HOMEPAGE_HERO_HOLD_MS);
 
     return () => window.clearInterval(id);
-  }, []);
+  }, [sets.length]);
 
   return (
     <section className="home-hero" aria-label="Selected work">
-      {HOMEPAGE_HERO_SETS.map((set, i) => (
+      {sets.map((set, i) => (
         <div
           key={i}
           className="home-hero__set"
