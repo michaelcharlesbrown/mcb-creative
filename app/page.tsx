@@ -17,7 +17,7 @@ type SanityGridProject = {
 
 /** Fixed order for the homepage featured grid */
 const FEATURED_HOME_SLUGS = [
-  "shiftdrink",
+  "red-moon-apostles",
   "protools",
   "bittorrent",
   "alluvial",
