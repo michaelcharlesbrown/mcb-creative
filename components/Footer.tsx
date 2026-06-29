@@ -2,7 +2,6 @@
 
 import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
-import Link from 'next/link'
 
 interface FooterProps {
   accentColor?: string
@@ -67,8 +66,8 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
                 I&apos;d Love To Hear About It.<br />
                 Get In Touch.
               </p>
-              <Link href="/info" className="footer__cta-link">
-                Say hello
+              <a href="mailto:hello@mcbcreative.design" className="footer__cta-link">
+                hello@mcbcreative.design
                 <img
                   src="/images/arrow-light.svg"
                   alt=""
@@ -78,7 +77,7 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
                   decoding="async"
                   aria-hidden
                 />
-              </Link>
+              </a>
             </motion.div>
           </div>
         </div>

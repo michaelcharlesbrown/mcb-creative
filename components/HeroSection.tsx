@@ -49,9 +49,9 @@ export default function HeroSection() {
           transition={{ duration: 1.0, ease: EASE, delay: 1.0 }}
         >
           <div className="max-w-[var(--content-max-width)] mx-auto w-full content-inset box-border">
-            <div className="hero__video-frame aspect-[5/7] md:aspect-auto">
+            <div className="hero__video-frame">
               <video
-                className="w-full h-full object-cover md:h-auto md:object-contain"
+                className="w-full h-auto"
                 src={HOMEPAGE_HERO_VIDEO_SRC}
                 autoPlay
                 muted

@@ -101,6 +101,62 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: 'red-moon-apostles',
+    accentColor: '#b71c1c',
+    title: 'Red Moon Apostles',
+    tagline: 'Brand identity and visual design.',
+    heroTagline: 'Developing a distinctive visual identity for an emerging rock band.',
+    scope: ['Band Identity', 'Album Artwork', 'Merchandise Design'],
+    description: [
+      "Red Moon Apostles is a Los Angeles-based rock band blending psychedelic influences with modern alternative sound. As they prepared to release their debut album, they needed a cohesive visual identity that would capture their sonic aesthetic and establish their presence in the indie music scene.",
+      "We created a mysterious, evocative identity system drawing from lunar imagery, vintage rock poster art, and contemporary design sensibilities. The visual language spans album packaging, merchandise, social media, and live show materials, giving the band a distinct, memorable presence that resonates with their audience.",
+    ],
+    year: '2024',
+    client: 'Red Moon Apostles',
+    services: ['Brand Identity', 'Visual Design', 'Art Direction'],
+    thumbnail: '/images/projects/red-moon-apostles/thumb.jpg',
+    media: [],
+  },
+  {
+    slug: 'protools',
+    accentColor: '#cc0000',
+    title: 'ProTools',
+    tagline: 'Creative direction and visual design for the industry-standard digital audio workstation.',
+    heroTagline: 'Reimagining the visual language for the world\'s leading professional audio platform.',
+    scope: ['Creative Direction', 'Marketing Campaign Design', 'Product UI Concepts'],
+    team: [
+      'Creative Director - Michael Charles Brown',
+      'Senior Designer - Marcus Williams',
+      'Art Director - Lisa Chen',
+    ],
+    description: [
+      "Pro Tools by Avid is the industry-standard digital audio workstation used by top recording studios, mixing engineers, and post-production houses worldwide. As the platform evolved, it needed creative direction that would modernize its visual presence while honoring its legacy of professional excellence.",
+      "We developed campaign concepts and visual directions that speak to both seasoned audio professionals and the next generation of music creators. Our work emphasizes precision, creativity, and the emotional power of sound, reinforcing Pro Tools' position as the definitive standard for professional audio.",
+    ],
+    year: '2024',
+    client: 'Avid Technology',
+    services: ['Creative Direction', 'Visual Design', 'Brand Identity'],
+    thumbnail: '/images/projects/protools/thumb.jpg',
+    media: [],
+  },
+  {
+    slug: 'mad-denizen',
+    accentColor: '#7c3aed',
+    title: 'Mad Denizen',
+    tagline: 'Brand identity and visual design for an independent music label.',
+    heroTagline: 'Creating a bold visual identity for underground electronic music culture.',
+    scope: ['Brand Identity', 'Album Artwork', 'Event Graphics'],
+    description: [
+      "Mad Denizen is an independent electronic music label pushing boundaries in experimental sound. They needed a visual identity that captured the raw energy and avant-garde spirit of their roster while establishing recognition in the crowded independent music scene.",
+      "We created a flexible, bold identity system that adapts across album releases, event posters, and digital platforms. Drawing inspiration from underground club culture and glitch aesthetics, the visual language we developed is distinctive, energetic, and unmistakably Mad Denizen.",
+    ],
+    year: '2024',
+    client: 'Mad Denizen',
+    services: ['Brand Identity', 'Visual Design', 'Art Direction'],
+    thumbnail: '/images/projects/mad-denizen/thumb.jpg',
+    media: [],
+  },
+  {
     slug: 'shiftdrink',
     accentColor: '#ff6b00',
     title: 'ShiftDrink',
@@ -193,11 +249,6 @@ export const projects: Project[] = [
     tagline: 'Visual identity and digital platform design for a forward-thinking technology company.',
     heroTagline: 'Crafting a sophisticated brand for institutional blockchain infrastructure.',
     scope: ['Visual Identity System', 'Product Interface Design', 'Motion Design'],
-    team: [
-      'Creative Director - Michael Charles Brown',
-      'UI Designer - Emma Rodriguez',
-      'Motion Designer - James Park',
-    ],
     description: [
       "Alluvial builds institutional-grade blockchain infrastructure for digital asset custody. Operating in a complex, trust-driven industry, they needed a visual identity that conveyed security, sophistication, and technical excellence while remaining approachable to enterprise clients.",
       "Our solution balances technical precision with warmth through a refined color palette, clean typography, and subtle motion design. The identity system we created positions Alluvial as both deeply knowledgeable and forward-thinking, bridging traditional finance with the future of digital assets.",
@@ -209,61 +260,12 @@ export const projects: Project[] = [
     media: [],
   },
   {
-    slug: 'protools',
-    accentColor: '#cc0000',
-    title: 'ProTools',
-    tagline: 'Creative direction and visual design for the industry-standard digital audio workstation.',
-    heroTagline: 'Reimagining the visual language for the world\'s leading professional audio platform.',
-    scope: ['Creative Direction', 'Marketing Campaign Design', 'Product UI Concepts'],
-    team: [
-      'Creative Director - Michael Charles Brown',
-      'Senior Designer - Marcus Williams',
-      'Art Director - Lisa Chen',
-    ],
-    description: [
-      "Pro Tools by Avid is the industry-standard digital audio workstation used by top recording studios, mixing engineers, and post-production houses worldwide. As the platform evolved, it needed creative direction that would modernize its visual presence while honoring its legacy of professional excellence.",
-      "We developed campaign concepts and visual directions that speak to both seasoned audio professionals and the next generation of music creators. Our work emphasizes precision, creativity, and the emotional power of sound, reinforcing Pro Tools' position as the definitive standard for professional audio.",
-    ],
-    year: '2024',
-    client: 'Avid Technology',
-    services: ['Creative Direction', 'Visual Design', 'Brand Identity'],
-    thumbnail: '/images/projects/protools/thumb.jpg',
-    media: [],
-  },
-  {
-    slug: 'mad-denizen',
-    accentColor: '#7c3aed',
-    title: 'Mad Denizen',
-    tagline: 'Brand identity and visual design for an independent music label.',
-    heroTagline: 'Creating a bold visual identity for underground electronic music culture.',
-    scope: ['Brand Identity', 'Album Artwork', 'Event Graphics'],
-    team: [
-      'Creative Director - Michael Charles Brown',
-      'Graphic Designer - Nina Torres',
-      'Illustrator - David Kim',
-    ],
-    description: [
-      "Mad Denizen is an independent electronic music label pushing boundaries in experimental sound. They needed a visual identity that captured the raw energy and avant-garde spirit of their roster while establishing recognition in the crowded independent music scene.",
-      "We created a flexible, bold identity system that adapts across album releases, event posters, and digital platforms. Drawing inspiration from underground club culture and glitch aesthetics, the visual language we developed is distinctive, energetic, and unmistakably Mad Denizen.",
-    ],
-    year: '2024',
-    client: 'Mad Denizen',
-    services: ['Brand Identity', 'Visual Design', 'Art Direction'],
-    thumbnail: '/images/projects/mad-denizen/thumb.jpg',
-    media: [],
-  },
-  {
     slug: 'rainberry',
     accentColor: '#00bcd4',
     title: 'Rainberry',
     tagline: 'Complete brand identity and digital experience design.',
     heroTagline: 'Launching a consumer technology brand with clarity and confidence.',
     scope: ['Brand Strategy', 'Visual Identity', 'Digital Product Design'],
-    team: [
-      'Creative Director - Michael Charles Brown',
-      'Brand Strategist - Amanda Foster',
-      'UX Designer - Tom Bennett',
-    ],
     description: [
       "Rainberry is building next-generation consumer technology products that prioritize privacy and user control. As a new entrant in a market dominated by tech giants, they needed a brand identity that would establish trust and convey technical sophistication while remaining approachable.",
       "We crafted a modern, clean identity system that emphasizes transparency and user empowerment. The visual language combines soft, organic forms with precise technical details, creating a brand presence that feels both human and cutting-edge.",
@@ -283,8 +285,8 @@ export const projects: Project[] = [
     scope: ['Product Redesign', 'Brand Refresh', 'User Experience Strategy'],
     team: [
       'Creative Director - Michael Charles Brown',
-      'Product Designer - Rachel Kim',
-      'UX Researcher - Chris Martinez',
+      'Visual Designer - Johann Banta',
+      'UX Designer - Briana Jackson',
     ],
     description: [
       "uTorrent has been the lightweight torrent client of choice for over a decade, but its interface had become dated and cluttered. With millions of daily users across the globe, any redesign needed to balance modernization with the familiarity users depend on.",
@@ -294,28 +296,6 @@ export const projects: Project[] = [
     client: 'uTorrent',
     services: ['Brand Identity', 'UI/UX Design', 'Web Design'],
     thumbnail: '/images/projects/utorrent/thumb.jpg',
-    media: [],
-  },
-  {
-    slug: 'red-moon-apostles',
-    accentColor: '#b71c1c',
-    title: 'Red Moon Apostles',
-    tagline: 'Brand identity and visual design.',
-    heroTagline: 'Developing a distinctive visual identity for an emerging rock band.',
-    scope: ['Band Identity', 'Album Artwork', 'Merchandise Design'],
-    team: [
-      'Creative Director - Michael Charles Brown',
-      'Designer - Tyler James',
-      'Photographer - Morgan Reed',
-    ],
-    description: [
-      "Red Moon Apostles is a Los Angeles-based rock band blending psychedelic influences with modern alternative sound. As they prepared to release their debut album, they needed a cohesive visual identity that would capture their sonic aesthetic and establish their presence in the indie music scene.",
-      "We created a mysterious, evocative identity system drawing from lunar imagery, vintage rock poster art, and contemporary design sensibilities. The visual language spans album packaging, merchandise, social media, and live show materials, giving the band a distinct, memorable presence that resonates with their audience.",
-    ],
-    year: '2024',
-    client: 'Red Moon Apostles',
-    services: ['Brand Identity', 'Visual Design', 'Art Direction'],
-    thumbnail: '/images/projects/red-moon-apostles/thumb.jpg',
     media: [],
   },
 ];
@@ -330,14 +310,14 @@ export function getAdjacentProjects(currentSlug: string): {
   next: Project | null;
 } {
   const currentIndex = projects.findIndex((p) => p.slug === currentSlug);
-  
+
   if (currentIndex === -1) {
     return { previous: null, next: null };
   }
-  
+
   const previousIndex = currentIndex === 0 ? projects.length - 1 : currentIndex - 1;
   const nextIndex = currentIndex === projects.length - 1 ? 0 : currentIndex + 1;
-  
+
   return {
     previous: projects[previousIndex] || null,
     next: projects[nextIndex] || null,
