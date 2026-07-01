@@ -1,13 +1,17 @@
 import { projects } from "@/data/projects";
 import { sanityFetch } from "@/lib/sanity.fetch";
-import { projectsGridQuery } from "@/lib/sanity.queries";
+import { homepageProjectsQuery } from "@/lib/sanity.queries";
 import { resolveProjectImages } from "@/lib/resolveProjectImages";
 import HomeMobileLayout from "@/components/HomeMobileLayout";
 import HomeDesktopLayout from "@/components/HomeDesktopLayout";
 
-type SanityGridProject = {
+const DEFAULT_ACCENT_COLOR = "#000000";
+
+type SanityHomepageProject = {
   slug: string;
+  title: string;
   accentColor?: string;
+  scope?: string[];
   heroImage?: { alt?: string; asset?: { url: string } };
   thumbnail?: { alt?: string; asset?: { url: string } };
 };
@@ -21,24 +25,33 @@ export type HomeProject = {
 };
 
 export default async function Home() {
+  // The Homepage singleton's `featuredProjects` array (drag-reordered in the
+  // Studio) is the single source of truth for which projects appear on the
+  // homepage and in what order. The local `projects` array only fills in
+  // images/services/accentColor that haven't been set in Sanity yet — it
+  // never controls inclusion or ordering.
   const sanityProjects =
-    await sanityFetch<SanityGridProject[]>(projectsGridQuery).catch(() => []);
-  const sanityBySlug = Object.fromEntries(sanityProjects.map((p) => [p.slug, p]));
+    (await sanityFetch<(SanityHomepageProject | null)[] | null>(
+      homepageProjectsQuery
+    ).catch(() => [])) ?? [];
+  const staticBySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
 
-  const allProjects: HomeProject[] = projects.map((stat) => {
-    const sanity = sanityBySlug[stat.slug];
-    const { landscape } = resolveProjectImages(
-      sanity ? { slug: stat.slug, heroImage: sanity.heroImage, thumbnail: sanity.thumbnail } : null,
-      { slug: stat.slug, heroImage: stat.heroImage, thumbnail: stat.thumbnail },
-    );
-    return {
-      slug: stat.slug,
-      title: stat.title,
-      services: stat.services,
-      heroImageLandscape: landscape,
-      accentColor: sanity?.accentColor ?? stat.accentColor,
-    };
-  });
+  const allProjects: HomeProject[] = sanityProjects
+    .filter((sanity): sanity is SanityHomepageProject => Boolean(sanity))
+    .map((sanity) => {
+      const stat = staticBySlug[sanity.slug];
+      const { landscape } = resolveProjectImages(
+        { slug: sanity.slug, heroImage: sanity.heroImage, thumbnail: sanity.thumbnail },
+        stat ? { slug: stat.slug, heroImage: stat.heroImage, thumbnail: stat.thumbnail } : null,
+      );
+      return {
+        slug: sanity.slug,
+        title: sanity.title,
+        services: sanity.scope ?? stat?.services ?? [],
+        heroImageLandscape: landscape,
+        accentColor: sanity.accentColor ?? stat?.accentColor ?? DEFAULT_ACCENT_COLOR,
+      };
+    });
 
   return (
     <div className="home text-black">

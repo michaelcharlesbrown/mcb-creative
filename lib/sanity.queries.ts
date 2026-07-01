@@ -28,12 +28,32 @@ export const projectSlugsQuery = `*[_type=="project" && defined(slug.current)][]
   "slug": slug.current
 }`;
 
-/** All published projects — used for the carousel and work grid. */
+/** Full project catalog, unfiltered — used for the project-page nav rail and adjacent-project links. */
 export const projectsGridQuery = `*[_type=="project" && defined(slug.current)] | order(_createdAt asc) {
   title,
   "slug": slug.current,
   "accentColor": accentColor.hex,
   "subheadline": pageContent[_type=="introBlock"][0].subheadline,
+  "scope": pageContent[_type=="introBlock"][0].scope,
+  heroImage{
+    alt,
+    asset->{url}
+  },
+  thumbnail{
+    alt,
+    asset->{url}
+  }
+}`;
+
+/**
+ * Curated homepage picks, in editorial order. Sourced from the "Homepage"
+ * singleton's `featuredProjects` reference array — order and inclusion are
+ * controlled entirely by drag-and-drop reordering that array in the Studio.
+ */
+export const homepageProjectsQuery = `*[_id=="homepage"][0].featuredProjects[]->{
+  title,
+  "slug": slug.current,
+  "accentColor": accentColor.hex,
   "scope": pageContent[_type=="introBlock"][0].scope,
   heroImage{
     alt,

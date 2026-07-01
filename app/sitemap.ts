@@ -1,11 +1,14 @@
 import { MetadataRoute } from "next";
-import { projects } from "@/data/projects";
+import { sanityFetch } from "@/lib/sanity.fetch";
+import { projectSlugsQuery } from "@/lib/sanity.queries";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://mcbcreative.design";
 
-  const projectUrls = projects.map((project) => ({
-    url: `${baseUrl}/projects/${project.slug}`,
+  const slugs = await sanityFetch<{ slug: string }[]>(projectSlugsQuery).catch(() => []);
+
+  const projectUrls = slugs.map(({ slug }) => ({
+    url: `${baseUrl}/projects/${slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.8,

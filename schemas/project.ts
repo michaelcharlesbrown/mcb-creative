@@ -35,17 +35,6 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'gridPosition',
-      title: 'Homepage Grid Position',
-      description: 'Set a number (1–6) to feature this project in the homepage grid at that slot. Leave blank to exclude from the grid.',
-      type: 'number',
-      validation: (Rule) => [
-        Rule.min(1).warning('Must be between 1 and 6.'),
-        Rule.max(6).warning('Must be between 1 and 6.'),
-        Rule.integer().warning('Must be a whole number.'),
-      ],
-    }),
-    defineField({
       name: 'heroImage',
       title: 'Desktop Hero / Landscape Card',
       description: 'Landscape image (16:9 or wider, minimum 2800×1575px). Used as the full-screen hero on desktop and in landscape work grid cards.',
