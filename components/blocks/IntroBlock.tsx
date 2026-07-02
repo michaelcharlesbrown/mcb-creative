@@ -76,7 +76,7 @@ export default function IntroBlock({
   return (
     <section className="project-intro" aria-labelledby="project-intro-title">
       <header className="project-intro__header max-w-[var(--content-max-width)] mx-auto content-inset">
-        {eyebrow && <p className="project-intro__eyebrow">{eyebrow}</p>}
+        {eyebrow && <p className="label">{eyebrow}</p>}
         {title && (
           <h1 id="project-intro-title" className="project-intro__headline">
             {title}

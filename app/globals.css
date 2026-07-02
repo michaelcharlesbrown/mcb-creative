@@ -118,6 +118,7 @@
   --space-project-eyebrow-gap:   clamp(1.25rem, 8px + 0.83vw, 1.875rem); /* 20px → 30px */
   --space-project-header-bottom: clamp(2.5rem, 26px + 2.64vw, 6rem);     /* 64px → 96px */
   --aspect-project-hero:         3 / 2;
+  --aspect-project-hero-mobile:  5 / 7; /* matches the Sanity "thumbnail" (portrait hero) field ratio */
   --space-info-page-paragraph: clamp(2rem, 13px + 1.32vw, 3rem); /* 32px → 48px */
   /* Site tagline (/// motif) */
   --text-tagline:    1.5rem;
@@ -823,17 +824,6 @@ img.footer__wordmark {
   gap:            var(--space-project-eyebrow-gap);
 }
 
-/* Eyebrow — small project name above the headline; mono, never below 12px */
-.project-intro__eyebrow {
-  font-family: var(--font-family-mono);
-  font-size:   var(--font-size-mono); /* fluid 12px floor → 16px */
-  margin:      0;
-}
-
-.project-intro__eyebrow-name {
-  font-weight: var(--weight-bold);
-}
-
 /* Headline — the project tagline as the page H1 */
 .project-intro__headline {
   font-family:    var(--font-family-headline);
@@ -1431,6 +1421,37 @@ img.studio-intro__arrow {
   .social-showcase--half {
     max-width: 100%;
   }
+
+  /* Info page: columns stack on mobile, so dissolve the copy-col flex
+     boxes into the grid and push the Instagram/LinkedIn links to the
+     end instead of letting them land mid-page between the two columns. */
+  .info-intro .project-info__copy-col {
+    display: contents;
+  }
+
+  .info-intro .project-info__links {
+    order:      1;
+    /* Same rhythm as the space between the headline and the body copy
+       (--space-project-header-bottom), minus the row-gap the grid
+       already inserts between stacked items. */
+    margin-top: calc(var(--space-project-header-bottom) - var(--gap-grid));
+  }
+
+  /* Mobile hero swaps to the portrait "thumbnail" source (see MediaBlock's
+     art-direction <picture>) — the container must switch to that image's
+     native ratio too, or the portrait source just gets cropped into the
+     landscape frame. */
+  .project-intro__cover-media {
+    aspect-ratio: var(--aspect-project-hero-mobile);
+  }
+
+  /* Project pages: SCOPE/TEAM is the grid's first child, so it stacks
+     above the description on mobile. Push it below the copy instead —
+     same order + breathing-room treatment as the info page links. */
+  .project-info__meta-col {
+    order:      1;
+    margin-top: calc(var(--space-project-header-bottom) - var(--gap-grid));
+  }
 }
 
 @media (min-width: 768px) {
@@ -1535,4 +1556,3 @@ img.studio-intro__arrow {
 :root {
   --text-info-body: var(--font-size-body); /* was 18px; now fluid 16px → 24px (1440→2650) */
 }
-

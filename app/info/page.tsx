@@ -34,7 +34,7 @@ export default function Info() {
                   {para}
                 </p>
               ))}
-              <p className="label">
+              <p className="label project-info__links">
                 <a href="https://www.instagram.com/maddenizen" target="_blank" rel="noopener noreferrer">
                   Instagram
                 </a>{" "}
