@@ -20,7 +20,15 @@ export const projectBySlugQuery = `*[_type=="project" && slug.current==$slug][0]
     "videoFileLeftUrl": videoFileLeft.asset->url,
     imageRight{ alt, asset->{url} },
     "videoFileRightUrl": videoFileRight.asset->url,
-    layout, textAlignment, heading, body
+    layout, textAlignment, heading, body,
+    backgroundImage{ alt, asset->{url} },
+    "backgroundVideoFileUrl": backgroundVideoFile.asset->url,
+    "backgroundColorHex": backgroundColor.hex,
+    screens[]{
+      image{ alt, asset->{url} },
+      "videoFileUrl": videoFile.asset->url
+    },
+    width, layoutStyle
   }
 }`;
 

@@ -2,6 +2,7 @@ import IntroBlock from "./IntroBlock";
 import FullWidthBlock from "./FullWidthBlock";
 import TwoColumnBlock from "./TwoColumnBlock";
 import TextMediaBlock from "./TextMediaBlock";
+import SocialShowcase from "./SocialShowcase";
 
 export interface PageContentBlock {
   _type: string;
@@ -20,6 +21,12 @@ export interface PageContentBlock {
   textAlignment?: "top" | "middle" | "bottom";
   heading?: string;
   body?: unknown;
+  backgroundImage?: { alt?: string; asset?: { url: string } };
+  backgroundVideoFileUrl?: string;
+  backgroundColorHex?: string;
+  screens?: { image?: { alt?: string; asset?: { url: string } }; videoFileUrl?: string }[];
+  width?: "full" | "half";
+  layoutStyle?: "grid" | "marquee";
 }
 
 interface BlockRendererProps {
@@ -76,6 +83,19 @@ export default function BlockRenderer({
           body={block.body}
           image={block.image}
           videoFileUrl={block.videoFileUrl}
+          titleFallback={titleFallback}
+        />
+      );
+    case "socialShowcase":
+      return (
+        <SocialShowcase
+          key={index}
+          backgroundImage={block.backgroundImage}
+          backgroundVideoFileUrl={block.backgroundVideoFileUrl}
+          backgroundColorHex={block.backgroundColorHex}
+          screens={block.screens}
+          width={block.width}
+          layoutStyle={block.layoutStyle}
           titleFallback={titleFallback}
         />
       );

@@ -59,6 +59,7 @@ export default defineType({
         defineArrayMember({ type: 'fullWidthBlock' }),
         defineArrayMember({ type: 'twoColumnBlock' }),
         defineArrayMember({ type: 'textMediaBlock' }),
+        defineArrayMember({ type: 'socialShowcase' }),
       ],
     }),
   ],

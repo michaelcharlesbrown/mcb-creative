@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, createContext, useContext } from 'react'
+import { usePathname } from 'next/navigation'
 import Lenis from 'lenis'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
@@ -15,8 +16,15 @@ export function useLenis() {
 
 export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null)
+  const pathname = usePathname()
+  const isStudio = pathname?.startsWith('/studio')
 
   useEffect(() => {
+    // Sanity Studio manages its own internal scroll regions — it isn't built to
+    // sit inside a page-level smooth-scroll wrapper, and Lenis's global wheel
+    // interception blocks native scrolling in Studio's panes when it runs there.
+    if (isStudio) return
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -37,7 +45,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     return () => {
       lenis.destroy()
     }
-  }, [])
+  }, [isStudio])
 
   return (
     <LenisContext.Provider value={lenisRef.current}>
