@@ -1,5 +1,5 @@
 import { sanityFetch } from "@/lib/sanity.fetch";
-import { projectBySlugQuery, projectsGridQuery } from "@/lib/sanity.queries";
+import { projectBySlugQuery, workPageProjectsQuery } from "@/lib/sanity.queries";
 import { resolveProjectImages } from "@/lib/resolveProjectImages";
 import BlockRenderer, { type PageContentBlock } from "@/components/blocks/BlockRenderer";
 import MediaBlock from "@/components/blocks/MediaBlock";
@@ -31,21 +31,29 @@ type SanityGridProject = {
   thumbnail?: { alt?: string; asset?: { url: string } };
 };
 
+/**
+ * Previous/next are computed over the Work Page's curated, ordered project
+ * list — the same set and order shown in the Work grid — so a project left
+ * out of that grid is also left out of site-wide navigation, reachable only
+ * by its direct URL.
+ */
 async function getAdjacentProjectsFromSanity(slug: string) {
-  const projectList = await sanityFetch<{ slug: string; title: string; accentColor?: string }[]>(
-    `*[_type=="project" && defined(slug.current)]|order(_createdAt asc){ "slug": slug.current, title, "accentColor": accentColor.hex }`
-  );
-  const currentIndex = projectList.findIndex((p) => p.slug === slug);
+  const projectList =
+    (await sanityFetch<({ slug: string; title: string; accentColor?: string } | null)[] | null>(
+      workPageProjectsQuery
+    ).catch(() => [])) ?? [];
+  const filteredList = projectList.filter((p): p is { slug: string; title: string; accentColor?: string } => Boolean(p));
+  const currentIndex = filteredList.findIndex((p) => p.slug === slug);
 
   if (currentIndex === -1) return { previous: null, next: null };
 
-  const len = projectList.length;
+  const len = filteredList.length;
   const previousIndex = currentIndex === 0 ? len - 1 : currentIndex - 1;
   const nextIndex = currentIndex === len - 1 ? 0 : currentIndex + 1;
 
   return {
-    previous: projectList[previousIndex] ?? null,
-    next: projectList[nextIndex] ?? null,
+    previous: filteredList[previousIndex] ?? null,
+    next: filteredList[nextIndex] ?? null,
   };
 }
 
@@ -85,24 +93,32 @@ export default async function Project({
 
   const hasHeroMedia = Boolean(sanityProject.heroImage || sanityProject.heroVideoFileUrl);
 
-  // Build the project carousel — all projects except this one
-  const sanityGridProjects = await sanityFetch<SanityGridProject[]>(projectsGridQuery).catch(() => []);
-  const sanityBySlug = Object.fromEntries(sanityGridProjects.map((p) => [p.slug, p]));
+  // Build the project carousel from the Work Page's curated list — the same
+  // set and order as the Work grid — so a project left out of that grid is
+  // also left out of the carousel. `hardcodedProjects` only fills in
+  // images/services that haven't been set in Sanity yet.
+  const sanityGridProjects =
+    (await sanityFetch<(SanityGridProject | null)[] | null>(workPageProjectsQuery).catch(
+      () => []
+    )) ?? [];
+  const hardcodedBySlug = Object.fromEntries(hardcodedProjects.map((p) => [p.slug, p]));
 
-  const navRailProjects: NavRailProject[] = hardcodedProjects.map((p) => {
-    const sanity = sanityBySlug[p.slug];
-    const { portrait } = resolveProjectImages(
-      sanity ? { slug: p.slug, heroImage: sanity.heroImage, thumbnail: sanity.thumbnail } : null,
-      { slug: p.slug, heroImage: p.heroImage, thumbnail: p.thumbnail },
-    );
-    return {
-      slug: p.slug,
-      title: sanity?.title ?? p.title,
-      accentColor: sanity?.accentColor ?? p.accentColor,
-      scope: sanity?.scope ?? p.scope ?? p.services ?? [],
-      heroImagePortrait: portrait,
-    };
-  });
+  const navRailProjects: NavRailProject[] = sanityGridProjects
+    .filter((sanity): sanity is SanityGridProject => Boolean(sanity))
+    .map((sanity) => {
+      const stat = hardcodedBySlug[sanity.slug];
+      const { portrait } = resolveProjectImages(
+        { slug: sanity.slug, heroImage: sanity.heroImage, thumbnail: sanity.thumbnail },
+        stat ? { slug: stat.slug, heroImage: stat.heroImage, thumbnail: stat.thumbnail } : null,
+      );
+      return {
+        slug: sanity.slug,
+        title: sanity.title,
+        accentColor: sanity.accentColor ?? stat?.accentColor,
+        scope: sanity.scope ?? stat?.scope ?? stat?.services ?? [],
+        heroImagePortrait: portrait,
+      };
+    });
 
   return (
     <div className="min-h-screen bg-background text-black">

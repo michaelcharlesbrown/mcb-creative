@@ -4,6 +4,7 @@ import { media } from 'sanity-plugin-media'
 import { colorInput } from '@sanity/color-input'
 import project from './schemas/project'
 import homepage from './schemas/homepage'
+import workPage from './schemas/workPage'
 import introBlock from './schemas/blocks/introBlock'
 import fullWidthBlock from './schemas/blocks/fullWidthBlock'
 import twoColumnBlock from './schemas/blocks/twoColumnBlock'
@@ -22,25 +23,29 @@ if (!dataset) {
 }
 
 /**
- * "Homepage" is a singleton — there is exactly one, with a fixed document ID.
- * Pin it to the top of the desk list and route straight to that one document
- * instead of the usual "create new" list view.
+ * "Homepage" and "Work Page" are singletons — exactly one of each, at a fixed
+ * document ID. Pin them to the top of the desk list and route straight to
+ * that one document instead of the usual "create new" list view.
  */
-const HOMEPAGE_DOC_ID = 'homepage'
+const SINGLETONS = [
+  { id: 'homepage', schemaType: 'homepage', title: 'Homepage' },
+  { id: 'workPage', schemaType: 'workPage', title: 'Work Page' },
+]
+const SINGLETON_TYPES = new Set(SINGLETONS.map((s) => s.schemaType))
 
 const structure = (S: StructureBuilder) =>
   S.list()
     .title('Content')
     .items([
-      S.listItem()
-        .title('Homepage')
-        .id(HOMEPAGE_DOC_ID)
-        .child(
-          S.document().schemaType('homepage').documentId(HOMEPAGE_DOC_ID)
-        ),
+      ...SINGLETONS.map(({ id, schemaType, title }) =>
+        S.listItem()
+          .title(title)
+          .id(id)
+          .child(S.document().schemaType(schemaType).documentId(id))
+      ),
       S.divider(),
       ...S.documentTypeListItems().filter(
-        (listItem) => listItem.getId() !== 'homepage'
+        (listItem) => !SINGLETON_TYPES.has(listItem.getId() ?? '')
       ),
     ])
 
@@ -51,18 +56,18 @@ export default defineConfig({
   dataset,
   basePath: '/studio',
   schema: {
-    types: [project, homepage, introBlock, fullWidthBlock, twoColumnBlock, textMediaBlock, socialShowcase],
+    types: [project, homepage, workPage, introBlock, fullWidthBlock, twoColumnBlock, textMediaBlock, socialShowcase],
   },
   plugins: [deskTool({ structure }), media(), colorInput()],
   document: {
     // Singletons don't get a "new" button or duplicate/delete actions —
-    // there is exactly one Homepage document, fixed at HOMEPAGE_DOC_ID.
+    // there is exactly one of each, fixed at its SINGLETONS entry's id.
     newDocumentOptions: (prev, { creationContext }) =>
       creationContext.type === 'global'
-        ? prev.filter((item) => item.templateId !== 'homepage')
+        ? prev.filter((item) => !SINGLETON_TYPES.has(item.templateId))
         : prev,
     actions: (prev, { schemaType }) =>
-      schemaType === 'homepage'
+      SINGLETON_TYPES.has(schemaType)
         ? prev.filter(({ action }) => action !== 'duplicate' && action !== 'delete')
         : prev,
   },

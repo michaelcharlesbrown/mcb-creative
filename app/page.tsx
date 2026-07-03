@@ -27,13 +27,15 @@ export type HomeProject = {
 export default async function Home() {
   // The Homepage singleton's `featuredProjects` array (drag-reordered in the
   // Studio) is the single source of truth for which projects appear on the
-  // homepage and in what order. The local `projects` array only fills in
-  // images/services/accentColor that haven't been set in Sanity yet — it
-  // never controls inclusion or ordering.
+  // homepage and in what order. A project only shows up here if it has been
+  // explicitly added — there is no automatic fallback. The local `projects`
+  // array only fills in images/services/accentColor that haven't been set in
+  // Sanity yet; it never controls inclusion or ordering.
   const sanityProjects =
     (await sanityFetch<(SanityHomepageProject | null)[] | null>(
       homepageProjectsQuery
     ).catch(() => [])) ?? [];
+
   const staticBySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
 
   const allProjects: HomeProject[] = sanityProjects

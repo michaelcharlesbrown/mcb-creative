@@ -51,7 +51,7 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
             >
               <h2 className="footer__cta-headline">
                 Let&apos;s work<br />
-                together
+                together.
               </h2>
             </motion.div>
 
@@ -67,7 +67,11 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
                 Get In Touch.
               </p>
               <a href="mailto:hello@mcbcreative.design" className="footer__cta-link">
-                hello@mcbcreative.design
+                <span className="flip-link">
+                  <span className="flip-link__inner" data-text="hello@mcbcreative.design">
+                    hello@mcbcreative.design
+                  </span>
+                </span>
                 <img
                   src="/images/arrow-light.svg"
                   alt=""

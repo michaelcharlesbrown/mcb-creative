@@ -4,6 +4,21 @@ import { useState, useEffect } from "react";
 import { useAccentColor } from "@/components/AccentColorContext";
 
 const CURSOR_SIZE = 14;
+
+/**
+ * mix-blend-mode: difference computes |source - backdrop|. A pure (or
+ * near-pure) black source is a mathematical no-op — difference(0,0,0, X) = X
+ * for any X — so the cursor renders as exactly whatever's behind it,
+ * everywhere on the page, regardless of background. Guard against any
+ * project accent color dark enough to trigger this.
+ */
+function isTooDarkForDifferenceBlend(hex: string): boolean {
+  const match = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex.trim());
+  if (!match) return false;
+  const [r, g, b] = [1, 2, 3].map((i) => parseInt(match[i], 16));
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return luminance < 40;
+}
 const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -75,6 +90,10 @@ export default function CustomCursor() {
   if (disabled) return null;
 
   const size = isHovering ? CURSOR_SIZE * CURSOR_SCALE_HOVER : CURSOR_SIZE;
+  const cursorColor =
+    accentColor && !isTooDarkForDifferenceBlend(accentColor)
+      ? accentColor
+      : "var(--color-white)";
 
   return (
     <div
@@ -88,7 +107,7 @@ export default function CustomCursor() {
         marginLeft: -size / 2,
         marginTop: -size / 2,
         borderRadius: "50%",
-        backgroundColor: accentColor ?? "var(--color-white)",
+        backgroundColor: cursorColor,
         mixBlendMode: "difference",
         pointerEvents: "none",
         zIndex: 9999,

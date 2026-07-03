@@ -19,7 +19,7 @@ export default function WorkGrid({ projects }: WorkGridProps) {
         <section className="project-intro" aria-labelledby="work-intro-title">
           <header className="project-intro__header">
             <h1 id="work-intro-title" className="project-intro__headline">
-              My work spans brand identity, interactive web design, social media, and motion.
+              Selected Work
             </h1>
           </header>
         </section>

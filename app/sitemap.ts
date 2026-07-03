@@ -1,13 +1,25 @@
 import { MetadataRoute } from "next";
 import { sanityFetch } from "@/lib/sanity.fetch";
-import { projectSlugsQuery } from "@/lib/sanity.queries";
+import { homepageSlugsQuery, workPageSlugsQuery } from "@/lib/sanity.queries";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://mcbcreative.design";
 
-  const slugs = await sanityFetch<{ slug: string }[]>(projectSlugsQuery).catch(() => []);
+  // Only case studies published to the homepage and/or Work page grids are
+  // sitemapped — a project left out of both is unlisted end-to-end,
+  // reachable only by direct link, not offered to search engines either.
+  const [homepageSlugs, workPageSlugs] = await Promise.all([
+    sanityFetch<(string | null)[] | null>(homepageSlugsQuery).catch(() => []),
+    sanityFetch<(string | null)[] | null>(workPageSlugsQuery).catch(() => []),
+  ]);
 
-  const projectUrls = slugs.map(({ slug }) => ({
+  const slugs = new Set(
+    [...(homepageSlugs ?? []), ...(workPageSlugs ?? [])].filter(
+      (slug): slug is string => Boolean(slug)
+    )
+  );
+
+  const projectUrls = [...slugs].map((slug) => ({
     url: `${baseUrl}/projects/${slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,

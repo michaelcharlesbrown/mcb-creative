@@ -24,6 +24,7 @@ export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) 
         <div className="max-w-[var(--content-max-width)] mx-auto content-inset pb-[25vh]">
           <section className="project-intro" aria-labelledby="work-intro-title">
             <header className="project-intro__header">
+              <p className="label">Featured Projects</p>
               <h1 id="work-intro-title" className="project-intro__headline">
                 My work spans brand identity, interactive web design, social media, and motion.
               </h1>

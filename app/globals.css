@@ -97,10 +97,10 @@
   --focus-ring-width:     2px;
   --focus-ring-offset:    3px;
 
-  /* Nav flip-link hover transition */
-  --nav-flip-duration:    0.3s;
-  --nav-flip-ease:        cubic-bezier(0.76, 0, 0.24, 1);
-  --nav-flip-line-height: 1.2;
+  /* Flip-link hover transition — the one rollover effect for all text links */
+  --flip-link-duration:    0.3s;
+  --flip-link-ease:        cubic-bezier(0.76, 0, 0.24, 1);
+  --flip-link-line-height: 1.2;
 
   /* Letter-spacing (use only via component classes in this file) */
   --letter-spacing-work: 0.06em;
@@ -600,32 +600,30 @@ a.work-page__cta-button:focus-visible {
 
 /* Footer CTA — dark background variant */
 h2.footer__cta-headline {
-  font-size:   var(--text-footer-cta);
-  line-height: 1.2;
-  color:       var(--color-white);
+  font-family:    var(--font-family-headline);
+  font-size:      var(--text-footer-cta);
+  font-weight:    var(--weight-bold);
+  line-height:    1.2;
+  text-transform: none;
+  color:          var(--color-white);
 }
 
 .footer__cta-body {
+  font-family:    var(--font-family-headline);
   font-size:      var(--text-footer-cta-body);
   line-height:    1.3;
-  text-transform: uppercase;
   color:          var(--color-white);
 }
 
 a.footer__cta-link {
+  font-family:     var(--font-family-headline);
   font-size:       var(--text-footer-cta-body);
   line-height:     1.3;
-  text-transform:  uppercase;
   color:           var(--color-white);
   text-decoration: none;
   display:         inline-flex;
   align-items:     center;
   gap:             1rem;
-  transition:      opacity 0.25s ease;
-}
-
-a.footer__cta-link:hover {
-  opacity: 0.6;
 }
 
 img.footer__cta-arrow {
@@ -822,6 +820,12 @@ img.footer__wordmark {
   display:        flex;
   flex-direction: column;
   gap:            var(--space-project-eyebrow-gap);
+}
+
+/* Eyebrow above the headline — lighter than .label's default weight, which
+   is tuned for card titles/captions elsewhere and reads too heavy here */
+.project-intro__header .label {
+  font-weight: var(--weight-regular);
 }
 
 /* Headline — the project tagline as the page H1 */
@@ -1030,25 +1034,26 @@ img.studio-intro__arrow {
   filter:  invert(1); /* makes dark fills white; nav mix-blend-mode:difference inverts to black over light bg */
 }
 
-/* ── Nav flip-link: departure-board roll-up effect ── */
-.nav-flip-link {
+/* ── Flip-link: departure-board roll-up effect — the one rollover effect
+   for every text link site-wide (nav, footer, info page, etc.) ── */
+.flip-link {
   display:     inline-block;
   overflow:    hidden;
-  line-height: var(--nav-flip-line-height);
-  height:      calc(1em * var(--nav-flip-line-height));
+  line-height: var(--flip-link-line-height);
+  height:      calc(1em * var(--flip-link-line-height));
 }
 
-.nav-flip-link__inner {
+.flip-link__inner {
   display:    block;
-  transition: transform var(--nav-flip-duration) var(--nav-flip-ease);
+  transition: transform var(--flip-link-duration) var(--flip-link-ease);
 }
 
-.nav-flip-link__inner::after {
+.flip-link__inner::after {
   content: attr(data-text);
   display: block;
 }
 
-.nav-flip-link:hover .nav-flip-link__inner {
+.flip-link:hover .flip-link__inner {
   transform: translateY(-50%);
 }
 
@@ -1529,7 +1534,7 @@ img.studio-intro__arrow {
     will-change: auto;
   }
 
-  .nav-flip-link__inner {
+  .flip-link__inner {
     transition: none;
   }
 

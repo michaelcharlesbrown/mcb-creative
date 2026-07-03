@@ -7,9 +7,9 @@ export default defineType({
   fields: [
     defineField({
       name: 'featuredProjects',
-      title: 'Work Grid',
+      title: 'Featured Projects',
       description:
-        'Drag to reorder. Projects listed here appear on the homepage work grid in this exact order. Remove a project to take it off the homepage — it stays reachable from the project nav rail and sitemap.',
+        'Drag to reorder, up to 4. Projects listed here appear on the homepage in this exact order. Remove a project to take it off the homepage — it’s still public if it’s also in the Work Page grid; otherwise it’s reachable only by direct link, and won’t be included in the sitemap.',
       type: 'array',
       of: [
         defineArrayMember({
@@ -20,10 +20,10 @@ export default defineType({
           },
         }),
       ],
-      validation: (Rule) => Rule.unique(),
+      validation: (Rule) => Rule.unique().max(4),
     }),
   ],
   preview: {
-    prepare: () => ({ title: 'Homepage — Work Grid' }),
+    prepare: () => ({ title: 'Homepage — Featured Projects' }),
   },
 })

@@ -32,16 +32,26 @@ export const projectBySlugQuery = `*[_type=="project" && slug.current==$slug][0]
   }
 }`;
 
-export const projectSlugsQuery = `*[_type=="project" && defined(slug.current)][]{
-  "slug": slug.current
-}`;
+/**
+ * Slugs of case studies published to each grid — used by app/sitemap.ts to
+ * build a sitemap that matches the same curation source of truth as the
+ * site itself: a project left out of both grids is left out of the sitemap
+ * too, reachable only by direct link.
+ */
+export const homepageSlugsQuery = `*[_id=="homepage"][0].featuredProjects[]->slug.current`;
+export const workPageSlugsQuery = `*[_id=="workPage"][0].projects[]->slug.current`;
 
-/** Full project catalog, unfiltered — used for the project-page nav rail and adjacent-project links. */
-export const projectsGridQuery = `*[_type=="project" && defined(slug.current)] | order(_createdAt asc) {
+/**
+ * Curated homepage picks, in editorial order. Sourced from the "Homepage"
+ * singleton's `featuredProjects` reference array — order and inclusion are
+ * controlled entirely by drag-and-drop reordering that array in the Studio.
+ * A project only appears here if it has been explicitly added; there is no
+ * fallback list.
+ */
+export const homepageProjectsQuery = `*[_id=="homepage"][0].featuredProjects[]->{
   title,
   "slug": slug.current,
   "accentColor": accentColor.hex,
-  "subheadline": pageContent[_type=="introBlock"][0].subheadline,
   "scope": pageContent[_type=="introBlock"][0].scope,
   heroImage{
     alt,
@@ -54,11 +64,15 @@ export const projectsGridQuery = `*[_type=="project" && defined(slug.current)] |
 }`;
 
 /**
- * Curated homepage picks, in editorial order. Sourced from the "Homepage"
- * singleton's `featuredProjects` reference array — order and inclusion are
- * controlled entirely by drag-and-drop reordering that array in the Studio.
+ * Curated Work page catalog, in editorial order. Sourced from the "Work
+ * Page" singleton's `projects` reference array — drag-and-drop reordered in
+ * the Studio. This is the single source of truth for which case studies are
+ * publicly browsable: it also drives the project-detail nav rail and
+ * previous/next links, so a project left out here is left out everywhere
+ * except its own direct URL. A newly created case study does not appear
+ * until it is explicitly added.
  */
-export const homepageProjectsQuery = `*[_id=="homepage"][0].featuredProjects[]->{
+export const workPageProjectsQuery = `*[_id=="workPage"][0].projects[]->{
   title,
   "slug": slug.current,
   "accentColor": accentColor.hex,

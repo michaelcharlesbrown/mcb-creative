@@ -30,19 +30,19 @@ export default function Navigation() {
         </Link>
         <div className="nav__links flex items-center gap-2 uppercase text-white">
           <Link
-            href="/"
-            className="nav-flip-link"
-            aria-current={pathname === "/" ? "page" : undefined}
+            href="/projects"
+            className="flip-link"
+            aria-current={pathname === "/projects" ? "page" : undefined}
           >
-            <span className="nav-flip-link__inner" data-text="WORK">WORK</span>
+            <span className="flip-link__inner" data-text="WORK">WORK</span>
           </Link>
           <TripleSlash />
           <Link
             href="/info"
-            className="nav-flip-link"
+            className="flip-link"
             aria-current={pathname === "/info" ? "page" : undefined}
           >
-            <span className="nav-flip-link__inner" data-text="INFO">INFO</span>
+            <span className="flip-link__inner" data-text="INFO">INFO</span>
           </Link>
         </div>
       </div>
