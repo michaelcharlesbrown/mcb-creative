@@ -34,11 +34,11 @@ export default function Info() {
                   {para}
                 </p>
               ))}
-              <p className="label project-info__links">
+              <p className="label project-info__links flex items-center gap-2">
                 <a href="https://www.instagram.com/maddenizen" target="_blank" rel="noopener noreferrer" className="flip-link">
                   <span className="flip-link__inner" data-text="Instagram">Instagram</span>
-                </a>{" "}
-                <TripleSlash />{" "}
+                </a>
+                <TripleSlash />
                 <a href="https://www.linkedin.com/in/michaelcharlesbrown/" target="_blank" rel="noopener noreferrer" className="flip-link">
                   <span className="flip-link__inner" data-text="LinkedIn">LinkedIn</span>
                 </a>
