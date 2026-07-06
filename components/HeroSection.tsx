@@ -1,12 +1,18 @@
 "use client";
 
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import GrainCanvas from "@/components/GrainCanvas";
 import { HOMEPAGE_HERO_VIDEO_SRC } from "@/lib/homepageHeroVideo";
+import { useViewportVideo, useVideoPlaybackGate } from "@/hooks/useViewportVideo";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 
 export default function HeroSection() {
+  const { elementRef: frameRef, shouldLoad, isVisible } = useViewportVideo<HTMLDivElement>();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useVideoPlaybackGate(videoRef, isVisible);
+
   return (
     <section className="hero relative bg-background">
       {/* Grain overlay */}
@@ -49,10 +55,11 @@ export default function HeroSection() {
           transition={{ duration: 1.0, ease: EASE, delay: 1.0 }}
         >
           <div className="max-w-[var(--content-max-width)] mx-auto w-full content-inset box-border">
-            <div className="hero__video-frame">
+            <div className="hero__video-frame" ref={frameRef}>
               <video
+                ref={videoRef}
                 className="w-full h-auto"
-                src={HOMEPAGE_HERO_VIDEO_SRC}
+                src={shouldLoad ? HOMEPAGE_HERO_VIDEO_SRC : undefined}
                 poster="/images/hp-video-poster.jpg"
                 autoPlay
                 muted
