@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
 import { sanityFetch } from "@/lib/sanity.fetch";
 import { projectBySlugQuery, workPageProjectsQuery } from "@/lib/sanity.queries";
 import { resolveProjectImages } from "@/lib/resolveProjectImages";
+import { portableTextToPlainText, truncateAtWord } from "@/lib/portableTextToPlainText";
 import BlockRenderer, { type PageContentBlock } from "@/components/blocks/BlockRenderer";
 import MediaBlock from "@/components/blocks/MediaBlock";
 import IntroBlock from "@/components/blocks/IntroBlock";
@@ -19,8 +21,38 @@ export type SanityProject = {
   heroImage?: { alt?: string; asset?: { url: string } };
   thumbnail?: { alt?: string; asset?: { url: string } };
   heroVideoFileUrl?: string;
+  seo?: { metaTitle?: string; metaDescription?: string };
   pageContent?: PageContentBlock[];
 };
+
+const META_DESCRIPTION_LENGTH = 155;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  const sanityProject = await sanityFetch<SanityProject | null>(
+    projectBySlugQuery,
+    { slug }
+  ).catch(() => null);
+
+  if (!sanityProject) return {};
+
+  const title = sanityProject.seo?.metaTitle || `${sanityProject.title} — MCB Creative`;
+
+  const introBlock = (sanityProject.pageContent ?? []).find(
+    (block) => block._type === "introBlock"
+  );
+  const bodyPlainText = portableTextToPlainText(introBlock?.description);
+  const description =
+    sanityProject.seo?.metaDescription ||
+    (bodyPlainText ? truncateAtWord(bodyPlainText, META_DESCRIPTION_LENGTH) : undefined);
+
+  return { title, description };
+}
 
 type SanityGridProject = {
   slug: string;

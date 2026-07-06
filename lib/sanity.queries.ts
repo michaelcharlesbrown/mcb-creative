@@ -11,6 +11,10 @@ export const projectBySlugQuery = `*[_type=="project" && slug.current==$slug][0]
     asset->{url}
   },
   "heroVideoFileUrl": heroVideoFile.asset->url,
+  seo{
+    metaTitle,
+    metaDescription
+  },
   pageContent[]{
     _type,
     headline, subheadline, scope, team, description,

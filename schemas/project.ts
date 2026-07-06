@@ -62,5 +62,30 @@ export default defineType({
         defineArrayMember({ type: 'socialShowcase' }),
       ],
     }),
+    defineField({
+      name: 'seo',
+      title: 'SEO / Metadata',
+      description:
+        'Optional. Controls how this project appears in Google search results and link previews. Leave blank to fall back to the project title and body copy.',
+      type: 'object',
+      options: { collapsible: true, collapsed: true },
+      fields: [
+        defineField({
+          name: 'metaTitle',
+          title: 'Meta Title',
+          description: 'Aim for ~60 characters — Google typically truncates titles beyond that.',
+          type: 'string',
+          validation: (Rule) => Rule.max(60).warning('Longer titles are often truncated in Google search results.'),
+        }),
+        defineField({
+          name: 'metaDescription',
+          title: 'Meta Description',
+          description: 'Aim for ~155–160 characters — Google typically truncates descriptions beyond that.',
+          type: 'text',
+          rows: 3,
+          validation: (Rule) => Rule.max(160).warning('Longer descriptions are often truncated in Google search results.'),
+        }),
+      ],
+    }),
   ],
 })
