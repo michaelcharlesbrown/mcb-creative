@@ -53,6 +53,7 @@ export default function HeroSection() {
               <video
                 className="w-full h-auto"
                 src={HOMEPAGE_HERO_VIDEO_SRC}
+                poster="/images/hp-video-poster.jpg"
                 autoPlay
                 muted
                 loop
