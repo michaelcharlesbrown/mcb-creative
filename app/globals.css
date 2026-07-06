@@ -832,7 +832,7 @@ img.footer__wordmark {
 .project-intro__headline {
   font-family:    var(--font-family-headline);
   font-size:      var(--text-project-headline);
-  font-weight:    var(--weight-bold);
+  font-weight:    var(--weight-semibold);
   line-height:    var(--leading-project-headline);
   text-transform: none;
   text-align:     left;
