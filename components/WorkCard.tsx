@@ -32,7 +32,7 @@ export default function WorkCard({ project }: WorkCardProps) {
         {" "}
         <TripleSlash />
         {" "}
-        <span className="label-meta">{project.services.slice(0, 2).join(", ")}</span>
+        <span className="label-meta">{project.services[0]}</span>
       </h2>
     </a>
   );

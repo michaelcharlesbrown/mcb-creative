@@ -24,7 +24,7 @@ export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
             <header className="project-intro__header">
               <p className="label">Featured Projects</p>
               <h1 id="work-intro-title-mobile" className="project-intro__headline">
-                My work spans brand identity, interactive web design, social media, and motion.
+                My work spans brand identity, interactive web design, motion, and illustration.
               </h1>
             </header>
           </section>

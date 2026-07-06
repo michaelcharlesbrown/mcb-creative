@@ -163,11 +163,11 @@ export function FluidWorkGrid({ projects, pairedRow = false }: FluidWorkGridProp
             </div>
             <div className={styles.colContent}>
               <span className={styles.colTag}>{project.title}</span>
-              {project.scope?.map((s, si) => (
-                <span key={si} className={styles.colTag}>
-                  {s}
+              {project.scope?.[0] && (
+                <span className={styles.colTag}>
+                  {project.scope[0]}
                 </span>
-              ))}
+              )}
             </div>
             <Link
               href={`/projects/${project.slug}`}

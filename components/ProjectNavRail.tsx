@@ -63,7 +63,7 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
                   </h3>
                   {project.scope && project.scope.length > 0 && (
                     <p className="label line-clamp-2 text-black/60 mt-0.5">
-                      {project.scope.join(", ")}
+                      {project.scope[0]}
                     </p>
                   )}
                 </div>

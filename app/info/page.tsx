@@ -1,4 +1,5 @@
 import TripleSlash from "@/components/TripleSlash";
+import InfoPeelReveal from "@/components/InfoPeelReveal";
 
 const introColLeft = [
   "As a web designer at LeapFrog, a UI designer at ProTools, and as the Creative Director of BitTorrent, I've maintained global platforms, crafted graphics for industry-standard music technology and led campaigns reaching millions.",
@@ -6,13 +7,14 @@ const introColLeft = [
 ];
 
 const introColRight = [
-  "Today I partner with founders and creators to take their projects from the spark of inspiration to a complete visual identity.",
+  "Today I partner with other founders and creators to take their projects from the spark of inspiration to a complete visual identity.",
   "I'm also a classically trained musician and have just completed my first feature film score.",
 ];
 
 export default function Info() {
   return (
-    <main className="info-page info-intro" aria-label="About Michael Charles Brown">
+    <InfoPeelReveal>
+      <main className="info-page info-intro" aria-label="About Michael Charles Brown">
       <section className="project-intro">
         <header className="project-intro__header max-w-[var(--content-max-width)] mx-auto content-inset">
           <p className="label">
@@ -21,8 +23,8 @@ export default function Info() {
             Visual Designer
           </p>
           <h1 className="project-intro__headline">
-            I&apos;ve been building brand identities and creating visual
-            personalities for fifteen years.
+            Building brand identities and creating visual personalities for over
+            a decade.
           </h1>
         </header>
 
@@ -59,5 +61,6 @@ export default function Info() {
       </section>
 
     </main>
+    </InfoPeelReveal>
   );
 }
