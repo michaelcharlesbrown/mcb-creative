@@ -79,6 +79,7 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
                   width={30}
                   height={30}
                   decoding="async"
+                  loading="lazy"
                   aria-hidden
                 />
               </a>
@@ -93,6 +94,7 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
             alt="MCB Creative"
             width="100%"
             height="auto"
+            loading="lazy"
             className="footer__wordmark"
             initial={hasPlayedBefore ? { opacity: 1, y: 0 } : { opacity: 0, y: 140 }}
             animate={hasPlayedBefore || wordmarkInView ? { opacity: 1, y: 0 } : {}}

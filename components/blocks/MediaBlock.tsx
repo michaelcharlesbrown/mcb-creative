@@ -72,6 +72,7 @@ export default function MediaBlock({
           alt={image?.alt ?? altFallback}
           fetchPriority={priority ? "high" : undefined}
           decoding={priority ? "sync" : "async"}
+          loading={priority ? undefined : "lazy"}
           className="w-full h-full object-cover"
         />
       </picture>
