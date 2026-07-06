@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import { getSanityImageUrl, type SanityImagePreset } from "@/lib/sanityImage";
 import FadeIn from "@/components/FadeIn";
+import { useViewportVideo, useVideoPlaybackGate } from "@/hooks/useViewportVideo";
 
 interface MediaBlockProps {
   image?: { asset?: { url: string }; alt?: string };
@@ -35,20 +36,9 @@ export default function MediaBlock({
   priority,
 }: MediaBlockProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isInView, setIsInView] = useState(false);
-
-  useEffect(() => {
-    if (!videoUrl || !containerRef.current) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsInView(true);
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, [videoUrl]);
+  const { elementRef: containerRef, shouldLoad: isInView, isVisible } =
+    useViewportVideo<HTMLDivElement>();
+  useVideoPlaybackGate(videoRef, isVisible);
 
   const imageUrl = getSanityImageUrl(image, imagePreset);
   const imageMobileUrl = getSanityImageUrl(imageMobile, "portrait");

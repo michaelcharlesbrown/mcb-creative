@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { getSanityImageUrl } from "@/lib/sanityImage";
+import { useViewportVideo } from "@/hooks/useViewportVideo";
 
 interface MediaRef {
   alt?: string;
@@ -28,11 +29,13 @@ function Screen({
   screen,
   altFallback,
   sizes,
+  shouldLoad,
   registerVideoRef,
 }: {
   screen: ScreenMedia;
   altFallback: string;
   sizes: string;
+  shouldLoad: boolean;
   registerVideoRef: (el: HTMLVideoElement | null) => void;
 }) {
   const imageUrl = getSanityImageUrl(screen.image, "portrait");
@@ -47,7 +50,7 @@ function Screen({
           sizes={sizes}
           className="object-cover"
         />
-      ) : screen.videoFileUrl ? (
+      ) : screen.videoFileUrl && shouldLoad ? (
         <video
           ref={registerVideoRef}
           src={screen.videoFileUrl}
@@ -75,22 +78,11 @@ export default function SocialShowcase({
   layoutStyle = "grid",
   titleFallback = "",
 }: SocialShowcaseProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const { elementRef: containerRef, shouldLoad, isVisible } =
+    useViewportVideo<HTMLDivElement>();
   const videoRefs = useRef<HTMLVideoElement[]>([]);
-  const [isVisible, setIsVisible] = useState(false);
 
   const validScreens = screens.filter((s) => s?.image || s?.videoFileUrl);
-
-  useEffect(() => {
-    const node = containerRef.current;
-    if (!node) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.15 }
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
 
   // Only ever play what's currently on screen — pausing (not just lazy-starting)
   // is what keeps multiple marquee/grid videos from all running off screen at once.
@@ -121,7 +113,7 @@ export default function SocialShowcase({
               : undefined
           }
         >
-          {backgroundVideoFileUrl ? (
+          {backgroundVideoFileUrl && shouldLoad ? (
             <video
               ref={registerVideoRef}
               src={backgroundVideoFileUrl}
@@ -152,6 +144,7 @@ export default function SocialShowcase({
                   screen={screen}
                   altFallback={titleFallback}
                   sizes="25vw"
+                  shouldLoad={shouldLoad}
                   registerVideoRef={registerVideoRef}
                 />
               ))}
@@ -165,6 +158,7 @@ export default function SocialShowcase({
                 screen={screen}
                 altFallback={titleFallback}
                 sizes="25vw"
+                shouldLoad={shouldLoad}
                 registerVideoRef={registerVideoRef}
               />
             ))}
