@@ -247,6 +247,10 @@ a {
   font-weight: var(--weight-regular);
 }
 
+.label-title {
+  font-weight: var(--weight-semibold);
+}
+
 /* Work grid caption — title bold; /// motif + services regular */
 .work-card__label {
   font-weight: var(--weight-regular);

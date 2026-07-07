@@ -7,7 +7,7 @@ const introColLeft = [
 ];
 
 const introColRight = [
-  "Today I partner with other founders and creators to take their projects from the spark of inspiration to a complete visual identity.",
+  "Today I partner with founders, small businesses, and other creators to take their projects from the spark of inspiration to a complete visual identity.",
   "I'm also a classically trained musician and have just completed my first feature film score.",
 ];
 
@@ -18,9 +18,11 @@ export default function Info() {
       <section className="project-intro">
         <header className="project-intro__header max-w-[var(--content-max-width)] mx-auto content-inset">
           <p className="label">
-            Michael Charles Brown{" "}
+            <span className="label-title">MICHAEL CHARLES BROWN</span>{" "}
             <TripleSlash />{" "}
-            Visual Designer
+            <span className="label-meta">BRAND DESIGNER</span>{" "}
+            <TripleSlash />{" "}
+            <span className="label-meta">CREATIVE DIRECTOR</span>
           </p>
           <h1 className="project-intro__headline">
             Building brand identities and creating visual personalities for over
