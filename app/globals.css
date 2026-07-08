@@ -33,6 +33,7 @@
   --social-showcase-screen-fill:      70%; /* screen height as a share of the locked frame height — tune here */
   --social-showcase-half-width:       calc(var(--content-max-width) / 2);
   --social-showcase-marquee-duration: 32s; /* tune here to speed up/slow down the loop */
+  --social-showcase-screen-gap:       calc(var(--gap-grid) * 3); /* horizontal space between screens — tune here */
   /* Homepage Featured Work — two-up FluidWorkGrid rows */
   --fluid-work-grid-pair-row-height: clamp(26rem, 38vh, 36rem); /* homepage 2×2 grid row height */
   /* Homepage intro — exactly one viewport; title sits on bottom edge (HeroSection) */
@@ -1365,15 +1366,15 @@ body.info-peel-active footer {
 }
 
 .social-showcase__screen {
-  position:     relative;
-  height:       var(--social-showcase-screen-fill);
-  width:        auto;
-  flex:         none;
-  aspect-ratio: var(--social-showcase-screen-aspect);
-  overflow:     hidden;
+  position:      relative;
+  height:        var(--social-showcase-screen-fill);
+  width:         auto;
+  flex:          none;
+  aspect-ratio:  var(--social-showcase-screen-aspect);
+  overflow:      hidden;
 }
 
-.social-showcase__screen video {
+.social-showcase__screen :is(video, img) {
   display:    block;
   width:      100%;
   height:     100%;
@@ -1386,7 +1387,7 @@ body.info-peel-active footer {
   justify-content: center;
   align-items:     center;
   height:          100%;
-  gap:             calc(var(--gap-grid) * 2);
+  gap:             var(--social-showcase-screen-gap);
 }
 
 /* Marquee layout — track holds the screen row twice; animating to -50% loops seamlessly */
@@ -1403,13 +1404,13 @@ body.info-peel-active footer {
   align-items: center;
   height:    100%;
   width:     max-content;
-  gap:       calc(var(--gap-grid) * 2);
+  gap:       var(--social-showcase-screen-gap);
   animation: social-showcase-marquee var(--social-showcase-marquee-duration) linear infinite;
 }
 
 @keyframes social-showcase-marquee {
   from { transform: translateX(0); }
-  to   { transform: translateX(calc(-50% - var(--gap-grid) / 2)); }
+  to   { transform: translateX(calc(-50% - var(--social-showcase-screen-gap) / 2)); }
 }
 
 /* ============================================================
