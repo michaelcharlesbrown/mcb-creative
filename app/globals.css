@@ -869,27 +869,13 @@ img.footer__wordmark {
   font-weight: var(--weight-regular);
 }
 
-/* Info page eyebrow — name line (sans) + roles line (mono with slashes) */
+/* Info page eyebrow — stacked mobile treatment is hidden on desktop */
 .info-intro__eyebrow {
-  display:        flex;
-  flex-direction: column;
-  align-items:    flex-start;
-  gap:            0.15em;
-  margin:         0;
+  display: none;
 }
 
-.info-intro__eyebrow-name {
-  font-family:    var(--font-family-headline);
-  font-size:      var(--text-info-eyebrow);
-  font-weight:    var(--weight-bold);
-  line-height:    var(--leading-info-eyebrow);
-  letter-spacing: normal;
-  text-transform: uppercase;
-  margin:         0;
-}
-
-.info-intro__eyebrow-roles {
-  margin: 0;
+.info-intro__eyebrow-desktop {
+  display: block;
 }
 
 /* Info page headline — uppercase on mobile per editorial mock */
@@ -1554,6 +1540,33 @@ body.info-peel-active footer {
     padding-top:    var(--padding-info-intro-top-mobile);
     padding-bottom: var(--space-info-headline-to-copy-mobile);
     gap:            var(--space-info-eyebrow-to-headline-mobile);
+  }
+
+  /* Mobile-only stacked eyebrow — name (sans) + roles (mono) */
+  .info-intro__eyebrow-desktop {
+    display: none;
+  }
+
+  .info-intro__eyebrow {
+    display:        flex;
+    flex-direction: column;
+    align-items:    flex-start;
+    gap:            0.15em;
+    margin:         0;
+  }
+
+  .info-intro__eyebrow-name {
+    font-family:    var(--font-family-headline);
+    font-size:      var(--text-info-eyebrow);
+    font-weight:    var(--weight-bold);
+    line-height:    var(--leading-info-eyebrow);
+    letter-spacing: normal;
+    text-transform: uppercase;
+    margin:         0;
+  }
+
+  .info-intro__eyebrow-roles {
+    margin: 0;
   }
 
   /* Homepage hero — drop the 50dvh split; let wordmark, tagline, and reel stack naturally */
