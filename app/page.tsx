@@ -1,9 +1,10 @@
 import { projects } from "@/data/projects";
 import { sanityFetch } from "@/lib/sanity.fetch";
-import { homepageProjectsQuery } from "@/lib/sanity.queries";
+import { homepageProjectsQuery, homepageSizzleReelQuery } from "@/lib/sanity.queries";
 import { resolveProjectImages } from "@/lib/resolveProjectImages";
 import HomeMobileLayout from "@/components/HomeMobileLayout";
 import HomeDesktopLayout from "@/components/HomeDesktopLayout";
+import type { MediaSlideData } from "@/components/SlideSequence";
 
 const DEFAULT_ACCENT_COLOR = "#000000";
 
@@ -36,6 +37,9 @@ export default async function Home() {
       homepageProjectsQuery
     ).catch(() => [])) ?? [];
 
+  const sizzleReelSlides =
+    (await sanityFetch<MediaSlideData[] | null>(homepageSizzleReelQuery).catch(() => [])) ?? [];
+
   const staticBySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
 
   const allProjects: HomeProject[] = sanityProjects
@@ -57,8 +61,8 @@ export default async function Home() {
 
   return (
     <div className="home text-black">
-      <HomeMobileLayout projects={allProjects} />
-      <HomeDesktopLayout projects={allProjects} />
+      <HomeMobileLayout projects={allProjects} sizzleReelSlides={sizzleReelSlides} />
+      <HomeDesktopLayout projects={allProjects} sizzleReelSlides={sizzleReelSlides} />
     </div>
   );
 }

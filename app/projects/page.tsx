@@ -3,6 +3,7 @@ import { sanityFetch } from "@/lib/sanity.fetch";
 import { workPageProjectsQuery } from "@/lib/sanity.queries";
 import { resolveProjectImages } from "@/lib/resolveProjectImages";
 import WorkGrid from "@/components/WorkGrid";
+import type { MediaSlideData } from "@/components/SlideSequence";
 
 type SanityGridProject = {
   slug: string;
@@ -11,6 +12,8 @@ type SanityGridProject = {
   scope?: string[];
   heroImage?: { alt?: string; asset?: { url: string } };
   thumbnail?: { alt?: string; asset?: { url: string } };
+  cardSlidesDesktop?: MediaSlideData[];
+  cardSlidesMobile?: MediaSlideData[];
 };
 
 export default async function Projects() {
@@ -38,6 +41,8 @@ export default async function Projects() {
         services: sanity.scope ?? stat?.services ?? [],
         heroImageLandscape: landscape,
         accentColor: sanity.accentColor ?? stat?.accentColor ?? "#000000",
+        cardSlidesDesktop: sanity.cardSlidesDesktop,
+        cardSlidesMobile: sanity.cardSlidesMobile,
       };
     });
 

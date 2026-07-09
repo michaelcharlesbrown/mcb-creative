@@ -1,4 +1,5 @@
 import WorkCard from "@/components/WorkCard";
+import type { MediaSlideData } from "@/components/SlideSequence";
 
 interface WorkGridProject {
   slug: string;
@@ -6,6 +7,8 @@ interface WorkGridProject {
   services: string[];
   heroImageLandscape: string;
   accentColor: string;
+  cardSlidesDesktop?: MediaSlideData[];
+  cardSlidesMobile?: MediaSlideData[];
 }
 
 interface WorkGridProps {

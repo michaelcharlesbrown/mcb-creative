@@ -51,6 +51,34 @@ export default defineType({
       options: { accept: 'video/*' },
     }),
     defineField({
+      name: 'cardSlidesDesktop',
+      title: 'Card Slides — Desktop',
+      description:
+        'Ordered sequence of stills and short clips for the hover preview on this project\'s grid card (desktop). Additive: leave empty to keep using Desktop Hero / Landscape Card above as a static card image. The first slide must be an image (the static "at rest" frame). Keep it short — 3–5 slides. Drag to reorder.',
+      type: 'array',
+      of: [defineArrayMember({ type: 'mediaSlide' })],
+      validation: (Rule) =>
+        Rule.max(5).custom((slides) => {
+          if (!slides || slides.length === 0) return true
+          const first = slides[0] as { image?: unknown }
+          return first?.image ? true : 'The first slide must be an image, not a video.'
+        }),
+    }),
+    defineField({
+      name: 'cardSlidesMobile',
+      title: 'Card Slides — Mobile',
+      description:
+        'Ordered sequence of stills and short clips for this project\'s grid card on mobile, curated independently from the desktop set above. Additive: leave empty to keep the desktop landscape image on the mobile card too. The first slide must be an image. Keep it short — 3–5 slides.',
+      type: 'array',
+      of: [defineArrayMember({ type: 'mediaSlide' })],
+      validation: (Rule) =>
+        Rule.max(5).custom((slides) => {
+          if (!slides || slides.length === 0) return true
+          const first = slides[0] as { image?: unknown }
+          return first?.image ? true : 'The first slide must be an image, not a video.'
+        }),
+    }),
+    defineField({
       name: 'pageContent',
       title: 'Page Content',
       type: 'array',

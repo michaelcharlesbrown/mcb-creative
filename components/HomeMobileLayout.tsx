@@ -4,18 +4,20 @@ import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
 import Footer from "@/components/Footer";
 import WorkCard from "@/components/WorkCard";
+import type { MediaSlideData } from "@/components/SlideSequence";
 import type { HomeProject } from "@/app/page";
 
 interface HomeMobileLayoutProps {
   projects: HomeProject[];
+  sizzleReelSlides: MediaSlideData[];
 }
 
-export default function HomeMobileLayout({ projects }: HomeMobileLayoutProps) {
+export default function HomeMobileLayout({ projects, sizzleReelSlides }: HomeMobileLayoutProps) {
   return (
     <div className="block md:hidden">
       <BodyClass className="home" />
       <div className="overflow-hidden bg-background">
-        <HeroSection />
+        <HeroSection sizzleReelSlides={sizzleReelSlides} />
       </div>
 
       <div className="bg-background">

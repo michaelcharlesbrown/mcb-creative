@@ -4,19 +4,21 @@ import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
 import Footer from "@/components/Footer";
 import WorkCard from "@/components/WorkCard";
+import type { MediaSlideData } from "@/components/SlideSequence";
 import type { HomeProject } from "@/app/page";
 
 interface HomeDesktopLayoutProps {
   projects: HomeProject[];
+  sizzleReelSlides: MediaSlideData[];
 }
 
-export default function HomeDesktopLayout({ projects }: HomeDesktopLayoutProps) {
+export default function HomeDesktopLayout({ projects, sizzleReelSlides }: HomeDesktopLayoutProps) {
   return (
     <div className="hidden md:block">
       <BodyClass className="home" />
       <div className="bg-background pb-[10vh]">
         <div className="overflow-hidden bg-background">
-          <HeroSection />
+          <HeroSection sizzleReelSlides={sizzleReelSlides} />
         </div>
       </div>
 

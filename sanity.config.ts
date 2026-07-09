@@ -5,6 +5,7 @@ import { colorInput } from '@sanity/color-input'
 import project from './schemas/project'
 import homepage from './schemas/homepage'
 import workPage from './schemas/workPage'
+import mediaSlide from './schemas/objects/mediaSlide'
 import introBlock from './schemas/blocks/introBlock'
 import fullWidthBlock from './schemas/blocks/fullWidthBlock'
 import twoColumnBlock from './schemas/blocks/twoColumnBlock'
@@ -56,7 +57,7 @@ export default defineConfig({
   dataset,
   basePath: '/studio',
   schema: {
-    types: [project, homepage, workPage, introBlock, fullWidthBlock, twoColumnBlock, textMediaBlock, socialShowcase],
+    types: [project, homepage, workPage, mediaSlide, introBlock, fullWidthBlock, twoColumnBlock, textMediaBlock, socialShowcase],
   },
   plugins: [deskTool({ structure }), media(), colorInput()],
   document: {

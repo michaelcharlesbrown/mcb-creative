@@ -6,6 +6,20 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'sizzleReelSlides',
+      title: 'Sizzle Reel Slides',
+      description:
+        'Ordered sequence of stills and short clips for the homepage hero. Additive: leave empty to keep the current video hero. The first slide must be an image (the static "at rest" frame). Drag to reorder.',
+      type: 'array',
+      of: [defineArrayMember({ type: 'mediaSlide' })],
+      validation: (Rule) =>
+        Rule.custom((slides) => {
+          if (!slides || slides.length === 0) return true
+          const first = slides[0] as { image?: unknown }
+          return first?.image ? true : 'The first slide must be an image, not a video.'
+        }),
+    }),
+    defineField({
       name: 'featuredProjects',
       title: 'Featured Projects',
       description:

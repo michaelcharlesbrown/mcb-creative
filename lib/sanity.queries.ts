@@ -88,5 +88,26 @@ export const workPageProjectsQuery = `*[_id=="workPage"][0].projects[]->{
   thumbnail{
     alt,
     asset->{url}
+  },
+  cardSlidesDesktop[]{
+    image{ asset->{url} },
+    "videoFileUrl": videoFile.asset->url,
+    alt
+  },
+  cardSlidesMobile[]{
+    image{ asset->{url} },
+    "videoFileUrl": videoFile.asset->url,
+    alt
   }
+}`;
+
+/**
+ * Homepage sizzle reel — the "Homepage" singleton's `sizzleReelSlides` array,
+ * curated and reordered directly in the Studio. Empty means the homepage
+ * falls back to the existing hardcoded hero video.
+ */
+export const homepageSizzleReelQuery = `*[_id=="homepage"][0].sizzleReelSlides[]{
+  image{ asset->{url} },
+  "videoFileUrl": videoFile.asset->url,
+  alt
 }`;

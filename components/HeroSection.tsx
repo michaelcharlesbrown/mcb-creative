@@ -5,13 +5,20 @@ import { motion } from "framer-motion";
 import GrainCanvas from "@/components/GrainCanvas";
 import { HOMEPAGE_HERO_VIDEO_SRC } from "@/lib/homepageHeroVideo";
 import { useViewportVideo, useVideoPlaybackGate } from "@/hooks/useViewportVideo";
+import SizzleReel from "@/components/SizzleReel";
+import type { MediaSlideData } from "@/components/SlideSequence";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  sizzleReelSlides?: MediaSlideData[];
+}
+
+export default function HeroSection({ sizzleReelSlides = [] }: HeroSectionProps) {
   const { elementRef: frameRef, shouldLoad, isVisible } = useViewportVideo<HTMLDivElement>();
   const videoRef = useRef<HTMLVideoElement>(null);
   useVideoPlaybackGate(videoRef, isVisible);
+  const hasSizzleReel = sizzleReelSlides.length > 0;
 
   return (
     <section className="hero relative bg-background">
@@ -31,6 +38,7 @@ export default function HeroSection() {
           <img
             src="/images/mcb-creative-dark.svg"
             alt="MCB Creative"
+            className="hero__wordmark-img"
             width="100%"
             height="auto"
           />
@@ -55,19 +63,23 @@ export default function HeroSection() {
           transition={{ duration: 1.0, ease: EASE, delay: 1.0 }}
         >
           <div className="max-w-[var(--content-max-width)] mx-auto w-full content-inset box-border">
-            <div className="hero__video-frame" ref={frameRef}>
-              <video
-                ref={videoRef}
-                className="w-full h-auto"
-                src={shouldLoad ? HOMEPAGE_HERO_VIDEO_SRC : undefined}
-                poster="/images/hp-video-poster.jpg"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-              />
-            </div>
+            {hasSizzleReel ? (
+              <SizzleReel slides={sizzleReelSlides} priority />
+            ) : (
+              <div className="hero__video-frame" ref={frameRef}>
+                <video
+                  ref={videoRef}
+                  className="w-full h-auto"
+                  src={shouldLoad ? HOMEPAGE_HERO_VIDEO_SRC : undefined}
+                  poster="/images/hp-video-poster.jpg"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                />
+              </div>
+            )}
           </div>
         </motion.div>
       </div>
