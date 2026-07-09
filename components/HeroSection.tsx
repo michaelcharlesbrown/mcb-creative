@@ -4,11 +4,10 @@ import { useRef } from "react";
 import { motion } from "framer-motion";
 import GrainCanvas from "@/components/GrainCanvas";
 import { HOMEPAGE_HERO_VIDEO_SRC } from "@/lib/homepageHeroVideo";
+import { homepageIntro, HOMEPAGE_INTRO_EASE } from "@/lib/homepageIntro";
 import { useViewportVideo, useVideoPlaybackGate } from "@/hooks/useViewportVideo";
 import SizzleReel from "@/components/SizzleReel";
 import type { MediaSlideData } from "@/components/SlideSequence";
-
-const EASE = [0.25, 0.1, 0.25, 1] as const;
 
 interface HeroSectionProps {
   sizzleReelSlides?: MediaSlideData[];
@@ -31,9 +30,13 @@ export default function HeroSection({ sizzleReelSlides = [] }: HeroSectionProps)
       <div className="hero__upper">
         <motion.div
           className="hero__wordmark"
-          initial={{ opacity: 0, y: 60 }}
+          initial={{ opacity: 0, y: homepageIntro.title.y }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: EASE }}
+          transition={{
+            duration: homepageIntro.title.duration,
+            ease: HOMEPAGE_INTRO_EASE,
+            delay: homepageIntro.title.delay,
+          }}
         >
           <img
             src="/images/mcb-creative-dark.svg"
@@ -46,21 +49,29 @@ export default function HeroSection({ sizzleReelSlides = [] }: HeroSectionProps)
 
         <motion.p
           className="hero__tagline"
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: homepageIntro.tagline.y }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: EASE, delay: 0.38 }}
+          transition={{
+            duration: homepageIntro.tagline.duration,
+            ease: HOMEPAGE_INTRO_EASE,
+            delay: homepageIntro.tagline.delay,
+          }}
         >
           Independent Design Studio of Michael Charles Brown
         </motion.p>
       </div>
 
-      {/* Lower half — video slides up after text settles */}
+      {/* Lower half — video after title + tagline */}
       <div className="hero__lower">
         <motion.div
           className="hero__lower-inner"
-          initial={{ y: 56, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1.0, ease: EASE, delay: 1.0 }}
+          initial={{ opacity: 0, y: homepageIntro.video.y }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: homepageIntro.video.duration,
+            ease: HOMEPAGE_INTRO_EASE,
+            delay: homepageIntro.video.delay,
+          }}
         >
           <div className="max-w-[var(--content-max-width)] mx-auto w-full content-inset box-border">
             {hasSizzleReel ? (

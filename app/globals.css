@@ -12,11 +12,11 @@
 
   /* Colors */
   --project-accent-overlay: transparent; /* set by SetAccentColor on project pages */
-  --background:      #fcfcfc;
+  --background:      #ffffff;
   --foreground:      #0a0a0a;
   --dark-background: #0a0a0a;
   --color-black:     #0a0a0a;
-  --color-white:     #fcfcfc;
+  --color-white:     #ffffff;
   --color-intro-text: #C0C0C0;
   --color-caption:    rgba(0, 0, 0, 0.5);
   /* Work CTA pill — Figma fill #020202 */
@@ -27,6 +27,7 @@
   --content-inset:     clamp(1.5rem, 2.7vw, 4.5rem); /* was 52px ceiling; now extends to 72px at 2650 */
   --content-max-width: 2400px;
   --nav-height:        60px;
+  --size-nav-logo-img: 40px;
   /* Social Showcase block — vertical (Reels/TikTok-style) screens over a locked-ratio frame */
   --social-showcase-frame-aspect:     1400 / 787.5; /* 16:9 — same ratio as every other full-width image/video on the page */
   --social-showcase-screen-aspect:    9 / 16;
@@ -138,6 +139,11 @@
   --leading-info-headline: 1.1;
   --text-info-intro:       var(--font-size-headline); /* was clamp(1.75rem,4vw,2.75rem)=44px@1440; now 48px→88px */
   --leading-info-intro:    1.35;
+  --text-info-eyebrow:     var(--font-size-body);
+  --leading-info-eyebrow: 1.15;
+  --padding-info-intro-top-mobile: calc(var(--nav-height) + clamp(1.25rem, 4vw, 2rem));
+  --space-info-eyebrow-to-headline-mobile: clamp(1.25rem, 4vw, 1.75rem);
+  --space-info-headline-to-copy-mobile: calc(var(--gap-work-grid-row) * 2);
   --leading-info-body:     1.3;
   --text-info-caption:     clamp(0.75rem, 0.94vw, 0.85rem);
   --leading-info-caption:  1.2;
@@ -164,7 +170,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-black:      #0a0a0a;
-  --color-white:      #fcfcfc;
+  --color-white:      #ffffff;
 
   /* Font utilities — point to layout.tsx variables */
   --font-mono:     var(--font-family-mono);
@@ -235,7 +241,7 @@ a {
 ============================================================ */
 
 img:not(.nav__logo-img):not(.hero__wordmark-img):not(.footer__wordmark):not(.footer__cta-arrow):not(.work-page__cta-arrow):not(.studio-intro__arrow),
-video:not(.hidden) {
+video:not(.hidden):not(.info-peel__video):not(.info-peel__static-video) {
   border-radius: var(--radius-image);
 }
 
@@ -763,6 +769,7 @@ img.footer__cta-arrow {
 .hero__tagline {
   font-size:      var(--text-footer-cta-body);
   text-transform: uppercase;
+  text-align:     center;
 }
 
 .hero__wordmark {
@@ -860,6 +867,35 @@ img.footer__wordmark {
    is tuned for card titles/captions elsewhere and reads too heavy here */
 .project-intro__header .label {
   font-weight: var(--weight-regular);
+}
+
+/* Info page eyebrow — name line (sans) + roles line (mono with slashes) */
+.info-intro__eyebrow {
+  display:        flex;
+  flex-direction: column;
+  align-items:    flex-start;
+  gap:            0.15em;
+  margin:         0;
+}
+
+.info-intro__eyebrow-name {
+  font-family:    var(--font-family-headline);
+  font-size:      var(--text-info-eyebrow);
+  font-weight:    var(--weight-bold);
+  line-height:    var(--leading-info-eyebrow);
+  letter-spacing: normal;
+  text-transform: uppercase;
+  margin:         0;
+}
+
+.info-intro__eyebrow-roles {
+  margin: 0;
+}
+
+/* Info page headline — uppercase on mobile per editorial mock */
+.info-intro .project-intro__headline {
+  text-transform: uppercase;
+  line-height:    var(--leading-info-headline);
 }
 
 /* Headline — the project tagline as the page H1 */
@@ -1063,7 +1099,7 @@ img.studio-intro__arrow {
 
 .nav__logo-img {
   display: block;
-  height:  40px;
+  height:  var(--size-nav-logo-img);
   width:   auto;
   filter:  invert(1); /* makes dark fills white; nav mix-blend-mode:difference inverts to black over light bg */
 }
@@ -1293,6 +1329,7 @@ img.studio-intro__arrow {
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
+  border-radius: 0;
   pointer-events: none;
   visibility: hidden;
 }
@@ -1302,6 +1339,7 @@ img.studio-intro__arrow {
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: 0;
 }
 
 .info-peel__static {
@@ -1317,6 +1355,7 @@ img.studio-intro__arrow {
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: 0;
 }
 
 body.info-peel-active footer {
@@ -1506,6 +1545,17 @@ body.info-peel-active footer {
     text-align: center;
   }
 
+  .nav__logo-img {
+    height: calc(var(--size-nav-logo-img) * 0.6);
+  }
+
+  /* Info page intro — pull eyebrow up; breathe before body copy */
+  .info-intro .project-intro__header {
+    padding-top:    var(--padding-info-intro-top-mobile);
+    padding-bottom: var(--space-info-headline-to-copy-mobile);
+    gap:            var(--space-info-eyebrow-to-headline-mobile);
+  }
+
   /* Homepage hero — drop the 50dvh split; let wordmark, tagline, and reel stack naturally */
   .hero__upper {
     height:           auto;
@@ -1602,6 +1652,11 @@ body.info-peel-active footer {
     max-width: 50%;
   }
 
+  .info-intro .project-intro__headline {
+    text-transform: none;
+    line-height:    var(--leading-project-headline);
+  }
+
   .project-info__grid {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -1643,17 +1698,6 @@ body.info-peel-active footer {
 
   .social-showcase__marquee-track {
     animation: none;
-  }
-}
-
-/* ============================================================
-   DARK MODE
-============================================================ */
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #fcfcfc;
   }
 }
 

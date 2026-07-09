@@ -17,16 +17,17 @@ export default function Info() {
       <main className="info-page info-intro" aria-label="About Michael Charles Brown">
       <section className="project-intro">
         <header className="project-intro__header max-w-[var(--content-max-width)] mx-auto content-inset">
-          <p className="label">
-            <span className="label-title">MICHAEL CHARLES BROWN</span>{" "}
-            <TripleSlash />{" "}
-            <span className="label-meta">BRAND DESIGNER</span>{" "}
-            <TripleSlash />{" "}
-            <span className="label-meta">CREATIVE DIRECTOR</span>
-          </p>
+          <div className="info-intro__eyebrow">
+            <p className="info-intro__eyebrow-name">MICHAEL CHARLES BROWN</p>
+            <p className="label info-intro__eyebrow-roles">
+              <span className="label-meta">BRAND DESIGNER</span>{" "}
+              <TripleSlash />{" "}
+              <span className="label-meta">CREATIVE DIRECTOR</span>
+            </p>
+          </div>
           <h1 className="project-intro__headline">
-            Building brand identities and creating visual personalities for over
-            a decade.
+            I&apos;ve been building brand identities and creating visual
+            personalities for fifteen years.
           </h1>
         </header>
 

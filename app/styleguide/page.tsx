@@ -11,7 +11,7 @@ export default function StyleGuidePage() {
           font-size: 12px;
           line-height: 1.6;
           color: #0a0a0a;
-          background: #fcfcfc;
+          background: #ffffff;
           padding: 60px 40px;
           max-width: 1100px;
           margin: 0 auto;
