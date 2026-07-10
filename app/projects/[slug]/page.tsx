@@ -180,7 +180,7 @@ export default async function Project({
           }
         />
 
-        <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-16 pb-16">
+        <div className="max-w-[var(--content-max-width)] mx-auto content-inset pt-[var(--flow-section)] pb-[var(--flow-section)]">
           <div className="flex flex-col gap-[var(--gap-grid)]">
             {hasRestBlocks &&
               restBlocks.map((block, index) => (
@@ -196,7 +196,7 @@ export default async function Project({
           <ProjectNavLinks previous={previous} next={next} />
         </div>
 
-        <div className="max-w-[var(--content-max-width)] mx-auto content-inset mt-8 pb-48">
+        <div className="max-w-[var(--content-max-width)] mx-auto content-inset mt-[var(--flow-block)] pb-[var(--page-bottom)]">
           <ProjectNavRail currentSlug={slug} projects={navRailProjects} />
         </div>
       </main>

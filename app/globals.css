@@ -10,6 +10,38 @@
   --gap-grid:           16px;
   --gap-work-grid-row:  calc(var(--gap-grid) * 2); /* /projects — 2× vertical rhythm between cards */
 
+  /* ── VERTICAL SPACING SYSTEM ─────────────────────────────
+     One 8px ruler. Every vertical gap snaps to a rung — no
+     off-scale values in components (see SPACING.md). Two layers:
+     rhythm (fixed rungs, below) and composition (viewport
+     devices). Mobile steps the rhythm layer down one rung inside
+     the max-width:767px block — the only spacing override there.
+  ──────────────────────────────────────────────────────── */
+  /* The ruler — fixed rungs, all built on the 8px base */
+  --space-3xs:   8px;
+  --space-2xs:  12px; /* half-step sub-grid — micro nudges only */
+  --space-xs:   16px;
+  --space-sm:   24px;
+  --space-md:   32px;
+  --space-lg:   48px;
+  --space-xl:   64px;
+  --space-2xl:  96px;
+  --space-3xl: 128px;
+  --space-4xl: 192px;
+
+  /* Rhythm layer — named jobs mapped to rungs (desktop values) */
+  --flow-micro:   var(--space-3xs); /* caption↔image, icon↔text */
+  --flow-text:    var(--space-sm);  /* paragraph↔paragraph, eyebrow↔headline */
+  --flow-block:   var(--space-lg);  /* headline↔body, subsection↔subsection */
+  --flow-section: var(--space-2xl); /* major section↔section */
+  --page-top:     var(--space-4xl); /* hero air below the fixed nav (nav-inclusive) */
+  --page-bottom:  var(--space-4xl); /* last content → footer */
+
+  /* Composition layer — viewport devices (desktop; released on mobile) */
+  --hero-split:   50dvh;
+  --section-min:  50vh;
+  --cover:       100dvh;
+
   /* Colors */
   --project-accent-overlay: transparent; /* set by SetAccentColor on project pages */
   --background:      #ffffff;
@@ -89,7 +121,7 @@
   --text-nav-logo:    clamp(1.5rem, 1.4vw + 1rem, 2rem); /* M/C/B wordmark */
   /* Work page CTA — Figma 933:265 @ 1440 (1029:379 headline 200px / 1029:382–383 pill / spacing) */
   --text-work-cta:        clamp(3rem, 13.89vw, 12.5rem);
-  --text-footer-cta:      var(--font-size-headline); /* was 48px — now fluid 48→88px */
+  --text-footer-cta:      var(--font-size-headline); /* fluid clamp 48px → 88px; no mobile px override */
   --text-footer-cta-body: var(--font-size-body); /* was 24px; now fluid 16px → 24px (1440→2650) */
   --leading-work-cta:     0.9;
   --text-work-cta-button: 2.5rem;
@@ -192,6 +224,24 @@
   --leading-body:     var(--leading-body);
   --leading-heading:  var(--leading-heading);
   --leading-display:  var(--leading-display);
+
+  /* Spacing scale — exposes the ruler + rhythm layer as utilities
+     (gap-*, p-*, m-*, space-y-*). Same source as the CSS component rules. */
+  --spacing-3xs:         var(--space-3xs);
+  --spacing-2xs:         var(--space-2xs);
+  --spacing-xs:          var(--space-xs);
+  --spacing-sm:          var(--space-sm);
+  --spacing-md:          var(--space-md);
+  --spacing-lg:          var(--space-lg);
+  --spacing-xl:          var(--space-xl);
+  --spacing-2xl:         var(--space-2xl);
+  --spacing-3xl:         var(--space-3xl);
+  --spacing-4xl:         var(--space-4xl);
+  --spacing-text:        var(--flow-text);
+  --spacing-block:       var(--flow-block);
+  --spacing-section:     var(--flow-section);
+  --spacing-page-top:    var(--page-top);
+  --spacing-page-bottom: var(--page-bottom);
 }
 
 /* ============================================================
@@ -337,129 +387,6 @@ video:not(.hidden):not(.info-peel__video):not(.info-peel__static-video) {
 .info-page {
   background: var(--background);
   color:      var(--color-black);
-}
-
-/* Info page — hero is a real containing block so sticky portrait cannot overlap
-   the divider/CTA; CTA uses the same 50/50 split (full width of main). */
-.info-page__main {
-  max-width:      var(--content-max-width);
-  margin-inline:  auto;
-  padding-bottom: var(--padding-info-page-bottom);
-}
-
-.info-page__hero {
-  display:               grid;
-  grid-template-columns: repeat(4, 1fr);
-  column-gap:            var(--content-inset);
-  align-items:           start;
-}
-
-.info-page__portrait-col {
-  grid-column: 1 / 2;
-  position:    sticky;
-  top:         calc(var(--nav-height) + 2rem);
-}
-
-.info-page__intro-col {
-  grid-column:    3 / 5;
-  display:        flex;
-  flex-direction: column;
-  gap:            clamp(3.5rem, 39px + 3.97vw, 9rem); /* 96px → 144px */
-}
-
-.info-page__portrait-wrap {
-  width:         100%;
-  overflow:      hidden;
-  margin-bottom: clamp(1.25rem, 8px + 0.83vw, 1.875rem); /* 20px → 30px */
-}
-
-.info-page__portrait-img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.info-page__portrait-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.info-page__caption-name,
-.info-page__caption-role {
-  margin: 0;
-}
-
-.info-page__caption-role {
-  margin-top: 0.25rem;
-}
-
-.info-page__prose {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-info-page-paragraph);
-}
-
-.info-page__prose > p {
-  font-size:      var(--text-info-body);
-  line-height:    var(--leading-info-body);
-  text-transform: uppercase;
-  margin:         0;
-}
-
-/* ── Divider ── */
-.info-page__rule {
-  height:     1px;
-  background: var(--color-black);
-  opacity:    0.15;
-  margin:     clamp(5rem, 65px + 6.61vw, 15rem) 0 clamp(5rem, 65px + 6.61vw, 15rem) 0; /* 160px → 240px */
-  border:     none;
-}
-
-/* ── Testimonials ── */
-.info-page__testimonials {
-  padding-bottom: clamp(5rem, 65px + 6.61vw, 15rem); /* 160px → 240px */
-}
-
-h2.info-page__testimonials-headline {
-  font-size:   var(--text-info-headline);
-  line-height: var(--leading-info-headline);
-  margin:      0 0 clamp(3rem, 32px + 3.31vw, 7.5rem) 0; /* 80px → 120px */
-  max-width:   22ch;
-}
-
-.info-page__testimonials-grid {
-  display:               grid;
-  grid-template-columns: repeat(3, 1fr);
-  column-gap:            var(--content-inset);
-  row-gap:               clamp(3rem, 32px + 3.31vw, 7.5rem); /* 80px → 120px */
-  align-items:           start;
-}
-
-.info-page__testimonial {
-  display:        flex;
-  flex-direction: column;
-  gap:            1.5rem;
-}
-
-.info-page__testimonial-mark {
-  font-size:   clamp(3rem, 6vw, 5rem);
-  line-height: 1;
-  color:       var(--color-black);
-  opacity:     0.4;
-  align-self:  flex-start;
-  display:     block;
-}
-
-.info-page__testimonial-body {
-  font-size:      var(--text-info-body);
-  line-height:    var(--leading-info-body);
-  text-transform: uppercase;
-  margin:         0;
-}
-
-.info-page__testimonial-attribution {
 }
 
 
@@ -712,12 +639,12 @@ img.footer__cta-arrow {
 
 /* Upper half — title + tagline, vertically and horizontally centered */
 .hero__upper {
-  height: 50dvh;
+  height: var(--hero-split); /* 50dvh desktop; auto on mobile → composition hands off to rhythm */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.5rem, 1.5vh, 1rem);
+  gap: var(--flow-micro);
   position: relative;
   z-index: 10;
   box-sizing: border-box;
@@ -855,12 +782,26 @@ img.footer__wordmark {
   text-transform: none;
 }
 
+/* Shared page-entry header — work index, project pages, info all enter here
+   (homepage overrides via body.home). One offset on every page so the
+   headline never jumps when you click through. Tokens are responsive:
+   192/96/24 desktop → 96/64/16 mobile. */
 .project-intro__header {
-  padding-top:    var(--padding-project-hero-top);
-  padding-bottom: var(--space-project-header-bottom);
+  padding-top:    var(--page-top);      /* consistent hero air below the nav */
+  padding-bottom: var(--flow-section);  /* headline → first content */
   display:        flex;
   flex-direction: column;
-  gap:            var(--space-project-eyebrow-gap);
+  gap:            var(--flow-text);      /* eyebrow → headline */
+}
+
+/* Homepage "Featured Projects" intro — rhythm-driven and responsive via
+   tokens. The hero above owns no bottom gap, so this header's padding-top
+   provides the single section gap from the reel; padding-bottom sets the
+   gap to the work grid. Replaces the project-page hero-top air (unwanted here). */
+body.home .project-intro__header {
+  padding-top:    var(--flow-section);
+  padding-bottom: var(--flow-section);
+  gap:            var(--flow-text);
 }
 
 /* Eyebrow above the headline — lighter than .label's default weight, which
@@ -884,6 +825,28 @@ img.footer__wordmark {
   line-height:    var(--leading-info-headline);
 }
 
+/* Info page — vertical rhythm driven entirely by the spacing system.
+   The tokens are responsive (they step down inside the max-width:767px
+   block), so these single rules cover mobile and desktop with no
+   breakpoint override. */
+.info-intro .project-intro__header {
+  padding-top:    var(--page-top);     /* hero air below the fixed nav */
+  padding-bottom: var(--flow-section); /* header → body */
+  gap:            var(--flow-text);    /* eyebrow → headline */
+}
+
+.info-intro .project-intro__info {
+  padding-bottom: var(--page-bottom);  /* last content → footer/reel */
+}
+
+.info-intro .project-info__copy-col {
+  gap: var(--flow-text);               /* paragraph → paragraph (desktop) */
+}
+
+.info-intro .project-info__grid {
+  row-gap: var(--flow-text);           /* paragraph → paragraph (stacked mobile) */
+}
+
 /* Headline — the project tagline as the page H1 */
 .project-intro__headline {
   font-family:    var(--font-family-headline);
@@ -903,7 +866,7 @@ img.footer__wordmark {
 
 /* Contained landscape hero — full content width with side margins */
 .project-intro__cover {
-  padding-bottom: var(--space-project-hero-bottom);
+  padding-bottom: var(--flow-section);
 }
 
 .project-intro__cover-media {
@@ -913,7 +876,7 @@ img.footer__wordmark {
 }
 
 .project-intro__info {
-  padding-bottom: var(--space-project-hero-bottom);
+  padding-bottom: var(--flow-section);
 }
 
 .project-info__grid {
@@ -1284,8 +1247,8 @@ img.studio-intro__arrow {
    INFO PAGE — intro copy, masonry archive, fixed corner chrome.
 ============================================================ */
 .info-page {
-  background:     var(--background);
-  padding-bottom: var(--padding-info-page-bottom); /* clear fixed bottom corner chrome */
+  background: var(--background);
+  /* Bottom rhythm lives on .info-intro .project-intro__info (--page-bottom). */
 }
 
 .info-page .home-hero__corners {
@@ -1476,49 +1439,16 @@ body.info-peel-active footer {
 ============================================================ */
 
 @media (max-width: 767px) {
-  .info-page__main {
-    display:        flex;
-    flex-direction: column;
-    gap:            clamp(2rem, 6vw, 3rem);
-  }
-
-  .info-page__hero {
-    display: block;
-  }
-
-  .info-page__portrait-col {
-    position:      static;
-    width:         calc(100% + 2 * var(--content-inset));
-    margin-inline: calc(var(--content-inset) * -1);
-    margin-bottom: clamp(2rem, 6vw, 3rem);
-  }
-
-  .info-page__rule {
-    margin: clamp(2rem, 6vw, 4rem) 0 clamp(2rem, 5vw, 3rem) 0;
-  }
-
-  .info-page__testimonials-grid {
-    grid-template-columns: 1fr;
-    row-gap: clamp(3rem, 8vw, 4rem);
-  }
-
-  h2.info-page__testimonials-headline {
-    max-width: 100%;
-    margin-bottom: clamp(2rem, 6vw, 3rem);
-  }
-
-  h2.footer__cta-headline {
-    font-size: 28px;
-  }
-
-  .footer__cta-body,
-  a.footer__cta-link {
-    font-size: 16px;
-  }
-
-  img.footer__cta-arrow {
-    width:  22px;
-    height: 22px;
+  /* Vertical spacing system — mobile steps each named job down a rung;
+     composition tokens release so heroes fall back to rhythm. This
+     :root override is the ONLY spacing override on mobile. */
+  :root {
+    --flow-text:    var(--space-xs);
+    --flow-block:   var(--space-md);
+    --flow-section: var(--space-xl);
+    --page-top:     var(--space-2xl);
+    --page-bottom:  var(--space-3xl);
+    --hero-split:   auto;
   }
 
   .info-archive__grid {
@@ -1535,12 +1465,8 @@ body.info-peel-active footer {
     height: calc(var(--size-nav-logo-img) * 0.6);
   }
 
-  /* Info page intro — pull eyebrow up; breathe before body copy */
-  .info-intro .project-intro__header {
-    padding-top:    var(--padding-info-intro-top-mobile);
-    padding-bottom: var(--space-info-headline-to-copy-mobile);
-    gap:            var(--space-info-eyebrow-to-headline-mobile);
-  }
+  /* Header spacing is handled by .info-intro .project-intro__header via
+     responsive tokens — no mobile override needed here. */
 
   /* Mobile-only stacked eyebrow — name (sans) + roles (mono) */
   .info-intro__eyebrow-desktop {
@@ -1569,23 +1495,17 @@ body.info-peel-active footer {
     margin: 0;
   }
 
-  /* Homepage hero — drop the 50dvh split; let wordmark, tagline, and reel stack naturally */
+  /* Homepage hero — composition → rhythm handoff. --hero-split is `auto`
+     on mobile (via the :root override above), so the 50dvh split releases
+     and the wordmark/tagline/reel stack on the rhythm scale instead. */
   .hero__upper {
-    height:           auto;
-    min-height:       0;
-    justify-content:  flex-start;
-    padding-top:      var(--space-hero-upper-top-mobile);
-    padding-bottom:   var(--space-hero-upper-bottom-mobile);
-    gap:              var(--space-hero-upper-gap-mobile);
+    justify-content: flex-start;
+    padding-top:     var(--page-top);     /* hero air below the fixed nav */
+    padding-bottom:  var(--flow-section); /* tagline → reel */
   }
 
   .hero__wordmark {
     max-width: 100%;
-  }
-
-  body.home .project-intro__header {
-    padding-top:    var(--space-home-work-intro-top-mobile);
-    padding-bottom: var(--space-home-breathing-mobile);
   }
 
   /* Social Showcase: half-width has no room to breathe on a phone; use full width instead */
@@ -1602,10 +1522,9 @@ body.info-peel-active footer {
 
   .info-intro .project-info__links {
     order:      1;
-    /* Same rhythm as the space between the headline and the body copy
-       (--space-project-header-bottom), minus the row-gap the grid
-       already inserts between stacked items. */
-    margin-top: calc(var(--space-project-header-bottom) - var(--gap-grid));
+    /* Set the links apart from the bio by a full section step. The grid
+       already inserts one --flow-text row-gap, so add the difference. */
+    margin-top: calc(var(--flow-section) - var(--flow-text));
   }
 
   /* Mobile hero swaps to the portrait "thumbnail" source (see MediaBlock's

@@ -18,7 +18,7 @@ interface WorkGridProps {
 export default function WorkGrid({ projects }: WorkGridProps) {
   return (
     <div className="min-h-screen bg-background text-black">
-      <div className="max-w-[var(--content-max-width)] mx-auto content-inset pb-[25vh]">
+      <div className="max-w-[var(--content-max-width)] mx-auto content-inset pb-[var(--page-bottom)]">
         <section className="project-intro" aria-labelledby="work-intro-title">
           <header className="project-intro__header">
             <h1 id="work-intro-title" className="project-intro__headline">

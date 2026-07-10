@@ -32,7 +32,7 @@ export default function HomeMobileLayout({ projects, sizzleReelSlides }: HomeMob
           delay: homepageIntro.featured.delay,
         }}
       >
-        <div className="content-inset pb-[25vh]">
+        <div className="content-inset pb-[var(--page-bottom)]">
           <section className="project-intro" aria-labelledby="work-intro-title-mobile">
             <header className="project-intro__header">
               <p className="label">Featured Projects</p>

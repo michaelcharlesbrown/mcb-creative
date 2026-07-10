@@ -18,7 +18,7 @@ export default function HomeDesktopLayout({ projects, sizzleReelSlides }: HomeDe
   return (
     <div className="hidden md:block">
       <BodyClass className="home" />
-      <div className="bg-background pb-[10vh]">
+      <div className="bg-background">
         <div className="overflow-hidden bg-background">
           <HeroSection sizzleReelSlides={sizzleReelSlides} />
         </div>
@@ -34,7 +34,7 @@ export default function HomeDesktopLayout({ projects, sizzleReelSlides }: HomeDe
           delay: homepageIntro.featured.delay,
         }}
       >
-        <div className="max-w-[var(--content-max-width)] mx-auto content-inset pb-[25vh]">
+        <div className="max-w-[var(--content-max-width)] mx-auto content-inset pb-[var(--page-bottom)]">
           <section className="project-intro" aria-labelledby="work-intro-title">
             <header className="project-intro__header">
               <p className="label">Featured Projects</p>
