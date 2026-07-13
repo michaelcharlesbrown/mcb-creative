@@ -783,15 +783,18 @@ img.footer__wordmark {
 }
 
 /* Shared page-entry header — work index, project pages, info all enter here
-   (homepage overrides via body.home). One offset on every page so the
-   headline never jumps when you click through. Tokens are responsive:
-   192/96/24 desktop → 96/64/16 mobile. */
+   (homepage Featured overrides via body.home). The intro occupies the top half
+   of the viewport and the headline bottom-anchors to just above the midline, so
+   the content that follows (grid, cover image, copy) begins at the 50dvh line on
+   every page type. Releases to natural height on mobile via --hero-split: auto. */
 .project-intro__header {
-  padding-top:    var(--page-top);      /* consistent hero air below the nav */
-  padding-bottom: var(--flow-section);  /* headline → first content */
-  display:        flex;
-  flex-direction: column;
-  gap:            var(--flow-text);      /* eyebrow → headline */
+  min-height:      var(--hero-split);   /* top half of the viewport */
+  display:         flex;
+  flex-direction:  column;
+  justify-content: flex-end;            /* headline sits just above the content below */
+  gap:             var(--flow-text);     /* eyebrow → headline */
+  padding-top:     var(--space-2xl);     /* nav clearance when the headline is tall */
+  padding-bottom:  var(--flow-block);    /* one tight rhythm step above the content below */
 }
 
 /* Homepage "Featured Projects" intro — rhythm-driven and responsive via
@@ -799,6 +802,8 @@ img.footer__wordmark {
    provides the single section gap from the reel; padding-bottom sets the
    gap to the work grid. Replaces the project-page hero-top air (unwanted here). */
 body.home .project-intro__header {
+  min-height:     0;                    /* Featured is a mid-page section, not a hero —
+                                           release the 50dvh split back to rhythm flow */
   padding-top:    var(--flow-section);
   padding-bottom: var(--flow-section);
   gap:            var(--flow-text);
@@ -825,16 +830,9 @@ body.home .project-intro__header {
   line-height:    var(--leading-info-headline);
 }
 
-/* Info page — vertical rhythm driven entirely by the spacing system.
-   The tokens are responsive (they step down inside the max-width:767px
-   block), so these single rules cover mobile and desktop with no
-   breakpoint override. */
-.info-intro .project-intro__header {
-  padding-top:    var(--page-top);     /* hero air below the fixed nav */
-  padding-bottom: var(--flow-section); /* header → body */
-  gap:            var(--flow-text);    /* eyebrow → headline */
-}
-
+/* Info page — the shared .project-intro__header device (50dvh, bottom-anchored)
+   already covers the header; these rules tune the copy block. Tokens are
+   responsive, so they cover mobile and desktop with no breakpoint override. */
 .info-intro .project-intro__info {
   padding-bottom: var(--page-bottom);  /* last content → footer/reel */
 }
@@ -856,12 +854,6 @@ body.home .project-intro__header {
   text-transform: none;
   text-align:     left;
   margin:         0;
-}
-
-@media (max-width: 767px) {
-  .project-intro__headline {
-    font-size: clamp(1.375rem, 5vw, 2rem);
-  }
 }
 
 /* Contained landscape hero — full content width with side margins */
@@ -1451,6 +1443,10 @@ body.info-peel-active footer {
     --hero-split:   auto;
   }
 
+  .project-intro__headline {
+    font-size: clamp(1.375rem, 5vw, 2rem);
+  }
+
   .info-archive__grid {
     columns: 1;
   }
@@ -1464,9 +1460,6 @@ body.info-peel-active footer {
   .nav__logo-img {
     height: calc(var(--size-nav-logo-img) * 0.6);
   }
-
-  /* Header spacing is handled by .info-intro .project-intro__header via
-     responsive tokens — no mobile override needed here. */
 
   /* Mobile-only stacked eyebrow — name (sans) + roles (mono) */
   .info-intro__eyebrow-desktop {
