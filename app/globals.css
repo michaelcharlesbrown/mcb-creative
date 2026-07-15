@@ -39,7 +39,7 @@
 
   /* Composition layer — viewport devices (desktop; released on mobile) */
   --hero-split:   50dvh;
-  --section-min:  50vh;
+  --section-min:  50dvh; /* half-viewport floor for mid-page text sections (project description) */
   --cover:       100dvh;
 
   /* Colors */
@@ -797,13 +797,11 @@ img.footer__wordmark {
   padding-bottom:  var(--flow-block);    /* one tight rhythm step above the content below */
 }
 
-/* Homepage "Featured Projects" intro — rhythm-driven and responsive via
-   tokens. The hero above owns no bottom gap, so this header's padding-top
-   provides the single section gap from the reel; padding-bottom sets the
-   gap to the work grid. Replaces the project-page hero-top air (unwanted here). */
+/* Homepage "Featured" intro — inherits the shared 50dvh bottom-anchored device
+   so the headline → work grid reads identically to the Work index. The
+   half-viewport gives the mid-page headline a breathing lead-in from the reel;
+   padding-bottom sets the gap down to the grid. */
 body.home .project-intro__header {
-  min-height:     0;                    /* Featured is a mid-page section, not a hero —
-                                           release the 50dvh split back to rhythm flow */
   padding-top:    var(--flow-section);
   padding-bottom: var(--flow-section);
   gap:            var(--flow-text);
@@ -834,6 +832,9 @@ body.home .project-intro__header {
    already covers the header; these rules tune the copy block. Tokens are
    responsive, so they cover mobile and desktop with no breakpoint override. */
 .info-intro .project-intro__info {
+  min-height:     0;                   /* Info keeps its own composition — no 50% floor */
+  display:        block;
+  padding-top:    0;
   padding-bottom: var(--page-bottom);  /* last content → footer/reel */
 }
 
@@ -867,8 +868,17 @@ body.home .project-intro__header {
   overflow:      hidden;
 }
 
+/* Project-page description section — same ~50% breathing rhythm as the intro
+   header. A half-viewport floor with the content vertically centered, so the
+   space above and below stays uniform and nothing feels squeezed; it grows
+   naturally when the copy runs long. Released to natural flow on mobile via
+   --section-min: auto. The Info page opts out and keeps its own composition. */
 .project-intro__info {
-  padding-bottom: var(--flow-section);
+  min-height:      var(--section-min);
+  display:         flex;
+  flex-direction:  column;
+  justify-content: center;
+  padding-block:   var(--flow-section);
 }
 
 .project-info__grid {
@@ -1469,6 +1479,7 @@ body.info-peel-active footer {
     --page-top:     var(--space-2xl);
     --page-bottom:  var(--space-3xl);
     --hero-split:   auto;
+    --section-min:  auto;
   }
 
   .project-intro__headline {
