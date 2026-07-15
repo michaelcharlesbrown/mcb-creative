@@ -44,9 +44,14 @@ export default function Info() {
                   {para}
                 </p>
               ))}
-              <a className="project-info__body" href="mailto:hello@mcbcreative.design">
-                Get in touch →
-              </a>
+              <p className="label project-info__links">
+                <a href="mailto:hello@mcbcreative.design" className="project-info__cta">
+                  <span className="flip-link">
+                    <span className="flip-link__inner" data-text="Get in touch">Get in touch</span>
+                  </span>
+                  <span className="project-info__cta-arrow" aria-hidden="true">→</span>
+                </a>
+              </p>
             </div>
             <div className="project-info__copy-col">
               {introColRight.map((para) => (
@@ -56,7 +61,14 @@ export default function Info() {
               ))}
               <p className="project-info__body">
                 Check out my music projects{" "}
-                <a href="https://michaelcharlesbrown.com" target="_blank" rel="noopener noreferrer" className="underline">here</a>.
+                <a
+                  href="https://michaelcharlesbrown.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flip-link"
+                >
+                  <span className="flip-link__inner" data-text="here">here</span>
+                </a>.
               </p>
             </div>
           </div>

@@ -783,18 +783,15 @@ img.footer__wordmark {
 }
 
 /* Shared page-entry header — work index, project pages, info all enter here
-   (homepage Featured overrides via body.home). The intro occupies the top half
-   of the viewport and the headline bottom-anchors to just above the midline, so
-   the content that follows (grid, cover image, copy) begins at the 50dvh line on
-   every page type. Releases to natural height on mobile via --hero-split: auto. */
+   (homepage overrides via body.home). One offset on every page so the
+   headline never jumps when you click through. Tokens are responsive:
+   192/96/24 desktop → 96/64/16 mobile. */
 .project-intro__header {
-  min-height:      var(--hero-split);   /* top half of the viewport */
-  display:         flex;
-  flex-direction:  column;
-  justify-content: flex-end;            /* headline sits just above the content below */
-  gap:             var(--flow-text);     /* eyebrow → headline */
-  padding-top:     var(--space-2xl);     /* nav clearance when the headline is tall */
-  padding-bottom:  var(--flow-block);    /* one tight rhythm step above the content below */
+  padding-top:    var(--page-top);      /* consistent hero air below the nav */
+  padding-bottom: var(--flow-section);  /* headline → first content */
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--flow-text);      /* eyebrow → headline */
 }
 
 /* Homepage "Featured Projects" intro — rhythm-driven and responsive via
@@ -802,8 +799,6 @@ img.footer__wordmark {
    provides the single section gap from the reel; padding-bottom sets the
    gap to the work grid. Replaces the project-page hero-top air (unwanted here). */
 body.home .project-intro__header {
-  min-height:     0;                    /* Featured is a mid-page section, not a hero —
-                                           release the 50dvh split back to rhythm flow */
   padding-top:    var(--flow-section);
   padding-bottom: var(--flow-section);
   gap:            var(--flow-text);
@@ -830,9 +825,16 @@ body.home .project-intro__header {
   line-height:    var(--leading-info-headline);
 }
 
-/* Info page — the shared .project-intro__header device (50dvh, bottom-anchored)
-   already covers the header; these rules tune the copy block. Tokens are
-   responsive, so they cover mobile and desktop with no breakpoint override. */
+/* Info page — vertical rhythm driven entirely by the spacing system.
+   The tokens are responsive (they step down inside the max-width:767px
+   block), so these single rules cover mobile and desktop with no
+   breakpoint override. */
+.info-intro .project-intro__header {
+  padding-top:    var(--page-top);     /* hero air below the fixed nav */
+  padding-bottom: var(--flow-section); /* header → body */
+  gap:            var(--flow-text);    /* eyebrow → headline */
+}
+
 .info-intro .project-intro__info {
   padding-bottom: var(--page-bottom);  /* last content → footer/reel */
 }
@@ -898,6 +900,30 @@ body.home .project-intro__header {
   font-family: var(--font-family-headline);
   font-size:   var(--text-info-body);
   line-height: var(--leading-info-body);
+}
+
+/* Inline text link inside body copy (e.g. Info "here") — underlined so it
+   reads as a link mid-sentence, with the global flip-roll on hover. The
+   underline rule must be unlayered here to beat the base `a { none }` reset,
+   and the clipped roll-box is nudged onto the surrounding text baseline. */
+.project-info__body a.flip-link {
+  text-decoration:       underline;
+  text-underline-offset: 0.15em;
+  vertical-align:        -0.25em;
+}
+
+/* Info "Get in touch" CTA — original label type + global flip-roll, with a
+   little arrow that swings back and forth just like the footer. */
+.project-info__cta {
+  display:         inline-flex;
+  align-items:     center;
+  text-decoration: none;
+}
+
+.project-info__cta-arrow {
+  display:     inline-block;
+  margin-left: 0.4em;
+  animation:   arrow-swing 2s ease-in-out infinite;
 }
 
 .project-info__section-title {
