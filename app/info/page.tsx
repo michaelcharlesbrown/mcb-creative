@@ -31,8 +31,7 @@ export default function Info() {
             </p>
           </div>
           <h1 className="project-intro__headline">
-            I&apos;ve been building brand identities and creating visual
-            personalities for fifteen years.
+            Building visual identities for over a decade.
           </h1>
         </header>
 
@@ -68,7 +67,7 @@ export default function Info() {
                   className="flip-link"
                 >
                   <span className="flip-link__inner" data-text="here">here</span>
-                </a>.
+                </a>
               </p>
             </div>
           </div>
