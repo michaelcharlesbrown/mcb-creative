@@ -290,8 +290,8 @@ a {
    are excluded.
 ============================================================ */
 
-img:not(.nav__logo-img):not(.hero__wordmark-img):not(.footer__wordmark):not(.footer__cta-arrow):not(.work-page__cta-arrow):not(.studio-intro__arrow),
-video:not(.hidden):not(.info-peel__video):not(.info-peel__static-video) {
+img:not(.nav__logo-img):not(.hero__wordmark-img):not(.footer__wordmark):not(.footer__cta-arrow):not(.work-page__cta-arrow):not(.studio-intro__arrow):not(.social-showcase__screen-media),
+video:not(.hidden):not(.info-peel__video):not(.info-peel__static-video):not(.social-showcase__screen-media) {
   border-radius: var(--radius-image);
 }
 
@@ -300,9 +300,12 @@ video:not(.hidden):not(.info-peel__video):not(.info-peel__static-video) {
   border-radius: var(--radius-image);
 }
 
-/* Overflow-hidden media frames — radius on the clip container, not just the img */
+/* Overflow-hidden media frames — radius on the clip container, not just the img.
+   .social-showcase is the tile itself: rounding the frame reads it as an image
+   and clips its (deliberately square) screens to the rounded corners. */
 .work-card__media,
-.slide-sequence {
+.slide-sequence,
+.social-showcase {
   border-radius: var(--radius-image);
 }
 

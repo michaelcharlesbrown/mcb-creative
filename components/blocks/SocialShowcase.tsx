@@ -48,11 +48,12 @@ function Screen({
           alt={screen.image?.alt ?? altFallback}
           fill
           sizes={sizes}
-          className="object-cover"
+          className="social-showcase__screen-media object-cover"
         />
       ) : screen.videoFileUrl && shouldLoad ? (
         <video
           ref={registerVideoRef}
+          className="social-showcase__screen-media"
           src={screen.videoFileUrl}
           muted
           loop
