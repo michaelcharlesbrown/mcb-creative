@@ -1257,9 +1257,13 @@ img.studio-intro__arrow {
 }
 
 .info-peel__content {
-  position: relative;
-  z-index: 2;
+  position:   relative;
+  z-index:    2;
   background: var(--background);
+  /* Always fill the viewport top-to-bottom so nothing behind the white
+     layer (footer/reel) ever peeks in as a snip before the peel scroll. */
+  min-height: 100dvh;
+  box-sizing: border-box;
 }
 
 .info-peel__video-wrap {

@@ -21,17 +21,13 @@ export default function Info() {
           <p className="label info-intro__eyebrow-desktop">
             <span className="label-title">MICHAEL CHARLES BROWN</span>{" "}
             <TripleSlash />{" "}
-            <span className="label-meta">BRAND DESIGNER</span>{" "}
-            <TripleSlash />{" "}
-            <span className="label-meta">CREATIVE DIRECTOR</span>
+            <span className="label-meta">BRAND DESIGNER</span>
           </p>
           {/* Mobile: stacked — full line is too long */}
           <div className="info-intro__eyebrow">
             <p className="info-intro__eyebrow-name">MICHAEL CHARLES BROWN</p>
             <p className="label info-intro__eyebrow-roles">
-              <span className="label-meta">BRAND DESIGNER</span>{" "}
-              <TripleSlash />{" "}
-              <span className="label-meta">CREATIVE DIRECTOR</span>
+              <span className="label-meta">BRAND DESIGNER</span>
             </p>
           </div>
           <h1 className="project-intro__headline">
@@ -48,15 +44,9 @@ export default function Info() {
                   {para}
                 </p>
               ))}
-              <p className="label project-info__links flex items-center gap-2">
-                <a href="https://www.instagram.com/maddenizen" target="_blank" rel="noopener noreferrer" className="flip-link">
-                  <span className="flip-link__inner" data-text="Instagram">Instagram</span>
-                </a>
-                <TripleSlash />
-                <a href="https://www.linkedin.com/in/michaelcharlesbrown/" target="_blank" rel="noopener noreferrer" className="flip-link">
-                  <span className="flip-link__inner" data-text="LinkedIn">LinkedIn</span>
-                </a>
-              </p>
+              <a className="project-info__body" href="mailto:hello@mcbcreative.design">
+                Get in touch →
+              </a>
             </div>
             <div className="project-info__copy-col">
               {introColRight.map((para) => (
@@ -64,9 +54,10 @@ export default function Info() {
                   {para}
                 </p>
               ))}
-              <a className="project-info__body" href="https://michaelcharlesbrown.com" target="_blank" rel="noopener noreferrer">
-                Check out my music projects here →
-              </a>
+              <p className="project-info__body">
+                Check out my music projects{" "}
+                <a href="https://michaelcharlesbrown.com" target="_blank" rel="noopener noreferrer" className="underline">here</a>.
+              </p>
             </div>
           </div>
         </div>

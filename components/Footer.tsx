@@ -66,23 +66,35 @@ export default function Footer({ accentColor = 'var(--color-white)' }: FooterPro
                 I&apos;d Love To Hear About It.<br />
                 Get In Touch.
               </p>
-              <a href="mailto:hello@mcbcreative.design" className="footer__cta-link">
-                <span className="flip-link">
-                  <span className="flip-link__inner" data-text="hello@mcbcreative.design">
-                    hello@mcbcreative.design
+              <div className="flex flex-col gap-2">
+                <a href="mailto:hello@mcbcreative.design" className="footer__cta-link">
+                  <span className="flip-link">
+                    <span className="flip-link__inner" data-text="hello@mcbcreative.design">
+                      hello@mcbcreative.design
+                    </span>
                   </span>
-                </span>
-                <img
-                  src="/images/arrow-light.svg"
-                  alt=""
-                  className="footer__cta-arrow"
-                  width={30}
-                  height={30}
-                  decoding="async"
-                  loading="lazy"
-                  aria-hidden
-                />
-              </a>
+                  <img
+                    src="/images/arrow-light.svg"
+                    alt=""
+                    className="footer__cta-arrow"
+                    width={30}
+                    height={30}
+                    decoding="async"
+                    loading="lazy"
+                    aria-hidden
+                  />
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/michaelcharlesbrown/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer__cta-link"
+                >
+                  <span className="flip-link">
+                    <span className="flip-link__inner" data-text="LinkedIn">LinkedIn</span>
+                  </span>
+                </a>
+              </div>
             </motion.div>
           </div>
         </div>
