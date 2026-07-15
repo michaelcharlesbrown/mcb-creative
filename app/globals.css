@@ -1553,6 +1553,16 @@ body.info-peel-active footer {
     max-width: 100%;
   }
 
+  /* The screens are sized from the 16:9 frame's height, so they shrink with
+     the viewport — but --social-showcase-screen-gap is a fixed length, so on
+     a phone the gap balloons relative to the shrunken screens and pushes them
+     to the edges. Scale the gap down to hold the same screen-to-gap ratio the
+     frame shows on desktop. Scoped to the component so the mobile :root spacing
+     override above stays the single source for the vertical rhythm system. */
+  .social-showcase {
+    --social-showcase-screen-gap: calc(var(--gap-grid) * 0.75); /* 48px → 12px */
+  }
+
   /* Info page: columns stack on mobile, so dissolve the copy-col flex
      boxes into the grid and push the Instagram/LinkedIn links to the
      end instead of letting them land mid-page between the two columns. */
