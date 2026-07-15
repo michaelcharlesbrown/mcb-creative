@@ -301,11 +301,16 @@ video:not(.hidden):not(.info-peel__video):not(.info-peel__static-video):not(.soc
 }
 
 /* Overflow-hidden media frames — radius on the clip container, not just the img.
-   .social-showcase is the tile itself: rounding the frame reads it as an image
-   and clips its (deliberately square) screens to the rounded corners. */
+   Container clipping is engine-proof; an <img>'s own border-radius with
+   object-fit is not (iOS Safari drops the bottom corners), so any framed
+   media rounds via its frame here.
+   .media-frame is MediaBlock's clip container — covers every project hero and
+   body media block in one place. .social-showcase is the tile itself: rounding
+   the frame reads it as an image and clips its (square) screens to the corners. */
 .work-card__media,
 .slide-sequence,
-.social-showcase {
+.social-showcase,
+.media-frame {
   border-radius: var(--radius-image);
 }
 

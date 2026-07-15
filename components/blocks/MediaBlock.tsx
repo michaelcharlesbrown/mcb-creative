@@ -49,7 +49,10 @@ export default function MediaBlock({
 
   if (!hasImage && !hasVideo) return null;
 
-  const containerClass = `relative overflow-hidden ${fill ? "size-full" : "w-full"} ${className}`;
+  // `media-frame` carries the corner radius on this overflow-hidden clip
+  // container (see globals.css) — engine-proof rounding for every image/video
+  // MediaBlock renders, unlike an <img>'s own border-radius under object-fit.
+  const containerClass = `media-frame relative overflow-hidden ${fill ? "size-full" : "w-full"} ${className}`;
 
   /**
    * Art-direction mode: portrait mobile / landscape desktop.
