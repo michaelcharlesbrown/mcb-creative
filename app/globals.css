@@ -158,8 +158,11 @@
   --leading-project-headline:    1.05;
   --space-project-eyebrow-gap:   clamp(1.25rem, 8px + 0.83vw, 1.875rem); /* 20px → 30px */
   --space-project-header-bottom: clamp(2.5rem, 26px + 2.64vw, 6rem);     /* 64px → 96px */
-  --aspect-project-hero:         3 / 2;
-  --aspect-project-hero-mobile:  5 / 7; /* matches the Sanity "thumbnail" (portrait hero) field ratio */
+  --aspect-project-hero:         16 / 9; /* single 16:9 source — the site's baseline ratio */
+  /* MOBILE CROP SWITCH — 16/9 for launch so 16:9 sources are never cropped on
+     mobile (nothing gets cut off). Restore to 5 / 4 here AND in the card aspect
+     classes (WorkCard, HeroSequence, SizzleReel) once 5:4-safe assets exist. */
+  --aspect-project-hero-mobile:  16 / 9;
   --space-info-page-paragraph: clamp(2rem, 13px + 1.32vw, 3rem); /* 32px → 48px */
   /* Site tagline (/// motif) */
   --text-tagline:    1.5rem;
@@ -1577,10 +1580,8 @@ body.info-peel-active footer {
     margin-top: calc(var(--flow-section) - var(--flow-text));
   }
 
-  /* Mobile hero swaps to the portrait "thumbnail" source (see MediaBlock's
-     art-direction <picture>) — the container must switch to that image's
-     native ratio too, or the portrait source just gets cropped into the
-     landscape frame. */
+  /* Mobile hero: same 16:9 source as desktop, cropped to 5:4 by the container
+     (object-cover). One image, one field — no separate portrait source. */
   .project-intro__cover-media {
     aspect-ratio: var(--aspect-project-hero-mobile);
   }
@@ -1676,6 +1677,12 @@ body.info-peel-active footer {
 
   .flip-link__inner {
     transition: none;
+  }
+
+  /* Poster/video hero: hide the video so the poster image stands in as a
+     still fallback when the viewer prefers reduced motion. */
+  .media-video-cover {
+    display: none;
   }
 
   .social-showcase__marquee-track {

@@ -8,8 +8,6 @@ import { useViewportVideo, useVideoPlaybackGate } from "@/hooks/useViewportVideo
 
 interface MediaBlockProps {
   image?: { asset?: { url: string }; alt?: string };
-  /** Portrait image for mobile — when provided, switches to this via <picture> art direction */
-  imageMobile?: { asset?: { url: string }; alt?: string };
   videoUrl?: string;
   aspectRatio?: string;
   className?: string;
@@ -21,11 +19,17 @@ interface MediaBlockProps {
   fill?: boolean;
   /** When true, skips FadeIn wrapper and passes priority to <Image> for LCP preloading */
   priority?: boolean;
+  /**
+   * When true and BOTH an image and a video are set, the video plays and the
+   * image becomes its poster/fallback — shown instantly while the video loads,
+   * and left in place under reduced-motion. Without this, the image wins and
+   * the video is ignored (the default everywhere except the project hero).
+   */
+  preferVideo?: boolean;
 }
 
 export default function MediaBlock({
   image,
-  imageMobile,
   videoUrl,
   aspectRatio = "1400/787.5",
   className = "",
@@ -34,6 +38,7 @@ export default function MediaBlock({
   imagePreset = "fullWidth",
   fill = false,
   priority,
+  preferVideo = false,
 }: MediaBlockProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { elementRef: containerRef, shouldLoad: isInView, isVisible } =
@@ -41,11 +46,11 @@ export default function MediaBlock({
   useVideoPlaybackGate(videoRef, isVisible);
 
   const imageUrl = getSanityImageUrl(image, imagePreset);
-  const imageMobileUrl = getSanityImageUrl(imageMobile, "portrait");
   const hasImage = Boolean(imageUrl);
-  const hasMobileImage = Boolean(imageMobileUrl);
   const hasVideo = Boolean(videoUrl);
   const showVideo = hasVideo && isInView;
+  // Poster mode: video plays over the image, image stays as poster/fallback.
+  const posterMode = preferVideo && hasImage && hasVideo;
 
   if (!hasImage && !hasVideo) return null;
 
@@ -54,54 +59,39 @@ export default function MediaBlock({
   // MediaBlock renders, unlike an <img>'s own border-radius under object-fit.
   const containerClass = `media-frame relative overflow-hidden ${fill ? "size-full" : "w-full"} ${className}`;
 
-  /**
-   * Art-direction mode: portrait mobile / landscape desktop.
-   * Uses a native <picture> element so the browser downloads only the
-   * matching source — no double-loading. Sanity CDN handles WebP/AVIF
-   * via auto=format in the URL, so no next/image needed here.
-   */
-  const artDirectionInner = hasImage && hasMobileImage ? (
+  // Single landscape source, cropped to its container by object-cover — 16:9
+  // on desktop, 5:4 on mobile (aspect set by the container / CSS token).
+  const inner = (
     <div
       ref={containerRef}
       className={containerClass}
       style={fill ? undefined : { aspectRatio }}
     >
-      <picture className="absolute inset-0 w-full h-full">
-        {/* Portrait source for mobile */}
-        <source media="(max-width: 767px)" srcSet={imageMobileUrl!} />
-        {/* Landscape source (or video placeholder) for desktop */}
-        <img
-          src={imageUrl!}
-          alt={image?.alt ?? altFallback}
-          fetchPriority={priority ? "high" : undefined}
-          decoding={priority ? "sync" : "async"}
-          loading={priority ? undefined : "lazy"}
-          className="w-full h-full object-cover"
-        />
-      </picture>
-      {/* Desktop video overlay — hidden on mobile */}
-      {showVideo && (
-        <video
-          ref={videoRef}
-          src={videoUrl}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="hidden md:block absolute inset-0 w-full h-full object-cover"
-        />
-      )}
-    </div>
-  ) : null;
-
-  /** Standard single-image / video render */
-  const standardInner = (
-    <div
-      ref={containerRef}
-      className={containerClass}
-      style={fill ? undefined : { aspectRatio }}
-    >
-      {hasImage ? (
+      {posterMode ? (
+        <>
+          {/* Poster: shown instantly, remains the fallback under reduced-motion */}
+          <Image
+            src={imageUrl!}
+            alt={image?.alt ?? altFallback}
+            fill
+            sizes={sizes}
+            className="object-cover"
+            priority={priority}
+          />
+          {/* Video overlays the poster once in view; hidden under reduced-motion (see globals.css) */}
+          {showVideo && (
+            <video
+              ref={videoRef}
+              src={videoUrl}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="media-video-cover absolute inset-0 w-full h-full object-cover"
+            />
+          )}
+        </>
+      ) : hasImage ? (
         <Image
           src={imageUrl!}
           alt={image?.alt ?? altFallback}
@@ -126,6 +116,5 @@ export default function MediaBlock({
     </div>
   );
 
-  const inner = artDirectionInner ?? standardInner;
   return priority ? inner : <FadeIn>{inner}</FadeIn>;
 }

@@ -4,33 +4,27 @@ type SanityImageRef = { alt?: string; asset?: { url: string } } | null | undefin
 
 interface SanityData {
   slug: string;
-  /** Landscape desktop hero */
+  /** Landscape hero / card source (16:9) */
   heroImage?: SanityImageRef;
-  /** Portrait mobile hero / card */
-  thumbnail?: SanityImageRef;
 }
 
 interface StaticData {
   slug: string;
-  /** Landscape desktop hero override (optional) */
+  /** Landscape hero override (optional) */
   heroImage?: string;
-  /** Portrait card path — points to /public/images/projects/{slug}/thumb.jpg */
-  thumbnail?: string;
 }
 
 export interface ResolvedProjectImages {
-  /** Landscape image URL — desktop page hero, desktop grid cards */
+  /** Landscape image URL — used everywhere: page hero (16:9 desktop / 5:4 mobile), grid cards, carousel */
   landscape: string;
-  /** Portrait image URL — mobile page hero, all portrait cards, carousel */
-  portrait: string;
 }
 
 /**
- * Resolves the two canonical image URLs for a project.
+ * Resolves the single canonical landscape URL for a project. The site now
+ * uses one 16:9 source per project, cropped by CSS to each context (16:9 on
+ * desktop, 5:4 on mobile) — so there is no separate portrait source.
  *
- * Priority:
- *   landscape: Sanity heroImage → static heroImage → /images/projects/{slug}/01-full.jpg
- *   portrait:  Sanity thumbnail → static thumbnail → /images/projects/{slug}/thumb.jpg
+ * Priority: Sanity heroImage → static heroImage → /images/projects/{slug}/01-full.jpg
  */
 export function resolveProjectImages(
   sanity: SanityData | null | undefined,
@@ -43,10 +37,5 @@ export function resolveProjectImages(
       getSanityImageUrl(sanity?.heroImage, 'fullWidth') ??
       stat?.heroImage ??
       `/images/projects/${slug}/01-full.jpg`,
-
-    portrait:
-      getSanityImageUrl(sanity?.thumbnail, 'portrait') ??
-      stat?.thumbnail ??
-      `/images/projects/${slug}/thumb.jpg`,
   };
 }

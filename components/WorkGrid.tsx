@@ -7,8 +7,7 @@ interface WorkGridProject {
   services: string[];
   heroImageLandscape: string;
   accentColor: string;
-  cardSlidesDesktop?: MediaSlideData[];
-  cardSlidesMobile?: MediaSlideData[];
+  cardSlides?: MediaSlideData[];
 }
 
 interface WorkGridProps {

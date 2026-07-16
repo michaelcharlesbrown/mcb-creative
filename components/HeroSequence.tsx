@@ -5,8 +5,7 @@ import { SlideSequence, resolveSlides, type MediaSlideData } from "@/components/
 export type { MediaSlideData };
 
 interface HeroSequenceProps {
-  slidesDesktop: MediaSlideData[];
-  slidesMobile: MediaSlideData[];
+  slides: MediaSlideData[];
   altFallback?: string;
   priority?: boolean;
   desktopSizes?: string;
@@ -14,21 +13,22 @@ interface HeroSequenceProps {
 }
 
 /**
- * Project grid card slide sequence: hover-triggered on desktop (16:9),
- * viewport-triggered one-shot on mobile (5:4). Hard cuts only.
+ * Project grid card slide sequence. One curated slide set drives both
+ * breakpoints from a single 16:9 source: hover-triggered looping on desktop,
+ * viewport-triggered one-shot on mobile. Both 16:9 for launch (mobile was 5:4 —
+ * see globals.css MOBILE CROP SWITCH). Hard cuts only.
  */
 export default function HeroSequence({
-  slidesDesktop,
-  slidesMobile,
+  slides,
   altFallback,
   priority,
   desktopSizes = "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw",
   mobileSizes = "100vw",
 }: HeroSequenceProps) {
-  const resolvedDesktop = resolveSlides(slidesDesktop, "fullWidth", altFallback);
-  const resolvedMobile = resolveSlides(slidesMobile, "portrait", altFallback);
+  const resolvedDesktop = resolveSlides(slides, "fullWidth", altFallback);
+  const resolvedMobile = resolveSlides(slides, "portrait", altFallback);
 
-  if (resolvedDesktop.length === 0 && resolvedMobile.length === 0) return null;
+  if (resolvedDesktop.length === 0) return null;
 
   return (
     <div className="relative w-full">
@@ -45,7 +45,7 @@ export default function HeroSequence({
         slides={resolvedMobile}
         trigger="auto"
         loopForever={false}
-        aspectClassName="aspect-[5/4]"
+        aspectClassName="aspect-video"
         visibilityClassName="block md:hidden"
         sizes={mobileSizes}
         priority={priority}

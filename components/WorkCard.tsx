@@ -12,30 +12,26 @@ interface WorkCardProps {
     /** Landscape image — desktop grid, aspect-video */
     heroImageLandscape: string;
     accentColor: string;
-    cardSlidesDesktop?: MediaSlideData[];
-    cardSlidesMobile?: MediaSlideData[];
+    cardSlides?: MediaSlideData[];
   };
 }
 
 export default function WorkCard({ project }: WorkCardProps) {
-  const hasSlideSequence = Boolean(
-    project.cardSlidesDesktop?.length && project.cardSlidesMobile?.length
-  );
+  const hasSlideSequence = Boolean(project.cardSlides?.length);
 
   return (
     <a href={`/projects/${project.slug}`} className="group block w-full">
       {hasSlideSequence ? (
         <div className="work-card__media relative w-full overflow-hidden mb-3">
           <HeroSequence
-            slidesDesktop={project.cardSlidesDesktop!}
-            slidesMobile={project.cardSlidesMobile!}
+            slides={project.cardSlides!}
             altFallback={project.title}
             desktopSizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
             mobileSizes="100vw"
           />
         </div>
       ) : (
-        <div className="work-card__media relative w-full aspect-[5/4] md:aspect-video overflow-hidden mb-3">
+        <div className="work-card__media relative w-full aspect-video overflow-hidden mb-3">
           <Image
             src={project.heroImageLandscape}
             alt={project.title}

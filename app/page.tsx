@@ -14,7 +14,7 @@ type SanityHomepageProject = {
   accentColor?: string;
   scope?: string[];
   heroImage?: { alt?: string; asset?: { url: string } };
-  thumbnail?: { alt?: string; asset?: { url: string } };
+  cardSlides?: MediaSlideData[];
 };
 
 export type HomeProject = {
@@ -23,6 +23,7 @@ export type HomeProject = {
   services: string[];
   heroImageLandscape: string;
   accentColor: string;
+  cardSlides?: MediaSlideData[];
 };
 
 export default async function Home() {
@@ -47,8 +48,8 @@ export default async function Home() {
     .map((sanity) => {
       const stat = staticBySlug[sanity.slug];
       const { landscape } = resolveProjectImages(
-        { slug: sanity.slug, heroImage: sanity.heroImage, thumbnail: sanity.thumbnail },
-        stat ? { slug: stat.slug, heroImage: stat.heroImage, thumbnail: stat.thumbnail } : null,
+        { slug: sanity.slug, heroImage: sanity.heroImage },
+        stat ? { slug: stat.slug, heroImage: stat.heroImage } : null,
       );
       return {
         slug: sanity.slug,
@@ -56,6 +57,7 @@ export default async function Home() {
         services: sanity.scope ?? stat?.services ?? [],
         heroImageLandscape: landscape,
         accentColor: sanity.accentColor ?? stat?.accentColor ?? DEFAULT_ACCENT_COLOR,
+        cardSlides: sanity.cardSlides,
       };
     });
 

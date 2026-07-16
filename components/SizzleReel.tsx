@@ -29,7 +29,7 @@ export default function SizzleReel({
       slides={resolved}
       trigger="auto"
       loopForever
-      aspectClassName="aspect-[5/4] md:aspect-video"
+      aspectClassName="aspect-video"
       sizes={sizes}
       priority={priority}
     />

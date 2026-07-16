@@ -11,9 +11,7 @@ type SanityGridProject = {
   accentColor?: string;
   scope?: string[];
   heroImage?: { alt?: string; asset?: { url: string } };
-  thumbnail?: { alt?: string; asset?: { url: string } };
-  cardSlidesDesktop?: MediaSlideData[];
-  cardSlidesMobile?: MediaSlideData[];
+  cardSlides?: MediaSlideData[];
 };
 
 export default async function Projects() {
@@ -32,8 +30,8 @@ export default async function Projects() {
     .map((sanity) => {
       const stat = staticBySlug[sanity.slug];
       const { landscape } = resolveProjectImages(
-        { slug: sanity.slug, heroImage: sanity.heroImage, thumbnail: sanity.thumbnail },
-        stat ? { slug: stat.slug, heroImage: stat.heroImage, thumbnail: stat.thumbnail } : null,
+        { slug: sanity.slug, heroImage: sanity.heroImage },
+        stat ? { slug: stat.slug, heroImage: stat.heroImage } : null,
       );
       return {
         slug: sanity.slug,
@@ -41,8 +39,7 @@ export default async function Projects() {
         services: sanity.scope ?? stat?.services ?? [],
         heroImageLandscape: landscape,
         accentColor: sanity.accentColor ?? stat?.accentColor ?? "#000000",
-        cardSlidesDesktop: sanity.cardSlidesDesktop,
-        cardSlidesMobile: sanity.cardSlidesMobile,
+        cardSlides: sanity.cardSlides,
       };
     });
 

@@ -8,8 +8,8 @@ export interface NavRailProject {
   slug: string;
   title: string;
   accentColor?: string;
-  /** Portrait image (5:7) — used for all cards regardless of breakpoint */
-  heroImagePortrait: string;
+  /** Landscape image (16:9) — cropped by object-cover, consistent with the grid cards */
+  heroImageLandscape: string;
   scope?: string[];
 }
 
@@ -42,9 +42,9 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
               draggable={false}
               onDragStart={(e) => e.preventDefault()}
             >
-              <div className="relative w-full overflow-hidden" style={{ aspectRatio: "5/7" }}>
+              <div className="relative w-full overflow-hidden aspect-video">
                 <Image
-                  src={project.heroImagePortrait}
+                  src={project.heroImageLandscape}
                   alt={project.title}
                   fill
                   sizes={

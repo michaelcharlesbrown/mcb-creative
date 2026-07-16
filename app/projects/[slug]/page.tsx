@@ -19,7 +19,6 @@ export type SanityProject = {
   slug: string;
   accentColor?: string;
   heroImage?: { alt?: string; asset?: { url: string } };
-  thumbnail?: { alt?: string; asset?: { url: string } };
   heroVideoFileUrl?: string;
   seo?: { metaTitle?: string; metaDescription?: string };
   pageContent?: PageContentBlock[];
@@ -60,7 +59,6 @@ type SanityGridProject = {
   accentColor?: string;
   scope?: string[];
   heroImage?: { alt?: string; asset?: { url: string } };
-  thumbnail?: { alt?: string; asset?: { url: string } };
 };
 
 /**
@@ -139,16 +137,16 @@ export default async function Project({
     .filter((sanity): sanity is SanityGridProject => Boolean(sanity))
     .map((sanity) => {
       const stat = hardcodedBySlug[sanity.slug];
-      const { portrait } = resolveProjectImages(
-        { slug: sanity.slug, heroImage: sanity.heroImage, thumbnail: sanity.thumbnail },
-        stat ? { slug: stat.slug, heroImage: stat.heroImage, thumbnail: stat.thumbnail } : null,
+      const { landscape } = resolveProjectImages(
+        { slug: sanity.slug, heroImage: sanity.heroImage },
+        stat ? { slug: stat.slug, heroImage: stat.heroImage } : null,
       );
       return {
         slug: sanity.slug,
         title: sanity.title,
         accentColor: sanity.accentColor ?? stat?.accentColor,
         scope: sanity.scope ?? stat?.scope ?? stat?.services ?? [],
-        heroImagePortrait: portrait,
+        heroImageLandscape: landscape,
       };
     });
 
@@ -168,12 +166,12 @@ export default async function Project({
               <div className="project-intro__cover-media">
                 <MediaBlock
                   image={sanityProject.heroImage}
-                  imageMobile={sanityProject.thumbnail}
                   videoUrl={sanityProject.heroVideoFileUrl}
                   altFallback={sanityProject.title}
                   sizes="(min-width: 768px) 92vw, 100vw"
                   fill
                   priority
+                  preferVideo
                 />
               </div>
             ) : null

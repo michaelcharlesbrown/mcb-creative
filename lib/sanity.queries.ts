@@ -6,10 +6,6 @@ export const projectBySlugQuery = `*[_type=="project" && slug.current==$slug][0]
     alt,
     asset->{url}
   },
-  thumbnail{
-    alt,
-    asset->{url}
-  },
   "heroVideoFileUrl": heroVideoFile.asset->url,
   seo{
     metaTitle,
@@ -61,9 +57,10 @@ export const homepageProjectsQuery = `*[_id=="homepage"][0].featuredProjects[]->
     alt,
     asset->{url}
   },
-  thumbnail{
-    alt,
-    asset->{url}
+  cardSlides[]{
+    image{ asset->{url} },
+    "videoFileUrl": videoFile.asset->url,
+    alt
   }
 }`;
 
@@ -85,16 +82,7 @@ export const workPageProjectsQuery = `*[_id=="workPage"][0].projects[]->{
     alt,
     asset->{url}
   },
-  thumbnail{
-    alt,
-    asset->{url}
-  },
-  cardSlidesDesktop[]{
-    image{ asset->{url} },
-    "videoFileUrl": videoFile.asset->url,
-    alt
-  },
-  cardSlidesMobile[]{
+  cardSlides[]{
     image{ asset->{url} },
     "videoFileUrl": videoFile.asset->url,
     alt

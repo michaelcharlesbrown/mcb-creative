@@ -17,8 +17,8 @@ export interface ResolvedSlide {
   alt?: string;
 }
 
-/** Image slides hold ~1s for a rapid sizzle-reel pace; video slides play through, capped at ~4s. Hard cuts only — no crossfade. */
-const IMAGE_HOLD_MS = 1000;
+/** Image slides hold ~0.45s for a rapid sizzle-reel pace; video slides play through, capped at ~4s. Hard cuts only — no crossfade. */
+const IMAGE_HOLD_MS = 450;
 const VIDEO_HOLD_CAP_MS = 4000;
 
 export function resolveSlides(
@@ -79,6 +79,15 @@ export function SlideSequence({
   const pendingIndexRef = useRef<number | null>(null);
   const hasPlayedOnceRef = useRef(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const settleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Timestamp the current slide's beat began — lets mouse-leave settle after
+  // only the *remaining* beat, so the exiting slide gets one natural beat, not
+  // a bonus full one on top of the time it has already been showing.
+  const beatStartRef = useRef(0);
+  // Latest activeIndex, synced via the effect below so the mouse-leave settle
+  // can read it without adding activeIndex to that effect's deps (which would
+  // re-run it on every advance).
+  const activeIndexRef = useRef(activeIndex);
 
   const isEngaged = trigger === "hover" ? isHovering : isVisible;
   useVideoPlaybackGate(activeVideoRef, isEngaged);
@@ -87,6 +96,13 @@ export function SlideSequence({
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
+    }
+  }, []);
+
+  const clearSettle = useCallback(() => {
+    if (settleTimeoutRef.current) {
+      clearTimeout(settleTimeoutRef.current);
+      settleTimeoutRef.current = null;
     }
   }, []);
 
@@ -110,18 +126,35 @@ export function SlideSequence({
     [slides, commitAdvance]
   );
 
+  // Keep activeIndexRef current for the mouse-leave settle logic below.
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
   // Reset to the resting slide on mouse-leave (grid) or when a one-shot
   // sequence leaves the viewport (so the next viewport-entry replays it).
   useEffect(() => {
     if (trigger === "hover" && !isHovering) {
       clearScheduledAdvance();
-      setActiveIndex(0);
+      // Don't hard-cut back to the cover at the same instant an advance is
+      // firing — the two updates race and flash. Let the slide that's showing
+      // finish the beat it's already partway through, then settle to the cover.
+      if (activeIndexRef.current !== 0) {
+        const remaining = Math.max(0, IMAGE_HOLD_MS - (performance.now() - beatStartRef.current));
+        settleTimeoutRef.current = setTimeout(() => {
+          settleTimeoutRef.current = null;
+          setActiveIndex(0);
+        }, remaining);
+      }
     }
     if (trigger === "auto" && !isVisible && !loopForever) {
       clearScheduledAdvance();
       hasPlayedOnceRef.current = false;
     }
-  }, [isHovering, isVisible, trigger, loopForever, clearScheduledAdvance]);
+    // Cleanup cancels a pending settle when re-hovering (deps change) or on
+    // unmount, so a resumed hover isn't yanked back to the cover mid-loop.
+    return clearSettle;
+  }, [isHovering, isVisible, trigger, loopForever, clearScheduledAdvance, clearSettle]);
 
   // Jump straight to the first "remaining" slide the moment hover begins.
   useEffect(() => {
@@ -139,6 +172,7 @@ export function SlideSequence({
     const isLast = activeIndex >= slides.length - 1;
     const nextIndex = isLast ? (loopForever ? startIndex : null) : activeIndex + 1;
     const current = slides[activeIndex];
+    beatStartRef.current = performance.now();
 
     const goNext = () => {
       if (nextIndex === null) {
