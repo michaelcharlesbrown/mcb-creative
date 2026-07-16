@@ -172,6 +172,18 @@
   --info-page-reading-max: clamp(21rem, 90vw, 40rem);
   --text-info-headline:    var(--font-size-headline); /* was 2rem=32px; now 48px→88px */
   --leading-info-headline: 1.1;
+  /* Giant decorative testimonials quote mark. An SVG, tight-cropped, so these
+     are the mark's actual ink width — dial them to size it.
+     Desktop scales off the viewport (the column count is fixed at 3, so the two
+     track together). Mobile is a share of the column instead: the grid drops to
+     one full-width column there, so a viewport-based size would no longer
+     describe the mark's relationship to the copy it heads. ~30% is the
+     proportion the wide breakpoints land on. */
+  --size-testimonials-mark:        clamp(2.75rem, 8.34vw, 8.75rem);
+  /* Capped: the single column runs to ~719px at the top of the mobile range,
+     where a bare 30% would balloon the mark past any size it takes on desktop.
+     The cap holds it at the desktop mark's own ceiling. */
+  --size-testimonials-mark-mobile: min(30%, 7.5rem);
   --text-info-intro:       var(--font-size-headline); /* was clamp(1.75rem,4vw,2.75rem)=44px@1440; now 48px→88px */
   --leading-info-intro:    1.35;
   --text-info-eyebrow:     var(--font-size-body);
@@ -293,7 +305,7 @@ a {
    are excluded.
 ============================================================ */
 
-img:not(.nav__logo-img):not(.hero__wordmark-img):not(.footer__wordmark):not(.footer__cta-arrow):not(.work-page__cta-arrow):not(.studio-intro__arrow):not(.social-showcase__screen-media),
+img:not(.nav__logo-img):not(.hero__wordmark-img):not(.footer__wordmark):not(.footer__cta-arrow):not(.work-page__cta-arrow):not(.studio-intro__arrow):not(.info-testimonials__mark):not(.social-showcase__screen-media),
 video:not(.hidden):not(.info-peel__video):not(.info-peel__static-video):not(.social-showcase__screen-media) {
   border-radius: var(--radius-image);
 }
@@ -857,6 +869,49 @@ body.home .project-intro__header {
   row-gap: var(--flow-text);           /* paragraph → paragraph (stacked mobile) */
 }
 
+/* Testimonials panel — the second foreground beat. Layout only: the quote
+   reuses .project-info__body and the attribution reuses the .label /// motif,
+   so this section inherits the intro's type system with no new typography. */
+
+/* The marks are the panel's headline: they sit in the shared .project-intro__header
+   device and bottom-align to the midline, exactly as the intro's headline does,
+   while the quotes below start at the top of the bottom half. The halves meet in
+   the middle — the same top/bottom split every section on the site runs on.
+   An SVG rather than live type, deliberately: a font glyph's side bearings stop
+   it sitting flush to the column's left edge, and its em box packs dead space
+   above and below the ink that has to be negatively margined back out. The
+   tight-cropped SVG has neither problem — its box is its ink. */
+.info-testimonials__mark {
+  display: block;
+  width:   var(--size-testimonials-mark);
+  height:  auto;
+}
+
+/* Mobile carries a mark inside each quote instead — see the mobile block. */
+.info-testimonials__mark--stacked {
+  display: none;
+}
+
+.info-testimonials__grid {
+  display:               grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap:            var(--content-inset);  /* wide gutter — --gap-grid ran the quotes together */
+  row-gap:               var(--flow-section);
+  align-items:           start;
+  padding-right:         var(--space-2xl);       /* editorial breathing room off the right edge */
+}
+
+.info-testimonials__item {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--flow-block);   /* quote → attribution */
+  margin:         0;
+}
+
+.info-testimonials__attribution {
+  margin: 0;
+}
+
 /* Headline — the project tagline as the page H1 */
 .project-intro__headline {
   font-family:    var(--font-family-headline);
@@ -1301,14 +1356,31 @@ img.studio-intro__arrow {
   position: relative;
 }
 
+/* The scroller sits above the fixed video (z-2), but is itself transparent —
+   only the opaque panels within it hide the video; the reveal spacers let it
+   through, one full viewport at a time. Must override .info-page's own white
+   fill, which this element also carries for its type/colour context. */
 .info-peel__content {
   position:   relative;
   z-index:    2;
+  background: transparent;
+}
+
+/* One opaque foreground beat. Each panel fills at least the viewport so it
+   reads as its own screen, and its background hides the fixed video until the
+   panel scrolls up and off. */
+.info-peel__panel {
+  position:   relative;
   background: var(--background);
-  /* Always fill the viewport top-to-bottom so nothing behind the white
-     layer (footer/reel) ever peeks in as a snip before the peel scroll. */
   min-height: 100dvh;
   box-sizing: border-box;
+}
+
+/* A full-viewport window onto the fixed background video, placed after every
+   panel: panel → reveal → panel → reveal → footer. */
+.info-peel__reveal {
+  height: 100vh;
+  height: 100dvh;
 }
 
 .info-peel__video-wrap {
@@ -1321,7 +1393,6 @@ img.studio-intro__arrow {
   overflow: hidden;
   border-radius: 0;
   pointer-events: none;
-  visibility: hidden;
 }
 
 .info-peel__video {
@@ -1348,7 +1419,10 @@ img.studio-intro__arrow {
   border-radius: 0;
 }
 
-body.info-peel-active footer {
+/* The page footer sits above the fixed reveal video. Scoped to the footer that
+   immediately follows the peel so it never leaks onto nested <footer> elements
+   (e.g. testimonial attributions inside a panel). */
+body.info-peel-active .info-peel + footer {
   position: relative;
   z-index: 3;
 }
@@ -1501,6 +1575,40 @@ body.info-peel-active footer {
     columns: 1;
   }
 
+  /* Testimonials stack on a phone — three columns of body copy is unreadable. */
+  .info-testimonials__grid {
+    grid-template-columns: 1fr;
+    row-gap:               var(--flow-section);
+    padding-right:         0;
+  }
+
+  /* The 50dvh split releases here (--hero-split: auto), so there is no top half
+     for the marks to bottom-align against and no columns to pair them with.
+     Drop the header device and let each quote carry its own mark instead. */
+  .info-testimonials .project-intro__header {
+    display: none;
+  }
+
+  /* With the header device gone and .info-intro zeroing the bottom half's
+     padding-top, the first mark would butt straight into the section above.
+     Restore the section↔section rhythm the header was providing. */
+  .info-testimonials .project-intro__info {
+    padding-top: var(--flow-section);
+  }
+
+  .info-testimonials__mark--stacked {
+    display: block;
+  }
+
+  /* The grid collapses to one full-width column here, but the mark's clamp floor
+     held it at the size it took in a narrow desktop column — ~13% of its column
+     against ~30% on desktop, which reads as shrunken rather than deliberate.
+     Size it off the column instead of the viewport so it keeps the proportion
+     the wide breakpoints already establish. */
+  .info-testimonials__mark {
+    width: var(--size-testimonials-mark-mobile);
+  }
+
   /* Corners on mobile: the top studio line spans full width and centres. */
   .hero-corners__studio {
     grid-area:  1 / 1 / 2 / 3;
@@ -1584,6 +1692,16 @@ body.info-peel-active footer {
      (object-cover). One image, one field — no separate portrait source. */
   .project-intro__cover-media {
     aspect-ratio: var(--aspect-project-hero-mobile);
+  }
+
+  /* The cover's padding-bottom and the description's padding-top stack, so the
+     gap above the copy came to 2×--flow-section while the gap below it is 1× —
+     double the air, which reads as an error on a phone where the rhythm has
+     already stepped down. Drop the cover's step and let the description's own
+     padding own that gap: one --flow-section above, one below, and the same
+     value the testimonials section uses for its top breathing room. */
+  .project-intro__cover {
+    padding-bottom: 0;
   }
 
   /* Project pages: SCOPE/TEAM is the grid's first child, so it stacks

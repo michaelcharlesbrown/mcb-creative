@@ -39,8 +39,14 @@ export function resolveSlides(
 
 export interface SlideSequenceProps {
   slides: ResolvedSlide[];
-  /** "hover" advances only while hovered (grid cards); "auto" advances on viewport visibility. */
-  trigger: "hover" | "auto";
+  /**
+   * "hover" advances only while hovered (grid cards); "auto" advances on
+   * viewport visibility; "none" never advances — the sequence rests on slide 0
+   * as a still. Used where there is no hover to drive it (touch), so the slides
+   * are simply not a feature of that breakpoint rather than being replayed by
+   * some other trigger.
+   */
+  trigger: "hover" | "auto" | "none";
   /** true: loops the full sequence forever while engaged. false: plays through once, then settles on slide 0. */
   loopForever: boolean;
   aspectClassName: string;
@@ -89,7 +95,7 @@ export function SlideSequence({
   // re-run it on every advance).
   const activeIndexRef = useRef(activeIndex);
 
-  const isEngaged = trigger === "hover" ? isHovering : isVisible;
+  const isEngaged = trigger === "hover" ? isHovering : trigger === "auto" ? isVisible : false;
   useVideoPlaybackGate(activeVideoRef, isEngaged);
 
   const clearScheduledAdvance = useCallback(() => {
@@ -205,8 +211,12 @@ export function SlideSequence({
   // existing lazy-video convention used elsewhere in the codebase.
   const upcomingIndex =
     activeIndex >= slides.length - 1 ? (loopForever ? startIndex : null) : activeIndex + 1;
+  // A "none" sequence never advances, so preloading what comes next would be
+  // pure waste — on exactly the breakpoint that can least afford it.
   const upcomingVideoUrl =
-    shouldLoad && upcomingIndex !== null ? slides[upcomingIndex]?.videoUrl : undefined;
+    shouldLoad && trigger !== "none" && upcomingIndex !== null
+      ? slides[upcomingIndex]?.videoUrl
+      : undefined;
 
   useEffect(() => {
     if (!upcomingVideoUrl || readyUrlsRef.current.has(upcomingVideoUrl)) return;

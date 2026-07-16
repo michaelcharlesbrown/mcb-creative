@@ -1,8 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+import {
+  Children,
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import BodyClass from "@/components/BodyClass";
 import {
   INFO_PEEL_VIDEO_POSTER,
@@ -10,21 +15,27 @@ import {
 } from "@/lib/infoPeelVideo";
 import { useVideoPlaybackGate } from "@/hooks/useViewportVideo";
 
-gsap.registerPlugin(ScrollTrigger);
-
 interface InfoPeelRevealProps {
+  /** Each direct child is one opaque foreground panel; a full-viewport window
+      onto the fixed background video follows each one. Two panels therefore
+      read as: panel → video → panel → video → footer. */
   children: ReactNode;
+  /** Applied to the scrolling content element, e.g. "info-page info-intro". */
+  className?: string;
+  "aria-label"?: string;
 }
 
 function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-export default function InfoPeelReveal({ children }: InfoPeelRevealProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const videoWrapRef = useRef<HTMLDivElement>(null);
+export default function InfoPeelReveal({
+  children,
+  className,
+  "aria-label": ariaLabel,
+}: InfoPeelRevealProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const revealsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const [reducedMotion, setReducedMotion] = useState(false);
   const [videoActive, setVideoActive] = useState(false);
@@ -35,63 +46,43 @@ export default function InfoPeelReveal({ children }: InfoPeelRevealProps) {
     setReducedMotion(prefersReducedMotion());
   }, []);
 
+  // The peel is pure CSS — opaque panels slide up over the fixed video as the
+  // page scrolls. JS only decodes the video while a reveal window is actually
+  // on-screen; the panels cover it the rest of the time, so playing then is waste.
   useEffect(() => {
     if (reducedMotion) return;
+    const reveals = revealsRef.current.filter(
+      (el): el is HTMLDivElement => el !== null
+    );
+    if (reveals.length === 0) return;
 
-    const container = containerRef.current;
-    const content = contentRef.current;
-    const videoWrap = videoWrapRef.current;
-    if (!container || !content || !videoWrap) return;
+    const onScreen = new Set<Element>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) onScreen.add(entry.target);
+          else onScreen.delete(entry.target);
+        }
+        setVideoActive(onScreen.size > 0);
+      },
+      { rootMargin: "10% 0px" }
+    );
 
-    ScrollTrigger.normalizeScroll(true);
-
-    const ctx = gsap.context(() => {
-      gsap.set(videoWrap, { autoAlpha: 0 });
-
-      gsap.to(content, {
-        yPercent: -100,
-        ease: "none",
-        scrollTrigger: {
-          trigger: content,
-          start: "bottom bottom",
-          end: () => `+=${window.innerHeight}`,
-          scrub: true,
-          pin: true,
-          pinSpacing: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onEnter: () => {
-            gsap.set(videoWrap, { autoAlpha: 1 });
-            setVideoActive(true);
-          },
-          onEnterBack: () => {
-            gsap.set(videoWrap, { autoAlpha: 1 });
-            setVideoActive(true);
-          },
-          onLeaveBack: () => {
-            gsap.set(videoWrap, { autoAlpha: 0 });
-            setVideoActive(false);
-          },
-        },
-      });
-    }, container);
-
-    const refresh = () => ScrollTrigger.refresh();
-    refresh();
-    window.addEventListener("resize", refresh);
-
-    return () => {
-      window.removeEventListener("resize", refresh);
-      ctx.revert();
-      ScrollTrigger.normalizeScroll(false);
-    };
+    reveals.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, [reducedMotion]);
 
+  const panels = Children.toArray(children);
+
+  // Reduced motion: no fixed background, no reveals — panels stack in natural
+  // flow and the reel plays once as a single static block before the footer.
   if (reducedMotion) {
     return (
       <>
         <BodyClass className="info-peel-active" />
-        {children}
+        <main className={className} aria-label={ariaLabel}>
+          {children}
+        </main>
         <section className="info-peel__static" aria-label="Studio reel">
           <video
             className="info-peel__static-video"
@@ -109,10 +100,10 @@ export default function InfoPeelReveal({ children }: InfoPeelRevealProps) {
   }
 
   return (
-    <div ref={containerRef} className="info-peel">
+    <div className="info-peel">
       <BodyClass className="info-peel-active" />
 
-      <div ref={videoWrapRef} className="info-peel__video-wrap" aria-hidden="true">
+      <div className="info-peel__video-wrap" aria-hidden="true">
         <video
           ref={videoRef}
           className="info-peel__video"
@@ -126,9 +117,23 @@ export default function InfoPeelReveal({ children }: InfoPeelRevealProps) {
         />
       </div>
 
-      <div ref={contentRef} className="info-peel__content">
-        {children}
-      </div>
+      <main
+        className={["info-peel__content", className].filter(Boolean).join(" ")}
+        aria-label={ariaLabel}
+      >
+        {panels.map((panel, i) => (
+          <Fragment key={i}>
+            <div className="info-peel__panel">{panel}</div>
+            <div
+              className="info-peel__reveal"
+              aria-hidden="true"
+              ref={(el) => {
+                revealsRef.current[i] = el;
+              }}
+            />
+          </Fragment>
+        ))}
+      </main>
     </div>
   );
 }
