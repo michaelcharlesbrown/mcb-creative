@@ -171,7 +171,6 @@
   /* Info (/about-style) editorial page */
   --info-page-reading-max: clamp(21rem, 90vw, 40rem);
   --text-info-headline:    var(--font-size-headline); /* was 2rem=32px; now 48px→88px */
-  --leading-info-headline: 1.1;
   /* Giant decorative testimonials quote mark. An SVG, tight-cropped, so these
      are the mark's actual ink width — dial them to size it.
      Desktop scales off the viewport (the column count is fixed at 3, so the two
@@ -195,8 +194,6 @@
   --text-info-caption:     clamp(0.75rem, 0.94vw, 0.85rem);
   --leading-info-caption:  1.2;
   --padding-info-page-bottom: clamp(4rem, 52px + 5.29vw, 12rem); /* 128px → 192px */
-  /* Gap above masonry — keeps the grid below the first screen on desktop */
-  --space-info-archive-top: clamp(4rem, 16vh, 10rem);
   /* Air above intro copy (below fixed nav) — matches project page mockup */
   --padding-project-hero-top: max(
     calc(var(--nav-height) + clamp(2.5rem, 6vw, 5rem)),
@@ -307,11 +304,6 @@ a {
 
 img:not(.nav__logo-img):not(.hero__wordmark-img):not(.footer__wordmark):not(.footer__cta-arrow):not(.work-page__cta-arrow):not(.studio-intro__arrow):not(.info-testimonials__mark):not(.social-showcase__screen-media),
 video:not(.hidden):not(.info-peel__video):not(.info-peel__static-video):not(.social-showcase__screen-media) {
-  border-radius: var(--radius-image);
-}
-
-/* Scaled hero video bleeds past element bounds — clip the frame */
-.hero__video-frame {
   border-radius: var(--radius-image);
 }
 
@@ -737,19 +729,6 @@ img.footer__wordmark {
 }
 
 
-/* Video frame — clips the slightly-scaled video so no edges bleed out */
-.hero__video-frame {
-  width:         100%;
-  overflow:      hidden;
-}
-
-.hero__video-frame video {
-  display:   block;
-  width:     100%;
-  transform: scale(1.04);
-}
-
-
 .hero__video {
   position: absolute;
   inset: 0;
@@ -836,19 +815,11 @@ body.home .project-intro__header {
   font-weight: var(--weight-regular);
 }
 
-/* Info page eyebrow — stacked mobile treatment is hidden on desktop */
-.info-intro__eyebrow {
-  display: none;
-}
-
-.info-intro__eyebrow-desktop {
-  display: block;
-}
-
-/* Info page headline — uppercase on mobile per editorial mock */
-.info-intro .project-intro__headline {
-  text-transform: uppercase;
-  line-height:    var(--leading-info-headline);
+/* Info page eyebrow — standard mono line. Keep the role ("BRAND DESIGNER")
+   together so if the line wraps, both words drop to the next line as a unit
+   rather than "DESIGNER" floating alone. */
+.info-intro__eyebrow .label-meta {
+  white-space: nowrap;
 }
 
 /* Info page — the shared .project-intro__header device (50dvh, bottom-anchored)
@@ -976,14 +947,15 @@ body.home .project-intro__header {
   line-height: var(--leading-info-body);
 }
 
-/* Inline text link inside body copy (e.g. Info "here") — underlined so it
-   reads as a link mid-sentence, with the global flip-roll on hover. The
-   underline rule must be unlayered here to beat the base `a { none }` reset,
-   and the clipped roll-box is nudged onto the surrounding text baseline. */
-.project-info__body a.flip-link {
-  text-decoration:       underline;
-  text-underline-offset: 0.15em;
-  vertical-align:        -0.25em;
+/* Inline text link inside body copy (Info "here") — uses the global flip-roll
+   like every other link, no underline. Set a touch heavier than body copy, and
+   the clipped roll-box is nudged onto the surrounding text baseline. */
+.project-info__body a.project-info__here .flip-link__inner {
+  font-weight: var(--weight-medium);
+}
+
+.project-info__body a.project-info__here {
+  vertical-align: -0.25em;
 }
 
 /* Info "Get in touch" CTA — original label type + global flip-roll, with a
@@ -1426,32 +1398,6 @@ body.info-peel-active .info-peel + footer {
   position: relative;
   z-index: 3;
 }
-
-.info-archive {
-  padding-top:    var(--space-info-archive-top);
-  padding-bottom: clamp(1.5rem, 4vh, 3rem);
-}
-
-.info-archive__grid {
-  width:          100%;
-  max-width:      var(--content-max-width);
-  margin-inline:  auto;
-  padding-inline: var(--content-inset);
-  box-sizing:     border-box;
-  columns:        4;
-  column-gap:     var(--gap-grid);
-}
-
-.info-archive__item {
-  break-inside:  avoid;
-  margin:        0 0 var(--gap-grid) 0;
-}
-
-.info-archive__item img {
-  display: block;
-  width:   100%;
-  height:  auto;
-}
 /* ============================================================
    SOCIAL SHOWCASE
    Page-builder block: 1–3 vertical (9:16) screens, optional
@@ -1571,10 +1517,6 @@ body.info-peel-active .info-peel + footer {
     font-size: clamp(1.375rem, 5vw, 2rem);
   }
 
-  .info-archive__grid {
-    columns: 1;
-  }
-
   /* Testimonials stack on a phone — three columns of body copy is unreadable. */
   .info-testimonials__grid {
     grid-template-columns: 1fr;
@@ -1617,33 +1559,6 @@ body.info-peel-active .info-peel + footer {
 
   .nav__logo-img {
     height: calc(var(--size-nav-logo-img) * 0.6);
-  }
-
-  /* Mobile-only stacked eyebrow — name (sans) + roles (mono) */
-  .info-intro__eyebrow-desktop {
-    display: none;
-  }
-
-  .info-intro__eyebrow {
-    display:        flex;
-    flex-direction: column;
-    align-items:    flex-start;
-    gap:            0.15em;
-    margin:         0;
-  }
-
-  .info-intro__eyebrow-name {
-    font-family:    var(--font-family-headline);
-    font-size:      var(--text-info-eyebrow);
-    font-weight:    var(--weight-bold);
-    line-height:    var(--leading-info-eyebrow);
-    letter-spacing: normal;
-    text-transform: uppercase;
-    margin:         0;
-  }
-
-  .info-intro__eyebrow-roles {
-    margin: 0;
   }
 
   /* Homepage hero — composition → rhythm handoff. --hero-split is `auto`
@@ -1751,11 +1666,6 @@ body.info-peel-active .info-peel + footer {
 
   .project-intro__headline {
     max-width: 50%;
-  }
-
-  .info-intro .project-intro__headline {
-    text-transform: none;
-    line-height:    var(--leading-project-headline);
   }
 
   .project-info__grid {

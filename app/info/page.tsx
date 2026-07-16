@@ -37,19 +37,14 @@ export default function Info() {
     <InfoPeelReveal className="info-page info-intro" aria-label="About Michael Charles Brown">
       <section className="project-intro">
         <header className="project-intro__header max-w-[var(--content-max-width)] mx-auto content-inset">
-          {/* Desktop: standard single-line eyebrow */}
-          <p className="label info-intro__eyebrow-desktop">
+          {/* Standard mono eyebrow. It flows naturally; the only safeguard is
+              that "BRAND DESIGNER" stays together (see label-meta nowrap), so if
+              the line wraps both words drop to the next line as a unit. */}
+          <p className="label info-intro__eyebrow">
             <span className="label-title">MICHAEL CHARLES BROWN</span>{" "}
             <TripleSlash />{" "}
             <span className="label-meta">BRAND DESIGNER</span>
           </p>
-          {/* Mobile: stacked — full line is too long */}
-          <div className="info-intro__eyebrow">
-            <p className="info-intro__eyebrow-name">MICHAEL CHARLES BROWN</p>
-            <p className="label info-intro__eyebrow-roles">
-              <span className="label-meta">BRAND DESIGNER</span>
-            </p>
-          </div>
           <h1 className="project-intro__headline">
             Building visual identities for over a decade.
           </h1>
@@ -84,10 +79,11 @@ export default function Info() {
                   href="https://michaelcharlesbrown.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flip-link"
+                  className="flip-link project-info__here"
                 >
                   <span className="flip-link__inner" data-text="here">here</span>
                 </a>
+                .
               </p>
             </div>
           </div>

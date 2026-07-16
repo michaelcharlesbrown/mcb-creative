@@ -9,10 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import BodyClass from "@/components/BodyClass";
-import {
-  INFO_PEEL_VIDEO_POSTER,
-  INFO_PEEL_VIDEO_SRC,
-} from "@/lib/infoPeelVideo";
+import { INFO_PEEL_VIDEO_SRC } from "@/lib/infoPeelVideo";
 import { useVideoPlaybackGate } from "@/hooks/useViewportVideo";
 
 interface InfoPeelRevealProps {
@@ -35,10 +32,15 @@ export default function InfoPeelReveal({
   "aria-label": ariaLabel,
 }: InfoPeelRevealProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const staticSectionRef = useRef<HTMLElement>(null);
   const revealsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const [reducedMotion, setReducedMotion] = useState(false);
   const [videoActive, setVideoActive] = useState(false);
+  // The heavy source is only requested once a reveal (or the static reel under
+  // reduced motion) nears the viewport — never on initial load. The poster
+  // covers any brief buffer, so the reveal never shows a blank window.
+  const [shouldLoad, setShouldLoad] = useState(false);
 
   useVideoPlaybackGate(videoRef, videoActive);
 
@@ -47,8 +49,13 @@ export default function InfoPeelReveal({
   }, []);
 
   // The peel is pure CSS — opaque panels slide up over the fixed video as the
-  // page scrolls. JS only decodes the video while a reveal window is actually
-  // on-screen; the panels cover it the rest of the time, so playing then is waste.
+  // page scrolls. JS only requests and plays the video while a reveal window is
+  // actually on-screen; the panels cover it the rest of the time, so loading or
+  // playing before then is pure waste. The first reveal sits exactly at the
+  // fold, so a plain 0px margin reads as "intersecting" at rest (sub-pixel) and
+  // would load the file immediately. The negative bottom margin requires the
+  // window to scroll ~15% into view before it triggers, so nothing is requested
+  // until the viewer actually reaches it; the poster covers the brief buffer.
   useEffect(() => {
     if (reducedMotion) return;
     const reveals = revealsRef.current.filter(
@@ -60,15 +67,40 @@ export default function InfoPeelReveal({
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) onScreen.add(entry.target);
-          else onScreen.delete(entry.target);
+          if (entry.isIntersecting) {
+            onScreen.add(entry.target);
+            setShouldLoad(true);
+          } else {
+            onScreen.delete(entry.target);
+          }
         }
         setVideoActive(onScreen.size > 0);
       },
-      { rootMargin: "10% 0px" }
+      { rootMargin: "0px 0px -15% 0px" }
     );
 
     reveals.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [reducedMotion]);
+
+  // Reduced motion: the reel is a static block in natural flow, so gate its
+  // source on that block nearing the viewport rather than force-loading it.
+  useEffect(() => {
+    if (!reducedMotion) return;
+    const node = staticSectionRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "50% 0px" }
+    );
+
+    observer.observe(node);
     return () => observer.disconnect();
   }, [reducedMotion]);
 
@@ -83,11 +115,14 @@ export default function InfoPeelReveal({
         <main className={className} aria-label={ariaLabel}>
           {children}
         </main>
-        <section className="info-peel__static" aria-label="Studio reel">
+        <section
+          ref={staticSectionRef}
+          className="info-peel__static"
+          aria-label="Studio reel"
+        >
           <video
             className="info-peel__static-video"
-            src={INFO_PEEL_VIDEO_SRC}
-            poster={INFO_PEEL_VIDEO_POSTER}
+            src={shouldLoad ? INFO_PEEL_VIDEO_SRC : undefined}
             autoPlay
             muted
             loop
@@ -107,9 +142,7 @@ export default function InfoPeelReveal({
         <video
           ref={videoRef}
           className="info-peel__video"
-          src={INFO_PEEL_VIDEO_SRC}
-          poster={INFO_PEEL_VIDEO_POSTER}
-          autoPlay
+          src={shouldLoad ? INFO_PEEL_VIDEO_SRC : undefined}
           muted
           loop
           playsInline

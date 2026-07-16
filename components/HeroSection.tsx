@@ -1,11 +1,8 @@
 "use client";
 
-import { useRef } from "react";
 import { motion } from "framer-motion";
 import GrainCanvas from "@/components/GrainCanvas";
-import { HOMEPAGE_HERO_VIDEO_SRC } from "@/lib/homepageHeroVideo";
 import { homepageIntro, HOMEPAGE_INTRO_EASE } from "@/lib/homepageIntro";
-import { useViewportVideo, useVideoPlaybackGate } from "@/hooks/useViewportVideo";
 import SizzleReel from "@/components/SizzleReel";
 import type { MediaSlideData } from "@/components/SlideSequence";
 
@@ -14,9 +11,6 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ sizzleReelSlides = [] }: HeroSectionProps) {
-  const { elementRef: frameRef, shouldLoad, isVisible } = useViewportVideo<HTMLDivElement>();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  useVideoPlaybackGate(videoRef, isVisible);
   const hasSizzleReel = sizzleReelSlides.length > 0;
 
   return (
@@ -74,23 +68,7 @@ export default function HeroSection({ sizzleReelSlides = [] }: HeroSectionProps)
           }}
         >
           <div className="max-w-[var(--content-max-width)] mx-auto w-full content-inset box-border">
-            {hasSizzleReel ? (
-              <SizzleReel slides={sizzleReelSlides} priority />
-            ) : (
-              <div className="hero__video-frame" ref={frameRef}>
-                <video
-                  ref={videoRef}
-                  className="w-full h-auto"
-                  src={shouldLoad ? HOMEPAGE_HERO_VIDEO_SRC : undefined}
-                  poster="/images/hp-video-poster.jpg"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                />
-              </div>
-            )}
+            {hasSizzleReel && <SizzleReel slides={sizzleReelSlides} priority />}
           </div>
         </motion.div>
       </div>
