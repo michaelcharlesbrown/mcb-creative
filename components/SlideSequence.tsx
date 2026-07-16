@@ -40,15 +40,19 @@ export function resolveSlides(
 export interface SlideSequenceProps {
   slides: ResolvedSlide[];
   /**
-   * "hover" advances only while hovered (grid cards); "auto" advances on
-   * viewport visibility; "none" never advances — the sequence rests on slide 0
-   * as a still. Used where there is no hover to drive it (touch), so the slides
-   * are simply not a feature of that breakpoint rather than being replayed by
-   * some other trigger.
+   * "hover" advances while hovered — use hoverSingleStep for one slide per
+   * visit (grid cards) or loopForever for a full reel on hover. "auto"
+   * advances on viewport visibility; "none" never advances — slide 0 only.
    */
   trigger: "hover" | "auto" | "none";
   /** true: loops the full sequence forever while engaged. false: plays through once, then settles on slide 0. */
   loopForever: boolean;
+  /**
+   * Grid cards only (trigger="hover"). Each hover shows one alternate slide
+   * (starting at index 1), then returns to slide 0 on mouse leave. The next
+   * hover shows the following slide; wraps after the last slide.
+   */
+  hoverSingleStep?: boolean;
   aspectClassName: string;
   visibilityClassName?: string;
   sizes: string;
@@ -64,14 +68,15 @@ export function SlideSequence({
   slides,
   trigger,
   loopForever,
+  hoverSingleStep = false,
   aspectClassName,
   visibilityClassName = "",
   sizes,
   priority,
 }: SlideSequenceProps) {
-  // Grid/hover: slide[0] is already showing at rest, so hover jumps straight
-  // to the remaining slides rather than re-playing the resting frame.
-  const startIndex = trigger === "hover" && slides.length > 1 ? 1 : 0;
+  // Grid/hover sequence: slide[0] is already showing at rest, so hover jumps
+  // straight to the remaining slides rather than re-playing the resting frame.
+  const startIndex = trigger === "hover" && slides.length > 1 && !hoverSingleStep ? 1 : 0;
   const [activeIndex, setActiveIndex] = useState(0);
   // Bumped on every advance, even when the loop cuts back to the same index
   // (e.g. exactly 2 slides in hover mode) — activeIndex alone wouldn't change
@@ -94,8 +99,11 @@ export function SlideSequence({
   // can read it without adding activeIndex to that effect's deps (which would
   // re-run it on every advance).
   const activeIndexRef = useRef(activeIndex);
+  /** Next alternate slide to show on hover (1 … slides.length - 1, wraps). */
+  const hoverStepIndexRef = useRef(1);
 
   const isEngaged = trigger === "hover" ? isHovering : trigger === "auto" ? isVisible : false;
+  const hoverRunsSequence = trigger === "hover" && !hoverSingleStep;
   useVideoPlaybackGate(activeVideoRef, isEngaged);
 
   const clearScheduledAdvance = useCallback(() => {
@@ -142,6 +150,17 @@ export function SlideSequence({
   useEffect(() => {
     if (trigger === "hover" && !isHovering) {
       clearScheduledAdvance();
+      if (hoverSingleStep) {
+        const shown = activeIndexRef.current;
+        if (shown > 0) {
+          hoverStepIndexRef.current =
+            shown >= slides.length - 1 ? 1 : shown + 1;
+        }
+        if (activeIndexRef.current !== 0) {
+          setActiveIndex(0);
+        }
+        return;
+      }
       // Don't hard-cut back to the cover at the same instant an advance is
       // firing — the two updates race and flash. Let the slide that's showing
       // finish the beat it's already partway through, then settle to the cover.
@@ -160,17 +179,23 @@ export function SlideSequence({
     // Cleanup cancels a pending settle when re-hovering (deps change) or on
     // unmount, so a resumed hover isn't yanked back to the cover mid-loop.
     return clearSettle;
-  }, [isHovering, isVisible, trigger, loopForever, clearScheduledAdvance, clearSettle]);
+  }, [isHovering, isVisible, trigger, loopForever, hoverSingleStep, slides.length, clearScheduledAdvance, clearSettle]);
 
-  // Jump straight to the first "remaining" slide the moment hover begins.
+  // Jump to the hover target the moment hover begins.
   useEffect(() => {
     if (trigger === "hover" && isHovering) {
-      setActiveIndex(startIndex);
+      if (hoverSingleStep && slides.length > 1) {
+        requestAdvance(hoverStepIndexRef.current);
+      } else {
+        setActiveIndex(startIndex);
+      }
     }
-  }, [isHovering, trigger, startIndex]);
+  }, [isHovering, trigger, startIndex, hoverSingleStep, slides.length, requestAdvance]);
 
   // Advance timer for whichever slide is currently active.
   useEffect(() => {
+    if (hoverRunsSequence && !isEngaged) return;
+    if (!hoverRunsSequence && hoverSingleStep) return;
     if (!isEngaged) return;
     if (!loopForever && hasPlayedOnceRef.current) return;
     if (slides.length <= 1) return;
@@ -204,17 +229,22 @@ export function SlideSequence({
     // `tick` forces this effect to re-run even when a loop-back cuts to the
     // same index as before (e.g. exactly 2 slides in hover mode) — a
     // same-value setActiveIndex() alone wouldn't trigger a re-run.
-  }, [activeIndex, tick, isEngaged, loopForever, slides, startIndex, requestAdvance, clearScheduledAdvance]);
+  }, [activeIndex, tick, isEngaged, hoverRunsSequence, hoverSingleStep, loopForever, slides, startIndex, requestAdvance, clearScheduledAdvance]);
 
   // Preload only the next slide's video — never the full array — and only
   // once this element is near the viewport (shouldLoad), matching the
   // existing lazy-video convention used elsewhere in the codebase.
-  const upcomingIndex =
-    activeIndex >= slides.length - 1 ? (loopForever ? startIndex : null) : activeIndex + 1;
+  const upcomingIndex = hoverSingleStep
+    ? hoverStepIndexRef.current
+    : activeIndex >= slides.length - 1
+      ? loopForever
+        ? startIndex
+        : null
+      : activeIndex + 1;
   // A "none" sequence never advances, so preloading what comes next would be
   // pure waste — on exactly the breakpoint that can least afford it.
   const upcomingVideoUrl =
-    shouldLoad && trigger !== "none" && upcomingIndex !== null
+    shouldLoad && trigger !== "none" && upcomingIndex !== null && upcomingIndex < slides.length
       ? slides[upcomingIndex]?.videoUrl
       : undefined;
 

@@ -14,12 +14,11 @@ interface HeroSequenceProps {
 
 /**
  * Project grid card slide sequence. One curated slide set drives both
- * breakpoints from a single 16:9 source: hover-triggered looping on desktop,
- * and inert on mobile — the card rests on its cover slide as a still.
- * The slides are a rollover reward, so without a rollover there is nothing to
- * reward; firing them off viewport visibility instead just made cards twitch on
- * their own while being scrolled past. Both 16:9 for launch (mobile was 5:4 —
- * see globals.css MOBILE CROP SWITCH). Hard cuts only.
+ * breakpoints from a single 16:9 source: on desktop, each hover reveals one
+ * alternate slide then returns to the cover; repeated hovers walk through the
+ * set. Inert on mobile — the card rests on its cover slide as a still.
+ * Both 16:9 for launch (mobile was 5:4 — see globals.css MOBILE CROP SWITCH).
+ * Hard cuts only.
  */
 export default function HeroSequence({
   slides,
@@ -38,7 +37,8 @@ export default function HeroSequence({
       <SlideSequence
         slides={resolvedDesktop}
         trigger="hover"
-        loopForever
+        loopForever={false}
+        hoverSingleStep
         aspectClassName="aspect-video"
         visibilityClassName="hidden md:block"
         sizes={desktopSizes}
