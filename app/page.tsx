@@ -6,6 +6,11 @@ import HomeMobileLayout from "@/components/HomeMobileLayout";
 import HomeDesktopLayout from "@/components/HomeDesktopLayout";
 import type { MediaSlideData } from "@/components/SlideSequence";
 
+// ISR: statically cache this page but refresh it from Sanity at most every
+// 60s, so curated homepage changes go live without a redeploy. Keep in sync
+// with SANITY_REVALIDATE_SECONDS in lib/sanity.fetch.ts (must be a literal).
+export const revalidate = 60;
+
 const DEFAULT_ACCENT_COLOR = "#000000";
 
 type SanityHomepageProject = {

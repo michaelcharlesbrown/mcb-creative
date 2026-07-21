@@ -5,6 +5,11 @@ import { resolveProjectImages } from "@/lib/resolveProjectImages";
 import WorkGrid from "@/components/WorkGrid";
 import type { MediaSlideData } from "@/components/SlideSequence";
 
+// ISR: statically cache this page but refresh it from Sanity at most every
+// 60s, so Work Page curation/order changes go live without a redeploy. Keep in
+// sync with SANITY_REVALIDATE_SECONDS in lib/sanity.fetch.ts (must be a literal).
+export const revalidate = 60;
+
 type SanityGridProject = {
   slug: string;
   title: string;

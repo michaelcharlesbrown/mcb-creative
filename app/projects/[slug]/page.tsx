@@ -11,8 +11,12 @@ import ProjectNavLinks from "@/components/ProjectNavLinks";
 import SetAccentColor from "@/components/SetAccentColor";
 import { projects as hardcodedProjects } from "@/data/projects";
 
-export const revalidate = 0;
-export const dynamic = "force-dynamic";
+// ISR: cache each project page and refresh it from Sanity at most every 60s,
+// so published edits go live without a redeploy. Replaces the previous
+// force-dynamic setup (which re-rendered on every request and skipped caching
+// entirely). Keep in sync with SANITY_REVALIDATE_SECONDS in
+// lib/sanity.fetch.ts (must be a literal).
+export const revalidate = 60;
 
 export type SanityProject = {
   title: string;
