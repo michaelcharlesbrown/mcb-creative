@@ -22,8 +22,7 @@ export default function WorkGrid({ projects }: WorkGridProps) {
           <header className="project-intro__header">
             <p className="label">Selected Work</p>
             <h1 id="work-intro-title" className="project-intro__headline">
-              Helping founders and creators bring their ideas from the spark of
-              inspiration to complete visual systems.
+              A collection of brand, product, and visual identity work.
             </h1>
           </header>
         </section>
