@@ -1,10 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
 import WorkCard from "@/components/WorkCard";
-import { homepageIntro, HOMEPAGE_INTRO_EASE } from "@/lib/homepageIntro";
 import type { MediaSlideData } from "@/components/SlideSequence";
 import type { HomeProject } from "@/app/page";
 
@@ -23,16 +21,7 @@ export default function HomeDesktopLayout({ projects, sizzleReelSlides }: HomeDe
         </div>
       </div>
 
-      <motion.div
-        className="bg-background"
-        initial={{ opacity: 0, y: homepageIntro.featured.y }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: homepageIntro.featured.duration,
-          ease: HOMEPAGE_INTRO_EASE,
-          delay: homepageIntro.featured.delay,
-        }}
-      >
+      <div className="bg-background">
         <div className="max-w-[var(--content-max-width)] mx-auto content-inset pb-[var(--page-bottom)]">
           <section className="project-intro" aria-labelledby="work-intro-title">
             <header className="project-intro__header">
@@ -48,7 +37,7 @@ export default function HomeDesktopLayout({ projects, sizzleReelSlides }: HomeDe
             ))}
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

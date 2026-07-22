@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { getSanityImageUrl, type SanityImagePreset } from "@/lib/sanityImage";
-import FadeIn from "@/components/FadeIn";
 import { useViewportVideo, useVideoPlaybackGate } from "@/hooks/useViewportVideo";
 
 interface MediaBlockProps {
@@ -17,7 +16,7 @@ interface MediaBlockProps {
   imagePreset?: SanityImagePreset;
   /** When true, fills parent container (e.g. for full-screen cover) */
   fill?: boolean;
-  /** When true, skips FadeIn wrapper and passes priority to <Image> for LCP preloading */
+  /** When true, passes priority to <Image> for LCP preloading */
   priority?: boolean;
   /**
    * When true and BOTH an image and a video are set, the video plays and the
@@ -116,5 +115,5 @@ export default function MediaBlock({
     </div>
   );
 
-  return priority ? inner : <FadeIn>{inner}</FadeIn>;
+  return inner;
 }
