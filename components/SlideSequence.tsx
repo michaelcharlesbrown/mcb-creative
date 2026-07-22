@@ -95,12 +95,10 @@ export function SlideSequence({
   // only the *remaining* beat, so the exiting slide gets one natural beat, not
   // a bonus full one on top of the time it has already been showing.
   const beatStartRef = useRef(0);
-  // Latest activeIndex, synced via the effect below so the mouse-leave settle
-  // can read it without adding activeIndex to that effect's deps (which would
-  // re-run it on every advance).
-  const activeIndexRef = useRef(activeIndex);
-  /** Next alternate slide to show on hover (1 … slides.length - 1, wraps). */
-  const hoverStepIndexRef = useRef(1);
+  /** Next alternate slide to show on hover (1 … slides.length - 1, wraps).
+      State rather than a ref — it feeds the preload target computed during
+      render below, and render output must never read a mutable ref. */
+  const [hoverStepIndex, setHoverStepIndex] = useState(1);
 
   const isEngaged = trigger === "hover" ? isHovering : trigger === "auto" ? isVisible : false;
   const hoverRunsSequence = trigger === "hover" && !hoverSingleStep;
@@ -140,57 +138,59 @@ export function SlideSequence({
     [slides, commitAdvance]
   );
 
-  // Keep activeIndexRef current for the mouse-leave settle logic below.
-  useEffect(() => {
-    activeIndexRef.current = activeIndex;
-  }, [activeIndex]);
-
-  // Reset to the resting slide on mouse-leave (grid) or when a one-shot
-  // sequence leaves the viewport (so the next viewport-entry replays it).
-  useEffect(() => {
-    if (trigger === "hover" && !isHovering) {
-      clearScheduledAdvance();
-      if (hoverSingleStep) {
-        const shown = activeIndexRef.current;
-        if (shown > 0) {
-          hoverStepIndexRef.current =
-            shown >= slides.length - 1 ? 1 : shown + 1;
-        }
-        if (activeIndexRef.current !== 0) {
-          setActiveIndex(0);
-        }
-        return;
-      }
-      // Don't hard-cut back to the cover at the same instant an advance is
-      // firing — the two updates race and flash. Let the slide that's showing
-      // finish the beat it's already partway through, then settle to the cover.
-      if (activeIndexRef.current !== 0) {
-        const remaining = Math.max(0, IMAGE_HOLD_MS - (performance.now() - beatStartRef.current));
-        settleTimeoutRef.current = setTimeout(() => {
-          settleTimeoutRef.current = null;
-          setActiveIndex(0);
-        }, remaining);
-      }
+  // Hover enter/leave live in the event handlers themselves — state updates
+  // in response to user events belong in handlers, not in effects reacting to
+  // an isHovering flag (which cascades an extra render per transition).
+  const handleMouseEnter = () => {
+    // Cancel a pending settle so a resumed hover isn't yanked back to the
+    // cover mid-loop.
+    clearSettle();
+    setIsHovering(true);
+    if (hoverSingleStep && slides.length > 1) {
+      requestAdvance(hoverStepIndex);
+    } else {
+      setActiveIndex(startIndex);
     }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+    clearScheduledAdvance();
+    if (hoverSingleStep) {
+      if (activeIndex > 0) {
+        setHoverStepIndex(activeIndex >= slides.length - 1 ? 1 : activeIndex + 1);
+        setActiveIndex(0);
+      }
+      return;
+    }
+    // Don't hard-cut back to the cover at the same instant an advance is
+    // firing — the two updates race and flash. Let the slide that's showing
+    // finish the beat it's already partway through, then settle to the cover.
+    if (activeIndex !== 0) {
+      const remaining = Math.max(0, IMAGE_HOLD_MS - (performance.now() - beatStartRef.current));
+      settleTimeoutRef.current = setTimeout(() => {
+        settleTimeoutRef.current = null;
+        setActiveIndex(0);
+      }, remaining);
+    }
+  };
+
+  // One-shot auto sequences replay on the next viewport entry.
+  useEffect(() => {
     if (trigger === "auto" && !isVisible && !loopForever) {
       clearScheduledAdvance();
       hasPlayedOnceRef.current = false;
     }
-    // Cleanup cancels a pending settle when re-hovering (deps change) or on
-    // unmount, so a resumed hover isn't yanked back to the cover mid-loop.
-    return clearSettle;
-  }, [isHovering, isVisible, trigger, loopForever, hoverSingleStep, slides.length, clearScheduledAdvance, clearSettle]);
+  }, [isVisible, trigger, loopForever, clearScheduledAdvance]);
 
-  // Jump to the hover target the moment hover begins.
-  useEffect(() => {
-    if (trigger === "hover" && isHovering) {
-      if (hoverSingleStep && slides.length > 1) {
-        requestAdvance(hoverStepIndexRef.current);
-      } else {
-        setActiveIndex(startIndex);
-      }
-    }
-  }, [isHovering, trigger, startIndex, hoverSingleStep, slides.length, requestAdvance]);
+  // Unmount: cancel anything scheduled.
+  useEffect(
+    () => () => {
+      clearScheduledAdvance();
+      clearSettle();
+    },
+    [clearScheduledAdvance, clearSettle]
+  );
 
   // Advance timer for whichever slide is currently active.
   useEffect(() => {
@@ -235,7 +235,7 @@ export function SlideSequence({
   // once this element is near the viewport (shouldLoad), matching the
   // existing lazy-video convention used elsewhere in the codebase.
   const upcomingIndex = hoverSingleStep
-    ? hoverStepIndexRef.current
+    ? hoverStepIndex
     : activeIndex >= slides.length - 1
       ? loopForever
         ? startIndex
@@ -270,8 +270,8 @@ export function SlideSequence({
     <div
       ref={elementRef}
       className={wrapperClass}
-      onMouseEnter={trigger === "hover" ? () => setIsHovering(true) : undefined}
-      onMouseLeave={trigger === "hover" ? () => setIsHovering(false) : undefined}
+      onMouseEnter={trigger === "hover" ? handleMouseEnter : undefined}
+      onMouseLeave={trigger === "hover" ? handleMouseLeave : undefined}
     >
       {active?.imageUrl ? (
         <Image

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { useAccentColor } from "@/components/AccentColorContext";
 
 const CURSOR_SIZE = 14;
@@ -19,14 +19,22 @@ function isTooDarkForDifferenceBlend(hex: string): boolean {
   const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
   return luminance < 40;
 }
-const prefersReducedMotion = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+/** Conditions under which the custom cursor must not render at all. */
+const DISABLING_QUERIES = [
+  "(prefers-reduced-motion: reduce)",
+  "(pointer: coarse)",
+  "(hover: none)",
+];
 
-const isMobileOrTouch = () =>
-  typeof window !== "undefined" &&
-  (window.matchMedia("(pointer: coarse)").matches ||
-    window.matchMedia("(hover: none)").matches);
+function subscribeDisabled(onChange: () => void) {
+  const lists = DISABLING_QUERIES.map((q) => window.matchMedia(q));
+  lists.forEach((l) => l.addEventListener("change", onChange));
+  return () => lists.forEach((l) => l.removeEventListener("change", onChange));
+}
+const getDisabledSnapshot = () =>
+  DISABLING_QUERIES.some((q) => window.matchMedia(q).matches);
+/** SSR: no cursor until the client confirms a fine pointer. */
+const getDisabledServerSnapshot = () => true;
 const CURSOR_SCALE_HOVER = 2.5;
 const INTERACTIVE_SELECTORS =
   'a, button, input, select, textarea, [role="button"], [href], [onclick]';
@@ -44,20 +52,23 @@ export default function CustomCursor() {
   const [position, setPosition] = useState({ x: -100, y: -100 });
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [disabled, setDisabled] = useState(false);
+  // Media-query driven, live: flips if the user toggles reduced motion or
+  // switches to a coarse pointer, without needing a reload.
+  const disabled = useSyncExternalStore(
+    subscribeDisabled,
+    getDisabledSnapshot,
+    getDisabledServerSnapshot
+  );
 
   useEffect(() => {
-    if (prefersReducedMotion() || isMobileOrTouch()) {
-      setDisabled(true);
-      return;
-    }
+    if (disabled) return;
 
     document.body.style.cursor = "none";
 
     const handleMouseMove = (e: MouseEvent) => {
       // Update position instantly - no smoothing/lag
       setPosition({ x: e.clientX, y: e.clientY });
-      if (!isVisible) setIsVisible(true);
+      setIsVisible(true);
 
       const elementUnder = document.elementFromPoint(e.clientX, e.clientY);
       setIsHovering(isInteractiveElement(elementUnder));
@@ -85,7 +96,7 @@ export default function CustomCursor() {
         handleMouseEnter
       );
     };
-  }, [isVisible]);
+  }, [disabled]);
 
   if (disabled) return null;
 

@@ -6,6 +6,7 @@ import {
   useEffect,
   useRef,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import BodyClass from "@/components/BodyClass";
@@ -22,9 +23,16 @@ interface InfoPeelRevealProps {
   "aria-label"?: string;
 }
 
-function prefersReducedMotion(): boolean {
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribeReducedMotion(onChange: () => void) {
+  const mql = window.matchMedia(REDUCED_MOTION_QUERY);
+  mql.addEventListener("change", onChange);
+  return () => mql.removeEventListener("change", onChange);
 }
+const getReducedMotion = () => window.matchMedia(REDUCED_MOTION_QUERY).matches;
+/** SSR renders the full peel; reduced-motion users get the static layout after hydration. */
+const getReducedMotionServerSnapshot = () => false;
 
 export default function InfoPeelReveal({
   children,
@@ -35,7 +43,11 @@ export default function InfoPeelReveal({
   const staticSectionRef = useRef<HTMLElement>(null);
   const revealsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotion,
+    getReducedMotionServerSnapshot
+  );
   const [videoActive, setVideoActive] = useState(false);
   // The heavy source is only requested once a reveal (or the static reel under
   // reduced motion) nears the viewport — never on initial load. The poster
@@ -43,10 +55,6 @@ export default function InfoPeelReveal({
   const [shouldLoad, setShouldLoad] = useState(false);
 
   useVideoPlaybackGate(videoRef, videoActive);
-
-  useEffect(() => {
-    setReducedMotion(prefersReducedMotion());
-  }, []);
 
   // The peel is pure CSS — opaque panels slide up over the fixed video as the
   // page scrolls. JS only requests and plays the video while a reveal window is

@@ -318,7 +318,7 @@ export default function StyleGuidePage() {
             <div className="sg-label" style={{ marginBottom: 14 }}>Brand Identity — 2023</div>
             <h2>BitTorrent Global Rebrand</h2>
             <p style={{ marginTop: 14 }}>
-              Led the complete visual identity overhaul for BitTorrent's transition from
+              Led the complete visual identity overhaul for BitTorrent&apos;s transition from
               peer-to-peer utility to a creator-focused platform. Developed brand guidelines,
               motion language, and a counterculture-rooted visual system across all digital
               and physical touchpoints.
