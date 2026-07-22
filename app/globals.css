@@ -178,7 +178,7 @@
      one full-width column there, so a viewport-based size would no longer
      describe the mark's relationship to the copy it heads. ~30% is the
      proportion the wide breakpoints land on. */
-  --size-testimonials-mark:        clamp(2.75rem, 8.34vw, 8.75rem);
+  --size-testimonials-mark:        clamp(2rem, 6vw, 6.25rem);
   /* Capped: the single column runs to ~719px at the top of the mobile range,
      where a bare 30% would balloon the mark past any size it takes on desktop.
      The cap holds it at the desktop mark's own ceiling. */
@@ -838,6 +838,14 @@ body.home .project-intro__header {
 
 .info-intro .project-info__grid {
   row-gap: var(--flow-text);           /* paragraph → paragraph (stacked mobile) */
+}
+
+/* Desktop: set the "Get in touch" link one rhythm step apart from the bio so
+   it reads as its own beat rather than another paragraph. The copy-col flex
+   already inserts one --flow-text gap above it, so add the difference up to
+   --flow-block. (Mobile sets a wider section step in the 768px block.) */
+.info-intro .project-info__links {
+  margin-top: calc(var(--flow-block) - var(--flow-text));
 }
 
 /* Testimonials panel — the second foreground beat. Layout only: the quote

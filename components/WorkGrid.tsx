@@ -20,8 +20,10 @@ export default function WorkGrid({ projects }: WorkGridProps) {
       <div className="max-w-[var(--content-max-width)] mx-auto content-inset pb-[var(--page-bottom)]">
         <section className="project-intro" aria-labelledby="work-intro-title">
           <header className="project-intro__header">
+            <p className="label">Selected Work</p>
             <h1 id="work-intro-title" className="project-intro__headline">
-              Selected Work
+              Helping founders and creators bring their ideas from the spark of
+              inspiration to complete visual systems.
             </h1>
           </header>
         </section>
