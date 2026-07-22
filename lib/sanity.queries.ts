@@ -41,6 +41,9 @@ export const projectBySlugQuery = `*[_type=="project" && slug.current==$slug][0]
 export const homepageSlugsQuery = `*[_id=="homepage"][0].featuredProjects[]->slug.current`;
 export const workPageSlugsQuery = `*[_id=="workPage"][0].projects[]->slug.current`;
 
+/** Every published case-study slug — used by generateStaticParams to prebuild project pages. */
+export const allProjectSlugsQuery = `*[_type=="project" && defined(slug.current) && !(_id in path("drafts.**"))].slug.current`;
+
 /**
  * Curated homepage picks, in editorial order. Sourced from the "Homepage"
  * singleton's `featuredProjects` reference array — order and inclusion are

@@ -32,7 +32,9 @@ export default function MediaBlock({
   videoUrl,
   aspectRatio = "1400/787.5",
   className = "",
-  sizes = "100vw",
+  // Full-width blocks are capped by --content-max-width (2400px), so above
+  // that viewport the image stops growing — don't request wider sources.
+  sizes = "(max-width: 2400px) 100vw, 2400px",
   altFallback = "",
   imagePreset = "fullWidth",
   fill = false,

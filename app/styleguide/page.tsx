@@ -1,5 +1,7 @@
 export const metadata = {
   title: "MCB Creative — Type Style Guide",
+  // Internal reference page — keep out of search indexes.
+  robots: { index: false, follow: false },
 };
 
 export default function StyleGuidePage() {

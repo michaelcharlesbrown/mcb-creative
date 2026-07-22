@@ -18,6 +18,7 @@ export default function Navigation() {
           className="nav__logo flex items-center text-white"
           aria-label="MCB Creative"
         >
+          {/* eslint-disable-next-line @next/next/no-img-element -- same-origin SVG logo; next/image adds nothing for SVGs */}
           <img
             src="/images/mcb-creative-logo.svg"
             alt="MCB Creative"

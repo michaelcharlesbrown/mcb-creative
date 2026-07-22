@@ -8,12 +8,6 @@ interface SanityData {
   heroImage?: SanityImageRef;
 }
 
-interface StaticData {
-  slug: string;
-  /** Landscape hero override (optional) */
-  heroImage?: string;
-}
-
 export interface ResolvedProjectImages {
   /** Landscape image URL — used everywhere: page hero (16:9 desktop / 5:4 mobile), grid cards, carousel */
   landscape: string;
@@ -24,18 +18,16 @@ export interface ResolvedProjectImages {
  * uses one 16:9 source per project, cropped by CSS to each context (16:9 on
  * desktop, 5:4 on mobile) — so there is no separate portrait source.
  *
- * Priority: Sanity heroImage → static heroImage → /images/projects/{slug}/01-full.jpg
+ * Priority: Sanity heroImage → /images/projects/{slug}/01-full.jpg
  */
 export function resolveProjectImages(
   sanity: SanityData | null | undefined,
-  stat: StaticData | null | undefined,
 ): ResolvedProjectImages {
-  const slug = sanity?.slug ?? stat?.slug ?? '';
+  const slug = sanity?.slug ?? '';
 
   return {
     landscape:
       getSanityImageUrl(sanity?.heroImage, 'fullWidth') ??
-      stat?.heroImage ??
       `/images/projects/${slug}/01-full.jpg`,
   };
 }

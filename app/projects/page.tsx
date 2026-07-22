@@ -1,4 +1,3 @@
-import { projects } from "@/data/projects";
 import { sanityFetch } from "@/lib/sanity.fetch";
 import { workPageProjectsQuery } from "@/lib/sanity.queries";
 import { resolveProjectImages } from "@/lib/resolveProjectImages";
@@ -28,22 +27,20 @@ export default async function Projects() {
     (await sanityFetch<(SanityGridProject | null)[] | null>(
       workPageProjectsQuery
     ).catch(() => [])) ?? [];
-  const staticBySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
 
   const gridProjects = sanityProjects
     .filter((sanity): sanity is SanityGridProject => Boolean(sanity))
     .map((sanity) => {
-      const stat = staticBySlug[sanity.slug];
-      const { landscape } = resolveProjectImages(
-        { slug: sanity.slug, heroImage: sanity.heroImage },
-        stat ? { slug: stat.slug, heroImage: stat.heroImage } : null,
-      );
+      const { landscape } = resolveProjectImages({
+        slug: sanity.slug,
+        heroImage: sanity.heroImage,
+      });
       return {
         slug: sanity.slug,
         title: sanity.title,
-        services: sanity.scope ?? stat?.services ?? [],
+        services: sanity.scope ?? [],
         heroImageLandscape: landscape,
-        accentColor: sanity.accentColor ?? stat?.accentColor ?? "#000000",
+        accentColor: sanity.accentColor ?? "#000000",
         cardSlides: sanity.cardSlides,
       };
     });

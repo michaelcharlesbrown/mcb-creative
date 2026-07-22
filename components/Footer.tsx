@@ -30,6 +30,7 @@ export default function Footer() {
                         hello@mcbcreative.design
                       </span>
                     </span>
+                    {/* eslint-disable-next-line @next/next/no-img-element -- same-origin SVG icon; next/image adds nothing for SVGs */}
                     <img
                       src="/images/arrow-light.svg"
                       alt=""
@@ -58,6 +59,7 @@ export default function Footer() {
 
           {/* Wordmark — full width matches nav + body (content-inset inside max-width) */}
           <div className="overflow-hidden flex items-end w-full content-inset box-border mt-auto">
+            {/* eslint-disable-next-line @next/next/no-img-element -- same-origin SVG wordmark; next/image adds nothing for SVGs */}
             <img
               src="/images/mcb-creative-light.svg"
               alt="MCB Creative"

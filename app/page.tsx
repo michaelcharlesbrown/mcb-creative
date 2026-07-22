@@ -1,4 +1,3 @@
-import { projects } from "@/data/projects";
 import { sanityFetch } from "@/lib/sanity.fetch";
 import { homepageProjectsQuery, homepageSizzleReelQuery } from "@/lib/sanity.queries";
 import { resolveProjectImages } from "@/lib/resolveProjectImages";
@@ -34,9 +33,9 @@ export default async function Home() {
   // The Homepage singleton's `featuredProjects` array (drag-reordered in the
   // Studio) is the single source of truth for which projects appear on the
   // homepage and in what order. A project only shows up here if it has been
-  // explicitly added — there is no automatic fallback. The local `projects`
-  // array only fills in images/services/accentColor that haven't been set in
-  // Sanity yet; it never controls inclusion or ordering.
+  // explicitly added — there is no automatic fallback. Sanity is the single
+  // content source: services come from the intro block's scope, images and
+  // accent colors from the project document.
   const sanityProjects =
     (await sanityFetch<(SanityHomepageProject | null)[] | null>(
       homepageProjectsQuery
@@ -45,22 +44,19 @@ export default async function Home() {
   const sizzleReelSlides =
     (await sanityFetch<MediaSlideData[] | null>(homepageSizzleReelQuery).catch(() => [])) ?? [];
 
-  const staticBySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
-
   const allProjects: HomeProject[] = sanityProjects
     .filter((sanity): sanity is SanityHomepageProject => Boolean(sanity))
     .map((sanity) => {
-      const stat = staticBySlug[sanity.slug];
-      const { landscape } = resolveProjectImages(
-        { slug: sanity.slug, heroImage: sanity.heroImage },
-        stat ? { slug: stat.slug, heroImage: stat.heroImage } : null,
-      );
+      const { landscape } = resolveProjectImages({
+        slug: sanity.slug,
+        heroImage: sanity.heroImage,
+      });
       return {
         slug: sanity.slug,
         title: sanity.title,
-        services: sanity.scope ?? stat?.services ?? [],
+        services: sanity.scope ?? [],
         heroImageLandscape: landscape,
-        accentColor: sanity.accentColor ?? stat?.accentColor ?? DEFAULT_ACCENT_COLOR,
+        accentColor: sanity.accentColor ?? DEFAULT_ACCENT_COLOR,
         cardSlides: sanity.cardSlides,
       };
     });

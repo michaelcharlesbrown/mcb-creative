@@ -19,6 +19,7 @@ export default function HeroSection({ sizzleReelSlides = [] }: HeroSectionProps)
       {/* Upper half — title + tagline, centered */}
       <div className="hero__upper">
         <div className="hero__wordmark">
+          {/* eslint-disable-next-line @next/next/no-img-element -- same-origin SVG wordmark; next/image adds nothing for SVGs */}
           <img
             src="/images/mcb-creative-dark.svg"
             alt="MCB Creative"

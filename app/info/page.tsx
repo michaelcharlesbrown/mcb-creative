@@ -98,6 +98,7 @@ export default function Info() {
         <header className="project-intro__header max-w-[var(--content-max-width)] mx-auto content-inset">
           <div className="info-testimonials__grid">
             {testimonials.map((t) => (
+              // eslint-disable-next-line @next/next/no-img-element -- decorative same-origin SVG; next/image adds nothing for SVGs
               <img
                 key={t.name}
                 src="/images/quote-mark.svg"
@@ -115,6 +116,7 @@ export default function Info() {
           <div className="info-testimonials__grid">
             {testimonials.map((t) => (
               <blockquote key={t.name} className="info-testimonials__item">
+                {/* eslint-disable-next-line @next/next/no-img-element -- decorative same-origin SVG; next/image adds nothing for SVGs */}
                 <img
                   src="/images/quote-mark.svg"
                   alt=""

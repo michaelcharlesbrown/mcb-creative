@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { sanityFetch } from "@/lib/sanity.fetch";
-import { projectBySlugQuery, workPageProjectsQuery } from "@/lib/sanity.queries";
+import {
+  allProjectSlugsQuery,
+  projectBySlugQuery,
+  workPageProjectsQuery,
+} from "@/lib/sanity.queries";
 import { resolveProjectImages } from "@/lib/resolveProjectImages";
 import { portableTextToPlainText, truncateAtWord } from "@/lib/portableTextToPlainText";
 import BlockRenderer, { type PageContentBlock } from "@/components/blocks/BlockRenderer";
@@ -9,7 +13,6 @@ import IntroBlock from "@/components/blocks/IntroBlock";
 import ProjectNavRail, { type NavRailProject } from "@/components/ProjectNavRail";
 import ProjectNavLinks from "@/components/ProjectNavLinks";
 import SetAccentColor from "@/components/SetAccentColor";
-import { projects as hardcodedProjects } from "@/data/projects";
 
 // ISR: cache each project page and refresh it from Sanity at most every 60s,
 // so published edits go live without a redeploy. Replaces the previous
@@ -17,6 +20,16 @@ import { projects as hardcodedProjects } from "@/data/projects";
 // entirely). Keep in sync with SANITY_REVALIDATE_SECONDS in
 // lib/sanity.fetch.ts (must be a literal).
 export const revalidate = 60;
+
+// Prebuild every published case study at deploy time; ISR keeps them fresh.
+// Slugs added after a deploy are still rendered on first request.
+export async function generateStaticParams() {
+  const slugs =
+    (await sanityFetch<(string | null)[] | null>(allProjectSlugsQuery).catch(() => [])) ?? [];
+  return slugs
+    .filter((slug): slug is string => Boolean(slug))
+    .map((slug) => ({ slug }));
+}
 
 export type SanityProject = {
   title: string;
@@ -117,39 +130,34 @@ export default async function Project({
   const restBlocks = pageContent.filter((b) => b._type !== "introBlock");
   const hasRestBlocks = restBlocks.length > 0;
 
-  const hardcoded = hardcodedProjects.find((p) => p.slug === slug);
-
   const introEyebrow = introBlock?.headline ?? sanityProject.title;
-  const introHeadline = introBlock?.subheadline ?? hardcoded?.heroTagline ?? sanityProject.title;
-  const introScope = introBlock?.scope ?? hardcoded?.scope;
-  const introTeam = introBlock?.team ?? hardcoded?.team;
-  const introDescription = introBlock?.description ?? hardcoded?.description;
+  const introHeadline = introBlock?.subheadline ?? sanityProject.title;
+  const introScope = introBlock?.scope;
+  const introTeam = introBlock?.team;
+  const introDescription = introBlock?.description;
 
   const hasHeroMedia = Boolean(sanityProject.heroImage || sanityProject.heroVideoFileUrl);
 
   // Build the project carousel from the Work Page's curated list — the same
   // set and order as the Work grid — so a project left out of that grid is
-  // also left out of the carousel. `hardcodedProjects` only fills in
-  // images/services that haven't been set in Sanity yet.
+  // also left out of the carousel.
   const sanityGridProjects =
     (await sanityFetch<(SanityGridProject | null)[] | null>(workPageProjectsQuery).catch(
       () => []
     )) ?? [];
-  const hardcodedBySlug = Object.fromEntries(hardcodedProjects.map((p) => [p.slug, p]));
 
   const navRailProjects: NavRailProject[] = sanityGridProjects
     .filter((sanity): sanity is SanityGridProject => Boolean(sanity))
     .map((sanity) => {
-      const stat = hardcodedBySlug[sanity.slug];
-      const { landscape } = resolveProjectImages(
-        { slug: sanity.slug, heroImage: sanity.heroImage },
-        stat ? { slug: stat.slug, heroImage: stat.heroImage } : null,
-      );
+      const { landscape } = resolveProjectImages({
+        slug: sanity.slug,
+        heroImage: sanity.heroImage,
+      });
       return {
         slug: sanity.slug,
         title: sanity.title,
-        accentColor: sanity.accentColor ?? stat?.accentColor,
-        scope: sanity.scope ?? stat?.scope ?? stat?.services ?? [],
+        accentColor: sanity.accentColor,
+        scope: sanity.scope ?? [],
         heroImageLandscape: landscape,
       };
     });
