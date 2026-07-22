@@ -1,24 +1,27 @@
-"use client";
-
 import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
 import WorkCard from "@/components/WorkCard";
 import type { MediaSlideData } from "@/components/SlideSequence";
 import type { HomeProject } from "@/app/page";
 
-interface HomeDesktopLayoutProps {
+interface HomeLayoutProps {
   projects: HomeProject[];
   sizzleReelSlides: MediaSlideData[];
 }
 
-export default function HomeDesktopLayout({ projects, sizzleReelSlides }: HomeDesktopLayoutProps) {
+/**
+ * Single responsive homepage layout. Replaces the former HomeMobileLayout /
+ * HomeDesktopLayout pair, which rendered the entire page twice (two hero
+ * sections, two h1s, double DOM) and toggled visibility with CSS. Breakpoint
+ * behavior lives inside the components (HeroSequence, work-grid CSS) — the
+ * layout itself is breakpoint-agnostic.
+ */
+export default function HomeLayout({ projects, sizzleReelSlides }: HomeLayoutProps) {
   return (
-    <div className="hidden md:block">
+    <>
       <BodyClass className="home" />
-      <div className="bg-background">
-        <div className="overflow-hidden bg-background">
-          <HeroSection sizzleReelSlides={sizzleReelSlides} />
-        </div>
+      <div className="overflow-hidden bg-background">
+        <HeroSection sizzleReelSlides={sizzleReelSlides} />
       </div>
 
       <div className="bg-background">
@@ -38,6 +41,6 @@ export default function HomeDesktopLayout({ projects, sizzleReelSlides }: HomeDe
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

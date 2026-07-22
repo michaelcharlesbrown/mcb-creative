@@ -23,6 +23,17 @@ test("homepage renders with visible content and one footer", async ({ page }) =>
   await expect(page.getByRole("heading", { name: /let's work/i })).toBeVisible();
 });
 
+test("homepage renders at mobile width (375px)", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/");
+
+  await expect(page.locator(".hero__wordmark-img:visible")).toHaveCount(1);
+  await expect(
+    page.getByRole("heading", { level: 1, name: /my work spans/i })
+  ).toBeVisible();
+  await expect(page.locator("footer.w-full")).toHaveCount(1);
+});
+
 test("work page renders grid and one footer", async ({ page }) => {
   await page.goto("/projects");
 

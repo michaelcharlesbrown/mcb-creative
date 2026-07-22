@@ -2,8 +2,7 @@ import { projects } from "@/data/projects";
 import { sanityFetch } from "@/lib/sanity.fetch";
 import { homepageProjectsQuery, homepageSizzleReelQuery } from "@/lib/sanity.queries";
 import { resolveProjectImages } from "@/lib/resolveProjectImages";
-import HomeMobileLayout from "@/components/HomeMobileLayout";
-import HomeDesktopLayout from "@/components/HomeDesktopLayout";
+import HomeLayout from "@/components/HomeLayout";
 import type { MediaSlideData } from "@/components/SlideSequence";
 
 // ISR: statically cache this page but refresh it from Sanity at most every
@@ -68,8 +67,7 @@ export default async function Home() {
 
   return (
     <div className="home text-black">
-      <HomeMobileLayout projects={allProjects} sizzleReelSlides={sizzleReelSlides} />
-      <HomeDesktopLayout projects={allProjects} sizzleReelSlides={sizzleReelSlides} />
+      <HomeLayout projects={allProjects} sizzleReelSlides={sizzleReelSlides} />
     </div>
   );
 }
