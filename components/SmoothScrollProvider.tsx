@@ -1,21 +1,10 @@
 'use client'
 
-import { useEffect, useRef, createContext, useContext } from 'react'
+import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import Lenis from 'lenis'
-import gsap from 'gsap'
-import ScrollTrigger from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
-
-const LenisContext = createContext<Lenis | null>(null)
-
-export function useLenis() {
-  return useContext(LenisContext)
-}
 
 export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null)
   const pathname = usePathname()
   const isStudio = pathname?.startsWith('/studio')
 
@@ -32,24 +21,19 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       touchMultiplier: 1.5,
     })
 
-    lenisRef.current = lenis
-
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000)
+    // Drive Lenis with a plain rAF loop. (Previously this rode on gsap.ticker,
+    // which was the codebase's only remaining GSAP usage and was never removed
+    // on cleanup — leaking ticker callbacks against a destroyed Lenis.)
+    let rafId = requestAnimationFrame(function raf(time) {
+      lenis.raf(time)
+      rafId = requestAnimationFrame(raf)
     })
 
-    gsap.ticker.lagSmoothing(0)
-
-    lenis.on('scroll', ScrollTrigger.update)
-
     return () => {
+      cancelAnimationFrame(rafId)
       lenis.destroy()
     }
   }, [isStudio])
 
-  return (
-    <LenisContext.Provider value={lenisRef.current}>
-      {children}
-    </LenisContext.Provider>
-  )
+  return <>{children}</>
 }
