@@ -27,7 +27,7 @@ const testimonials = [
   {
     quote:
       "I’m so lucky that I had the opportunity to work with Michael, as he contributed immensely to my growth as a designer. He has a talent for creating an environment where the team feels heard, encouraged, and inspired.",
-    name: "Brianna Jackson",
+    name: "Briana Jackson",
     title: "UX & Product Designer",
   },
 ];
