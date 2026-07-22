@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import HeroSection from "@/components/HeroSection";
 import BodyClass from "@/components/BodyClass";
-import Footer from "@/components/Footer";
 import WorkCard from "@/components/WorkCard";
 import { homepageIntro, HOMEPAGE_INTRO_EASE } from "@/lib/homepageIntro";
 import type { MediaSlideData } from "@/components/SlideSequence";
@@ -50,8 +49,6 @@ export default function HomeDesktopLayout({ projects, sizzleReelSlides }: HomeDe
           </div>
         </div>
       </motion.div>
-
-      <Footer />
     </div>
   );
 }
