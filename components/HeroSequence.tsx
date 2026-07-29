@@ -24,7 +24,7 @@ export default function HeroSequence({
   slides,
   altFallback,
   priority,
-  desktopSizes = "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw",
+  desktopSizes = "(max-width: 767px) 100vw, (max-width: 2400px) 48vw, 1120px",
   mobileSizes = "100vw",
 }: HeroSequenceProps) {
   const resolvedDesktop = resolveSlides(slides, "fullWidth", altFallback);

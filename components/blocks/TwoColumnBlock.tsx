@@ -26,7 +26,7 @@ export default function TwoColumnBlock({
           image={imageLeft}
           videoUrl={videoFileLeftUrl}
           aspectRatio="1"
-          sizes="50vw"
+          sizes="(max-width: 767px) 100vw, 50vw"
           altFallback={`${titleFallback} - left`}
           imagePreset="twoColumn"
         />
@@ -36,7 +36,7 @@ export default function TwoColumnBlock({
           image={imageRight}
           videoUrl={videoFileRightUrl}
           aspectRatio="1"
-          sizes="50vw"
+          sizes="(max-width: 767px) 100vw, 50vw"
           altFallback={`${titleFallback} - right`}
           imagePreset="twoColumn"
         />

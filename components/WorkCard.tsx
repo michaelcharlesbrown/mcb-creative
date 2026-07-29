@@ -26,7 +26,7 @@ export default function WorkCard({ project }: WorkCardProps) {
           <HeroSequence
             slides={project.cardSlides!}
             altFallback={project.title}
-            desktopSizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+            desktopSizes="(max-width: 767px) 100vw, (max-width: 2400px) 48vw, 1120px"
             mobileSizes="100vw"
           />
         </div>
@@ -36,7 +36,7 @@ export default function WorkCard({ project }: WorkCardProps) {
             src={project.heroImageLandscape}
             alt={project.title}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+            sizes="(max-width: 767px) 100vw, (max-width: 2400px) 48vw, 1120px"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />

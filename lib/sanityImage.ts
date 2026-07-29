@@ -17,13 +17,13 @@ export function urlFor(source: SanityImageSource) {
 /** Context presets for optimized CDN delivery at appropriate dimensions */
 export const sanityImagePresets = {
   /** Cover/hero images — desktop full-screen (e.g. project page hero, landscape) */
-  cover: { width: 2800, quality: 85 },
+  cover: { width: 3840, quality: 85 },
   /** Full-width landscape content images (fullWidthBlock, textMediaBlock) */
-  fullWidth: { width: 2400, quality: 85 },
+  fullWidth: { width: 3840, quality: 85 },
   /** Two-column split images */
-  twoColumn: { width: 1200, quality: 85 },
+  twoColumn: { width: 2400, quality: 85 },
   /** Portrait card / mobile hero (carousel, mobile grid, mobile page hero) */
-  portrait: { width: 900, quality: 85 },
+  portrait: { width: 1800, quality: 85 },
   /** Small thumbnails — legacy, prefer portrait for card contexts */
   thumbnail: { width: 600, quality: 80 },
 } as const;
@@ -33,6 +33,11 @@ export type SanityImagePreset = keyof typeof sanityImagePresets;
 /**
  * Returns an optimized Sanity CDN URL for the given image and context preset.
  * Uses auto format and sensible defaults for each preset.
+ *
+ * fit("max") is load-bearing: without it Sanity UPSCALES any source narrower
+ * than the preset width, and the soft upscaled file becomes the ceiling for
+ * every srcset candidate Next generates from it. With it, a preset wider than
+ * the source serves the source's native resolution — never more, never less.
  */
 export function getSanityImageUrl(
   source: SanityImageSource | null | undefined,
@@ -40,5 +45,5 @@ export function getSanityImageUrl(
 ): string | undefined {
   if (!source) return undefined;
   const { width, quality } = sanityImagePresets[preset];
-  return urlFor(source).width(width).auto("format").quality(quality).url();
+  return urlFor(source).width(width).fit("max").auto("format").quality(quality).url();
 }

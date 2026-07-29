@@ -153,6 +153,61 @@ All project content lives in Sanity. Projects are fetched by slug for dynamic ro
 
 ---
 
+## Image Quality Standard
+
+This is a top-tier design portfolio. Serving images at full, retina-sharp
+resolution is a core requirement of the site, not a performance
+afterthought. Never trade image sharpness for file size without explicit
+sign-off.
+
+Rules for every `<Image>` component:
+
+- The `sizes` attribute must accurately reflect the image's real rendered
+  width at each breakpoint. Never guess or copy a default value — measure
+  the actual CSS width the image renders at (mobile, tablet, desktop) and
+  encode that. When in doubt, overshoot slightly; never undershoot.
+- Assume all displays are retina (2x minimum). Every cap in the pipeline —
+  the `sizes` value, the Sanity preset width, the srcset candidates — must
+  clear 2× the rendered CSS width (or the source's native width, whichever
+  is smaller).
+- Source assets should be exported at a minimum of 2x the largest expected
+  display size. For full-bleed hero images on large desktop viewports that
+  means well above 2800px wide: the hero renders up to 2256 CSS px
+  (`--content-max-width` 2400 minus 2× `--content-inset`), so true 2x needs
+  a ≥4512px export — 2800 ≈ 1.24×, 3840 ≈ 1.7×. Treat the current
+  2800×1575 landscape / 1400×1400 square exports as the floor and upload
+  the largest master available. The pipeline never upscales and re-encodes
+  everything for delivery, so oversized uploads cost nothing at runtime
+  (no pre-crushing with ImageOptim needed — export high-quality masters
+  and let the CDN do the dieting).
+- After any layout change that affects how wide an image renders, revisit
+  its `sizes` attribute. A stale `sizes` value is the most common cause of
+  soft images on this site. Known layout facts: the work grid is 2-up from
+  768px at every desktop width (there is no 3-column layout — do not
+  reintroduce `33vw`), and `.col-2` blocks are single-column below 768px
+  (their images render ~100vw on mobile, not 50vw).
+- **Never remove `fit("max")` from `getSanityImageUrl`**
+  (`lib/sanityImage.ts`). Without it, Sanity's CDN UPSCALES sources
+  narrower than the requested width, and that soft upscaled file becomes
+  the quality ceiling for everything Next serves downstream. Never lower a
+  preset width below 2× its context's largest rendered CSS width.
+- Verify on the actual rendered page, not just from code. Caution:
+  devtools' intrinsic size and `img.naturalWidth` are density-corrected
+  for srcset images and UNDER-REPORT the delivered file — a correctly
+  served image reports `naturalWidth ≈ clientWidth`, so the naive
+  `naturalWidth ≥ clientWidth × devicePixelRatio` check fails even when
+  delivery is perfect. Check the true decoded file width instead:
+
+  ```js
+  const bmp = await createImageBitmap(await fetch(img.currentSrc).then(r => r.blob()));
+  // PASS when: bmp.width >= Math.min(img.clientWidth * devicePixelRatio, sourceWidth)
+  ```
+
+  where `sourceWidth` is readable from the Sanity asset filename
+  (`...-2800x1575.jpg`).
+
+---
+
 ## Debugging Protocol
 
 When something isn't working, follow this sequence. Do not skip steps. Do not generate a "plausible solution" before completing step 1.

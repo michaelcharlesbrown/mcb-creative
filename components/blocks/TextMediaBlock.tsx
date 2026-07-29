@@ -53,7 +53,7 @@ export default function TextMediaBlock({
       image={image}
       videoUrl={videoFileUrl}
       aspectRatio="1"
-      sizes="50vw"
+      sizes="(max-width: 767px) 100vw, 50vw"
       altFallback={heading ?? titleFallback}
       imagePreset="twoColumn"
     />

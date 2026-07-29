@@ -180,7 +180,7 @@ export default async function Project({
                   image={sanityProject.heroImage}
                   videoUrl={sanityProject.heroVideoFileUrl}
                   altFallback={sanityProject.title}
-                  sizes="(min-width: 768px) 92vw, 100vw"
+                  sizes="(max-width: 2400px) 100vw, 2256px"
                   fill
                   priority
                   preferVideo
