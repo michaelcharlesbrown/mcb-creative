@@ -2,14 +2,12 @@ import TripleSlash from "@/components/TripleSlash";
 import InfoPeelReveal from "@/components/InfoPeelReveal";
 
 const introColLeft = [
-  "As a web designer at LeapFrog, a UI designer at ProTools, and as the Creative Director of BitTorrent, I've maintained global platforms, crafted graphics for industry-standard music technology and led campaigns reaching millions.",
+  "As a web designer at LeapFrog, a UI designer at ProTools, and Creative Director of BitTorrent, I've crafted graphics for industry-standard music technology and designed brand identities and websites reaching millions.",
   "I've built creative departments from scratch in both in-house and agency settings, always focused on delivering work that speaks directly to the right people.",
 ];
 
-const introColRight = [
-  "Today I partner with founders, small businesses, and other creators to take their projects from the spark of inspiration to a complete visual identity.",
-  "I'm also a classically trained musician and have just completed my first feature film score.",
-];
+// The right column's copy carries inline links, so it is written as JSX below
+// rather than as an array of plain paragraphs like the left column.
 
 const testimonials = [
   {
@@ -37,13 +35,18 @@ export default function Info() {
     <InfoPeelReveal className="info-page info-intro" aria-label="About Michael Charles Brown">
       <section className="project-intro">
         <header className="project-intro__header max-w-[var(--content-max-width)] mx-auto content-inset">
-          {/* Standard mono eyebrow. It flows naturally; the only safeguard is
-              that "BRAND DESIGNER" stays together (see label-meta nowrap), so if
-              the line wraps both words drop to the next line as a unit. */}
+          {/* Standard mono eyebrow — one line on desktop. The roles are grouped
+              so mobile can drop them to their own line as a unit (see
+              info-intro__eyebrow-roles); label-meta nowrap keeps each role
+              whole so "DESIGNER" never floats alone. */}
           <p className="label info-intro__eyebrow">
             <span className="label-title">MICHAEL CHARLES BROWN</span>{" "}
-            <TripleSlash />{" "}
-            <span className="label-meta">BRAND DESIGNER</span>
+            <span className="info-intro__eyebrow-roles">
+              <TripleSlash />{" "}
+              <span className="label-meta">GRAPHIC DESIGNER</span>{" "}
+              <TripleSlash />{" "}
+              <span className="label-meta">MUSICIAN</span>
+            </span>
           </p>
           <h1 className="project-intro__headline">
             Building visual identities for over a decade.
@@ -68,18 +71,31 @@ export default function Info() {
               </p>
             </div>
             <div className="project-info__copy-col">
-              {introColRight.map((para) => (
-                <p key={para} className="project-info__body">
-                  {para}
-                </p>
-              ))}
+              <p className="project-info__body">
+                Today I partner with founders, small businesses, and other
+                creators to take their projects from the spark of inspiration
+                to a complete visual identity.
+              </p>
+              <p className="project-info__body">
+                I&rsquo;m also a classically trained musician. I&rsquo;ve
+                released several albums on my{" "}
+                <a
+                  href="https://brokenearrecords.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flip-link project-info__link"
+                >
+                  <span className="flip-link__inner" data-text="indie record label">indie record label</span>
+                </a>{" "}
+                and just completed my first feature film score.
+              </p>
               <p className="project-info__body">
                 Check out my music projects{" "}
                 <a
                   href="https://michaelcharlesbrown.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flip-link project-info__here"
+                  className="flip-link project-info__link"
                 >
                   <span className="flip-link__inner" data-text="here">here</span>
                 </a>

@@ -142,6 +142,12 @@
   --flip-link-duration:    0.3s;
   --flip-link-ease:        cubic-bezier(0.76, 0, 0.24, 1);
   --flip-link-line-height: 1.2;
+  /* A clipped inline-block takes its bottom margin edge as its baseline, so a
+     flip-link set inside running copy sits high by the depth of that edge
+     below the text baseline. This shift seats it back down. Measured against
+     Geist at --leading-info-body, not eyeballed; re-measure if either the
+     body font or that leading changes. */
+  --flip-link-body-shift:  -0.312em;
 
   /* Letter-spacing (use only via component classes in this file) */
   --letter-spacing-work: 0.06em;
@@ -815,7 +821,7 @@ body.home .project-intro__header {
   font-weight: var(--weight-regular);
 }
 
-/* Info page eyebrow — standard mono line. Keep the role ("BRAND DESIGNER")
+/* Info page eyebrow — standard mono line. Keep each role ("GRAPHIC DESIGNER")
    together so if the line wraps, both words drop to the next line as a unit
    rather than "DESIGNER" floating alone. */
 .info-intro__eyebrow .label-meta {
@@ -955,15 +961,21 @@ body.home .project-intro__header {
   line-height: var(--leading-info-body);
 }
 
-/* Inline text link inside body copy (Info "here") — uses the global flip-roll
-   like every other link, no underline. Set a touch heavier than body copy, and
-   the clipped roll-box is nudged onto the surrounding text baseline. */
-.project-info__body a.project-info__here .flip-link__inner {
-  font-weight: var(--weight-medium);
+/* Inline text link inside body copy (Info "indie record label", "here") — uses
+   the global flip-roll like every other link, no underline. Set heavier than
+   body copy so it reads as a link without an underline, and the clipped
+   roll-box is nudged onto the surrounding text baseline. */
+.project-info__body a.project-info__link .flip-link__inner {
+  font-weight: var(--weight-semibold);
 }
 
-.project-info__body a.project-info__here {
-  vertical-align: -0.25em;
+/* The global roll-box is 1.2em tall, which is shorter than this font's content
+   area — inside body copy that clipped the descenders. Size the box to one
+   line of the surrounding copy instead, then seat it on the text baseline. */
+.project-info__body a.project-info__link {
+  line-height:    var(--leading-info-body);
+  height:         calc(1em * var(--leading-info-body));
+  vertical-align: var(--flip-link-body-shift);
 }
 
 /* Info "Get in touch" CTA — original label type + global flip-roll, with a
@@ -1523,6 +1535,14 @@ body.info-peel-active .info-peel + footer {
 
   .project-intro__headline {
     font-size: clamp(1.375rem, 5vw, 2rem);
+  }
+
+  /* Two roles push the eyebrow past a phone's measure, and where it lands is
+     an accident of name length. Break it deliberately instead: name on one
+     line, both roles on the next, with the separator leading line two so no
+     slash dangles at the end of line one. */
+  .info-intro__eyebrow-roles {
+    display: block;
   }
 
   /* Testimonials stack on a phone — three columns of body copy is unreadable. */
