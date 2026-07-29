@@ -36,16 +36,19 @@ export default function Info() {
       <section className="project-intro">
         <header className="project-intro__header max-w-[var(--content-max-width)] mx-auto content-inset">
           {/* Standard mono eyebrow — one line on desktop. The roles are grouped
-              so mobile can drop them to their own line as a unit (see
-              info-intro__eyebrow-roles); label-meta nowrap keeps each role
-              whole so "DESIGNER" never floats alone. */}
+              so mobile can drop them off the name's line (see
+              info-intro__eyebrow-roles), and each role is bound to the
+              separator that introduces it, so a wrap always breaks before a
+              /// and never strands one at the end of a line. */}
           <p className="label info-intro__eyebrow">
             <span className="label-title">MICHAEL CHARLES BROWN</span>{" "}
             <span className="info-intro__eyebrow-roles">
-              <TripleSlash />{" "}
-              <span className="label-meta">GRAPHIC DESIGNER</span>{" "}
-              <TripleSlash />{" "}
-              <span className="label-meta">MUSICIAN</span>
+              <span className="info-intro__eyebrow-role">
+                <TripleSlash /> <span className="label-meta">INDEPENDENT CREATIVE</span>
+              </span>{" "}
+              <span className="info-intro__eyebrow-role">
+                <TripleSlash /> <span className="label-meta">BRANDING + WEB DESIGN</span>
+              </span>
             </span>
           </p>
           <h1 className="project-intro__headline">

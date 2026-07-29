@@ -821,10 +821,12 @@ body.home .project-intro__header {
   font-weight: var(--weight-regular);
 }
 
-/* Info page eyebrow — standard mono line. Keep each role ("GRAPHIC DESIGNER")
-   together so if the line wraps, both words drop to the next line as a unit
-   rather than "DESIGNER" floating alone. */
-.info-intro__eyebrow .label-meta {
+/* Info page eyebrow — standard mono line. Each "/// ROLE" pair is one
+   unbreakable unit, so a wrap can only happen between pairs: the whole role
+   drops to the next line rather than "DESIGN" floating alone, and the
+   separator travels with the role it introduces instead of dangling at the
+   end of the line above. */
+.info-intro__eyebrow-role {
   white-space: nowrap;
 }
 
@@ -1537,10 +1539,10 @@ body.info-peel-active .info-peel + footer {
     font-size: clamp(1.375rem, 5vw, 2rem);
   }
 
-  /* Two roles push the eyebrow past a phone's measure, and where it lands is
-     an accident of name length. Break it deliberately instead: name on one
-     line, both roles on the next, with the separator leading line two so no
-     slash dangles at the end of line one. */
+  /* Name plus roles runs past a phone's measure, and where it lands is an
+     accident of name length. Break it deliberately instead: name on one line,
+     the roles below, with a separator leading each role line so no slash
+     dangles at the end of the name. */
   .info-intro__eyebrow-roles {
     display: block;
   }
