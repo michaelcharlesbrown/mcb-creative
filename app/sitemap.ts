@@ -1,9 +1,10 @@
 import { MetadataRoute } from "next";
 import { sanityFetch } from "@/lib/sanity.fetch";
 import { homepageSlugsQuery, workPageSlugsQuery } from "@/lib/sanity.queries";
+import { SITE_URL } from "@/lib/siteConfig";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://mcbcreative.design";
+  const baseUrl = SITE_URL;
 
   // Only case studies published to the homepage and/or Work page grids are
   // sitemapped — a project left out of both is unlisted end-to-end,

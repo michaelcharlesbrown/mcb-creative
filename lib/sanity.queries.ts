@@ -4,12 +4,22 @@ export const projectBySlugQuery = `*[_type=="project" && slug.current==$slug][0]
   "accentColor": accentColor.hex,
   heroImage{
     alt,
-    asset->{url}
+    asset->{url},
+    // Carried so the share card can crop to 1.91:1 around the editor's chosen
+    // focal point instead of the geometric center.
+    hotspot,
+    crop
   },
   "heroVideoFileUrl": heroVideoFile.asset->url,
   seo{
     metaTitle,
-    metaDescription
+    metaDescription,
+    ogImage{
+      alt,
+      asset->{url},
+      hotspot,
+      crop
+    }
   },
   pageContent[]{
     _type,

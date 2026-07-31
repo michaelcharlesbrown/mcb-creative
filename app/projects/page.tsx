@@ -3,6 +3,9 @@ import { workPageProjectsQuery } from "@/lib/sanity.queries";
 import { resolveProjectImages } from "@/lib/resolveProjectImages";
 import WorkGrid from "@/components/WorkGrid";
 import type { MediaSlideData } from "@/components/SlideSequence";
+import { pageMetadata } from "@/lib/siteConfig";
+
+export const metadata = pageMetadata({ path: "/projects" });
 
 // ISR: statically cache this page but refresh it from Sanity at most every
 // 60s, so Work Page curation/order changes go live without a redeploy. Keep in

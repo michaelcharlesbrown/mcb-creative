@@ -99,6 +99,17 @@ export default defineType({
           rows: 3,
           validation: (Rule) => Rule.max(160).warning('Longer descriptions are often truncated in Google search results.'),
         }),
+        defineField({
+          name: 'ogImage',
+          title: 'Social Share Image',
+          description:
+            'Optional. The card shown when this project is shared on LinkedIn, Slack, iMessage, or X. Export at 2400×1260 (a 2× master — the CDN serves it at 1200×630). Leave blank to fall back to the Hero Image cropped to the same 1.91:1 card. That fallback reads well for photographic heroes, but upload a dedicated card for device mockups or anything carrying small type — share cards render around 500px wide, where screen content turns illegible.',
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
+          ],
+        }),
       ],
     }),
   ],

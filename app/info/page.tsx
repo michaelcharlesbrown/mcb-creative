@@ -1,5 +1,8 @@
 import TripleSlash from "@/components/TripleSlash";
 import InfoPeelReveal from "@/components/InfoPeelReveal";
+import { pageMetadata } from "@/lib/siteConfig";
+
+export const metadata = pageMetadata({ path: "/info" });
 
 const introColLeft = [
   "As a web designer at LeapFrog, a UI designer at ProTools, and Creative Director of BitTorrent, I've crafted graphics for industry-standard music technology and designed brand identities and websites reaching millions.",

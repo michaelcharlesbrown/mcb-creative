@@ -7,6 +7,8 @@ import {
 } from "@/lib/sanity.queries";
 import { resolveProjectImages } from "@/lib/resolveProjectImages";
 import { portableTextToPlainText, truncateAtWord } from "@/lib/portableTextToPlainText";
+import { pageMetadata } from "@/lib/siteConfig";
+import { OG_IMAGE_DIMENSIONS, getOgImageUrl } from "@/lib/sanityImage";
 import BlockRenderer, { type PageContentBlock } from "@/components/blocks/BlockRenderer";
 import MediaBlock from "@/components/blocks/MediaBlock";
 import IntroBlock from "@/components/blocks/IntroBlock";
@@ -31,13 +33,29 @@ export async function generateStaticParams() {
     .map((slug) => ({ slug }));
 }
 
+/**
+ * A Sanity image as this page's query projects it: the dereferenced asset URL
+ * plus the alt text and the editor's hotspot/crop, so the CDN can crop around
+ * the chosen focal point rather than the geometric center.
+ */
+type SanityImageWithAlt = {
+  alt?: string;
+  asset?: { url: string };
+  hotspot?: { x: number; y: number; width: number; height: number };
+  crop?: { top: number; bottom: number; left: number; right: number };
+};
+
 export type SanityProject = {
   title: string;
   slug: string;
   accentColor?: string;
-  heroImage?: { alt?: string; asset?: { url: string } };
+  heroImage?: SanityImageWithAlt;
   heroVideoFileUrl?: string;
-  seo?: { metaTitle?: string; metaDescription?: string };
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    ogImage?: SanityImageWithAlt;
+  };
   pageContent?: PageContentBlock[];
 };
 
@@ -67,7 +85,25 @@ export async function generateMetadata({
     sanityProject.seo?.metaDescription ||
     (bodyPlainText ? truncateAtWord(bodyPlainText, META_DESCRIPTION_LENGTH) : undefined);
 
-  return { title, description };
+  // Share-card precedence: a card purpose-built in the Studio, else the hero
+  // cropped to 1.91:1, else (no imagery at all) the studio-wide card.
+  const shareImage = sanityProject.seo?.ogImage ?? sanityProject.heroImage;
+  const shareImageUrl = getOgImageUrl(shareImage);
+  const image = shareImageUrl
+    ? {
+        url: shareImageUrl,
+        ...OG_IMAGE_DIMENSIONS,
+        alt: shareImage?.alt || title,
+      }
+    : undefined;
+
+  return {
+    title,
+    description,
+    // Without this, the project page would inherit the root layout's canonical
+    // and `og:url` and advertise itself as the homepage.
+    ...pageMetadata({ path: `/projects/${slug}`, title, description, image }),
+  };
 }
 
 type SanityGridProject = {
