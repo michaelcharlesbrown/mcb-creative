@@ -11,6 +11,13 @@ interface IntroBlockProps {
   titleFallback?: string;
   /** Contained landscape hero, rendered between the header and the info section */
   cover?: ReactNode;
+  /**
+   * Enrol this instance in the page load sequence. Only the project template's
+   * page-level intro sets this. An introBlock rendered mid-page by
+   * BlockRenderer sits below the fold, where a load-time sequence would have
+   * played out long before anyone scrolled to it.
+   */
+  isPageIntro?: boolean;
 }
 
 interface PortableSpan {
@@ -64,6 +71,7 @@ export default function IntroBlock({
   description,
   titleFallback = "",
   cover,
+  isPageIntro = false,
 }: IntroBlockProps) {
   const title = headline ?? titleFallback;
   const hasScope = (scope?.length ?? 0) > 0;
@@ -73,25 +81,60 @@ export default function IntroBlock({
   const hasMetaContent = hasScope || hasTeam;
   const hasInfoContent = hasMetaContent || paragraphs.length > 0;
 
+  // Four beats: the tagline arrives out of depth, then the hero and the info
+  // block rise, and the project name wipes in last. Leading on the small label
+  // made it arrive before the thing it labels; landing it last turns it into a
+  // closing accent. The hero takes the plain rise on purpose — blur and scale
+  // never touch artwork.
+  const beat = (step: number, gesture?: string) =>
+    isPageIntro
+      ? ["intro-beat", gesture && `intro-beat--${gesture}`, `intro-beat--${step}`]
+          .filter(Boolean)
+          .join(" ")
+      : undefined;
+
   return (
     <section className="project-intro" aria-labelledby="project-intro-title">
       <header className="project-intro__header max-w-[var(--content-max-width)] mx-auto content-inset">
-        {eyebrow && <p className="label">{eyebrow}</p>}
+        {eyebrow && (
+          <p className={["label", beat(4, "wipe")].filter(Boolean).join(" ")}>
+            {eyebrow}
+          </p>
+        )}
         {title && (
-          <h1 id="project-intro-title" className="project-intro__headline">
+          <h1
+            id="project-intro-title"
+            className={["project-intro__headline", beat(1, "depth")]
+              .filter(Boolean)
+              .join(" ")}
+          >
             {title}
           </h1>
         )}
       </header>
 
       {cover && (
-        <div className="project-intro__cover max-w-[var(--content-max-width)] mx-auto content-inset">
+        <div
+          className={[
+            "project-intro__cover max-w-[var(--content-max-width)] mx-auto content-inset",
+            beat(2),
+          ]
+            .filter(Boolean)
+            .join(" ")}
+        >
           {cover}
         </div>
       )}
 
       {hasInfoContent && (
-        <div className="project-intro__info max-w-[var(--content-max-width)] mx-auto content-inset">
+        <div
+          className={[
+            "project-intro__info max-w-[var(--content-max-width)] mx-auto content-inset",
+            beat(3),
+          ]
+            .filter(Boolean)
+            .join(" ")}
+        >
           <div className="project-info__grid">
             {hasMetaContent && (
               <div className="project-info__meta-col">

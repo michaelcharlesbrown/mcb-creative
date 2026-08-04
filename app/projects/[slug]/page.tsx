@@ -203,6 +203,7 @@ export default async function Project({
       <SetAccentColor color={sanityProject.accentColor} />
       <main>
         <IntroBlock
+          isPageIntro
           eyebrow={introEyebrow}
           headline={introHeadline}
           scope={introScope}

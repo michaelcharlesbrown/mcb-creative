@@ -18,23 +18,25 @@ export default function WorkGrid({ projects }: WorkGridProps) {
   return (
     <div className="min-h-screen bg-background text-black">
       <div className="max-w-[var(--content-max-width)] mx-auto content-inset pb-[var(--page-bottom)]">
-        {/* Page load sequence, same cadence as the homepage: eyebrow, then
-            headline, then the grid. The nav is already in place by the time a
-            viewer reaches this page, so it takes no step here. */}
+        {/* Page load sequence: headline, then the grid, and the eyebrow wipes
+            in last. Leading on the small label made it arrive before the thing
+            it labels; landing it last turns it into a closing accent. The nav
+            is already in place by the time a viewer reaches this page, so it
+            takes no step here. */}
         <section className="project-intro" aria-labelledby="work-intro-title">
           <header className="project-intro__header">
-            <p className="label intro-beat intro-beat--wipe intro-beat--1">
+            <p className="label intro-beat intro-beat--wipe intro-beat--3">
               Selected Work
             </p>
             <h1
               id="work-intro-title"
-              className="project-intro__headline intro-beat intro-beat--depth intro-beat--2"
+              className="project-intro__headline intro-beat intro-beat--depth intro-beat--1"
             >
               A collection of brand, product, and visual identity work.
             </h1>
           </header>
         </section>
-        <div className="col-2 work-grid intro-beat intro-beat--3">
+        <div className="col-2 work-grid intro-beat intro-beat--2">
           {projects.map((project) => (
             <WorkCard key={project.slug} project={project} />
           ))}
