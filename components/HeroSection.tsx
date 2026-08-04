@@ -16,9 +16,10 @@ export default function HeroSection({ sizzleReelSlides = [] }: HeroSectionProps)
         <GrainCanvas opacity={0.04} blendMode="overlay" zIndex={5} />
       </div>
 
-      {/* Upper half — title + tagline, centered */}
+      {/* Upper half — title + tagline, centered. Steps 1 and 2 of the page load
+          sequence; the nav takes step 3 and the reel below takes step 4. */}
       <div className="hero__upper">
-        <div className="hero__wordmark">
+        <div className="hero__wordmark intro-beat intro-beat--1">
           {/* eslint-disable-next-line @next/next/no-img-element -- same-origin SVG wordmark; next/image adds nothing for SVGs */}
           <img
             src="/images/mcb-creative-dark.svg"
@@ -29,13 +30,13 @@ export default function HeroSection({ sizzleReelSlides = [] }: HeroSectionProps)
           />
         </div>
 
-        <p className="hero__tagline">
+        <p className="hero__tagline intro-beat intro-beat--2">
           Independent Design Studio of Michael Charles Brown
         </p>
       </div>
 
       {/* Lower half — video after title + tagline */}
-      <div className="hero__lower">
+      <div className="hero__lower intro-beat intro-beat--4">
         <div className="hero__lower-inner">
           <div className="max-w-[var(--content-max-width)] mx-auto w-full content-inset box-border">
             {hasSizzleReel && <SizzleReel slides={sizzleReelSlides} priority />}

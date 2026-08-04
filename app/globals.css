@@ -82,7 +82,6 @@
   /* Homepage hero — mobile: natural height below nav, no 50dvh split */
   --space-home-breathing-mobile:    calc(var(--gap-work-grid-row) * 2); /* 2× vertical card rhythm */
   --space-hero-upper-top-mobile:    calc(var(--nav-height) + var(--space-home-breathing-mobile));
-  --space-hero-upper-gap-mobile:    clamp(0.375rem, 1.5vw, 0.5rem);
   --space-hero-upper-bottom-mobile: var(--space-home-breathing-mobile);
   --space-home-work-intro-top-mobile: var(--space-home-breathing-mobile);
 
@@ -141,8 +140,57 @@
   --focus-ring-width:     2px;
   --focus-ring-offset:    3px;
 
+  /* Motion — the whole site's timing vocabulary. Every transition and
+     animation picks from these; never write a raw duration or easing curve in
+     a rule. Durations step roughly 1.5×, so pairs read as deliberately
+     different rather than accidentally close.
+       fast     — colour/opacity on hover, must feel instant
+       base     — the default for transforms and most rollovers
+       slow     — in-page reveals, anything crossing a large distance
+       entrance — the homepage overture; long enough for the easing tail to read
+       ambient  — looping background motion that should never draw the eye */
+  --duration-fast:     0.18s;
+  --duration-base:     0.3s;
+  --duration-slow:     0.6s;
+  --duration-entrance: 1s;
+  --duration-ambient:  2.4s;
+  /* --ease-standard for anything the viewer triggers: leaves quickly, settles
+     softly.
+     --ease-entrance is deliberately NOT a full ease-out-expo. Expo covers 90%
+     of its distance in the first third of the duration, leaving a tail of
+     sub-pixel settling the eye cannot read — so a staged sequence lands each
+     beat before the next begins and reads as separate thuds, however much the
+     durations overlap on paper. This quart curve spreads the visible movement
+     across ~450ms of the second, so a following beat starts while this one is
+     still perceptibly travelling. That genuine overlap is what reads as one
+     continuous move. Soften it further and the motion goes floaty. */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-entrance: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out:   ease-in-out;
+  /* Distance a reveal travels before settling. --motion-rise is the in-page
+     default; the hero overture travels further so the beats feel staged. */
+  --motion-rise:      24px;
+  --motion-rise-hero: 56px;
+
+  /* Page load sequence. Four beats, each --duration-entrance long. The delays
+     step by less than one duration, so every beat is still settling as the
+     next begins — that overlap is what makes it read as one continuous move
+     rather than four separate ones. Every page draws from the same four steps,
+     so the homepage, Work and Info share one cadence. Retune it here; never
+     write these delays into a rule. A page settles at its last step + duration.
+       home — 1 wordmark, 2 tagline, 3 nav, 4 reel
+       Work — 1 eyebrow,  2 headline, 3 grid
+       Info — 1 eyebrow,  2 headline, 3 body */
+  --intro-step-1: 0.15s;
+  --intro-step-2: 0.45s;
+  --intro-step-3: 0.75s;
+  --intro-step-4: 1.05s;
+  /* Any page but home: the nav is not part of that page's sequence, so it
+     drops in immediately rather than waiting for a slot it does not have. */
+  --intro-delay-nav-default: 0.15s;
+
   /* Flip-link hover transition — the one rollover effect for all text links */
-  --flip-link-duration:    0.3s;
+  --flip-link-duration:    var(--duration-base);
   --flip-link-ease:        cubic-bezier(0.76, 0, 0.24, 1);
   --flip-link-line-height: 1.2;
   /* A clipped inline-block takes its bottom margin edge as its baseline, so a
@@ -586,7 +634,7 @@ a.work-page__cta-button:focus-visible {
   height:      var(--size-work-cta-arrow-h);
   flex-shrink: 0;
   object-fit:  contain;
-  animation:   arrow-nudge 2.4s ease-in-out infinite;
+  animation:   arrow-nudge var(--duration-ambient) var(--ease-in-out) infinite;
 }
 
 /* Footer CTA — dark background variant */
@@ -618,7 +666,7 @@ a.footer__cta-link {
 }
 
 img.footer__cta-arrow {
-  animation: arrow-swing 2s ease-in-out infinite;
+  animation: arrow-swing var(--duration-ambient) var(--ease-in-out) infinite;
 }
 
 
@@ -668,7 +716,10 @@ img.footer__cta-arrow {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--flow-micro);
+  /* Wordmark → tagline is a headline↔subtitle relationship, so it takes the
+     text tier. --flow-micro (the caption↔image step) crowded the tagline up
+     against the wordmark. */
+  gap: var(--flow-text);
   position: relative;
   z-index: 10;
   box-sizing: border-box;
@@ -1151,22 +1202,61 @@ img.studio-intro__arrow {
   transform: translateY(-50%);
 }
 
+/* The nav drops in on first paint of any page. It lives above {children} in
+   LayoutShell, so it does not remount on client-side navigation — this runs on
+   a real page load only, never between routes. `backwards` (not `both`) is the
+   whole point: the resting style stays visible, and the from-state applies
+   only during the delay. */
 .nav {
-  opacity: 0;
-  animation: nav-slide-down 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
-  will-change: opacity, transform;
+  animation: nav-slide-down var(--duration-entrance) var(--ease-entrance)
+             var(--intro-delay-nav-default) backwards;
+}
+
+/* Homepage only — the nav takes step 3, after the wordmark and tagline have
+   landed. Set from the pathname captured at mount, so the delay is correct in
+   the first HTML and, crucially, never changes again: rewriting it on a route
+   change would restart an animation that is still playing. */
+.nav--intro {
+  animation-delay: var(--intro-step-3);
 }
 
 
+/* Entrance keyframes deliberately declare only `from`. The implied `to` is the
+   element's own resting style, so the hidden state exists *only* while the
+   animation is pending or running — paired with `backwards` fill below, an
+   element is never written as invisible at rest. If animation never runs, the
+   content is simply there. */
 @keyframes nav-slide-down {
   from { opacity: 0; transform: translateY(-100%); }
-  to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes hero-text-enter {
-  from { opacity: 0; transform: translateY(32px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(var(--motion-rise)); }
 }
+
+/* ============================================================
+   PAGE LOAD SEQUENCE
+   One staged entrance shared by the homepage, Work and Info. Mark an element
+   .intro-beat and give it a step: .intro-beat--1 fires first, --2 next, and
+   so on. The steps are the same everywhere, so all three pages open with the
+   same cadence and a page only has to say which of its elements are beats.
+
+   Because these run on page content — which React remounts on every route
+   change — the sequence replays on each navigation, which is the intent. The
+   nav is deliberately NOT a beat class: it lives above {children} in
+   LayoutShell, never remounts, and so plays exactly once per page load.
+============================================================ */
+.intro-beat {
+  /* `rise-in` reads --motion-rise off the element it runs on, so setting it
+     here gives page-intro beats their longer travel without a second keyframe. */
+  --motion-rise: var(--motion-rise-hero);
+  animation: rise-in var(--duration-entrance) var(--ease-entrance) backwards;
+}
+
+.intro-beat--1 { animation-delay: var(--intro-step-1); }
+.intro-beat--2 { animation-delay: var(--intro-step-2); }
+.intro-beat--3 { animation-delay: var(--intro-step-3); }
+.intro-beat--4 { animation-delay: var(--intro-step-4); }
 
 @keyframes arrow-nudge {
   0%, 55%, 100% { transform: translateX(0); }
@@ -1715,18 +1805,13 @@ body.info-peel-active .info-peel + footer {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Cancelling the animation is enough: because the entrance keyframes carry
+     only a `from`, the resting style is already the visible one. No opacity or
+     transform reset is needed to bring these back. */
   .nav,
-  .hero__minimal-content,
-  .hero__panel,
-  .hero__video-block,
-  .hero__overlay-block,
-  .hero__video-spacer,
-  .hero__overlay,
+  .intro-beat,
   .work-page__cta-arrow {
     animation: none;
-    opacity: 1;
-    transform: none;
-    will-change: auto;
   }
 
   .flip-link__inner {

@@ -43,7 +43,7 @@ export default function Info() {
               info-intro__eyebrow-roles), and each role is bound to the
               separator that introduces it, so a wrap always breaks before a
               /// and never strands one at the end of a line. */}
-          <p className="label info-intro__eyebrow">
+          <p className="label info-intro__eyebrow intro-beat intro-beat--1">
             <span className="label-title">MICHAEL CHARLES BROWN</span>{" "}
             <span className="info-intro__eyebrow-roles">
               <span className="info-intro__eyebrow-role">
@@ -54,12 +54,12 @@ export default function Info() {
               </span>
             </span>
           </p>
-          <h1 className="project-intro__headline">
+          <h1 className="project-intro__headline intro-beat intro-beat--2">
             Building visual identities for over a decade.
           </h1>
         </header>
 
-        <div className="project-intro__info max-w-[var(--content-max-width)] mx-auto content-inset">
+        <div className="project-intro__info max-w-[var(--content-max-width)] mx-auto content-inset intro-beat intro-beat--3">
           <div className="project-info__grid">
             <div className="project-info__copy-col">
               {introColLeft.map((para) => (
