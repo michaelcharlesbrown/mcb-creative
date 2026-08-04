@@ -27,6 +27,11 @@ interface InfoPeelRevealProps {
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
+/** Ceiling on how long the idle warm-up may be deferred once the page is loaded. */
+const WARM_IDLE_TIMEOUT_MS = 2000;
+/** Stand-in delay where requestIdleCallback is unavailable (older Safari). */
+const WARM_FALLBACK_DELAY_MS = 600;
+
 function subscribeReducedMotion(onChange: () => void) {
   const mql = window.matchMedia(REDUCED_MOTION_QUERY);
   mql.addEventListener("change", onChange);
@@ -51,21 +56,48 @@ export default function InfoPeelReveal({
     getReducedMotionServerSnapshot
   );
   const [videoActive, setVideoActive] = useState(false);
-  // The heavy source is only requested once a reveal (or the static reel under
-  // reduced motion) nears the viewport — never on initial load. The poster
-  // covers any brief buffer, so the reveal never shows a blank window.
+  // The heavy source is never part of the page's own load: it is requested on
+  // the first idle tick *after* the load event, so it is already buffered by
+  // the time the viewer scrolls to a reveal.
   const [shouldLoad, setShouldLoad] = useState(false);
 
   useVideoPlaybackGate(videoRef, videoActive);
 
+  // Requesting the source at the reveal was the whole problem: fetch, decode and
+  // first paint all landed while the window was already on-screen, so the peel
+  // showed the page behind the video and then jumped as playback began. The file
+  // is instead warmed on the first idle tick after the load event — off the
+  // critical path, so the page still renders and settles first, but long done by
+  // the time anyone has read the intro and scrolled.
+  useEffect(() => {
+    if (reducedMotion) return;
+    let cancelled = false;
+
+    const warm = () => {
+      const load = () => {
+        if (!cancelled) setShouldLoad(true);
+      };
+      if (typeof window.requestIdleCallback === "function") {
+        window.requestIdleCallback(load, { timeout: WARM_IDLE_TIMEOUT_MS });
+      } else {
+        window.setTimeout(load, WARM_FALLBACK_DELAY_MS);
+      }
+    };
+
+    if (document.readyState === "complete") warm();
+    else window.addEventListener("load", warm, { once: true });
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener("load", warm);
+    };
+  }, [reducedMotion]);
+
   // The peel is pure CSS — opaque panels slide up over the fixed video as the
-  // page scrolls. JS only requests and plays the video while a reveal window is
-  // actually on-screen; the panels cover it the rest of the time, so loading or
-  // playing before then is pure waste. The first reveal sits exactly at the
-  // fold, so a plain 0px margin reads as "intersecting" at rest (sub-pixel) and
-  // would load the file immediately. The negative bottom margin requires the
-  // window to scroll ~15% into view before it triggers, so nothing is requested
-  // until the viewer actually reaches it; the poster covers the brief buffer.
+  // page scrolls. This observer only drives play/pause: the panels cover the
+  // video the rest of the time, so decoding then is waste. The half-viewport
+  // margin starts playback before the window appears, so the reveal opens onto
+  // a running loop rather than a still frame that lurches into motion.
   useEffect(() => {
     if (reducedMotion) return;
     const reveals = revealsRef.current.filter(
@@ -77,16 +109,12 @@ export default function InfoPeelReveal({
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            onScreen.add(entry.target);
-            setShouldLoad(true);
-          } else {
-            onScreen.delete(entry.target);
-          }
+          if (entry.isIntersecting) onScreen.add(entry.target);
+          else onScreen.delete(entry.target);
         }
         setVideoActive(onScreen.size > 0);
       },
-      { rootMargin: "0px 0px -15% 0px" }
+      { rootMargin: "50% 0px" }
     );
 
     reveals.forEach((el) => observer.observe(el));
@@ -156,7 +184,7 @@ export default function InfoPeelReveal({
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
         />
       </div>
 

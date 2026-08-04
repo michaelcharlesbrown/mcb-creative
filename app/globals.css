@@ -51,6 +51,9 @@
   --color-white:     #ffffff;
   --color-intro-text: #C0C0C0;
   --color-caption:    rgba(0, 0, 0, 0.5);
+  /* Info peel reveal floor — the flat grey the studio reel fades up from and
+     back down to, so the window matches the loop's own first and last frame. */
+  --color-reel-base:  #dadada;
   /* Work CTA pill — Figma fill #020202 */
   --color-work-cta-button: #020202;
   --hero-charcoal:   #0a0a0a;
@@ -1364,10 +1367,16 @@ img.studio-intro__arrow {
   height: 100dvh;
 }
 
+/* The floor under the reveal. A <video> with no decoded frame paints nothing,
+   so without this the peel window showed the white page for as long as the
+   first frame took to arrive. Filling it with the grey the reel fades up from
+   makes the floor indistinguishable from frame one — the same job a poster
+   would do, without the extra request. */
 .info-peel__video-wrap {
   position: fixed;
   inset: 0;
   z-index: 1;
+  background: var(--color-reel-base);
   width: 100%;
   height: 100vh;
   height: 100dvh;
@@ -1389,7 +1398,7 @@ img.studio-intro__arrow {
   z-index: 2;
   width: 100%;
   aspect-ratio: 16 / 9;
-  background: var(--color-black);
+  background: var(--color-reel-base); /* same floor as the peel window */
 }
 
 .info-peel__static-video {
