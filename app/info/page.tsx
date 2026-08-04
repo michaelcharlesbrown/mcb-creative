@@ -16,8 +16,8 @@ const testimonials = [
   {
     quote:
       "A clear communicator who speaks candidly but always with sincerity and understanding. One of the first people I call when I get something going and need to think creatively or strategically about any venture I’m thinking about.",
-    name: "Scott MacDonald",
-    title: "CTO, AllSides",
+    name: "Scott McDonald",
+    title: "Director of Web Dev, BitTorrent",
   },
   {
     quote:
@@ -29,7 +29,7 @@ const testimonials = [
     quote:
       "I’m so lucky that I had the opportunity to work with Michael, as he contributed immensely to my growth as a designer. He has a talent for creating an environment where the team feels heard, encouraged, and inspired.",
     name: "Briana Jackson",
-    title: "UX & Product Designer",
+    title: "UX & Product Designer, BitTorrent",
   },
 ];
 
@@ -47,7 +47,7 @@ export default function Info() {
             <span className="label-title">MICHAEL CHARLES BROWN</span>{" "}
             <span className="info-intro__eyebrow-roles">
               <span className="info-intro__eyebrow-role">
-                <TripleSlash /> <span className="label-meta">INDEPENDENT CREATIVE</span>
+                <TripleSlash /> <span className="label-meta">CREATIVE DIRECTOR</span>
               </span>{" "}
               <span className="info-intro__eyebrow-role">
                 <TripleSlash /> <span className="label-meta">BRANDING + WEB DESIGN</span>
@@ -67,13 +67,20 @@ export default function Info() {
                   {para}
                 </p>
               ))}
-              <p className="label project-info__links">
-                <a href="mailto:hello@mcbcreative.design" className="project-info__cta">
-                  <span className="flip-link">
-                    <span className="flip-link__inner" data-text="Get in touch">Get in touch</span>
-                  </span>
-                  <span className="project-info__cta-arrow" aria-hidden="true">→</span>
+              {/* Body-copy CTA: same type as the surrounding bio, so it reads as
+                  the last sentence of the paragraph rather than a smaller mono
+                  label. Identical in construction to the "here" link in the
+                  right column — inline .project-info__link, sentence period,
+                  no ornament. */}
+              <p className="project-info__body project-info__links">
+                Working on something?{" "}
+                <a
+                  href="mailto:hello@mcbcreative.design"
+                  className="flip-link project-info__link"
+                >
+                  <span className="flip-link__inner" data-text="Get in touch">Get in touch</span>
                 </a>
+                .
               </p>
             </div>
             <div className="project-info__copy-col">
@@ -84,16 +91,8 @@ export default function Info() {
               </p>
               <p className="project-info__body">
                 I&rsquo;m also a classically trained musician. I&rsquo;ve
-                released several albums on my{" "}
-                <a
-                  href="https://brokenearrecords.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flip-link project-info__link"
-                >
-                  <span className="flip-link__inner" data-text="indie record label">indie record label</span>
-                </a>{" "}
-                and just completed my first feature film score.
+                released several albums on my indie record label and just
+                completed my first feature film score.
               </p>
               <p className="project-info__body">
                 Check out my music projects{" "}
