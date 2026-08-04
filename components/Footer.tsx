@@ -21,7 +21,7 @@ export default function Footer() {
                 <p className="footer__cta-body">
                   Got A Project In Mind?<br />
                   I&apos;d Love To Hear About It.<br />
-                  Get In Touch.
+                  Send Me A Message.
                 </p>
                 <div className="flex flex-col gap-2">
                   <a href="mailto:hello@mcbcreative.design" className="footer__cta-link">

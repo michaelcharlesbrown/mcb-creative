@@ -15,8 +15,10 @@ import { useVideoPlaybackGate } from "@/hooks/useViewportVideo";
 
 interface InfoPeelRevealProps {
   /** Each direct child is one opaque foreground panel; a full-viewport window
-      onto the fixed background video follows each one. Two panels therefore
-      read as: panel → video → panel → video → footer. */
+      onto the fixed background video sits between adjacent panels. Two panels
+      therefore read as: panel → video → panel → footer. The reveal is a beat
+      *between* sections, so the last panel hands straight off to the footer
+      rather than peeling to the same video twice. */
   children: ReactNode;
   /** Applied to the scrolling content element, e.g. "info-page info-intro". */
   className?: string;
@@ -165,13 +167,15 @@ export default function InfoPeelReveal({
         {panels.map((panel, i) => (
           <Fragment key={i}>
             <div className="info-peel__panel">{panel}</div>
-            <div
-              className="info-peel__reveal"
-              aria-hidden="true"
-              ref={(el) => {
-                revealsRef.current[i] = el;
-              }}
-            />
+            {i < panels.length - 1 && (
+              <div
+                className="info-peel__reveal"
+                aria-hidden="true"
+                ref={(el) => {
+                  revealsRef.current[i] = el;
+                }}
+              />
+            )}
           </Fragment>
         ))}
       </main>

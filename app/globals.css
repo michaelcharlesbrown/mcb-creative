@@ -980,20 +980,6 @@ body.home .project-intro__header {
   vertical-align: var(--flip-link-body-shift);
 }
 
-/* Info "Get in touch" CTA — original label type + global flip-roll, with a
-   little arrow that swings back and forth just like the footer. */
-.project-info__cta {
-  display:         inline-flex;
-  align-items:     center;
-  text-decoration: none;
-}
-
-.project-info__cta-arrow {
-  display:     inline-block;
-  margin-left: 0.4em;
-  animation:   arrow-swing 2s ease-in-out infinite;
-}
-
 .project-info__section-title {
   font-family:    var(--font-family-headline);
   font-weight:    var(--weight-medium);
@@ -1370,8 +1356,9 @@ img.studio-intro__arrow {
   box-sizing: border-box;
 }
 
-/* A full-viewport window onto the fixed background video, placed after every
-   panel: panel → reveal → panel → reveal → footer. */
+/* A full-viewport window onto the fixed background video, placed between
+   adjacent panels: panel → reveal → panel → footer. The last panel is followed
+   by the footer, not a second reveal. */
 .info-peel__reveal {
   height: 100vh;
   height: 100dvh;
