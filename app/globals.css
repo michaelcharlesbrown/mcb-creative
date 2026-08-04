@@ -152,20 +152,28 @@
   --duration-fast:     0.18s;
   --duration-base:     0.3s;
   --duration-slow:     0.6s;
-  --duration-entrance: 1s;
+  --duration-entrance: 1.4s;
   --duration-ambient:  2.4s;
   /* --ease-standard for anything the viewer triggers: leaves quickly, settles
      softly.
-     --ease-entrance is deliberately NOT a full ease-out-expo. Expo covers 90%
-     of its distance in the first third of the duration, leaving a tail of
-     sub-pixel settling the eye cannot read — so a staged sequence lands each
-     beat before the next begins and reads as separate thuds, however much the
-     durations overlap on paper. This quart curve spreads the visible movement
-     across ~450ms of the second, so a following beat starts while this one is
-     still perceptibly travelling. That genuine overlap is what reads as one
-     continuous move. Soften it further and the motion goes floaty. */
+
+     --ease-entrance is deliberately NOT an ease-out-expo, and not even a
+     quart. The measure that matters is how evenly a curve spends its motion:
+     expo and quart are ~90% and ~69% done a quarter of the way through, so
+     they burst and then crawl, and a staged sequence lands each beat before
+     the next begins however much the durations overlap on paper. This cubic
+     is 58% done at the quarter mark — still an ease-out, so arrivals settle
+     rather than stop dead, but spread widely enough that beats genuinely
+     overlap. Front-load it again and the sequence goes back to thudding.
+
+     --ease-wipe is a symmetric S. A wipe is a sweep across a fixed distance
+     rather than an object arriving, so an ease-out reveals most of the text
+     almost at once and then trails the last characters — the specific thing
+     that reads as choppy. An even curve sweeps at a near-constant rate with
+     soft ends, which is what makes it read as typing out. */
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-entrance: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-entrance: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-wipe:     cubic-bezier(0.65, 0, 0.35, 1);
   --ease-in-out:   ease-in-out;
   /* Distance a reveal travels before settling. --motion-rise is the in-page
      default; the hero overture travels further so the beats feel staged. */
@@ -1297,6 +1305,7 @@ img.studio-intro__arrow {
 
 .intro-beat--wipe {
   animation-name: wipe-in;
+  animation-timing-function: var(--ease-wipe);
 }
 
 .intro-beat--1 { animation-delay: var(--intro-step-1); }
