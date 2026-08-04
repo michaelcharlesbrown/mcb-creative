@@ -1,5 +1,6 @@
 import TripleSlash from "@/components/TripleSlash";
 import InfoPeelReveal from "@/components/InfoPeelReveal";
+import ScrollReveal from "@/components/ScrollReveal";
 import { pageMetadata } from "@/lib/siteConfig";
 
 export const metadata = pageMetadata({ path: "/info" });
@@ -117,7 +118,7 @@ export default function Info() {
             class puts each mark in its own quote's column. Desktop only; the
             halves release on mobile, where the mark rides above its own quote. */}
         <header className="project-intro__header max-w-[var(--content-max-width)] mx-auto content-inset">
-          <div className="info-testimonials__grid">
+          <ScrollReveal className="info-testimonials__grid reveal-stagger">
             {testimonials.map((t) => (
               // eslint-disable-next-line @next/next/no-img-element -- decorative same-origin SVG; next/image adds nothing for SVGs
               <img
@@ -131,10 +132,10 @@ export default function Info() {
                 aria-hidden
               />
             ))}
-          </div>
+          </ScrollReveal>
         </header>
         <div className="project-intro__info max-w-[var(--content-max-width)] mx-auto content-inset">
-          <div className="info-testimonials__grid">
+          <ScrollReveal className="info-testimonials__grid reveal-stagger">
             {testimonials.map((t) => (
               <blockquote key={t.name} className="info-testimonials__item">
                 {/* eslint-disable-next-line @next/next/no-img-element -- decorative same-origin SVG; next/image adds nothing for SVGs */}
@@ -155,7 +156,7 @@ export default function Info() {
                 </footer>
               </blockquote>
             ))}
-          </div>
+          </ScrollReveal>
         </div>
       </section>
     </InfoPeelReveal>
