@@ -23,10 +23,12 @@ export default function WorkGrid({ projects }: WorkGridProps) {
             viewer reaches this page, so it takes no step here. */}
         <section className="project-intro" aria-labelledby="work-intro-title">
           <header className="project-intro__header">
-            <p className="label intro-beat intro-beat--1">Selected Work</p>
+            <p className="label intro-beat intro-beat--wipe intro-beat--1">
+              Selected Work
+            </p>
             <h1
               id="work-intro-title"
-              className="project-intro__headline intro-beat intro-beat--2"
+              className="project-intro__headline intro-beat intro-beat--depth intro-beat--2"
             >
               A collection of brand, product, and visual identity work.
             </h1>

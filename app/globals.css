@@ -171,6 +171,13 @@
      default; the hero overture travels further so the beats feel staged. */
   --motion-rise:      24px;
   --motion-rise-hero: 56px;
+  /* Depth. Type starts fractionally short of full size and slightly out of
+     focus, so it resolves toward the viewer rather than just sliding. Keep the
+     scale shallow — past about 0.9 it stops reading as depth and starts
+     reading as a zoom — and the blur small enough to clear within the first
+     third of the move, or the text looks smeared rather than arriving. */
+  --motion-scale-from: 0.94;
+  --motion-blur-from:  10px;
 
   /* Page load sequence. Four beats, each --duration-entrance long. The delays
      step by less than one duration, so every beat is still settling as the
@@ -1234,6 +1241,29 @@ img.studio-intro__arrow {
   from { opacity: 0; transform: translateY(var(--motion-rise)); }
 }
 
+/* Type arriving out of depth: slightly short of full size and out of focus, so
+   it resolves toward the viewer instead of merely sliding up. `filter`
+   interpolates against `none` as the identity, so a from-only keyframe still
+   animates the blur away cleanly. */
+@keyframes depth-in {
+  from {
+    opacity:   0;
+    transform: translateY(var(--motion-rise)) scale(var(--motion-scale-from));
+    filter:    blur(var(--motion-blur-from));
+  }
+}
+
+/* Left-to-right reveal for single-line labels. Unlike the others this needs an
+   explicit `to`: clip-path does NOT interpolate against `none`, so without a
+   landing shape the reveal would jump rather than wipe. Once the animation is
+   over the fill releases and the element carries no clip-path at all, so the
+   inset can never shave a glyph at rest. No fade — a wipe reads crisper on
+   mono type than a wipe and a dissolve fighting each other. */
+@keyframes wipe-in {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
 /* ============================================================
    PAGE LOAD SEQUENCE
    One staged entrance shared by the homepage, Work and Info. Mark an element
@@ -1245,12 +1275,28 @@ img.studio-intro__arrow {
    change — the sequence replays on each navigation, which is the intent. The
    nav is deliberately NOT a beat class: it lives above {children} in
    LayoutShell, never remounts, and so plays exactly once per page load.
+
+   Three gestures, picked by what the element is rather than where it sits:
+     .intro-beat          rise + fade. The safe default, and the only one used
+                          on media — neither scale nor blur touches an image,
+                          so nothing can soften artwork mid-flight.
+     .intro-beat--depth   rise + fade + scale + blur, for headlines and the
+                          wordmark. This is the one that arrives out of depth.
+     .intro-beat--wipe    left-to-right reveal, for single-line mono labels.
 ============================================================ */
 .intro-beat {
   /* `rise-in` reads --motion-rise off the element it runs on, so setting it
      here gives page-intro beats their longer travel without a second keyframe. */
   --motion-rise: var(--motion-rise-hero);
   animation: rise-in var(--duration-entrance) var(--ease-entrance) backwards;
+}
+
+.intro-beat--depth {
+  animation-name: depth-in;
+}
+
+.intro-beat--wipe {
+  animation-name: wipe-in;
 }
 
 .intro-beat--1 { animation-delay: var(--intro-step-1); }

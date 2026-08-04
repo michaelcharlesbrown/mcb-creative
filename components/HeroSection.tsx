@@ -19,7 +19,7 @@ export default function HeroSection({ sizzleReelSlides = [] }: HeroSectionProps)
       {/* Upper half — title + tagline, centered. Steps 1 and 2 of the page load
           sequence; the nav takes step 3 and the reel below takes step 4. */}
       <div className="hero__upper">
-        <div className="hero__wordmark intro-beat intro-beat--1">
+        <div className="hero__wordmark intro-beat intro-beat--depth intro-beat--1">
           {/* eslint-disable-next-line @next/next/no-img-element -- same-origin SVG wordmark; next/image adds nothing for SVGs */}
           <img
             src="/images/mcb-creative-dark.svg"
@@ -30,7 +30,7 @@ export default function HeroSection({ sizzleReelSlides = [] }: HeroSectionProps)
           />
         </div>
 
-        <p className="hero__tagline intro-beat intro-beat--2">
+        <p className="hero__tagline intro-beat intro-beat--wipe intro-beat--2">
           Independent Design Studio of Michael Charles Brown
         </p>
       </div>
