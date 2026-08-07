@@ -187,19 +187,33 @@
   --motion-scale-from: 0.94;
   --motion-blur-from:  10px;
 
-  /* Page load sequence. Four beats, each --duration-entrance long. The delays
+  /* Page load sequence. Seven beats, each --duration-entrance long. The delays
      step by less than one duration, so every beat is still settling as the
      next begins — that overlap is what makes it read as one continuous move
-     rather than four separate ones. Every page draws from the same four steps,
+     rather than seven separate ones. Every page draws from the same steps,
      so the homepage, Work and Info share one cadence. Retune it here; never
      write these delays into a rule. A page settles at its last step + duration.
-       home — 1 wordmark, 2 tagline, 3 nav, 4 reel
+       home — 1 wordmark, 2 tagline, 3 nav, 4 reel,
+              5 featured label, 6 featured headline, 7 work grid
        Work — 1 eyebrow,  2 headline, 3 grid
-       Info — 1 eyebrow,  2 headline, 3 body */
+       Info — 1 eyebrow,  2 headline, 3 body
+
+     Steps 5–7 exist because the homepage is the one page whose sequence has to
+     survive a short viewport. At 375px the hero occupies ~443px of an 812px
+     screen, so the Featured Projects header and the first work card share the
+     first screen with the hero rather than sitting below the fold as they do
+     on desktop. Left unenrolled they painted at full opacity on frame one,
+     finishing before the hero above them had started — the sequence read
+     bottom-up. They take beats so the whole first screen resolves top-down.
+     Desktop is unaffected: the same content is below the fold there and has
+     settled long before it is scrolled to. */
   --intro-step-1: 0.15s;
   --intro-step-2: 0.45s;
   --intro-step-3: 0.75s;
   --intro-step-4: 1.05s;
+  --intro-step-5: 1.35s;
+  --intro-step-6: 1.65s;
+  --intro-step-7: 1.95s;
   /* Any page but home: the nav is not part of that page's sequence, so it
      drops in immediately rather than waiting for a slot it does not have. */
   --intro-delay-nav-default: 0.15s;
@@ -1312,6 +1326,9 @@ img.studio-intro__arrow {
 .intro-beat--2 { animation-delay: var(--intro-step-2); }
 .intro-beat--3 { animation-delay: var(--intro-step-3); }
 .intro-beat--4 { animation-delay: var(--intro-step-4); }
+.intro-beat--5 { animation-delay: var(--intro-step-5); }
+.intro-beat--6 { animation-delay: var(--intro-step-6); }
+.intro-beat--7 { animation-delay: var(--intro-step-7); }
 
 /* ------------------------------------------------------------
    SCROLL-TRIGGERED STAGGER
