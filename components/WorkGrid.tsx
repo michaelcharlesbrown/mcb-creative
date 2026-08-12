@@ -32,7 +32,7 @@ export default function WorkGrid({ projects }: WorkGridProps) {
               id="work-intro-title"
               className="project-intro__headline intro-beat intro-beat--depth intro-beat--1"
             >
-              A collection of brand, product, and visual identity work.
+              A collection of brand, web, and visual identity work.
             </h1>
           </header>
         </section>
