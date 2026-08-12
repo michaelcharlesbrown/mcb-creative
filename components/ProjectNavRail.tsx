@@ -50,7 +50,7 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
                   sizes={
                     isHomepage
                       ? "(max-width: 767px) 85vw, 33vw"
-                      : "(max-width: 767px) 55vw, 25vw"
+                      : "(max-width: 767px) 55vw, 33vw"
                   }
                   draggable={false}
                   className="object-cover"
