@@ -1,6 +1,7 @@
 export const projectBySlugQuery = `*[_type=="project" && slug.current==$slug][0]{
   title,
   "slug": slug.current,
+  year,
   "accentColor": accentColor.hex,
   heroImage{
     alt,

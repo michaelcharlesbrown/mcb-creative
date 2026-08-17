@@ -48,6 +48,7 @@ type SanityImageWithAlt = {
 export type SanityProject = {
   title: string;
   slug: string;
+  year?: string;
   accentColor?: string;
   heroImage?: SanityImageWithAlt;
   heroVideoFileUrl?: string;
@@ -169,6 +170,7 @@ export default async function Project({
   const introEyebrow = introBlock?.headline ?? sanityProject.title;
   const introHeadline = introBlock?.subheadline ?? sanityProject.title;
   const introScope = introBlock?.scope;
+  const introYear = sanityProject.year;
   const introTeam = introBlock?.team;
   const introDescription = introBlock?.description;
 
@@ -207,6 +209,7 @@ export default async function Project({
           eyebrow={introEyebrow}
           headline={introHeadline}
           scope={introScope}
+          year={introYear}
           team={introTeam}
           description={introDescription}
           titleFallback={sanityProject.title}

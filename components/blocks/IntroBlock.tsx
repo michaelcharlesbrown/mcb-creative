@@ -6,6 +6,8 @@ interface IntroBlockProps {
   /** Page H1 — the project tagline */
   headline?: string;
   scope?: string[];
+  /** Case-study year, shown under Scope */
+  year?: string;
   team?: string[];
   description?: unknown;
   titleFallback?: string;
@@ -67,6 +69,7 @@ export default function IntroBlock({
   eyebrow,
   headline,
   scope,
+  year,
   team,
   description,
   titleFallback = "",
@@ -75,10 +78,11 @@ export default function IntroBlock({
 }: IntroBlockProps) {
   const title = headline ?? titleFallback;
   const hasScope = (scope?.length ?? 0) > 0;
+  const hasYear = Boolean(year);
   const hasTeam = (team?.length ?? 0) > 0;
   const paragraphs = toParagraphs(description);
   const [copyLeft, copyRight] = splitParagraphs(paragraphs);
-  const hasMetaContent = hasScope || hasTeam;
+  const hasMetaContent = hasScope || hasYear || hasTeam;
   const hasInfoContent = hasMetaContent || paragraphs.length > 0;
 
   // Four beats: the tagline arrives out of depth, then the hero and the info
@@ -145,6 +149,14 @@ export default function IntroBlock({
                       {scope!.map((item, i) => (
                         <li key={i}>→ {item}</li>
                       ))}
+                    </ul>
+                  </div>
+                )}
+                {hasYear && (
+                  <div className="project-info__section-group">
+                    <p className="project-info__section-title">DATE</p>
+                    <ul className="project-info__list">
+                      <li>→ {year}</li>
                     </ul>
                   </div>
                 )}

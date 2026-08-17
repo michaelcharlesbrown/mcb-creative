@@ -19,6 +19,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'year',
+      title: 'Year',
+      description: 'Shown under Scope on the case study. A year or range, e.g. 2026 or 2024–2026.',
+      type: 'string',
+      initialValue: '2026',
+    }),
+    defineField({
       name: 'accentColor',
       title: 'Accent Color',
       description: 'Used for the page transition wipe when navigating to this project.',
