@@ -56,7 +56,7 @@ export default function Info() {
             </span>
           </p>
           <h1 className="project-intro__headline intro-beat intro-beat--depth intro-beat--1">
-            Building visual identities for over 20 years.
+            Building visual identities for over a decade.
           </h1>
         </header>
 
