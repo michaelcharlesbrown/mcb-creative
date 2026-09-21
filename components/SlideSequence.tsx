@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Image, { getImageProps } from "next/image";
 import { getSanityImageUrl, type SanityImagePreset } from "@/lib/sanityImage";
 import { useViewportVideo, useVideoPlaybackGate } from "@/hooks/useViewportVideo";
 
@@ -20,6 +20,45 @@ export interface ResolvedSlide {
 /** Image slides hold ~0.45s for a rapid sizzle-reel pace; video slides play through, capped at ~4s. Hard cuts only — no crossfade. */
 const IMAGE_HOLD_MS = 450;
 const VIDEO_HOLD_CAP_MS = 4000;
+/**
+ * How far ahead a running sequence keeps its image slides loaded. The first
+ * request for an image at a given width makes the CDN generate it — up to
+ * ~1.35s measured on the live reel, three beats — so ~2s of cuts load ahead,
+ * in parallel, and a cold image is requested long before its cut comes due.
+ */
+const PRELOAD_LEAD_MS = 2000;
+const PRELOAD_AHEAD = Math.ceil(PRELOAD_LEAD_MS / IMAGE_HOLD_MS);
+
+/** The media a slide cuts to. Image wins if both are set, as in resolveSlides. */
+function slideMediaUrl(slide: ResolvedSlide | undefined): string | undefined {
+  return slide?.imageUrl ?? slide?.videoUrl;
+}
+
+/** The slide a sequence cuts to after `index`; null when a one-shot run is done and settles back to slide 0. */
+function followingIndex(
+  index: number,
+  count: number,
+  loopForever: boolean,
+  startIndex: number
+): number | null {
+  if (index < count - 1) return index + 1;
+  return loopForever ? startIndex : null;
+}
+
+/**
+ * Fetches and decodes an image exactly as `<Image fill sizes={sizes}>` will
+ * request it — same srcset, so the browser picks the same candidate — and
+ * resolves once it's ready to paint. The later cut then draws from cache on
+ * the next frame instead of waiting on the network.
+ */
+function preloadImage(src: string, sizes: string): Promise<void> {
+  const { props } = getImageProps({ src, alt: "", fill: true, sizes });
+  const img = new window.Image();
+  if (props.sizes) img.sizes = props.sizes;
+  if (props.srcSet) img.srcset = props.srcSet;
+  img.src = props.src;
+  return img.decode();
+}
 
 export function resolveSlides(
   slides: MediaSlideData[],
@@ -60,9 +99,12 @@ export interface SlideSequenceProps {
 }
 
 /**
- * Shared slide-sequence engine: hard cuts only, no crossfade. Preloads only
- * the next slide's video, and gates the cut into it on that video's
- * `canplay` event so an unready clip never shows as a black frame.
+ * Shared slide-sequence engine: hard cuts only, no crossfade. Every cut is
+ * gated on its media being ready — an image decoded, a video at `canplay` —
+ * and holds the current slide until it is. Cutting on the clock alone froze
+ * the last image that happened to load while the beats ran on unseen behind
+ * it, then released several at once. Image slides load ahead of their cut;
+ * video, the heavy case, preloads only the next slide.
  */
 export function SlideSequence({
   slides,
@@ -86,7 +128,11 @@ export function SlideSequence({
   const { elementRef, shouldLoad, isVisible } = useViewportVideo<HTMLDivElement>();
   const activeVideoRef = useRef<HTMLVideoElement>(null);
   const preloadVideoRef = useRef<HTMLVideoElement>(null);
+  /** Media URLs safe to cut to. */
   const readyUrlsRef = useRef<Set<string>>(new Set());
+  /** Image URLs already asked for, so a sliding preload window never requests one twice. */
+  const requestedUrlsRef = useRef<Set<string>>(new Set());
+  /** A cut held until its media is ready; markReady completes it. */
   const pendingIndexRef = useRef<number | null>(null);
   const hasPlayedOnceRef = useRef(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -126,14 +172,27 @@ export function SlideSequence({
 
   const requestAdvance = useCallback(
     (nextIndex: number) => {
-      const next = slides[nextIndex];
-      if (next?.videoUrl && !readyUrlsRef.current.has(next.videoUrl)) {
-        // Hold the current slide — cutting to an unready video would show a
-        // black frame instead of a clean cut. Preload effect resolves this.
+      const url = slideMediaUrl(slides[nextIndex]);
+      if (url && !readyUrlsRef.current.has(url)) {
+        // Hold the current slide — cutting to media that hasn't arrived
+        // leaves an image frozen on the last one that loaded, or shows a
+        // video as a black frame. markReady completes the cut on arrival.
         pendingIndexRef.current = nextIndex;
         return;
       }
       commitAdvance(nextIndex);
+    },
+    [slides, commitAdvance]
+  );
+
+  /** Records a slide's media as ready, and completes a cut that was held waiting for it. */
+  const markReady = useCallback(
+    (url: string) => {
+      readyUrlsRef.current.add(url);
+      const pending = pendingIndexRef.current;
+      if (pending !== null && slideMediaUrl(slides[pending]) === url) {
+        commitAdvance(pending);
+      }
     },
     [slides, commitAdvance]
   );
@@ -156,6 +215,10 @@ export function SlideSequence({
   const handleMouseLeave = () => {
     setIsHovering(false);
     clearScheduledAdvance();
+    // A cut still waiting on its media belonged to this visit — drop it so it
+    // can't land after the pointer has gone. That slide never showed, so the
+    // step below doesn't move past it and the next visit asks for it again.
+    pendingIndexRef.current = null;
     if (hoverSingleStep) {
       if (activeIndex > 0) {
         setHoverStepIndex(activeIndex >= slides.length - 1 ? 1 : activeIndex + 1);
@@ -200,8 +263,7 @@ export function SlideSequence({
     if (!loopForever && hasPlayedOnceRef.current) return;
     if (slides.length <= 1) return;
 
-    const isLast = activeIndex >= slides.length - 1;
-    const nextIndex = isLast ? (loopForever ? startIndex : null) : activeIndex + 1;
+    const nextIndex = followingIndex(activeIndex, slides.length, loopForever, startIndex);
     const current = slides[activeIndex];
     beatStartRef.current = performance.now();
 
@@ -231,36 +293,52 @@ export function SlideSequence({
     // same-value setActiveIndex() alone wouldn't trigger a re-run.
   }, [activeIndex, tick, isEngaged, hoverRunsSequence, hoverSingleStep, loopForever, slides, startIndex, requestAdvance, clearScheduledAdvance]);
 
-  // Preload only the next slide's video — never the full array — and only
-  // once this element is near the viewport (shouldLoad), matching the
-  // existing lazy-video convention used elsewhere in the codebase.
-  const upcomingIndex = hoverSingleStep
-    ? hoverStepIndex
-    : activeIndex >= slides.length - 1
-      ? loopForever
-        ? startIndex
-        : null
-      : activeIndex + 1;
-  // A "none" sequence never advances, so preloading what comes next would be
-  // pure waste — on exactly the breakpoint that can least afford it.
+  // The slides to have ready before they're due: a hover card's next
+  // alternate, or the next PRELOAD_AHEAD cuts of a running sequence. Only once
+  // this element is near the viewport (shouldLoad), matching the existing
+  // lazy-media convention used elsewhere in the codebase. A "none" sequence
+  // never advances, so preloading what comes next would be pure waste — on
+  // exactly the breakpoint that can least afford it.
+  const slideCount = slides.length;
+  const upcomingIndices = useMemo(() => {
+    if (!shouldLoad || trigger === "none" || slideCount <= 1) return [];
+    if (hoverSingleStep) return [hoverStepIndex];
+    const indices: number[] = [];
+    let next = followingIndex(activeIndex, slideCount, loopForever, startIndex);
+    while (next !== null && indices.length < PRELOAD_AHEAD && !indices.includes(next)) {
+      indices.push(next);
+      next = followingIndex(next, slideCount, loopForever, startIndex);
+    }
+    return indices;
+  }, [shouldLoad, trigger, slideCount, hoverSingleStep, hoverStepIndex, activeIndex, loopForever, startIndex]);
+
+  // Image slides across the whole window, requested in parallel: a cold image
+  // costs latency, not bandwidth, so several in flight at once keep well
+  // ahead of the beat.
+  useEffect(() => {
+    for (const index of upcomingIndices) {
+      const url = slides[index]?.imageUrl;
+      if (!url || requestedUrlsRef.current.has(url)) continue;
+      requestedUrlsRef.current.add(url);
+      // A failed load or decode still releases the hold: one broken asset
+      // must never freeze the sequence.
+      const settle = () => markReady(url);
+      preloadImage(url, sizes).then(settle, settle);
+    }
+  }, [upcomingIndices, slides, sizes, markReady]);
+
+  // Video only for the very next slide — never the full window.
   const upcomingVideoUrl =
-    shouldLoad && trigger !== "none" && upcomingIndex !== null && upcomingIndex < slides.length
-      ? slides[upcomingIndex]?.videoUrl
-      : undefined;
+    upcomingIndices.length > 0 ? slides[upcomingIndices[0]]?.videoUrl : undefined;
 
   useEffect(() => {
     if (!upcomingVideoUrl || readyUrlsRef.current.has(upcomingVideoUrl)) return;
     const el = preloadVideoRef.current;
     if (!el) return;
-    const onReady = () => {
-      readyUrlsRef.current.add(upcomingVideoUrl);
-      if (pendingIndexRef.current !== null && slides[pendingIndexRef.current]?.videoUrl === upcomingVideoUrl) {
-        commitAdvance(pendingIndexRef.current);
-      }
-    };
+    const onReady = () => markReady(upcomingVideoUrl);
     el.addEventListener("canplay", onReady);
     return () => el.removeEventListener("canplay", onReady);
-  }, [upcomingVideoUrl, slides, commitAdvance]);
+  }, [upcomingVideoUrl, markReady]);
 
   if (slides.length === 0) return null;
   const active = slides[activeIndex];
