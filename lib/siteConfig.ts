@@ -9,10 +9,10 @@ export const SITE_URL = "https://mcbcreative.design";
 
 export const SITE_NAME = "MCB Creative";
 
-export const SITE_TITLE = "MCB Creative — Independent Design Studio";
+export const SITE_TITLE = "MCB Creative /// Independent Design Studio";
 
 export const SITE_DESCRIPTION =
-  "MCB Creative is the independent design studio of Michael Charles Brown — brand identity, interactive web design, motion, and illustration.";
+  "MCB Creative is the independent design studio of Michael Charles Brown, working across brand identity, interactive web design, motion, and illustration.";
 
 export type OgImage = {
   url: string;
@@ -26,7 +26,7 @@ const DEFAULT_OG_IMAGE: OgImage = {
   url: "/images/og.png",
   width: 1200,
   height: 630,
-  alt: "MCB Creative — Independent Design Studio of Michael Charles Brown",
+  alt: "MCB Creative, the independent design studio of Michael Charles Brown",
 };
 
 type PageMetadataOptions = {

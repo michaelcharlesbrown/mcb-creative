@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/siteConfig";
 export const metadata = pageMetadata({ path: "/info" });
 
 const introColLeft = [
-  "As a web designer at LeapFrog, a UI designer at ProTools, and Creative Director of BitTorrent, I've crafted graphics for industry-standard music technology and designed brand identities and websites reaching millions.",
+  "As a web designer at LeapFrog, a UI designer at Pro Tools, and Creative Director of BitTorrent, I've crafted graphics for industry-standard music technology and designed brand identities and websites reaching millions.",
   "I've built creative departments from scratch in both in-house and agency settings, always focused on delivering work that speaks directly to the right people.",
 ];
 
@@ -23,7 +23,7 @@ const testimonials = [
   {
     quote:
       "One of the most talented creative directors in the game. I hired him for a complete rebrand of my startup and he led us through a thorough branding exercise which led to a gorgeous new logo and all of the associated business collateral.",
-    name: "Aaron Selverson",
+    name: "Aaron Selverston",
     title: "Co-founder & CEO, Superspatial",
   },
   {
@@ -56,7 +56,7 @@ export default function Info() {
             </span>
           </p>
           <h1 className="project-intro__headline intro-beat intro-beat--depth intro-beat--1">
-            Building visual identities for over a decade.
+            Building visual identities for over 20 years.
           </h1>
         </header>
 

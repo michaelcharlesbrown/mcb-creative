@@ -76,7 +76,7 @@ export async function generateMetadata({
 
   if (!sanityProject) return {};
 
-  const title = sanityProject.seo?.metaTitle || `${sanityProject.title} — MCB Creative`;
+  const title = sanityProject.seo?.metaTitle || `${sanityProject.title} /// MCB Creative`;
 
   const introBlock = (sanityProject.pageContent ?? []).find(
     (block) => block._type === "introBlock"
