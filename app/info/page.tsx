@@ -48,10 +48,10 @@ export default function Info() {
             <span className="label-title">MICHAEL CHARLES BROWN</span>{" "}
             <span className="info-intro__eyebrow-roles">
               <span className="info-intro__eyebrow-role">
-                <TripleSlash /> <span className="label-meta">CREATIVE DIRECTOR</span>
+                <TripleSlash /> <span className="label-meta">GRAPHIC DESIGNER</span>
               </span>{" "}
               <span className="info-intro__eyebrow-role">
-                <TripleSlash /> <span className="label-meta">BRANDING + WEB DESIGN</span>
+                <TripleSlash /> <span className="label-meta">BRANDING + WEB</span>
               </span>
             </span>
           </p>
@@ -68,21 +68,6 @@ export default function Info() {
                   {para}
                 </p>
               ))}
-              {/* Body-copy CTA: same type as the surrounding bio, so it reads as
-                  the last sentence of the paragraph rather than a smaller mono
-                  label. Identical in construction to the "here" link in the
-                  right column — inline .project-info__link, sentence period,
-                  no ornament. */}
-              <p className="project-info__body project-info__links">
-                Working on something?{" "}
-                <a
-                  href="mailto:hello@mcbcreative.design"
-                  className="flip-link project-info__link"
-                >
-                  <span className="flip-link__inner" data-text="Get in touch">Get in touch</span>
-                </a>
-                .
-              </p>
             </div>
             <div className="project-info__copy-col">
               <p className="project-info__body">
@@ -93,10 +78,8 @@ export default function Info() {
               <p className="project-info__body">
                 I&rsquo;m also a classically trained musician. I&rsquo;ve
                 released several albums on my indie record label and just
-                completed my first feature film score.
-              </p>
-              <p className="project-info__body">
-                Check out my music projects{" "}
+                completed my first feature film score. Check out my music
+                projects{" "}
                 <a
                   href="https://michaelcharlesbrown.com"
                   target="_blank"
@@ -104,6 +87,20 @@ export default function Info() {
                   className="flip-link project-info__link"
                 >
                   <span className="flip-link__inner" data-text="here">here</span>
+                </a>
+                .
+              </p>
+              {/* Body-copy CTA: same type as the surrounding bio, so it reads as
+                  the last sentence of the paragraph rather than a smaller mono
+                  label. Identical in construction to the "here" link above —
+                  inline .project-info__link, sentence period, no ornament. */}
+              <p className="project-info__body project-info__links">
+                Working on something?{" "}
+                <a
+                  href="mailto:hello@mcbcreative.design"
+                  className="flip-link project-info__link"
+                >
+                  <span className="flip-link__inner" data-text="Get in touch">Get in touch</span>
                 </a>
                 .
               </p>
