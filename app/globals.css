@@ -721,7 +721,7 @@ img.footer__cta-arrow {
 ============================================================ */
 
 .nav-rail--homepage .carousel-slide { flex: 0 0 85%; }
-.nav-rail--rail     .carousel-slide { flex: 0 0 55%; }
+.nav-rail--rail     .carousel-slide { flex: 0 0 100%; } /* one slide at a time */
 
 
 /* ============================================================

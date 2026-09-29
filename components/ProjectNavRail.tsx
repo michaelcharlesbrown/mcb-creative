@@ -24,7 +24,15 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
   const cards = isHomepage ? projects : projects.filter((p) => p.slug !== currentSlug);
 
   const [emblaRef] = useEmblaCarousel(
-    { loop: true, align: "start", slidesToScroll: 1, dragFree: true },
+    {
+      loop: true,
+      align: "start",
+      slidesToScroll: 1,
+      dragFree: true,
+      // The rail shows one full-width slide at a time on mobile, so a swipe
+      // snaps to the next card instead of coasting to rest between two.
+      breakpoints: isHomepage ? {} : { "(max-width: 767px)": { dragFree: false } },
+    },
     [Autoplay({ delay: 3000, stopOnInteraction: false })]
   );
 
@@ -50,7 +58,7 @@ export default function ProjectNavRail({ currentSlug, projects, variant = "rail"
                   sizes={
                     isHomepage
                       ? "(max-width: 767px) 85vw, 33vw"
-                      : "(max-width: 767px) 55vw, 33vw"
+                      : "(max-width: 767px) 100vw, 33vw"
                   }
                   draggable={false}
                   className="object-cover"
