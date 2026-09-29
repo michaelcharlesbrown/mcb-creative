@@ -48,10 +48,10 @@ export default function Info() {
             <span className="label-title">MICHAEL CHARLES BROWN</span>{" "}
             <span className="info-intro__eyebrow-roles">
               <span className="info-intro__eyebrow-role">
-                <TripleSlash /> <span className="label-meta">GRAPHIC DESIGNER</span>
+                <TripleSlash /> <span className="label-meta">BRAND DESIGNER</span>
               </span>{" "}
               <span className="info-intro__eyebrow-role">
-                <TripleSlash /> <span className="label-meta">BRANDING + WEB</span>
+                <TripleSlash /> <span className="label-meta">ART DIRECTOR</span>
               </span>
             </span>
           </p>
@@ -71,9 +71,11 @@ export default function Info() {
             </div>
             <div className="project-info__copy-col">
               <p className="project-info__body">
-                Today I partner with founders, small businesses, and other
+                Today I work with founders, small businesses, and other
                 creators to take their projects from the spark of inspiration
-                to a complete visual identity.
+                to a complete visual identity. I&rsquo;m currently partnering
+                with Superspatial as creative director, leading brand
+                identity, web, and motion.
               </p>
               <p className="project-info__body">
                 I&rsquo;m also a classically trained musician. I&rsquo;ve
