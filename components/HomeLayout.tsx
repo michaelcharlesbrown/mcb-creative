@@ -1,4 +1,5 @@
 import HeroSection from "@/components/HeroSection";
+import HeroMarquee from "@/components/HeroMarquee";
 import BodyClass from "@/components/BodyClass";
 import WorkCard from "@/components/WorkCard";
 import type { MediaSlideData } from "@/components/SlideSequence";
@@ -20,6 +21,10 @@ export default function HomeLayout({ projects, sizzleReelSlides }: HomeLayoutPro
   return (
     <>
       <BodyClass className="home" />
+      {/* 2026 experiments — stacked above the existing hero, which is untouched below them. */}
+      <HeroMarquee slides={sizzleReelSlides} variant="horizontal" typeLayout="band" />
+      <HeroMarquee slides={sizzleReelSlides} variant="vertical" />
+      <HeroMarquee slides={sizzleReelSlides} variant="horizontal" />
       <div className="overflow-hidden bg-background">
         <HeroSection sizzleReelSlides={sizzleReelSlides} />
       </div>

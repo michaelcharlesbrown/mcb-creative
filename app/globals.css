@@ -74,6 +74,21 @@
   --fluid-work-grid-pair-row-height: clamp(26rem, 38vh, 36rem); /* homepage 2×2 grid row height */
   /* Homepage intro — exactly one viewport; title sits on bottom edge (HeroSection) */
   --height-home-hero: 100dvh;
+  /* 2026 hero marquee experiment — tune the whole effect from here */
+  --hero-marquee-image-pace:    7s;   /* time for the strip to drift one image width */
+  --hero-marquee-type-duration: 160s; /* one full pass of the phrase — scales with type size, retune together */
+  --cap-height-headline:        0.71; /* Geist Bold cap height ÷ font size, measured in the browser */
+  --text-hero-marquee:          calc(var(--height-home-hero) / var(--cap-height-headline)); /* caps span the full viewport height */
+  --leading-hero-marquee:       1;
+  --tracking-hero-marquee:      -0.07em;
+  --color-hero-marquee-ink:     var(--color-white); /* inverted against the images via difference blend */
+  --hero-marquee-image-filter:  grayscale(1); /* set to none for full colour */
+  /* Vertical variant — name and tagline split the viewport 50/50 */
+  --text-hero-marquee-split:          calc(var(--height-home-hero) / 2 / var(--cap-height-headline)); /* caps span half the viewport */
+  --hero-marquee-split-type-duration: 40s; /* one pass of each half's phrase */
+  /* Band type layout — the full phrase across the middle of the viewport */
+  --text-hero-marquee-band:          calc(var(--height-home-hero) * 2 / 3 / var(--cap-height-headline)); /* caps span the middle two thirds */
+  --hero-marquee-band-type-duration: 110s; /* one pass of the phrase — scales with type size, retune together */
   /* Homepage hero slideshow — image row offset below nav; bottom-corner inset */
   --space-hero-row-top:     calc(var(--nav-height) + clamp(0.75rem, 3vh, 2rem));
   --space-hero-corner-y:    clamp(1rem, 2.5vh, 1.75rem);
@@ -388,7 +403,7 @@ a {
    are excluded.
 ============================================================ */
 
-img:not(.nav__logo-img):not(.hero__wordmark-img):not(.footer__wordmark):not(.footer__cta-arrow):not(.work-page__cta-arrow):not(.studio-intro__arrow):not(.info-testimonials__mark):not(.social-showcase__screen-media),
+img:not(.nav__logo-img):not(.hero__wordmark-img):not(.footer__wordmark):not(.footer__cta-arrow):not(.work-page__cta-arrow):not(.studio-intro__arrow):not(.info-testimonials__mark):not(.social-showcase__screen-media):not(.hero-marquee__img),
 video:not(.hidden):not(.info-peel__video):not(.info-peel__static-video):not(.social-showcase__screen-media) {
   border-radius: var(--radius-image);
 }
@@ -1703,6 +1718,147 @@ body.info-peel-active .info-peel + footer {
 }
 
 /* ============================================================
+   HERO MARQUEE — 2026 experiment (HeroMarquee.tsx)
+   Two counter-running marquees locked to one viewport: an image
+   strip drifting right, the name drifting left over it. Each
+   track holds its content twice and travels half its width.
+============================================================ */
+
+.hero-marquee {
+  position:   relative;
+  height:     var(--height-home-hero);
+  overflow:   hidden;
+  background: var(--hero-charcoal);
+}
+
+.hero-marquee__images {
+  display:   flex;
+  height:    100%;
+  width:     max-content;
+  animation: hero-marquee-right calc(var(--hero-marquee-count) * var(--hero-marquee-image-pace)) linear infinite;
+}
+
+.hero-marquee__frame {
+  position:     relative;
+  flex:         none;
+  height:       100%;
+  aspect-ratio: var(--aspect-project-hero);
+}
+
+.hero-marquee__img {
+  object-fit: cover;
+  filter:     var(--hero-marquee-image-filter);
+}
+
+.hero-marquee__type {
+  position:       absolute;
+  inset:          0;
+  display:        flex;
+  align-items:    center;
+  width:          max-content;
+  white-space:    nowrap;
+  pointer-events: none;
+  font-family:    var(--font-family-headline);
+  font-size:      var(--text-hero-marquee);
+  font-weight:    var(--weight-bold);
+  line-height:    var(--leading-hero-marquee);
+  letter-spacing: var(--tracking-hero-marquee);
+  text-box:       trim-both cap alphabetic; /* line box = cap height, so caps centre on the viewport exactly */
+  text-transform: uppercase;
+  color:          var(--color-hero-marquee-ink);
+  mix-blend-mode: difference;
+  animation:      hero-marquee-left var(--hero-marquee-type-duration) linear infinite;
+}
+
+.hero-marquee__phrase {
+  white-space: pre;
+}
+
+/* Vertical variant — the images stack full-width and drift up at the same
+   per-image pace; name and tagline each take half the viewport, counter-running. */
+.hero-marquee--vertical .hero-marquee__images {
+  flex-direction: column;
+  width:          100%;
+  height:         max-content;
+  animation-name: hero-marquee-up;
+}
+
+.hero-marquee--vertical .hero-marquee__frame {
+  width:  100%;
+  height: auto;
+}
+
+/* Reverse — horizontal only: images drift left, the single-line type drifts right. */
+.hero-marquee--horizontal.hero-marquee--reverse .hero-marquee__images {
+  animation-name: hero-marquee-left;
+}
+
+.hero-marquee--reverse .hero-marquee__type--full,
+.hero-marquee--reverse .hero-marquee__type--band {
+  animation-name: hero-marquee-right;
+}
+
+/* Band — same centred single row as the fill layout, at a smaller size. */
+.hero-marquee__type--band {
+  font-size:          var(--text-hero-marquee-band);
+  animation-duration: var(--hero-marquee-band-type-duration);
+}
+
+.hero-marquee__type--top,
+.hero-marquee__type--bottom {
+  font-size: var(--text-hero-marquee-split);
+  animation-duration: var(--hero-marquee-split-type-duration);
+}
+
+/* The tagline reads left-to-right as it arrives, so it takes the leftward
+   drift; the name is familiar enough to read running backwards. */
+.hero-marquee__type--top {
+  inset:          0 auto 50% 0;
+  animation-name: hero-marquee-right;
+}
+
+.hero-marquee__type--bottom {
+  inset: 50% auto 0 0;
+}
+
+@keyframes hero-marquee-up {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+
+/* Scroll-linked colour: the images regain full saturation as the hero scrolls
+   out of view. Driven by the section's own view timeline, so each hero
+   fades independently. Gated on support — without a scroll timeline the
+   animation would run on the clock and snap straight to colour, so browsers
+   that lack it simply keep the black-and-white images. */
+@supports (animation-timeline: view()) {
+  .hero-marquee {
+    view-timeline: --hero-marquee-scroll block;
+  }
+
+  .hero-marquee__img {
+    animation:          hero-marquee-saturate linear both;
+    animation-timeline: --hero-marquee-scroll;
+    animation-range:    exit 0% exit 100%;
+  }
+}
+
+@keyframes hero-marquee-saturate {
+  from { filter: var(--hero-marquee-image-filter); }
+  to   { filter: grayscale(0); }
+}
+
+@keyframes hero-marquee-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes hero-marquee-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+/* ============================================================
    RESPONSIVE OVERRIDES
    All breakpoint rules live here, after all base styles.
    One block per condition — Tailwind v4 / Lightning CSS
@@ -1927,7 +2083,9 @@ body.info-peel-active .info-peel + footer {
     display: none;
   }
 
-  .social-showcase__marquee-track {
+  .social-showcase__marquee-track,
+  .hero-marquee__images,
+  .hero-marquee__type {
     animation: none;
   }
 }
