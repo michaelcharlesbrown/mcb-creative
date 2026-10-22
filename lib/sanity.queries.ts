@@ -104,6 +104,23 @@ export const workPageProjectsQuery = `*[_id=="workPage"][0].projects[]->{
 }`;
 
 /**
+ * Homepage work stack — the same curated "Work Page" list, one image per
+ * project at its natural proportions: the Grid Image when set, else the
+ * Hero Image. Dimensions come from the asset metadata so each card can
+ * reserve its exact height before the image loads.
+ */
+export const homeWorkStackQuery = `*[_id=="workPage"][0].projects[]->{
+  title,
+  "slug": slug.current,
+  "image": coalesce(gridImage, heroImage){
+    alt,
+    "url": asset->url,
+    "width": asset->metadata.dimensions.width,
+    "height": asset->metadata.dimensions.height
+  }
+}`;
+
+/**
  * Homepage sizzle reel — the "Homepage" singleton's `sizzleReelSlides` array,
  * curated and reordered directly in the Studio. Empty means the homepage
  * falls back to the existing hardcoded hero video.

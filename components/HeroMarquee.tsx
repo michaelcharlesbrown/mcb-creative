@@ -27,8 +27,12 @@ interface HeroMarqueeProps {
 const NAME = "Michael Charles Brown /// ";
 const TAGLINE = "Independent Creative /// ";
 
-/** Each type row holds its phrase twice and travels half its width — a seamless loop. */
-function TypeRow({
+/**
+ * One marquee line of type. Holds its phrase twice and travels half its
+ * width — a seamless loop. Exported so the line can run over other media
+ * (e.g. the Info page's reel video); it fills whatever positioned box it's in.
+ */
+export function TypeRow({
   phrase,
   position,
 }: {

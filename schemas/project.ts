@@ -42,6 +42,15 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'gridImage',
+      title: 'Grid Image',
+      description: 'Any shape — portrait, square, tall, wide. Shown at its natural proportions in the homepage two-column stack, so varied shapes give the grid its staggered rhythm. Leave empty to fall back to the Hero Image. Upload the largest master available (at least 2400px wide).',
+      type: 'image',
+      fields: [
+        defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
+      ],
+    }),
+    defineField({
       name: 'thumbnail',
       title: 'Portrait Thumbnail (legacy — unused)',
       description: 'No longer used by the site — the portrait mobile hero and carousel were retired in favour of a single 16:9 source cropped to 5:4 on mobile. Retained only so existing uploads are not lost; safe to ignore. Slated for removal in a later cleanup.',

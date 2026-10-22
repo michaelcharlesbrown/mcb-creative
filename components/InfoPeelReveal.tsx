@@ -23,6 +23,10 @@ interface InfoPeelRevealProps {
   /** Applied to the scrolling content element, e.g. "info-page info-intro". */
   className?: string;
   "aria-label"?: string;
+  /** Decorative layer drawn over the fixed background video (e.g. a marquee
+      line of type). Sized to the full-viewport window; omitted under reduced
+      motion, where the reel plays as a static block instead. */
+  overlay?: ReactNode;
 }
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
@@ -45,6 +49,7 @@ export default function InfoPeelReveal({
   children,
   className,
   "aria-label": ariaLabel,
+  overlay,
 }: InfoPeelRevealProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const staticSectionRef = useRef<HTMLElement>(null);
@@ -186,6 +191,7 @@ export default function InfoPeelReveal({
           playsInline
           preload="auto"
         />
+        {overlay}
       </div>
 
       <main

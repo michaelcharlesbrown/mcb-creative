@@ -1,5 +1,6 @@
 import TripleSlash from "@/components/TripleSlash";
 import InfoPeelReveal from "@/components/InfoPeelReveal";
+import { TypeRow } from "@/components/HeroMarquee";
 import ScrollReveal from "@/components/ScrollReveal";
 import { pageMetadata } from "@/lib/siteConfig";
 
@@ -36,7 +37,12 @@ const testimonials = [
 
 export default function Info() {
   return (
-    <InfoPeelReveal className="info-page info-intro" aria-label="About Michael Charles Brown">
+    <InfoPeelReveal
+      className="info-page info-intro"
+      aria-label="About Michael Charles Brown"
+      // The homepage hero's marquee line, running over the logo reel.
+      overlay={<TypeRow phrase="Branding /// Web Design /// " position="band" />}
+    >
       <section className="project-intro">
         <header className="project-intro__header max-w-[var(--content-max-width)] mx-auto content-inset">
           {/* Standard mono eyebrow — one line on desktop. The roles are grouped
